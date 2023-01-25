@@ -3,6 +3,7 @@ import './App.css';
 
 import Home from './pages/Home'
 import Map from './pages/Map'
+import NotFound from "./pages/NotFound";
 
 import MainHeader from './components/MainHeader'
 import MainFooter from './components/MainFooter'
@@ -11,11 +12,12 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <MainHeader />
-        <MainFooter />
+        {/* <MainHeader /> */}
+        {/* <MainFooter /> */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/map" element={<Map />} />
+          <Route path="/*" element={<NotFound />} />
         </Routes>
       </div>
     </BrowserRouter>
