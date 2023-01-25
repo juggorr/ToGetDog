@@ -1,42 +1,37 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  faHouse,
-  faMagnifyingGlass,
-  faBell,
-  faSquarePlus,
-} from "@fortawesome/free-solid-svg-icons";
+import "./FontAwesome";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Span, Nav, DivContainer, NotoSans, Div } from "../styles/MainHeaderEmotion";
+import { NavContainer } from "../styles/MainHeaderEmotion";
 
 function Navbar() {
   return (
     <>
-      <Nav className="navbar">
-        <DivContainer>
-          <Div>
-            <FontAwesomeIcon icon={faHouse} />
-            <NotoSans>역삼동</NotoSans>
-          </Div>
-          <Div>
+      <div className="navbar">
+        <NavContainer>
+          <div className="navDiv">
+            <FontAwesomeIcon icon="fa-solid fa-house" />
+            <span className="notoSans">역삼동</span>
+          </div>
+          <div className="navDiv">
             <Link to="/createBoard" className="nav-links">
-              <Span>
-                <FontAwesomeIcon icon={faSquarePlus} />
-              </Span>
+              <span className="navIcon">
+                <FontAwesomeIcon icon="fa-solid fa-square-plus" />
+              </span>
             </Link>
             <Link to="/searchBar" className="nav-links">
-              <Span>
-                <FontAwesomeIcon icon={faMagnifyingGlass} />
-              </Span>
+              <span className="navIcon">
+                <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
+              </span>
             </Link>
             <Link to="/notifications" className="nav-links">
-              <Span>
-                <FontAwesomeIcon icon={faBell} />
-              </Span>
+              <span className="navIcon">
+                <FontAwesomeIcon icon="fa-solid fa-bell" />
+              </span>
             </Link>
-          </Div>
-        </DivContainer>
-      </Nav>
+          </div>
+        </NavContainer>
+      </div>
     </>
   );
 }

@@ -1,26 +1,27 @@
 import styled from "@emotion/styled";
 
-export const Span = styled.span`
-  color: black;
-  text-decoration: none;
-  margin: 8px;
-`;
-
-export const Nav = styled.nav`
-  padding: 5px;
-`;
-
-export const DivContainer = styled.div`
+export const NavContainer = styled.div`
+  padding: 5px 0px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-`;
 
-export const NotoSans = styled.span`
-  font-family: "Noto Sans KR", sans-serif;
-  margin: 6px;
-`;
+  .notoSans {
+    font-family: "Noto Sans KR", sans-serif;
+    margin: 6px;
+  }
 
-export const Div = styled.div`
-  margin: 5px;
+  .navDiv {
+    margin: 5px;
+  }
+
+  .navIcon {
+    color: black;
+    text-decoration: none;
+    margin: 8px;
+  }
+
+  .navBar {
+    padding: 5px;
+  }
 `;
