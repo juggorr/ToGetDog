@@ -12,3 +12,16 @@ export const HomeTextBtn = styled.div`
   line-height: 45px;
   margin-top: 50px;
 `
+
+export const PinkBtn = styled.button`
+  width: 240px;
+  height: 50px;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  background: #B7147E;
+  border-radius: 38px;
+  margin-top: 50px;
+  cursor: pointer;
+`
