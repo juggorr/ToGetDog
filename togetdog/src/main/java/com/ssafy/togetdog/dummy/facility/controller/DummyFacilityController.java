@@ -59,6 +59,8 @@ public class DummyFacilityController {
 		storeInfo.setClosedDays(closedDays);
 		storeInfo.setOpeningHours(openingHours);
 		
+		storeList.add(storeInfo);
+		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("result", SUCCESS);
 		resultMap.put("storeList", storeList);
