@@ -13,30 +13,24 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Configuration
 public class SwaggerConfig {
 
-	// Swagger - API ±âº» ¼³Á¤
+	// Swagger - API ê¸°ë³¸ ì„¤ì •
 	private String version = "0.1";
-	private String title = "°øÅëPJT Dummy API Documentation";
-	private String description = "SSAFY °øÅë PJT Dummy API";
+	private String title = "ê³µí†µPJT Dummy API Documentation";
+	private String description = "SSAFY ê³µí†µ PJT Dummy API";
 
 	public ApiInfo apiInfo() {
-		return new ApiInfoBuilder()
-				.title(title)
-				.description(description)
-				.version(version)
-				.build();
+		return new ApiInfoBuilder().title(title).description(description).version(version).build();
 	}
 
-	public Docket getDocket(String groupName, 
-			boolean defaultResponseMessage, 
-			//Predicate<String> predicate,
+	public Docket getDocket(String groupName, boolean defaultResponseMessage,
+			// Predicate<String> predicate,
 			String basePackage) {
-		return new Docket(DocumentationType.OAS_30)
-				.groupName(groupName)
-				.useDefaultResponseMessages(defaultResponseMessage) // Swagger ¿¡¼­ Á¦°øÇØÁÖ´Â ±âº» ÀÀ´ä ÄÚµå Ç¥½Ã ¿©ºÎ
-				.apiInfo(apiInfo()) // apiInfoÁ¤º¸
+		return new Docket(DocumentationType.OAS_30).groupName(groupName)
+				.useDefaultResponseMessages(defaultResponseMessage) // Swagger ì—ì„œ ì œê³µí•´ì£¼ëŠ” ê¸°ë³¸ ì‘ë‹µ ì½”ë“œ í‘œì‹œ ì—¬ë¶€
+				.apiInfo(apiInfo()) // apiInfoì •ë³´
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.ssafy.togetdog.dummy." + basePackage + ".controller"))
-				.paths(PathSelectors.any()) // ¾Æ¹« °æ·Î³ª °¡´É
+				.paths(PathSelectors.any()) // ì•„ë¬´ ê²½ë¡œë‚˜ ê°€ëŠ¥
 				.build();
 	}
 
@@ -44,37 +38,37 @@ public class SwaggerConfig {
 	public Docket userApi() {
 		return getDocket("USER", true, "user");
 	}
-	
+
 	@Bean
 	public Docket dogApi() {
 		return getDocket("DOG", true, "dog");
 	}
-	
+
 	@Bean
 	public Docket feedApi() {
 		return getDocket("FEED", true, "feed");
 	}
-	
+
 	@Bean
 	public Docket appointmentApi() {
 		return getDocket("APPOINTMENT", true, "Appointment");
 	}
-	
+
 	@Bean
 	public Docket facilityApi() {
 		return getDocket("FACILITY", true, "facility");
 	}
-	
+
 	@Bean
 	public Docket notifyApi() {
 		return getDocket("NOTIFY", true, "notify");
 	}
-	
+
 	@Bean
 	public Docket chatApi() {
 		return getDocket("CHAT", true, "chat");
 	}
-	
+
 	@Bean
 	public Docket searchApi() {
 		return getDocket("SEARCH", true, "search");

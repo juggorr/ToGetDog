@@ -19,14 +19,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/notify")
-@Api("¾Ë¸² °ü·Ã ´õ¹Ì API : ¹«½¼ °ªÀ» ³Öµç °°Àº dummy °á°ú°¡ ³ª¿É´Ï´Ù.")
+@RequestMapping("/dummy/notify")
+@Api("ì•Œë¦¼ ê´€ë ¨ ë”ë¯¸ API : ë¬´ìŠ¨ ê°’ì„ ë„£ë“  ê°™ì€ dummy ê²°ê³¼ê°€ ë‚˜ì˜µë‹ˆë‹¤.")
 public class DummyNotifyController {
 	
 	private static final String SUCCESS = "success";
 	// private static final String FAIL = "fail";
 
-	@ApiOperation(value = "¾Ë¸² ¸®½ºÆ® Á¶È¸", notes = "¾Ë¸² ÅÇ¿¡ µé¾î¿ÔÀ» ¶§ °¡Á®¿Ã Á¤º¸ ÀüÃ¼¸¦ ¹İÈ¯ÇÕ´Ï´Ù.")
+	@ApiOperation(value = "ì•Œë¦¼ ë¦¬ìŠ¤íŠ¸ ì¡°íšŒ", notes = "ì•Œë¦¼ íƒ­ì— ë“¤ì–´ì™”ì„ ë•Œ ê°€ì ¸ì˜¬ ì •ë³´ ì „ì²´ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.")
 	@GetMapping
 	public ResponseEntity<?> getNotifyList(
 			) {
@@ -36,9 +36,9 @@ public class DummyNotifyController {
 		
 		List<NoticeDTO> noticeList = new ArrayList<NoticeDTO>();
 		NoticeDTO noticeInfo = new NoticeDTO();
-		noticeInfo.setType("ÁÁ¾Æ¿ä");
-		noticeInfo.setNickName("Å©¸²¾ö¸¶");
-		noticeInfo.setDogName("»Ç»ß");
+		noticeInfo.setType("ì¢‹ì•„ìš”");
+		noticeInfo.setNickName("í¬ë¦¼ì—„ë§ˆ");
+		noticeInfo.setDogName("ë½€ì‚");
 		noticeInfo.setId(1435);
 		noticeList.add(noticeInfo);
 		notifyInfo.setNotice(noticeList);
@@ -49,13 +49,14 @@ public class DummyNotifyController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "¾à¼Ó Ãë¼Ò ¾Ë¸² È®ÀÎ", notes = "¾à¼Ó Ãë¼Ò ¾Ë¸²À» ´­·¶À» ¶§ È®ÀÎ ¿©ºÎ¸¦ ¾÷µ¥ÀÌÆ®ÇÕ´Ï´Ù.")
+	@ApiOperation(value = "ì•½ì† ì·¨ì†Œ ì•Œë¦¼ í™•ì¸", notes = "ì•½ì† ì·¨ì†Œ ì•Œë¦¼ì„ ëˆŒë €ì„ ë•Œ í™•ì¸ ì—¬ë¶€ë¥¼ ì—…ë°ì´íŠ¸í•©ë‹ˆë‹¤.")
 	@PutMapping("/cancel")
 	public ResponseEntity<?> confirmCancelNotify(
 			) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "¾à¼Ó Ãë¼Ò ¾Ë¸²À» È®ÀÎÃ³¸®Çß½À´Ï´Ù.");
+		resultMap.put("msg", "ì•½ì† ì·¨ì†Œ ì•Œë¦¼ì„ í™•ì¸ì²˜ë¦¬í–ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
+
 }

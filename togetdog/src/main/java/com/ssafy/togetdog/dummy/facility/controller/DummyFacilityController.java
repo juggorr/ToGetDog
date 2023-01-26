@@ -18,14 +18,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/facility")
-@Api("¾Ö°ß ½Ã¼³ °ü·Ã ´õ¹Ì API : ¹«½¼ °ªÀ» ³Öµç °°Àº dummy °á°ú°¡ ³ª¿É´Ï´Ù.")
+@RequestMapping("/dummy/facility")
+@Api("ì• ê²¬ ì‹œì„¤ ê´€ë ¨ ë”ë¯¸ API : ë¬´ìŠ¨ ê°’ì„ ë„£ë“  ê°™ì€ dummy ê²°ê³¼ê°€ ë‚˜ì˜µë‹ˆë‹¤.")
 public class DummyFacilityController {
 	
+
 	private static final String SUCCESS = "success";
 	// private static final String FAIL = "fail";
 
-	@ApiOperation(value = "Çö À§Ä¡ ±â¹İ ½Ã¼³ ¸®½ºÆ® Á¶È¸ ", notes = "Çö À§Ä¡¸¦ ±â¹İÀ¸·Î °¡±îÀÌ¿¡ ÀÖ´Â ¾Ö°ß ½Ã¼³À» Á¶È¸ÇÕ´Ï´Ù.")
+	@ApiOperation(value = "í˜„ ìœ„ì¹˜ ê¸°ë°˜ ì‹œì„¤ ë¦¬ìŠ¤íŠ¸ ì¡°íšŒ ", notes = "í˜„ ìœ„ì¹˜ë¥¼ ê¸°ë°˜ìœ¼ë¡œ ê°€ê¹Œì´ì— ìˆëŠ” ì• ê²¬ ì‹œì„¤ì„ ì¡°íšŒí•©ë‹ˆë‹¤.")
 	@GetMapping
 	public ResponseEntity<?> getHomeInfo(
 			@RequestParam String latitude,
@@ -34,9 +35,9 @@ public class DummyFacilityController {
 		List<storeDTO> storeList = new ArrayList<storeDTO>();
 		storeDTO storeInfo = new storeDTO();
 		storeInfo.setFacilityId(7);
-		storeInfo.setFacilityName("1¹ø°¡¿Â´©¸®¾à±¹");
-		storeInfo.setFacilityAddress("°­¿øµµ ÆòÃ¢±º ÁøºÎ¸é ÇÏÁøºÎ¸® 101¹øÁö 74 - 2");
-		storeInfo.setType("¹İ·ÁÀÇ·á");
+		storeInfo.setFacilityName("1ë²ˆê°€ì˜¨ëˆ„ë¦¬ì•½êµ­");
+		storeInfo.setFacilityAddress("ê°•ì›ë„ í‰ì°½êµ° ì§„ë¶€ë©´ í•˜ì§„ë¶€ë¦¬ 101ë²ˆì§€ 74 - 2");
+		storeInfo.setType("ë°˜ë ¤ì˜ë£Œ");
 		storeInfo.setLongitude(37.6376755);
 		storeInfo.setLatitude(128.559285);
 		storeInfo.setDistance(450.23432);

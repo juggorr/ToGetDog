@@ -27,27 +27,27 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@Api("°Ô½Ã¹° °ü·Ã ´õ¹Ì API : ¹«½¼ °ªÀ» ³Öµç °°Àº dummy °á°ú°¡ ³ª¿É´Ï´Ù.")
+@Api("ê²Œì‹œë¬¼ ê´€ë ¨ ë”ë¯¸ API : ë¬´ìŠ¨ ê°’ì„ ë„£ë“  ê°™ì€ dummy ê²°ê³¼ê°€ ë‚˜ì˜µë‹ˆë‹¤.")
 public class DummyFeedController {
 
 	private static final String SUCCESS = "success";
 	// private static final String FAIL = "fail";
 
-	@ApiOperation(value = "È¨ È­¸é Á¶È¸", notes = "È¨ È­¸é Á¶È¸¿¡ ÇÊ¿äÇÑ °ªÀ» ¸®ÅÏÇÕ´Ï´Ù.")
-	@GetMapping("/home")
+	@ApiOperation(value = "í™ˆ í™”ë©´ ì¡°íšŒ", notes = "í™ˆ í™”ë©´ ì¡°íšŒì— í•„ìš”í•œ ê°’ì„ ë¦¬í„´í•©ë‹ˆë‹¤.")
+	@GetMapping("/dummy/home")
 	public ResponseEntity<?> getHomeInfo(@RequestParam String pageNo) {
 		DogDTO dog = new DogDTO();
 		dog.setDogId(123L);
 		dog.setUserId(84L);
-		dog.setDogName("Å©¸²");
+		dog.setDogName("í¬ë¦¼");
 		dog.setDogGender("female");
-		dog.setDogType("Æ÷¸Ş¶ó´Ï¾È");
+		dog.setDogType("í¬ë©”ë¼ë‹ˆì•ˆ");
 		dog.setDogAge(24);
 		dog.setDogWeight(3.4);
 		dog.setDogNeutered(true);
 		dog.setDogCharacter1("independent");
 		dog.setDogCharacter2("active");
-		dog.setDescription("È°µ¿ÀûÀÌ°í ¼øÇØ¿ä");
+		dog.setDescription("í™œë™ì ì´ê³  ìˆœí•´ìš”");
 		dog.setDogProfile("asdfasdf.jpg");
 
 		List<SimpleBoardDTO> boardList = new ArrayList<SimpleBoardDTO>();
@@ -63,42 +63,42 @@ public class DummyFeedController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "ÇÇµå", notes = "ÇÇµå Á¤º¸¸¦ ¸®ÅÏÇÕ´Ï´Ù.")
-	@GetMapping("/feed")
+	@ApiOperation(value = "í”¼ë“œ", notes = "í”¼ë“œ ì •ë³´ë¥¼ ë¦¬í„´í•©ë‹ˆë‹¤.")
+	@GetMapping("/dummy/feed")
 	public ResponseEntity<?> getFeedInfo(@RequestParam String pageNo) {
 
-		// ÇÇµå ÁÖÀÎ Á¤º¸
+		// í”¼ë“œ ì£¼ì¸ ì •ë³´
 		UserIncludesDogsDTO user = new UserIncludesDogsDTO();
 
-		// ÇÇµå ÁÖÀÎÀÇ °­¾ÆÁö 3¸¶¸®
+		// í”¼ë“œ ì£¼ì¸ì˜ ê°•ì•„ì§€ 3ë§ˆë¦¬
 		DogDTO dog = new DogDTO();
 		dog.setDogId(114L);
 		dog.setUserId(123L);
-		dog.setDogName("»Ç»ß");
+		dog.setDogName("ë½€ì‚");
 		dog.setDogGender("female");
-		dog.setDogType("¸»Æ¼Áî");
+		dog.setDogType("ë§í‹°ì¦ˆ");
 		dog.setDogAge(72);
 		dog.setDogWeight(3.4);
 		dog.setDogNeutered(true);
 		dog.setDogCharacter1("independent");
 		dog.setDogCharacter2("active");
-		dog.setDescription("È°µ¿ÀûÀÌ°í ¼øÇØ¿ä");
+		dog.setDescription("í™œë™ì ì´ê³  ìˆœí•´ìš”");
 		dog.setDogProfile("asdfasdf.jpg");
 
 		user.setUserId(123L);
-		user.setNickName("»Ç»ß¾ö¸¶");
+		user.setNickName("ë½€ì‚ì—„ë§ˆ");
 		user.setUserAge(28);
-		user.setAddress("¼­¿ï½Ã µ¿ÀÛ±¸ Èæ¼®µ¿");
+		user.setAddress("ì„œìš¸ì‹œ ë™ì‘êµ¬ í‘ì„ë™");
 		user.setRegionCode("11455");
 		user.setSocial("naver");
 		user.setRating(3.41);
 		user.getDog().add(dog);
 
-		// ºÎ°¡ Á¤º¸
+		// ë¶€ê°€ ì •ë³´
 		user.setFollow(true);
 		user.setFollowCnt(300);
 
-		// feed °Ô½Ã¹° ¸®½ºÆ®
+		// feed ê²Œì‹œë¬¼ ë¦¬ìŠ¤íŠ¸
 		List<SimpleBoardDTO> boardList = new ArrayList<SimpleBoardDTO>();
 		SimpleBoardDTO board = new SimpleBoardDTO();
 		board.setDog(dog);
@@ -113,10 +113,10 @@ public class DummyFeedController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "ÇÇµå ÇÏ´Ü °Ô½Ã¹° Á¶È¸", notes = "ÇÇµå ÇÏ´Ü °Ô½Ã¹°À» °­¾ÆÁö ¹øÈ£¿¡ µû¶ó Á¶È¸ÇÕ´Ï´Ù.")
-	@GetMapping("/list/{dogId}")
+	@ApiOperation(value = "í”¼ë“œ í•˜ë‹¨ ê²Œì‹œë¬¼ ì¡°íšŒ", notes = "í”¼ë“œ í•˜ë‹¨ ê²Œì‹œë¬¼ì„ ê°•ì•„ì§€ ë²ˆí˜¸ì— ë”°ë¼ ì¡°íšŒí•©ë‹ˆë‹¤.")
+	@GetMapping("/dummy/board/list/{dogId}")
 	public ResponseEntity<?> getBoardListByDogId(@PathVariable String dogId) {
-		// feed °Ô½Ã¹° ¸®½ºÆ®
+		// feed ê²Œì‹œë¬¼ ë¦¬ìŠ¤íŠ¸
 		List<SimpleBoardDTO> boardList = new ArrayList<SimpleBoardDTO>();
 		SimpleBoardDTO board = new SimpleBoardDTO();
 		DogDTO dog = new DogDTO();
@@ -132,26 +132,26 @@ public class DummyFeedController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "°Ô½Ã¹° Á¶È¸", notes = "Æ¯Á¤ °Ô½Ã¹°À» Á¶È¸ÇÕ´Ï´Ù.")
-	@GetMapping("/board/{boardId}")
+	@ApiOperation(value = "ê²Œì‹œë¬¼ ì¡°íšŒ", notes = "íŠ¹ì • ê²Œì‹œë¬¼ì„ ì¡°íšŒí•©ë‹ˆë‹¤.")
+	@GetMapping("/dummy/board/{boardId}")
 	public ResponseEntity<?> getBoardInfo(@PathVariable String boardId, @RequestParam String pageNo) {
 		BoardDTO boardInfo = new BoardDTO();
 		boardInfo.setDogId(24L);
-		boardInfo.setDogName("Å©¸²");
-		boardInfo.setDogType("Æ÷¸Ş¶ó´Ï¾ğ");
+		boardInfo.setDogName("í¬ë¦¼");
+		boardInfo.setDogType("í¬ë©”ë¼ë‹ˆì–¸");
 		boardInfo.setDogGender("female");
 		boardInfo.setDogAge(24);
 		boardInfo.setDogImage("cream.png");
 		boardInfo.setLiked(true);
 		boardInfo.setFollwed(true);
 		boardInfo.setLikeCnt(34);
-		boardInfo.setContent("Å©¸²¾Æ È­³­°Å ¾Æ´ÏÁö?");
+		boardInfo.setContent("í¬ë¦¼ì•„ í™”ë‚œê±° ì•„ë‹ˆì§€?");
 		
 		CommentDTO comment = new CommentDTO();
 		comment.setCommentId(2L);
 		comment.setUserId(3L);
-		comment.setUserName("»ß»Ç¾Æºü");
-		comment.setContent("Å©¸²¾Æ È­³»Áö¸¶~");
+		comment.setUserName("ì‚ë½€ì•„ë¹ ");
+		comment.setContent("í¬ë¦¼ì•„ í™”ë‚´ì§€ë§ˆ~");
 		
 		boardInfo.getComments().add(comment);
 		
@@ -161,8 +161,8 @@ public class DummyFeedController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "°Ô½Ã¹° µî·Ï", notes = "»õ·Î¿î °Ô½Ã¹°À» µî·ÏÇÕ´Ï´Ù.")
-	@PostMapping("/board")
+	@ApiOperation(value = "ê²Œì‹œë¬¼ ë“±ë¡", notes = "ìƒˆë¡œìš´ ê²Œì‹œë¬¼ì„ ë“±ë¡í•©ë‹ˆë‹¤.")
+	@PostMapping("/dummy/board")
 	public ResponseEntity<?> postingBoard(
 			@RequestParam String dogId,
 			@RequestParam(value="image", required = true) MultipartFile image,
@@ -171,24 +171,24 @@ public class DummyFeedController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("boardId", 123);
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "°Ô½Ã¹°ÀÌ µî·Ï µÇ¾ú½À´Ï´Ù.");
+		resultMap.put("msg", "ê²Œì‹œë¬¼ì´ ë“±ë¡ ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "°Ô½Ã¹° »èÁ¦", notes = "ÇØ´ç °Ô½Ã¹°À» »èÁ¦ÇÕ´Ï´Ù.")
-	@DeleteMapping("/board")
+	@ApiOperation(value = "ê²Œì‹œë¬¼ ì‚­ì œ", notes = "í•´ë‹¹ ê²Œì‹œë¬¼ì„ ì‚­ì œí•©ë‹ˆë‹¤.")
+	@DeleteMapping("/dummy/board")
 	public ResponseEntity<?> deleteBoard(
 			@RequestParam String pageNo,
 			@RequestParam String boardId
 			) {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "°Ô½Ã¹°ÀÌ »èÁ¦ µÇ¾ú½À´Ï´Ù.");
+		resultMap.put("msg", "ê²Œì‹œë¬¼ì´ ì‚­ì œ ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "°Ô½Ã¹° ¼öÁ¤", notes = "ÇØ´ç °Ô½Ã¹°À» ¼öÁ¤ÇÕ´Ï´Ù.")
-	@PutMapping("/board")
+	@ApiOperation(value = "ê²Œì‹œë¬¼ ìˆ˜ì •", notes = "í•´ë‹¹ ê²Œì‹œë¬¼ì„ ìˆ˜ì •í•©ë‹ˆë‹¤.")
+	@PutMapping("/dummy/board")
 	public ResponseEntity<?> updateBoard(
 			@RequestParam String pageNo,
 			@RequestParam String boardId,
@@ -196,12 +196,12 @@ public class DummyFeedController {
 			) {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "°Ô½Ã¹°ÀÌ ¼öÁ¤ µÇ¾ú½À´Ï´Ù.");
+		resultMap.put("msg", "ê²Œì‹œë¬¼ì´ ìˆ˜ì • ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "´ñ±Û µî·Ï", notes = "°Ô½Ã±Û¿¡ »õ·Î¿î ´ñ±ÛÀ» µî·ÏÇÕ´Ï´Ù.")
-	@PostMapping("/board/comment")
+	@ApiOperation(value = "ëŒ“ê¸€ ë“±ë¡", notes = "ê²Œì‹œê¸€ì— ìƒˆë¡œìš´ ëŒ“ê¸€ì„ ë“±ë¡í•©ë‹ˆë‹¤.")
+	@PostMapping("/dummy/board/comment")
 	public ResponseEntity<?> postingComment(
 			@RequestParam String boardId
 			) {
@@ -212,19 +212,19 @@ public class DummyFeedController {
 		CommentDTO comment = new CommentDTO();
 		comment.setCommentId(1);
 		comment.setUserId(24);
-		comment.setUserName("»ß»Ç¾Æºü");
-		comment.setContent("È­³»Áö¸¶");
+		comment.setUserName("ì‚ë½€ì•„ë¹ ");
+		comment.setContent("í™”ë‚´ì§€ë§ˆ");
 		commentList.add(comment);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("comments", commentList);
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "´ñ±ÛÀÌ µî·Ï µÇ¾ú½À´Ï´Ù.");
+		resultMap.put("msg", "ëŒ“ê¸€ì´ ë“±ë¡ ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "´ñ±Û »èÁ¦", notes = "°Ô½Ã±Û¿¡ ´Ş¸° Æ¯Á¤ ´ñ±ÛÀ» »èÁ¦ÇÕ´Ï´Ù.")
-	@DeleteMapping("/board/comment")
+	@ApiOperation(value = "ëŒ“ê¸€ ì‚­ì œ", notes = "ê²Œì‹œê¸€ì— ë‹¬ë¦° íŠ¹ì • ëŒ“ê¸€ì„ ì‚­ì œí•©ë‹ˆë‹¤.")
+	@DeleteMapping("/dummy/board/comment")
 	public ResponseEntity<?> deleteComment(
 			@RequestParam String commentId
 			) {
@@ -234,19 +234,19 @@ public class DummyFeedController {
 		CommentDTO comment = new CommentDTO();
 		comment.setCommentId(1);
 		comment.setUserId(24);
-		comment.setUserName("»ß»Ç¾Æºü");
-		comment.setContent("È­³»Áö¸¶");
+		comment.setUserName("ì‚ë½€ì•„ë¹ ");
+		comment.setContent("í™”ë‚´ì§€ë§ˆ");
 		commentList.add(comment);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("comments", commentList);
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "´ñ±ÛÀÌ »èÁ¦ µÇ¾ú½À´Ï´Ù.");
+		resultMap.put("msg", "ëŒ“ê¸€ì´ ì‚­ì œ ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "ÁÁ¾Æ¿ä", notes = "Æ¯Á¤ °Ô½Ã¹°¿¡ ÁÁ¾Æ¿ä¸¦ ÇÕ´Ï´Ù.")
-	@PostMapping("/board/like")
+	@ApiOperation(value = "ì¢‹ì•„ìš”", notes = "íŠ¹ì • ê²Œì‹œë¬¼ì— ì¢‹ì•„ìš”ë¥¼ í•©ë‹ˆë‹¤.")
+	@PostMapping("/dummy/board/like")
 	public ResponseEntity<?> doLike(
 			@RequestParam String pageNo,
 			@RequestParam String boardId
@@ -254,12 +254,12 @@ public class DummyFeedController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("likeCnt", 255);
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "ÁÁ¾Æ¿ä°¡ ¹İ¿µµÇ¾ú½À´Ï´Ù.");
+		resultMap.put("msg", "ì¢‹ì•„ìš”ê°€ ë°˜ì˜ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "ÁÁ¾Æ¿ä Ãë¼Ò", notes = "Æ¯Á¤ °Ô½Ã¹°¿¡ ¹İ¿µÇß´ø ÁÁ¾Æ¿ä¸¦ Ãë¼ÒÇÕ´Ï´Ù.")
-	@DeleteMapping("/board/like")
+	@ApiOperation(value = "ì¢‹ì•„ìš” ì·¨ì†Œ", notes = "íŠ¹ì • ê²Œì‹œë¬¼ì— ë°˜ì˜í–ˆë˜ ì¢‹ì•„ìš”ë¥¼ ì·¨ì†Œí•©ë‹ˆë‹¤.")
+	@DeleteMapping("/dummy/board/like")
 	public ResponseEntity<?> cancelLike(
 			@RequestParam String pageNo,
 			@RequestParam String boardId
@@ -267,12 +267,12 @@ public class DummyFeedController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("likeCnt", 255);
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "ÁÁ¾Æ¿ä°¡ Ãë¼ÒµÇ¾ú½À´Ï´Ù.");
+		resultMap.put("msg", "ì¢‹ì•„ìš”ê°€ ì·¨ì†Œë˜ì—ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "ÆÈ·Î¿ì ¸®½ºÆ® Á¶È¸", notes = "À¯Àú°¡ ÆÈ·Î¿ìÇÏ´Â °­¾ÆÁö ¸®½ºÆ®¸¦ Á¶È¸ÇÕ´Ï´Ù.")
-	@GetMapping("/follow/following")
+	@ApiOperation(value = "íŒ”ë¡œìš° ë¦¬ìŠ¤íŠ¸ ì¡°íšŒ", notes = "ìœ ì €ê°€ íŒ”ë¡œìš°í•˜ëŠ” ê°•ì•„ì§€ ë¦¬ìŠ¤íŠ¸ë¥¼ ì¡°íšŒí•©ë‹ˆë‹¤.")
+	@GetMapping("/dummy/follow/following")
 	public ResponseEntity<?> getFollowList(
 			@RequestParam String userId
 			) {
@@ -281,15 +281,15 @@ public class DummyFeedController {
 		DogDTO dog = new DogDTO();
 		dog.setDogId(114);
 		dog.setUserId(12414);
-		dog.setDogName("»Ç»ß");
+		dog.setDogName("ë½€ì‚");
 		dog.setDogGender("female");
-		dog.setDogType("¸»Æ¼Áî");
+		dog.setDogType("ë§í‹°ì¦ˆ");
 		dog.setDogAge(72);
 		dog.setDogWeight(3.4);
 		dog.setDogNeutered(true);
 		dog.setDogCharacter1("independent");
 		dog.setDogCharacter2("active");
-		dog.setDescription("È°µ¿ÀûÀÌ°í ¼øÇØ¿ä.");
+		dog.setDescription("í™œë™ì ì´ê³  ìˆœí•´ìš”.");
 		dog.setDogProfile("adsfasd.jpg");
 		
 		dogList.add(dog);
@@ -300,18 +300,18 @@ public class DummyFeedController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "ÆÈ·Î¿ö ¸®½ºÆ® Á¶È¸", notes = "ÇØ´ç °­¾ÆÁö¸¦ ÆÈ·Î¿ìÇÏ´Â À¯Àú ¸®½ºÆ®¸¦ Á¶È¸ÇÕ´Ï´Ù.")
-	@GetMapping("/follow/follower")
+	@ApiOperation(value = "íŒ”ë¡œì›Œ ë¦¬ìŠ¤íŠ¸ ì¡°íšŒ", notes = "í•´ë‹¹ ê°•ì•„ì§€ë¥¼ íŒ”ë¡œìš°í•˜ëŠ” ìœ ì € ë¦¬ìŠ¤íŠ¸ë¥¼ ì¡°íšŒí•©ë‹ˆë‹¤.")
+	@GetMapping("/dummy/follow/follower")
 	public ResponseEntity<?> getFollwerList(@RequestParam String dogId) {
 		List<UserDTO> userList = new ArrayList<UserDTO>();
 
 		UserDTO user = new UserDTO();
 		
 		user.setUserId(12414);
-		user.setNickName("Å©¸²¾ö¸¶");
+		user.setNickName("í¬ë¦¼ì—„ë§ˆ");
 		user.setUserAge(28);
 		user.setUserGender("female");
-		user.setAddress("¼­¿ïÆ¯º°½Ã µ¿ÀÛ±¸ Èæ¼®µ¿");
+		user.setAddress("ì„œìš¸íŠ¹ë³„ì‹œ ë™ì‘êµ¬ í‘ì„ë™");
 		user.setRegionCode(11439);
 		user.setSocial("naver");
 		user.setRating(3.14);
@@ -324,27 +324,27 @@ public class DummyFeedController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "ÆÈ·Î¿ì", notes = "Æ¯Á¤ °­¾ÆÁö¸¦ ÆÈ·Î¿ì Ã³¸®ÇÕ´Ï´Ù.")
-	@PostMapping("/follow")
+	@ApiOperation(value = "íŒ”ë¡œìš°", notes = "íŠ¹ì • ê°•ì•„ì§€ë¥¼ íŒ”ë¡œìš° ì²˜ë¦¬í•©ë‹ˆë‹¤.")
+	@PostMapping("/dummy/follow")
 	public ResponseEntity<?> doFollow(
 			@RequestParam String pageNo,
 			@RequestParam String dogId
 			) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "ÁÁ¾Æ¿ä¸¦ ¹İ¿µÇß½À´Ï´Ù.");
+		resultMap.put("msg", "ì¢‹ì•„ìš”ë¥¼ ë°˜ì˜í–ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "ÆÈ·Î¿ì Ãë¼Ò", notes = "Æ¯Á¤ °­¾ÆÁö¿¡°Ô Çß´ø ÆÈ·Î¿ì¸¦ Ãë¼ÒÃ³¸®ÇÕ´Ï´Ù.")
-	@DeleteMapping("/follow")
+	@ApiOperation(value = "íŒ”ë¡œìš° ì·¨ì†Œ", notes = "íŠ¹ì • ê°•ì•„ì§€ì—ê²Œ í–ˆë˜ íŒ”ë¡œìš°ë¥¼ ì·¨ì†Œì²˜ë¦¬í•©ë‹ˆë‹¤.")
+	@DeleteMapping("/dummy/follow")
 	public ResponseEntity<?> cancelFollow(
 			@RequestParam String pageNo,
 			@RequestParam String dogId
 			) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "ÁÁ¾Æ¿ä°¡ Ãë¼ÒµÇ¾ú½À´Ï´Ù.");
+		resultMap.put("msg", "ì¢‹ì•„ìš”ê°€ ì·¨ì†Œë˜ì—ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 }

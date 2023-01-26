@@ -20,28 +20,28 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/dog")
-@Api("°­¾ÆÁö °ü·Ã ´õ¹Ì API : ¹«½¼ °ªÀ» ³Öµç °°Àº dummy °á°ú°¡ ³ª¿É´Ï´Ù.")
+@RequestMapping("/dummy/dog")
+@Api("ê°•ì•„ì§€ ê´€ë ¨ ë”ë¯¸ API : ë¬´ìŠ¨ ê°’ì„ ë„£ë“  ê°™ì€ dummy ê²°ê³¼ê°€ ë‚˜ì˜µë‹ˆë‹¤.")
 public class DummyDogController {
 	
 	private static final String SUCCESS = "success";
 	//private static final String FAIL = "fail";
 	
-	@ApiOperation(value = "°­¾ÆÁö Á¤º¸ Á¶È¸", notes = "ÇØ´ç °­¾ÆÁöÀÇ Á¤º¸¸¦ Á¶È¸ÇÕ´Ï´Ù.")
+	@ApiOperation(value = "ê°•ì•„ì§€ ì •ë³´ ì¡°íšŒ", notes = "í•´ë‹¹ ê°•ì•„ì§€ì˜ ì •ë³´ë¥¼ ì¡°íšŒí•©ë‹ˆë‹¤.")
 	@GetMapping("/{dogid}")
 	public ResponseEntity<?> getDogInfo(@PathVariable String dogid) {
 		DogDTO dog = new DogDTO();
 		dog.setDogId(Long.parseLong(dogid));
 		dog.setUserId(84L);
-		dog.setDogName("»Ç»ß");
+		dog.setDogName("ë½€ì‚");
 		dog.setDogGender("female");
-		dog.setDogType("¸»Æ¼Áî");
+		dog.setDogType("ë§í‹°ì¦ˆ");
 		dog.setDogAge(72);
 		dog.setDogWeight(3.4);
 		dog.setDogNeutered(true);
 		dog.setDogCharacter1("independent");
 		dog.setDogCharacter2("active");
-		dog.setDescription("È°µ¿ÀûÀÌ°í ¼øÇØ¿ä");
+		dog.setDescription("í™œë™ì ì´ê³  ìˆœí•´ìš”");
 		dog.setDogProfile("asdfasdf.jpg");
 		
 		Map<String, Object> resultMap = new HashMap<String,Object>();
@@ -50,7 +50,7 @@ public class DummyDogController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "°­¾ÆÁö Á¤º¸ µî·Ï", notes = "»õ·Î¿î °­¾ÆÁö¸¦ µî·ÏÇÕ´Ï´Ù.")
+	@ApiOperation(value = "ê°•ì•„ì§€ ì •ë³´ ë“±ë¡", notes = "ìƒˆë¡œìš´ ê°•ì•„ì§€ë¥¼ ë“±ë¡í•©ë‹ˆë‹¤.")
 	@PostMapping
 	public ResponseEntity<?> registDog(@RequestParam Map<String, Object> dogInfo) {
 		DogDTO dog = new DogDTO();
@@ -66,24 +66,24 @@ public class DummyDogController {
 		dog.setDescription((String) dogInfo.get("description"));
 		dog.setDogProfile((String) dogInfo.get("dogProfile"));
 		
-		System.out.println("µé¾î¿Â °ª : " + dog);
+		System.out.println("ë“¤ì–´ì˜¨ ê°’ : " + dog);
 		
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "ÇØ´ç °­¾ÆÁöÀÇ Á¤º¸¸¦ µî·ÏÇß½À´Ï´Ù.");
+		resultMap.put("msg", "í•´ë‹¹ ê°•ì•„ì§€ì˜ ì •ë³´ë¥¼ ë“±ë¡í–ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "°­¾ÆÁö Á¤º¸ »èÁ¦", notes = "ÇØ´ç °­¾ÆÁö¸¦ »èÁ¦ÇÕ´Ï´Ù.")
+	@ApiOperation(value = "ê°•ì•„ì§€ ì •ë³´ ì‚­ì œ", notes = "í•´ë‹¹ ê°•ì•„ì§€ë¥¼ ì‚­ì œí•©ë‹ˆë‹¤.")
 	@DeleteMapping("/{dogid}")
 	public ResponseEntity<?> deleteDog(@PathVariable String dogid) {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "ÇØ´ç °­¾ÆÁöÀÇ Á¤º¸¸¦ »èÁ¦Çß½À´Ï´Ù.");
+		resultMap.put("msg", "í•´ë‹¹ ê°•ì•„ì§€ì˜ ì •ë³´ë¥¼ ì‚­ì œí–ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "°­¾ÆÁö Á¤º¸ ¼öÁ¤", notes = "ÇØ´ç °­¾ÆÁö¸¦ ¼öÁ¤ÇÕ´Ï´Ù.")
+	@ApiOperation(value = "ê°•ì•„ì§€ ì •ë³´ ìˆ˜ì •", notes = "í•´ë‹¹ ê°•ì•„ì§€ë¥¼ ìˆ˜ì •í•©ë‹ˆë‹¤.")
 	@PutMapping
 	public ResponseEntity<?> updateDog(@RequestParam Map<String, Object> dogInfo) {
 		
@@ -101,11 +101,11 @@ public class DummyDogController {
 		dog.setDescription((String) dogInfo.get("description"));
 		dog.setDogProfile((String) dogInfo.get("dogProfile"));
 		
-		System.out.println("µé¾î¿Â °ª : " + dog);
+		System.out.println("ë“¤ì–´ì˜¨ ê°’ : " + dog);
 		
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "ÇØ´ç °­¾ÆÁöÀÇ Á¤º¸¸¦ ¼öÁ¤Çß½À´Ï´Ù.");
+		resultMap.put("msg", "í•´ë‹¹ ê°•ì•„ì§€ì˜ ì •ë³´ë¥¼ ìˆ˜ì •í–ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.OK);
 	}
 }

@@ -23,36 +23,36 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/user")
-@Api("À¯Àú °ü·Ã ´õ¹Ì API : ¹«½¼ °ªÀ» ³Öµç °°Àº dummy °á°ú°¡ ³ª¿É´Ï´Ù.")
+@RequestMapping("/dummy/user")
+@Api("ìœ ì € ê´€ë ¨ ë”ë¯¸ API : ë¬´ìŠ¨ ê°’ì„ ë„£ë“  ê°™ì€ dummy ê²°ê³¼ê°€ ë‚˜ì˜µë‹ˆë‹¤.")
 public class DummyUserController {
 	
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 	
-	@ApiOperation(value = "·Î±×ÀÎ", notes = "ÀÏ¹İ ·Î±×ÀÎÀ» ÁøÇàÇÕ´Ï´Ù.")
+	@ApiOperation(value = "ë¡œê·¸ì¸", notes = "ì¼ë°˜ ë¡œê·¸ì¸ì„ ì§„í–‰í•©ë‹ˆë‹¤.")
 	@PostMapping("/login")
 	public ResponseEntity<?> generalLogin(@RequestParam String email, @RequestParam String password) {
-		System.out.println("µé¾î¿Â °ª:" + email + ", " + password);
-		LoginUser loginUser = new LoginUser(1245L, "Å©¸²¸¾", "¼­¿ï½Ã µ¿ÀÛ±¸ Èæ¼®µ¿");
+		System.out.println("ë“¤ì–´ì˜¨ ê°’:" + email + ", " + password);
+		LoginUser loginUser = new LoginUser(1245L, "í¬ë¦¼ë§˜", "ì„œìš¸ì‹œ ë™ì‘êµ¬ í‘ì„ë™");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("result", SUCCESS);
 		resultMap.put("user", loginUser);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "¼Ò¼È ·Î±×ÀÎ", notes = "¼Ò¼È ·Î±×ÀÎ(³×ÀÌ¹ö, Ä«Ä«¿À, ±¸±Û)À» ÁøÇàÇÕ´Ï´Ù.")
+	@ApiOperation(value = "ì†Œì…œ ë¡œê·¸ì¸", notes = "ì†Œì…œ ë¡œê·¸ì¸(ë„¤ì´ë²„, ì¹´ì¹´ì˜¤, êµ¬ê¸€)ì„ ì§„í–‰í•©ë‹ˆë‹¤.")
 	@PostMapping("/sociallogin")
 	public ResponseEntity<?> socialLogin(@RequestParam String code, @RequestParam String type) {
-		System.out.println("µé¾î¿Â °ª:" + code + ", " + type);
-		LoginUser loginUser = new LoginUser(1245L, "Å©¸²¸¾", "¼­¿ï½Ã µ¿ÀÛ±¸ Èæ¼®µ¿");
+		System.out.println("ë“¤ì–´ì˜¨ ê°’:" + code + ", " + type);
+		LoginUser loginUser = new LoginUser(1245L, "í¬ë¦¼ë§˜", "ì„œìš¸ì‹œ ë™ì‘êµ¬ í‘ì„ë™");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("result", SUCCESS);
 		resultMap.put("user", loginUser);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "È¸¿ø°¡ÀÔ", notes = "È¸¿ø°¡ÀÔÀ» ÁøÇàÇÕ´Ï´Ù.")
+	@ApiOperation(value = "íšŒì›ê°€ì…", notes = "íšŒì›ê°€ì…ì„ ì§„í–‰í•©ë‹ˆë‹¤.")
 	@PostMapping()
 	public ResponseEntity<?> registration(@RequestParam Map<String, Object> loginInfo) {
 		String email = (String) loginInfo.get("email");
@@ -63,63 +63,63 @@ public class DummyUserController {
 		String address = (String) loginInfo.get("address");
 		String regionCode = (String) loginInfo.get("regionCode");
 		
-		System.out.println("µé¾î¿Â °ª:" + email + ", " + password + ", " + nickname);
-		System.out.println("µé¾î¿Â °ª:" + gender + ", " + age + ", " + address + ", " + regionCode);
+		System.out.println("ë“¤ì–´ì˜¨ ê°’:" + email + ", " + password + ", " + nickname);
+		System.out.println("ë“¤ì–´ì˜¨ ê°’:" + gender + ", " + age + ", " + address + ", " + regionCode);
 		
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "È¸¿ø°¡ÀÔ µÇ¾ú½À´Ï´Ù..");
+		resultMap.put("msg", "íšŒì›ê°€ì… ë˜ì—ˆìŠµë‹ˆë‹¤..");
 		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "ÀÌ¸ŞÀÏ Áßº¹ È®ÀÎ", notes = "ÀÌ¸ŞÀÏÀÌ Áßº¹µÇ´Â Áö ¿©ºÎ¸¦ È®ÀÎÇØÁİ´Ï´Ù. ssafy@naver.comÀ» ³ÖÀ¸¸é Áßº¹µÇ¾ú´Ù°í ³ª¿Àµµ·Ï µÇ¾îÀÖ½À´Ï´Ù.")
+	@ApiOperation(value = "ì´ë©”ì¼ ì¤‘ë³µ í™•ì¸", notes = "ì´ë©”ì¼ì´ ì¤‘ë³µë˜ëŠ” ì§€ ì—¬ë¶€ë¥¼ í™•ì¸í•´ì¤ë‹ˆë‹¤. ssafy@naver.comì„ ë„£ìœ¼ë©´ ì¤‘ë³µë˜ì—ˆë‹¤ê³  ë‚˜ì˜¤ë„ë¡ ë˜ì–´ìˆìŠµë‹ˆë‹¤.")
 	@GetMapping("/email")
 	public ResponseEntity<?> emailCheck(@RequestParam String email) {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		if (email.equals("ssafy@naver.com")) {
 			resultMap.put("result", FAIL);
-			resultMap.put("msg", "Áßº¹µÈ ÀÌ¸ŞÀÏ °ªÀÔ´Ï´Ù.");
+			resultMap.put("msg", "ì¤‘ë³µëœ ì´ë©”ì¼ ê°’ì…ë‹ˆë‹¤.");
 			return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.CONFLICT);
 		} else {
 			resultMap.put("result", SUCCESS);
-			resultMap.put("msg", "»ç¿ë °¡´ÉÇÑ ÀÌ¸ŞÀÏÀÔ´Ï´Ù.");
+			resultMap.put("msg", "ì‚¬ìš© ê°€ëŠ¥í•œ ì´ë©”ì¼ì…ë‹ˆë‹¤.");
 			return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.OK);
 		}
 	}
 	
-	@ApiOperation(value = "´Ğ³×ÀÓ Áßº¹ È®ÀÎ", notes = "´Ğ³×ÀÓÀÌ Áßº¹µÇ´Â Áö ¿©ºÎ¸¦ È®ÀÎÇØÁİ´Ï´Ù. ssafy¸¦ ³ÖÀ¸¸é Áßº¹µÇ¾ú´Ù°í ³ª¿Àµµ·Ï µÇ¾îÀÖ½À´Ï´Ù.")
+	@ApiOperation(value = "ë‹‰ë„¤ì„ ì¤‘ë³µ í™•ì¸", notes = "ë‹‰ë„¤ì„ì´ ì¤‘ë³µë˜ëŠ” ì§€ ì—¬ë¶€ë¥¼ í™•ì¸í•´ì¤ë‹ˆë‹¤. ssafyë¥¼ ë„£ìœ¼ë©´ ì¤‘ë³µë˜ì—ˆë‹¤ê³  ë‚˜ì˜¤ë„ë¡ ë˜ì–´ìˆìŠµë‹ˆë‹¤.")
 	@GetMapping("/nickname")
 	public ResponseEntity<?> nicknameCheck(@RequestParam String nickname) {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		if (nickname.equals("ssafy")) {
 			resultMap.put("result", FAIL);
-			resultMap.put("msg", "Áßº¹µÈ ´Ğ³×ÀÓ °ªÀÔ´Ï´Ù.");
+			resultMap.put("msg", "ì¤‘ë³µëœ ë‹‰ë„¤ì„ ê°’ì…ë‹ˆë‹¤.");
 			return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.CONFLICT);
 		} else {
 			resultMap.put("result", SUCCESS);
-			resultMap.put("msg", "»ç¿ë °¡´ÉÇÑ ´Ğ³×ÀÓÀÔ´Ï´Ù.");
+			resultMap.put("msg", "ì‚¬ìš© ê°€ëŠ¥í•œ ë‹‰ë„¤ì„ì…ë‹ˆë‹¤.");
 			return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.OK);
 		}
 	}
 	
-	@ApiOperation(value = "È¸¿ø Á¤º¸ Á¶È¸", notes = "ÇØ´ç À¯ÀúÀÇ Á¤º¸¸¦ Á¶È¸ÇÕ´Ï´Ù.")
+	@ApiOperation(value = "íšŒì› ì •ë³´ ì¡°íšŒ", notes = "í•´ë‹¹ ìœ ì €ì˜ ì •ë³´ë¥¼ ì¡°íšŒí•©ë‹ˆë‹¤.")
 	@GetMapping("/{userid}")
 	public ResponseEntity<?> findUser(@PathVariable String userid) {
-		// dummy ÀÌ¹Ç·Î userId¿¡ »ó°ü¾ø´Â °ªÀ» return ÇÕ´Ï´Ù.
+		// dummy ì´ë¯€ë¡œ userIdì— ìƒê´€ì—†ëŠ” ê°’ì„ return í•©ë‹ˆë‹¤.
 		int searchUserId = Integer.parseInt(userid);
 		UserDTO result = new UserDTO();
 		result.setUserId(searchUserId);
-		result.setNickName("Å©¸²¾ö¸¶");
+		result.setNickName("í¬ë¦¼ì—„ë§ˆ");
 		result.setUserAge(23);
 		result.setUserGender("female");
-		result.setAddress("¼­¿ï½Ã µ¿ÀÛ±¸ Èæ¼®µ¿");
+		result.setAddress("ì„œìš¸ì‹œ ë™ì‘êµ¬ í‘ì„ë™");
 		result.setRegionCode(11439);
 		result.setSocial("naver");
 		result.setRating(3.42);
 		return new ResponseEntity<UserDTO>(result, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "È¸¿ø Á¤º¸ ¼öÁ¤", notes = "ÇØ´ç À¯ÀúÀÇ Á¤º¸¸¦ ¼öÁ¤ÇÕ´Ï´Ù.")
+	@ApiOperation(value = "íšŒì› ì •ë³´ ìˆ˜ì •", notes = "í•´ë‹¹ ìœ ì €ì˜ ì •ë³´ë¥¼ ìˆ˜ì •í•©ë‹ˆë‹¤.")
 	@PutMapping
 	public ResponseEntity<?> updateUser(@RequestParam Map<String, Object> updateInfo) {
 		String nickname = (String) updateInfo.get("nickname");
@@ -128,51 +128,51 @@ public class DummyUserController {
 		String address = (String) updateInfo.get("address");
 		String region_code = (String) updateInfo.get("region_code");
 		
-		System.out.println("µé¾î¿Â °ª:" + nickname + ", " + gender + ", " + age + ", " + address + ", " + region_code);
+		System.out.println("ë“¤ì–´ì˜¨ ê°’:" + nickname + ", " + gender + ", " + age + ", " + address + ", " + region_code);
 		
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "À¯Àú Á¤º¸°¡ ¼öÁ¤µÇ¾ú½À´Ï´Ù.");
+		resultMap.put("msg", "ìœ ì € ì •ë³´ê°€ ìˆ˜ì •ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "ºñ¹Ğ¹øÈ£ ¼öÁ¤", notes = "ÇØ´ç À¯ÀúÀÇ ºñ¹Ğ¹øÈ£¸¦ ¼öÁ¤ÇÕ´Ï´Ù.")
+	@ApiOperation(value = "ë¹„ë°€ë²ˆí˜¸ ìˆ˜ì •", notes = "í•´ë‹¹ ìœ ì €ì˜ ë¹„ë°€ë²ˆí˜¸ë¥¼ ìˆ˜ì •í•©ë‹ˆë‹¤.")
 	@PutMapping("/password")
 	public ResponseEntity<?> updatePassword(@RequestParam String password, @RequestParam String newPassword) {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "ºñ¹Ğ¹øÈ£°¡ ¼öÁ¤µÇ¾ú½À´Ï´Ù.");
+		resultMap.put("msg", "ë¹„ë°€ë²ˆí˜¸ê°€ ìˆ˜ì •ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "È¸¿ø Å»Åğ", notes = "È¸¿ø Å»Åğ¸¦ ÁøÇàÇÕ´Ï´Ù.")
+	@ApiOperation(value = "íšŒì› íƒˆí‡´", notes = "íšŒì› íƒˆí‡´ë¥¼ ì§„í–‰í•©ë‹ˆë‹¤.")
 	@DeleteMapping()
 	public ResponseEntity<?> deleteUser() {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "È¸¿ø Å»ÅğµÇ¾ú½À´Ï´Ù.");
+		resultMap.put("msg", "íšŒì› íƒˆí‡´ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "ºñ¹Ğ¹øÈ£ Ã£±â", notes = "ÇØ´ç À¯ÀúÀÇ ºñ¹Ğ¹øÈ£¸¦ Àç¼³Á¤ÇÏ¿© ÀÌ¸ŞÀÏ·Î ¼ÛºÎÇÕ´Ï´Ù.")
+	@ApiOperation(value = "ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸°", notes = "í•´ë‹¹ ìœ ì €ì˜ ë¹„ë°€ë²ˆí˜¸ë¥¼ ì¬ì„¤ì •í•˜ì—¬ ì´ë©”ì¼ë¡œ ì†¡ë¶€í•©ë‹ˆë‹¤.")
 	@GetMapping("/password")
 	public ResponseEntity<?> findPassword(@RequestParam String email) {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "ÀÌ¸ŞÀÏÀ» ¼ÛºÎÇß½À´Ï´Ù.");
+		resultMap.put("msg", "ì´ë©”ì¼ì„ ì†¡ë¶€í–ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "·Î±×¾Æ¿ô", notes = "·Î±×¾Æ¿ôÀ» ÁøÇàÇÕ´Ï´Ù.")
+	@ApiOperation(value = "ë¡œê·¸ì•„ì›ƒ", notes = "ë¡œê·¸ì•„ì›ƒì„ ì§„í–‰í•©ë‹ˆë‹¤.")
 	@GetMapping("/logout")
 	public ResponseEntity<?> logout() {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "·Î±×¾Æ¿ô Ã³¸® Çß½À´Ï´Ù.");
+		resultMap.put("msg", "ë¡œê·¸ì•„ì›ƒ ì²˜ë¦¬ í–ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "°­¾ÆÁö Á¤º¸¸¦ Æ÷ÇÔÇÑ À¯Àú Á¤º¸ Á¶È¸", notes = "ÇØ´ç À¯Àú°¡ µî·ÏÇÑ °­¾ÆÁö Á¤º¸¸¦ Æ÷ÇÔÇÑ À¯ÀúÀÇ Á¤º¸¸¦ ¹İÈ¯ÇÕ´Ï´Ù.")
+	@ApiOperation(value = "ê°•ì•„ì§€ ì •ë³´ë¥¼ í¬í•¨í•œ ìœ ì € ì •ë³´ ì¡°íšŒ", notes = "í•´ë‹¹ ìœ ì €ê°€ ë“±ë¡í•œ ê°•ì•„ì§€ ì •ë³´ë¥¼ í¬í•¨í•œ ìœ ì €ì˜ ì •ë³´ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.")
 	@GetMapping("/includesDog/{userid}")
 	public ResponseEntity<?> logout(@PathVariable long userid) {
 		UserIncludesDogsDTO result = new UserIncludesDogsDTO();
@@ -180,28 +180,29 @@ public class DummyUserController {
 		DogDTO dog = new DogDTO();
 		dog.setDogId(114L);
 		dog.setUserId(userid);
-		dog.setDogName("»Ç»ß");
+		dog.setDogName("ë½€ì‚");
 		dog.setDogGender("female");
-		dog.setDogType("¸»Æ¼Áî");
+		dog.setDogType("ë§í‹°ì¦ˆ");
 		dog.setDogAge(72);
 		dog.setDogWeight(3.4);
 		dog.setDogNeutered(true);
 		dog.setDogCharacter1("independent");
 		dog.setDogCharacter2("active");
-		dog.setDescription("È°µ¿ÀûÀÌ°í ¼øÇØ¿ä");
+		dog.setDescription("í™œë™ì ì´ê³  ìˆœí•´ìš”");
 		dog.setDogProfile("asdfasdf.jpg");
 		
 		result.setUserId(userid);
-		result.setNickName("»Ç»ß¾ö¸¶");
+		result.setNickName("ë½€ì‚ì—„ë§ˆ");
 		result.setUserAge(28);
-		result.setAddress("¼­¿ï½Ã µ¿ÀÛ±¸ Èæ¼®µ¿");
+		result.setAddress("ì„œìš¸ì‹œ ë™ì‘êµ¬ í‘ì„ë™");
 		result.setRegionCode("11455");
 		result.setSocial("naver");
 		result.setRating(3.41);
 		
-		// °­¾ÆÁö Á¤º¸ Ãß°¡
+		// ê°•ì•„ì§€ ì •ë³´ ì¶”ê°€
 		result.getDog().add(dog);
 		
 		return new ResponseEntity<UserIncludesDogsDTO>(result, HttpStatus.OK);
 	}
+
 }

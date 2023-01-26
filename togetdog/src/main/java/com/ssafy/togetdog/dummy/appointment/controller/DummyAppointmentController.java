@@ -24,23 +24,23 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/meeting")
-@Api("»êÃ¥ ¾à¼Ó °ü·Ã ´õ¹Ì API : ¹«½¼ °ªÀ» ³Öµç °°Àº dummy °á°ú°¡ ³ª¿É´Ï´Ù.")
+@RequestMapping("/dummy/meeting")
+@Api("ì‚°ì±… ì•½ì† ê´€ë ¨ ë”ë¯¸ API : ë¬´ìŠ¨ ê°’ì„ ë„£ë“  ê°™ì€ dummy ê²°ê³¼ê°€ ë‚˜ì˜µë‹ˆë‹¤.")
 public class DummyAppointmentController {
 
 	private static final String SUCCESS = "success";
 	// private static final String FAIL = "fail";
 
-	@ApiOperation(value = "»êÃ¥ ¾à¼Ó ¸®½ºÆ® Á¶È¸", notes = "ÇöÀç ÀâÈù ¸ğµç »êÃ¥ ¾à¼Ó ¸®½ºÆ®¸¦ ¹İÈ¯ÇÕ´Ï´Ù. ÇöÀç´Â Authorization ´ë½Å¿¡ Á÷Á¢ userId¸¦ ÀÔ·Â¹Şµµ·Ï µÇ¾îÀÖ½À´Ï´Ù.")
+	@ApiOperation(value = "ì‚°ì±… ì•½ì† ë¦¬ìŠ¤íŠ¸ ì¡°íšŒ", notes = "í˜„ì¬ ì¡íŒ ëª¨ë“  ì‚°ì±… ì•½ì† ë¦¬ìŠ¤íŠ¸ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤. í˜„ì¬ëŠ” Authorization ëŒ€ì‹ ì— ì§ì ‘ userIdë¥¼ ì…ë ¥ë°›ë„ë¡ ë˜ì–´ìˆìŠµë‹ˆë‹¤.")
 	@GetMapping
 	public ResponseEntity<?> getMeetingList(@RequestParam String userId) {
 
 		List<MeetingDTO> meetingList = new ArrayList<MeetingDTO>();
 		MeetingDTO meeting = new MeetingDTO();
-		meeting.setPartnerName("Ä¿ÇÇÁßµ¶ÀÚ");
+		meeting.setPartnerName("ì»¤í”¼ì¤‘ë…ì");
 		meeting.setRating(4.7);
 		meeting.setAppointmentId(12345);
-		meeting.setPlace("ÀºÇà ³ª¹« °ø¿ø");
+		meeting.setPlace("ì€í–‰ ë‚˜ë¬´ ê³µì›");
 		meeting.setDate(new Date());
 
 		List<DogForMeetingDTO> myDogs = new ArrayList<DogForMeetingDTO>();
@@ -66,11 +66,11 @@ public class DummyAppointmentController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "»êÃ¥ ¾à¼Ó ¿äÃ»", notes = "»õ·Î¿î »êÃ¥ ¾à¼ÓÀ» ¿äÃ»ÇÕ´Ï´Ù.")
+	@ApiOperation(value = "ì‚°ì±… ì•½ì† ìš”ì²­", notes = "ìƒˆë¡œìš´ ì‚°ì±… ì•½ì†ì„ ìš”ì²­í•©ë‹ˆë‹¤.")
 	@PostMapping
 	public ResponseEntity<?> postingNewAppointment(@RequestParam Map<String, Object> appointmentInfo) {
 
-		// ±¸Çö½Ã À¯ÀÇ ÇÏ¸ç º¯°æ ¿ä¸Á
+		// êµ¬í˜„ì‹œ ìœ ì˜ í•˜ë©° ë³€ê²½ ìš”ë§
 		long userId = Long.parseLong((String) appointmentInfo.get("userId"));
 		@SuppressWarnings("unchecked")
 		List<DogDTO> myDogs = (List<DogDTO>) appointmentInfo.get("myDogs");
@@ -80,8 +80,8 @@ public class DummyAppointmentController {
 		String place = (String) appointmentInfo.get("place");
 
 		// print check section /////////////////////////////////////////////////
-		System.out.println("param Àü´Ş °ª È®ÀÎ:");
-		System.out.println("¿äÃ» ´ë»ó id : " + userId);
+		System.out.println("param ì „ë‹¬ ê°’ í™•ì¸:");
+		System.out.println("ìš”ì²­ ëŒ€ìƒ id : " + userId);
 		System.out.println("my dog list: ");
 		for (DogDTO dog : myDogs) {
 			System.out.println(dog);
@@ -90,53 +90,53 @@ public class DummyAppointmentController {
 		for (DogDTO dog : partnerDogs) {
 			System.out.println(dog);
 		}
-		System.out.println("¿äÃ» ½Ã°£ : " + date);
-		System.out.println("¿äÃ» Àå¼Ò : " + place);
+		System.out.println("ìš”ì²­ ì‹œê°„ : " + date);
+		System.out.println("ìš”ì²­ ì¥ì†Œ : " + place);
 		////////////////////////////////////////////////////
 
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "»êÃ¥ ¿äÃ»ÀÌ ¼º°øÀûÀ¸·Î ÀÌ·ç¾îÁ³½À´Ï´Ù.");
+		resultMap.put("msg", "ì‚°ì±… ìš”ì²­ì´ ì„±ê³µì ìœ¼ë¡œ ì´ë£¨ì–´ì¡ŒìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "»êÃ¥ ¾à¼Ó Ãë¼Ò", notes = "½ÅÃ» Çß´ø ¾à¼ÓÀ» Ãë¼Ò Ã³¸®ÇÕ´Ï´Ù.")
+	@ApiOperation(value = "ì‚°ì±… ì•½ì† ì·¨ì†Œ", notes = "ì‹ ì²­ í–ˆë˜ ì•½ì†ì„ ì·¨ì†Œ ì²˜ë¦¬í•©ë‹ˆë‹¤.")
 	@PutMapping("/cancel")
 	public ResponseEntity<?> cancelAppointment(@RequestParam String appointmentId) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "»êÃ¥ ¿äÃ»ÀÌ Ãë¼ÒµÇ¾ú½À´Ï´Ù.");
+		resultMap.put("msg", "ì‚°ì±… ìš”ì²­ì´ ì·¨ì†Œë˜ì—ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "»êÃ¥ ¾à¼Ó ¼ö¶ô", notes = "½ÅÃ» ¹ŞÀº ¾à¼ÓÀ» ¼ö¶ô Ã³¸®ÇÕ´Ï´Ù.")
+	@ApiOperation(value = "ì‚°ì±… ì•½ì† ìˆ˜ë½", notes = "ì‹ ì²­ ë°›ì€ ì•½ì†ì„ ìˆ˜ë½ ì²˜ë¦¬í•©ë‹ˆë‹¤.")
 	@PutMapping("/accept")
 	public ResponseEntity<?> acceptAppointment(@RequestParam String appointmentId) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "»êÃ¥ ¿äÃ»ÀÌ ¼ö¶ôµÇ¾ú½À´Ï´Ù.");
+		resultMap.put("msg", "ì‚°ì±… ìš”ì²­ì´ ìˆ˜ë½ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "»êÃ¥ ¾à¼Ó °ÅÀı", notes = "½ÅÃ» ¹ŞÀº ¾à¼ÓÀ» °ÅÀı Ã³¸®ÇÕ´Ï´Ù.")
+	@ApiOperation(value = "ì‚°ì±… ì•½ì† ê±°ì ˆ", notes = "ì‹ ì²­ ë°›ì€ ì•½ì†ì„ ê±°ì ˆ ì²˜ë¦¬í•©ë‹ˆë‹¤.")
 	@DeleteMapping
 	public ResponseEntity<?> denyAppointment(@RequestParam String appointmentId) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "»êÃ¥ ¿äÃ»ÀÌ °ÅÀıµÇ¾ú½À´Ï´Ù.");
+		resultMap.put("msg", "ì‚°ì±… ìš”ì²­ì´ ê±°ì ˆë˜ì—ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "»êÃ¥ º°Á¡ ¸Å±â±â", notes = "¿Ï·áÇÑ »êÃ¥ ¾à¼Ó¿¡ º°Á¡À» ºÎ¿©ÇÕ´Ï´Ù.")
+	@ApiOperation(value = "ì‚°ì±… ë³„ì  ë§¤ê¸°ê¸°", notes = "ì™„ë£Œí•œ ì‚°ì±… ì•½ì†ì— ë³„ì ì„ ë¶€ì—¬í•©ë‹ˆë‹¤.")
 	@PostMapping("/rating")
 	public ResponseEntity<?> ratingAppointment(@RequestParam String appointmentId, @RequestParam String rating) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "º°Á¡ÀÌ ¹İ¿µµÇ¾ú½À´Ï´Ù.");
+		resultMap.put("msg", "ë³„ì ì´ ë°˜ì˜ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "»êÃ¥ Ä£±¸ ÃßÃµ¹Ş±â", notes = "Æ¯Á¤ °­¾ÆÁö¿¡°Ô ¸Â´Â »êÃ¥ Ä£±¸¸¦ ÃßÃµÇØÁİ´Ï´Ù.")
+	@ApiOperation(value = "ì‚°ì±… ì¹œêµ¬ ì¶”ì²œë°›ê¸°", notes = "íŠ¹ì • ê°•ì•„ì§€ì—ê²Œ ë§ëŠ” ì‚°ì±… ì¹œêµ¬ë¥¼ ì¶”ì²œí•´ì¤ë‹ˆë‹¤.")
 	@PostMapping("/recommend")
 	public ResponseEntity<?> recommendDog(@RequestParam String dogId) {
 
@@ -145,46 +145,46 @@ public class DummyAppointmentController {
 		DogDTO dog1 = new DogDTO();
 		dog1.setDogId(23);
 		dog1.setDogProfile("choco.png");
-		dog1.setDogName("ÃÊÄÚ");
+		dog1.setDogName("ì´ˆì½”");
 		dog1.setDogCharacter1("independent");
 		dog1.setDogCharacter2("active");
 		dog1.setDogGender("female");
-		dog1.setDogType("Çªµé");
+		dog1.setDogType("í‘¸ë“¤");
 		dog1.setDogAge(2);
 		dog1.setDogNeutered(true);
 		dog1.setUserId(42);
-		dog1.setNickName("¿ä´×");
-		dog1.setAddress("¼­¿ïÆ¯º°½Ã °­³²±¸ ¿ª»ïµ¿");
+		dog1.setNickName("ìš”ë‹");
+		dog1.setAddress("ì„œìš¸íŠ¹ë³„ì‹œ ê°•ë‚¨êµ¬ ì—­ì‚¼ë™");
 		dogList.add(dog1);
 
 		DogDTO dog2 = new DogDTO();
 		dog2.setDogId(23);
 		dog2.setDogProfile("choco.png");
-		dog2.setDogName("ÃÊÄÚ");
+		dog2.setDogName("ì´ˆì½”");
 		dog2.setDogCharacter1("independent");
 		dog2.setDogCharacter2("active");
 		dog2.setDogGender("female");
-		dog2.setDogType("Çªµé");
+		dog2.setDogType("í‘¸ë“¤");
 		dog2.setDogAge(2);
 		dog2.setDogNeutered(true);
 		dog2.setUserId(42);
-		dog2.setNickName("¿ä´×");
-		dog2.setAddress("¼­¿ïÆ¯º°½Ã °­³²±¸ ¿ª»ïµ¿");
+		dog2.setNickName("ìš”ë‹");
+		dog2.setAddress("ì„œìš¸íŠ¹ë³„ì‹œ ê°•ë‚¨êµ¬ ì—­ì‚¼ë™");
 		dogList.add(dog2);
 
 		DogDTO dog3 = new DogDTO();
 		dog3.setDogId(23);
 		dog3.setDogProfile("choco.png");
-		dog3.setDogName("ÃÊÄÚ");
+		dog3.setDogName("ì´ˆì½”");
 		dog3.setDogCharacter1("independent");
 		dog3.setDogCharacter2("active");
 		dog3.setDogGender("female");
-		dog3.setDogType("Çªµé");
+		dog3.setDogType("í‘¸ë“¤");
 		dog3.setDogAge(2);
 		dog3.setDogNeutered(true);
 		dog3.setUserId(42);
-		dog3.setNickName("¿ä´×");
-		dog3.setAddress("¼­¿ïÆ¯º°½Ã °­³²±¸ ¿ª»ïµ¿");
+		dog3.setNickName("ìš”ë‹");
+		dog3.setAddress("ì„œìš¸íŠ¹ë³„ì‹œ ê°•ë‚¨êµ¬ ì—­ì‚¼ë™");
 		dogList.add(dog3);
 		////////////////////////HARD CODING//////////////////////
 
@@ -193,4 +193,5 @@ public class DummyAppointmentController {
 		resultMap.put("dogs", dogList);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
+
 }

@@ -22,14 +22,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/chat")
-@Api("Ã¤ÆÃ °ü·Ã ´õ¹Ì API : ¹«½¼ °ªÀ» ³Öµç °°Àº dummy °á°ú°¡ ³ª¿É´Ï´Ù.")
+@RequestMapping("/dummy/chat")
+@Api("ì±„íŒ… ê´€ë ¨ ë”ë¯¸ API : ë¬´ìŠ¨ ê°’ì„ ë„£ë“  ê°™ì€ dummy ê²°ê³¼ê°€ ë‚˜ì˜µë‹ˆë‹¤.")
 public class DummyChatController {
 	
 	private static final String SUCCESS = "success";
 	// private static final String FAIL = "fail";
 
-	@ApiOperation(value = "Ã¤ÆÃ ¹æ ¸ñ·Ï Á¶È¸", notes = "»ç¿ëÀÚ°¡ Âü¿© ÁßÀÎ Ã¤ÆÃ ¹æ ¸ñ·ÏÀ» Á¶È¸ÇÕ´Ï´Ù.")
+	@ApiOperation(value = "ì±„íŒ… ë°© ëª©ë¡ ì¡°íšŒ", notes = "ì‚¬ìš©ìê°€ ì°¸ì—¬ ì¤‘ì¸ ì±„íŒ… ë°© ëª©ë¡ì„ ì¡°íšŒí•©ë‹ˆë‹¤.")
 	@GetMapping("/list")
 	public ResponseEntity<?> getChatList(
 			) {
@@ -38,9 +38,9 @@ public class DummyChatController {
 		dmRoomInfo.setUserId(1234);
 		dmRoomInfo.setUserAge(24);
 		dmRoomInfo.setGender("female");
-		dmRoomInfo.setAddress("°æ±âµµ ¼º³²½Ã ºĞ´ç±¸");
+		dmRoomInfo.setAddress("ê²½ê¸°ë„ ì„±ë‚¨ì‹œ ë¶„ë‹¹êµ¬");
 		dmRoomInfo.setChatRoomId(123);
-		dmRoomInfo.setLastChatContent("¾È³çÇÏ¼¼¿ä!!");
+		dmRoomInfo.setLastChatContent("ì•ˆë…•í•˜ì„¸ìš”!!");
 		dmRoomList.add(dmRoomInfo);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -49,23 +49,23 @@ public class DummyChatController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "Ã¤ÆÃ ¹æ Á¶È¸", notes = "»ç¿ëÀÚ°¡ Âü¿© ÁßÀÎ Æ¯Á¤ Ã¤ÆÃÀ» Á¶È¸ÇÕ´Ï´Ù.")
+	@ApiOperation(value = "ì±„íŒ… ë°© ì¡°íšŒ", notes = "ì‚¬ìš©ìê°€ ì°¸ì—¬ ì¤‘ì¸ íŠ¹ì • ì±„íŒ…ì„ ì¡°íšŒí•©ë‹ˆë‹¤.")
 	@GetMapping
 	public ResponseEntity<?> getChat(
-			@RequestParam String userId //Ã¤ÆÃ »ó´ë¹æ id
+			@RequestParam String userId //ì±„íŒ… ìƒëŒ€ë°© id
 			) {
 		
 		ChatRoomDTO chatRoomInfo = new ChatRoomDTO();
 		chatRoomInfo.setUserId(14);
-		chatRoomInfo.setNickName("»Ç»ß¾ö¸¶");
+		chatRoomInfo.setNickName("ë½€ì‚ì—„ë§ˆ");
 		chatRoomInfo.setUserAge(28);
 		chatRoomInfo.setGender("female");
-		chatRoomInfo.setAddress("°æ±âµµ ¼º³²½Ã ºĞ´ç±¸");
+		chatRoomInfo.setAddress("ê²½ê¸°ë„ ì„±ë‚¨ì‹œ ë¶„ë‹¹êµ¬");
 		
 		List<ChatDTO> chats = new ArrayList<ChatDTO>();
 		ChatDTO chat = new ChatDTO();
-		chat.setWriter("»Çºñ¾ö¸¶");
-		chat.setContent("¾È³çÇÏ¼¼¿ä");
+		chat.setWriter("ë½€ë¹„ì—„ë§ˆ");
+		chat.setContent("ì•ˆë…•í•˜ì„¸ìš”");
 		chat.setTime(new Date());
 		chats.add(chat);
 		
@@ -77,13 +77,14 @@ public class DummyChatController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "Ã¤ÆÃ ¹æ »èÁ¦", notes = "»ç¿ëÀÚ°¡ Âü¿© ÁßÀÎ Æ¯Á¤ Ã¤ÆÃ¹æÀ» »èÁ¦ÇÕ´Ï´Ù.")
+	@ApiOperation(value = "ì±„íŒ… ë°© ì‚­ì œ", notes = "ì‚¬ìš©ìê°€ ì°¸ì—¬ ì¤‘ì¸ íŠ¹ì • ì±„íŒ…ë°©ì„ ì‚­ì œí•©ë‹ˆë‹¤.")
 	@PutMapping
 	public ResponseEntity<?> deleteChat(
-			@RequestParam String userId //Ã¤ÆÃ »ó´ë¹æ id
+			@RequestParam String userId //ì±„íŒ… ìƒëŒ€ë°© id
 			) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("result", SUCCESS);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
+
 }
