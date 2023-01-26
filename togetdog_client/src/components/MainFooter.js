@@ -5,53 +5,58 @@ import { Link } from "react-router-dom";
 import "./FontAwesome";
 // FontAwesomIcon 컴포넌트를 사용하기 위해 import
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// styled
+import { FooterWrapper } from "../styles/MainFooterEmotion";
 
-const BottomBar = () => {
+
+const MainFooter = () => {
   const [activeNav, setActiveNav] = useState(1);
   return (
-    <nav className="wrapper">
-      <div>
-        <Link to="/Map" className="nav-link" onClick={() => setActiveNav(1)}>
-          <FontAwesomeIcon
-            icon="compass"
-            className={activeNav === 1 ? "nav-item active" : "nav-item"}
-          />
-        </Link>
-      </div>
-      <div>
-        <Link to="/Walk" className="nav-link" onClick={() => setActiveNav(2)}>
-          <FontAwesomeIcon
-            icon="dog"
-            className={activeNav === 2 ? "nav-item active" : "nav-item"}
-          />
-        </Link>
-      </div>
-      <div>
-        <Link to="/Home" className="nav-link" onClick={() => setActiveNav(3)}>
-          <FontAwesomeIcon
-            icon="home"
-            className={activeNav === 3 ? "nav-item active" : "nav-item"}
-          />
-        </Link>
-      </div>
-      <div>
-        <Link to="/DM" className="nav-link" onClick={() => setActiveNav(4)}>
-          <FontAwesomeIcon
-            icon="comment-dots"
-            className={activeNav === 4 ? "nav-item active" : "nav-item"}
-          />
-        </Link>
-      </div>
-      <div>
-        <Link to="/MyFeed" className="nav-link" onClick={() => setActiveNav(5)}>
-          <FontAwesomeIcon
-            icon="user"
-            className={activeNav === 5 ? "nav-item active" : "nav-item"}
-          />
-        </Link>
-      </div>
-    </nav>
+    <>
+      <FooterWrapper>
+        <div className="icon-box">
+          <Link to="/map" className="nav-link" onClick={() => setActiveNav(1)}>
+            <FontAwesomeIcon
+              icon="compass"
+              className={activeNav === 1 ? "footer-icon active" : "footer-icon"}
+            />
+          </Link>
+        </div>
+        <div className="icon-box">
+          <Link to="/walk" className="nav-link" onClick={() => setActiveNav(2)}>
+            <FontAwesomeIcon
+              icon="dog"
+              className={activeNav === 2 ? "footer-icon active" : "footer-icon"}
+            />
+          </Link>
+        </div>
+        <div className="icon-box">
+          <Link to="/" className="nav-link" onClick={() => setActiveNav(3)}>
+            <FontAwesomeIcon
+              icon="home"
+              className={activeNav === 3 ? "footer-icon active" : "footer-icon"}
+            />
+          </Link>
+        </div>
+        <div className="icon-box">
+          <Link to="/chat" className="nav-link" onClick={() => setActiveNav(4)}>
+            <FontAwesomeIcon
+              icon="comment-dots"
+              className={activeNav === 4 ? "footer-icon active" : "footer-icon"}
+            />
+          </Link>
+        </div>
+        <div className="icon-box">
+          <Link to="/feed" className="nav-link" onClick={() => setActiveNav(5)}>
+            <FontAwesomeIcon
+              icon="user"
+              className={activeNav === 5 ? "footer-icon active" : "footer-icon"}
+            />
+          </Link>
+        </div>
+      </FooterWrapper>
+    </>
   );
 };
 
-export default BottomBar;
+export default MainFooter;

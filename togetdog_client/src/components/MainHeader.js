@@ -1,42 +1,49 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  faHouse,
-  faMagnifyingGlass,
-  faBell,
-  faSquarePlus,
-} from "@fortawesome/free-solid-svg-icons";
+import "./FontAwesome";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Span, Nav, DivContainer, NotoSans, Div } from "../styles/MainHeaderEmotion";
+import { HeaderWrapper } from "../styles/MainHeaderEmotion";
 
 function Navbar() {
   return (
     <>
-      <Nav className="navbar">
-        <DivContainer>
-          <Div>
-            <FontAwesomeIcon icon={faHouse} />
-            <NotoSans>역삼동</NotoSans>
-          </Div>
-          <Div>
-            <Link to="/createBoard" className="nav-links">
-              <Span>
-                <FontAwesomeIcon icon={faSquarePlus} />
-              </Span>
+      <HeaderWrapper>
+        <div className="head-icon-wrapper">
+          <div className="dongName-box notoSans">
+            <FontAwesomeIcon
+              className="header-icon"  
+              icon="fa-solid fa-house"
+            />
+            역삼동
+          </div>
+        </div>
+        <div className="head-icon-wrapper">
+          <div className="icon-box">
+            <Link to="/new">
+              <FontAwesomeIcon 
+                className="header-icon"
+                icon="fa-solid fa-square-plus" 
+              />
             </Link>
-            <Link to="/searchBar" className="nav-links">
-              <Span>
-                <FontAwesomeIcon icon={faMagnifyingGlass} />
-              </Span>
+          </div>
+          <div className="icon-box">
+            <Link to="/search">
+              <FontAwesomeIcon
+                className="header-icon"
+                icon="fa-solid fa-magnifying-glass"
+              />
             </Link>
-            <Link to="/notifications" className="nav-links">
-              <Span>
-                <FontAwesomeIcon icon={faBell} />
-              </Span>
+          </div>
+          <div className="icon-box">
+            <Link to="/alarm">
+              <FontAwesomeIcon
+                className="header-icon"
+                icon="fa-solid fa-bell"
+              />
             </Link>
-          </Div>
-        </DivContainer>
-      </Nav>
+          </div>
+        </div>
+      </HeaderWrapper>
     </>
   );
 }
