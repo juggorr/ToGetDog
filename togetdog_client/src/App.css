@@ -15,7 +15,7 @@ body {
 
 @media (max-width: 650px) { /* 650px 이하일 때 */
   .App {
-    width: 90vw;
+    width: 100vw;
   }
 }
 
@@ -26,5 +26,4 @@ body {
 
 .App {
   min-height: 100vh;
-  padding: 0 20px;
 }
