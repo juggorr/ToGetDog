@@ -2,7 +2,14 @@ import { useRef, useState } from "react"
 
 import { InputWrapper, LoginContainer, LoginWrapper, LogoWrapper, SocialLoginLogo } from "../styles/LoginEmotion"
 import { PinkBtn } from "../styles/BtnsEmotion"
+import { useRecoilState } from "recoil";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
+
+  // const [loginState, setLoginState] = useRecoilState(loginStatus);//리코일로 로그인 상태여부 확인
+  // const [logininfo, setLoginInfo] = useRecoilState(loginInfo);//리코일로 유저정보 관리
+
+  const navigate = useNavigate()
 
   const emailRef = useRef()
   const passwordRef = useRef()
