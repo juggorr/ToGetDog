@@ -1,9 +1,4 @@
 FROM openjdk:8-jdk-alpine
-
-WORKDIR /app
-
-COPY build/libs/*.jar application.jar
-
-EXPOSE 8080
-
-CMD ["java", "-jar", "application.jar"]
+ARG JAR_FILE=*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
