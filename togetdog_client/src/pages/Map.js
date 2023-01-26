@@ -45,16 +45,34 @@ const SinglePlace = ({ Name, Address, Type, Distance }) => {
 
 const Map = () => {
   const [map, setMap] = useState(null);
+  // 초기 위치 설정 (추후 사용자 위치로 설정하면 됨)
+  const [curLat, setCurLat] = useState(33.450701);
+  const [curLng, setCurLng] = useState(126.570667);
   const [selectPlace, setSelectPlace] = useState("all");
+
+  const curLocation = () => {
+    if (navigator.geolocation) {
+      // GeoLocation을 이용해서 접속 위치 얻기
+      navigator.geolocation.getCurrentPosition(function (position) {
+        var lat = position.coords.latitude, // 위도
+          lon = position.coords.longitude; // 경도
+
+        setCurLat(lat);
+        setCurLng(lon);
+      });
+    } else {
+      // HTML5의 GeoLocation을 사용할 수 없을때
+    }
+  };
 
   //처음 지도 그리기
   useEffect(() => {
     const container = document.getElementById("map");
-    const options = { center: new kakao.maps.LatLng(33.450701, 126.570667) };
+    const options = { center: new kakao.maps.LatLng(curLat, curLng) };
     const kakaoMap = new kakao.maps.Map(container, options);
 
     // 마커가 표시될 위치입니다
-    const markerPosition = new kakao.maps.LatLng(33.450701, 126.570667);
+    const markerPosition = new kakao.maps.LatLng(curLat, curLng);
 
     // 마커를 생성합니다
     const marker = new kakao.maps.Marker({
@@ -66,7 +84,7 @@ const Map = () => {
 
     // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
     // marker.setMap(null);
-  }, []);
+  }, [curLat, curLng]);
 
   return (
     <div style={{ padding: "0px 20px" }}>
@@ -109,7 +127,9 @@ const Map = () => {
           </span>
         </div>
         <div>
-          <button className="currentLocation">현재 위치</button>
+          <button className="currentLocation" onClick={curLocation}>
+            현재 위치
+          </button>
         </div>
       </PlaceButtonWrapper>
       <div>
@@ -150,7 +170,7 @@ const Map = () => {
           />
         ) : null}
 
-        {/* 
+        {/*
         api 개발 완료되면 정보 받아서 수정할 것
         */}
       </div>
