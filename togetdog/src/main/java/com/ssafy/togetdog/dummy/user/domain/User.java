@@ -4,7 +4,6 @@ import java.util.Date;
 
 import lombok.Data;
 
-// DB Entity와 일치하는 Object
 @Data
 public class User {
 	private int user_id;

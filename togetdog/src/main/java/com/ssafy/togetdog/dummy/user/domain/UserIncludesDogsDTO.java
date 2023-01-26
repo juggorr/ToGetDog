@@ -7,7 +7,6 @@ import com.ssafy.togetdog.dummy.dog.domain.DogDTO;
 
 import lombok.Data;
 
-// 강아지 정보를 포함한 유저 정보
 @Data
 public class UserIncludesDogsDTO {
 	private Long userId;

@@ -2,7 +2,6 @@ package com.ssafy.togetdog.dummy.user.domain;
 
 import lombok.Data;
 
-// Client측에 보낼 정보만 추린 DTO
 @Data
 public class UserDTO {
 	private int userId;
