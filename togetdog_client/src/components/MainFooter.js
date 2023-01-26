@@ -12,48 +12,50 @@ import { FooterWrapper } from "../styles/MainFooterEmotion";
 const MainFooter = () => {
   const [activeNav, setActiveNav] = useState(1);
   return (
-    <FooterWrapper>
-      <div className="icon-box">
-        <Link to="/map" className="nav-link" onClick={() => setActiveNav(1)}>
-          <FontAwesomeIcon
-            icon="compass"
-            className={activeNav === 1 ? "footer-icon active" : "footer-icon"}
-          />
-        </Link>
-      </div>
-      <div className="icon-box">
-        <Link to="/walk" className="nav-link" onClick={() => setActiveNav(2)}>
-          <FontAwesomeIcon
-            icon="dog"
-            className={activeNav === 2 ? "footer-icon active" : "footer-icon"}
-          />
-        </Link>
-      </div>
-      <div className="icon-box">
-        <Link to="/" className="nav-link" onClick={() => setActiveNav(3)}>
-          <FontAwesomeIcon
-            icon="home"
-            className={activeNav === 3 ? "footer-icon active" : "footer-icon"}
-          />
-        </Link>
-      </div>
-      <div className="icon-box">
-        <Link to="/chat" className="nav-link" onClick={() => setActiveNav(4)}>
-          <FontAwesomeIcon
-            icon="comment-dots"
-            className={activeNav === 4 ? "footer-icon active" : "footer-icon"}
-          />
-        </Link>
-      </div>
-      <div className="icon-box">
-        <Link to="/feed" className="nav-link" onClick={() => setActiveNav(5)}>
-          <FontAwesomeIcon
-            icon="user"
-            className={activeNav === 5 ? "footer-icon active" : "footer-icon"}
-          />
-        </Link>
-      </div>
-    </FooterWrapper>
+    <>
+      <FooterWrapper>
+        <div className="icon-box">
+          <Link to="/map" className="nav-link" onClick={() => setActiveNav(1)}>
+            <FontAwesomeIcon
+              icon="compass"
+              className={activeNav === 1 ? "footer-icon active" : "footer-icon"}
+            />
+          </Link>
+        </div>
+        <div className="icon-box">
+          <Link to="/walk" className="nav-link" onClick={() => setActiveNav(2)}>
+            <FontAwesomeIcon
+              icon="dog"
+              className={activeNav === 2 ? "footer-icon active" : "footer-icon"}
+            />
+          </Link>
+        </div>
+        <div className="icon-box">
+          <Link to="/" className="nav-link" onClick={() => setActiveNav(3)}>
+            <FontAwesomeIcon
+              icon="home"
+              className={activeNav === 3 ? "footer-icon active" : "footer-icon"}
+            />
+          </Link>
+        </div>
+        <div className="icon-box">
+          <Link to="/chat" className="nav-link" onClick={() => setActiveNav(4)}>
+            <FontAwesomeIcon
+              icon="comment-dots"
+              className={activeNav === 4 ? "footer-icon active" : "footer-icon"}
+            />
+          </Link>
+        </div>
+        <div className="icon-box">
+          <Link to="/feed" className="nav-link" onClick={() => setActiveNav(5)}>
+            <FontAwesomeIcon
+              icon="user"
+              className={activeNav === 5 ? "footer-icon active" : "footer-icon"}
+            />
+          </Link>
+        </div>
+      </FooterWrapper>
+    </>
   );
 };
 

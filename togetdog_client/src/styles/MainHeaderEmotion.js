@@ -1,27 +1,43 @@
 import styled from "@emotion/styled";
 
-export const NavContainer = styled.div`
-  padding: 5px 0px;
+export const HeaderWrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  width: inherit;
+  height: 60px;
+
+  display: flex;
   justify-content: space-between;
+
+  .head-icon-wrapper {
+    display: flex;
+    padding: 0 10px;
+  }
 
   .notoSans {
     font-family: "Noto Sans KR", sans-serif;
-    margin: 6px;
   }
 
-  .navDiv {
-    margin: 5px;
+  .dongName-box {
+    width: 150px;
+    height: 60px;
+    text-align: left;
+    line-height: 60px;
+    padding-left: 10px;
   }
 
-  .navIcon {
+  .dongName-box .header-icon {
+    margin-right: 10px;
+  }
+
+  .icon-box {
+    text-align: center;
+    height: 60px;
+    width: 45px;
+    line-height: 60px;
+  }
+
+  .header-icon {
     color: black;
-    text-decoration: none;
-    margin: 8px;
-  }
-
-  .navBar {
-    padding: 5px;
+    font-size: 20px;
   }
 `;
