@@ -1,26 +1,43 @@
 import styled from "@emotion/styled";
 
-export const Span = styled.span`
-  color: black;
-  text-decoration: none;
-  margin: 8px;
-`;
-
-export const Nav = styled.nav`
-  padding: 5px;
-`;
-
-export const DivContainer = styled.div`
+export const HeaderWrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  width: inherit;
+  height: 60px;
+
+  display: flex;
   justify-content: space-between;
-`;
 
-export const NotoSans = styled.span`
-  font-family: "Noto Sans KR", sans-serif;
-  margin: 6px;
-`;
+  .head-icon-wrapper {
+    display: flex;
+    padding: 0 10px;
+  }
 
-export const Div = styled.div`
-  margin: 5px;
+  .notoSans {
+    font-family: "Noto Sans KR", sans-serif;
+  }
+
+  .dongName-box {
+    width: 150px;
+    height: 60px;
+    text-align: left;
+    line-height: 60px;
+    padding-left: 10px;
+  }
+
+  .dongName-box .header-icon {
+    margin-right: 10px;
+  }
+
+  .icon-box {
+    text-align: center;
+    height: 60px;
+    width: 45px;
+    line-height: 60px;
+  }
+
+  .header-icon {
+    color: black;
+    font-size: 20px;
+  }
 `;

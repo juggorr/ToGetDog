@@ -3,6 +3,11 @@ import './App.css';
 
 import Home from './pages/Home'
 import Map from './pages/Map'
+import Walk from './pages/Walk';
+import Chat from './pages/Chat'
+import Feed from './pages/Feed';
+import New from './pages/New'
+
 import NotFound from "./pages/NotFound";
 import InternalServer from "./pages/InternalServer";
 
@@ -13,11 +18,15 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        {/* <MainHeader /> */}
-        {/* <MainFooter /> */}
+        <MainHeader />
+        <MainFooter />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/map" element={<Map />} />
+          <Route path="/walk" element={<Walk />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/feed" element={<Feed />} />
+          <Route path="/new" element={<New />} />
           <Route path="/500" element={<InternalServer />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
