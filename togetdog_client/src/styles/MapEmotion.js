@@ -12,7 +12,32 @@ export const MapContainer = styled.div`
   }
 `;
 
-export const PlaceWrapper = styled.div``;
+export const PlaceIconWrapper = styled.img`
+  width: 30px;
+  height: 30px;
+`;
+
+export const PlaceButtonWrapper = styled.div`
+  margin: 10px 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  .placeButtons {
+    margin: 5px;
+  }
+
+  .currentLocation {
+    width: 100px;
+    height: 30px;
+    background-color: #559968;
+    border-radius: 20px;
+    border: none;
+    color: white;
+    font-family: "Noto Sans KR", sans-serif;
+  }
+`;
 
 export const SinglePlaceWrapper = styled.div`
   display: flex;

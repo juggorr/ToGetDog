@@ -2,32 +2,32 @@
 import React, { useEffect, useState } from "react";
 import {
   MapContainer,
-  PlaceWrapper,
+  PlaceIconWrapper,
   SinglePlaceWrapper,
+  PlaceButtonWrapper,
 } from "../styles/MapEmotion";
-import "../components/FontAwesome";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function SinglePlace({ Name, Address, Type, Distance }) {
+const SinglePlace = ({ Name, Address, Type, Distance }) => {
   let placeIcon;
   if (Type === "반려의료") {
     placeIcon = (
-      <FontAwesomeIcon
-        icon="fa-solid fa-house-chimney-medical"
-        size="2x"
-        color="#F24E1E"
+      <PlaceIconWrapper
+        src="../../assets/first-aid-kit.png"
+        alt="hospital_img"
       />
     );
   } else if (Type === "반려동물 서비스") {
     placeIcon = (
-      <FontAwesomeIcon icon="fa-scissors" size="2x" color="#FF9A62" />
+      <PlaceIconWrapper src="../../assets/scissors.png" alt="service_img" />
     );
   } else if (Type === "반려동물식당카페") {
     placeIcon = (
-      <FontAwesomeIcon icon="fa-utensils" size="2x" color="#247abd" />
+      <PlaceIconWrapper src="../../assets/cutlery.png" alt="restaurant_img" />
     );
   } else {
-    placeIcon = <FontAwesomeIcon icon="fa-flag" size="2x" color="#009635" />;
+    placeIcon = (
+      <PlaceIconWrapper src="../../assets/finish.png" alt="etc_img" />
+    );
   }
 
   return (
@@ -41,10 +41,11 @@ function SinglePlace({ Name, Address, Type, Distance }) {
       </div>
     </SinglePlaceWrapper>
   );
-}
+};
 
 const Map = () => {
   const [map, setMap] = useState(null);
+  const [selectPlace, setSelectPlace] = useState("all");
 
   //처음 지도 그리기
   useEffect(() => {
@@ -74,16 +75,85 @@ const Map = () => {
           <div id="map" style={{ width: "100%", height: "324px" }}></div>
         </div>
       </MapContainer>
-      <PlaceWrapper>
-        {/* <SinglePlace
-          Name="장소이름"
-          Address="서울 강남구 테헤란로 234 뉴튼프라자 101호 (삼성동)"
-          Type="반려동물 서비스"
-          Distance="343"
-        /> 
-        이런 식으로 받아온 장소 반복해서 쓰면 됨!
+      <PlaceButtonWrapper>
+        <div>
+          <span
+            className="placeButtons"
+            onClick={() => setSelectPlace("반려의료")}
+          >
+            <PlaceIconWrapper
+              src="../../assets/first-aid-kit.png"
+              alt="hospital_img"
+            />
+          </span>
+          <span
+            className="placeButtons"
+            onClick={() => setSelectPlace("반려동물 서비스")}
+          >
+            <PlaceIconWrapper
+              src="../../assets/scissors.png"
+              alt="service_img"
+            />
+          </span>
+          <span
+            className="placeButtons"
+            onClick={() => setSelectPlace("반려동물식당카페")}
+          >
+            <PlaceIconWrapper
+              src="../../assets/cutlery.png"
+              alt="restaurant_img"
+            />
+          </span>
+          <span className="placeButtons" onClick={() => setSelectPlace("all")}>
+            <PlaceIconWrapper src="../../assets/finish.png" alt="etc_img" />
+          </span>
+        </div>
+        <div>
+          <button className="currentLocation">현재 위치</button>
+        </div>
+      </PlaceButtonWrapper>
+      <div>
+        {selectPlace === "all" || selectPlace === "반려의료" ? (
+          // 전체 또는 의료서비스
+          <SinglePlace
+            Name="장소이름"
+            Address="서울 강남구 테헤란로 234 뉴튼프라자 101호 (삼성동)"
+            Type="반려의료"
+            Distance="343"
+          />
+        ) : null}
+        {selectPlace === "all" || selectPlace === "반려동물 서비스" ? (
+          // 전체 또는 반려동물 서비스
+          <SinglePlace
+            Name="장소이름"
+            Address="서울 강남구 테헤란로 234 뉴튼프라자 101호 (삼성동)"
+            Type="반려동물 서비스"
+            Distance="343"
+          />
+        ) : null}
+        {selectPlace === "all" || selectPlace === "반려동물식당카페" ? (
+          // 전체 또는 반려동물 식당 카페
+          <SinglePlace
+            Name="장소이름"
+            Address="서울 강남구 테헤란로 234 뉴튼프라자 101호 (삼성동)"
+            Type="반려동물식당카페"
+            Distance="343"
+          />
+        ) : null}
+        {selectPlace === "all" ? (
+          // 전체(기타 포함)
+          <SinglePlace
+            Name="장소이름"
+            Address="서울 강남구 테헤란로 234 뉴튼프라자 101호 (삼성동)"
+            Type="기타분류"
+            Distance="343"
+          />
+        ) : null}
+
+        {/* 
+        api 개발 완료되면 정보 받아서 수정할 것
         */}
-      </PlaceWrapper>
+      </div>
     </div>
   );
 };
