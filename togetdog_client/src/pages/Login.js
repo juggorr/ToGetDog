@@ -64,8 +64,8 @@ const Login = () => {
       .then((resp) => {
         console.log('로그인 성공!');
         setUser(resp.data.user);
-        const userToken = resp.data['access-token'];
-        localStorage.setItem('user', JSON.stringify(userToken));
+        // const userToken = resp.data['access-token'];
+        // localStorage.setItem('user', JSON.stringify(userToken));
         // 로그인 토큰 설정 (추후에 주석 해제 예정)
         // setAuth(userToken);
         setEmail('');

@@ -37,6 +37,22 @@ const Signup = () => {
               </div>
             </div>
           </InputWrapper>
+          <InputWrapper>
+            <div className='input-title'>
+              닉네임<span className='red-dot'>*</span>
+            </div>
+            <div className='horizontal-flex'>
+              <div className='input-box general-input-box'>
+                <input className='email-input' placeholder='닉네임을 입력해 주세요.' />
+              </div>
+            </div>
+          </InputWrapper>
+          <InputWrapper>
+            <div className='input-title'>
+              성별<span className='red-dot'>*</span>
+            </div>
+            <div className='horizontal-flex'></div>
+          </InputWrapper>
         </SignupWrapper>
       </SignupContainer>
     </>
