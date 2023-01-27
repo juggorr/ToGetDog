@@ -24,7 +24,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/dummy/user")
-@Api("유저 관련 더미 API : 무슨 값을 넣든 같은 dummy 결과가 나옵니다.")
+@Api("유저 관련 더미 API : 무슨 값을 넣든 같은 dummy 결과가 나옵니다.....")
 public class DummyUserController {
 	
 	private static final String SUCCESS = "success";
