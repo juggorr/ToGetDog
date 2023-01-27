@@ -8,6 +8,7 @@ import { BACKEND_URL } from "../config";
 import { InputWrapper, LoginContainer, LoginWrapper, LogoWrapper, SocialLoginLogo } from "../styles/LoginEmotion";
 import { PinkBtn } from "../styles/BtnsEmotion";
 import { userState } from "../recoil";
+import { async } from "q";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -46,33 +47,24 @@ const Login = () => {
     }
 
     if (email && password) {
-      console.log("로그인 시도 가능!");
-      login();
+      handleLogin();
     }
   };
 
-  const login = async (e) => {
-    e.preventDefault();
-    try {
-      const data = await axios({
-        url: `${BACKEND_URL}/user/login`,
-        method: "POST",
-        data: {
-          email,
-          password,
-        },
-      });
-      console.log(data);
-
-      setEmail("");
-      setPassword("");
-      setUser(data.user);
-      console.log("로그인 성공!");
-      navigate("/");
-    } catch (e) {
-      console.log(e);
-      alert("로그인 실패");
-    }
+  const handleLogin = async (e) => {
+    // e.preventDefault()
+    await axios
+    .post(`${BACKEND_URL}/user/login`, null, {params: {email, password}})
+    .then(resp => {
+      console.log("로그인 성공!")
+      setUser(resp.data.user)
+      setEmail("")
+      setPassword("")
+      navigate("/")
+    })
+    .catch(err => {
+      console.log("로그인 실패")
+    })
   };
 
   return (
