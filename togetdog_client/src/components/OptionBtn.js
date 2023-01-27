@@ -1,15 +1,18 @@
-import { useState } from 'react';
+import { OptionBtnItem } from "../styles/BtnsEmotion";
 
-const OptionBtn = ({ text }) => {
-  const [btnState, setBtnState] = useState('false');
-
-  const clickOptionBtn = () => {
-    btnState = !btnState;
-  };
-
+const OptionBtn = ({ btn_id, text, onClick, isSelected }) => {
   return (
     <>
-      <div onClick={clickOptionBtn}>{text}</div>
+      <OptionBtnItem
+        onClick={() => onClick(btn_id)}
+        className={[
+          "option-btn",
+          isSelected ? "option-btn-on" : "option-btn-off",
+        ].join(" ")}>
+        {text}
+      </OptionBtnItem>
     </>
   );
 };
+
+export default OptionBtn;
