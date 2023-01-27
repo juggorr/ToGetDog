@@ -8,7 +8,6 @@ import { BACKEND_URL } from "../config";
 import { InputWrapper, LoginContainer, LoginWrapper, LogoWrapper, SocialLoginLogo } from "../styles/LoginEmotion";
 import { PinkBtn } from "../styles/BtnsEmotion";
 import { userState } from "../recoil";
-import { async } from "q";
 
 const Login = () => {
   const navigate = useNavigate();

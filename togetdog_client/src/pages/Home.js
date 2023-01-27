@@ -3,6 +3,7 @@ import { userState } from "../recoil";
 
 const Home = () => {
   const [user, setUser] = useRecoilState(userState);
+  console.log(user)
 
   return (
     <div>
