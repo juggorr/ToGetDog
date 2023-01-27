@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 // 홈으로 이동 텍스트 버튼
 export const HomeTextBtn = styled.div`
@@ -11,7 +11,7 @@ export const HomeTextBtn = styled.div`
   text-align: center;
   line-height: 45px;
   margin-top: 50px;
-`
+`;
 
 export const PinkBtn = styled.button`
   width: 240px;
@@ -20,8 +20,18 @@ export const PinkBtn = styled.button`
   color: #fff;
   font-size: 20px;
   font-weight: 700;
-  background: #B7147E;
+  background: #b7147e;
   border-radius: 38px;
   margin-top: 50px;
   cursor: pointer;
-`
+`;
+
+export const DoubleCheckBtn = styled.button`
+  width: 70px;
+  height: 28px;
+  font-size: 11px;
+  background-color: #000;
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+`;
