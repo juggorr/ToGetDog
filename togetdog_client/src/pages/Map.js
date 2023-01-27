@@ -1,11 +1,13 @@
-/*global kakao*/
 import React, { useEffect, useState } from "react";
+
 import {
   MapContainer,
   PlaceIconWrapper,
   SinglePlaceWrapper,
   PlaceButtonWrapper,
 } from "../styles/MapEmotion";
+
+/*global kakao*/
 
 const SinglePlace = ({ Name, Address, Type, Distance }) => {
   let placeIcon;
@@ -44,7 +46,7 @@ const SinglePlace = ({ Name, Address, Type, Distance }) => {
 };
 
 const Map = () => {
-  const [map, setMap] = useState(null);
+  // const [map, setMap] = useState(null);
   // 초기 위치 설정 (추후 사용자 위치로 설정하면 됨)
   const [curLat, setCurLat] = useState(37.501262);
   const [curLng, setCurLng] = useState(127.03962161);
