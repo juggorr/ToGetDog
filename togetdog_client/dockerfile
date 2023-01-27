@@ -1,4 +1,4 @@
-FROM node:18.12.1
+FROM node:18.12.1 as build-stage 
 
 # RUN, CMD, ENTRYPOINT의 명령이 실행될 디렉터리 
 WORKDIR /app 
