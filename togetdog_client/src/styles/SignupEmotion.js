@@ -110,4 +110,14 @@ export const InputWrapper = styled.div`
   .year {
     font-size: 1rem;
   }
+
+  .success {
+    color: #0052ff;
+    font-size: 0.8rem;
+  }
+
+  .error {
+    color: red;
+    font-size: 0.8rem;
+  }
 `;

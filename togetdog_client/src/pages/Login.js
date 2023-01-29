@@ -6,7 +6,13 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { BACKEND_URL } from "../config";
 import { authAtom, userState } from "../recoil";
 
-import { InputWrapper, LoginContainer, LoginWrapper, LogoWrapper, SocialLoginLogo } from "../styles/LoginEmotion";
+import {
+  InputWrapper,
+  LoginContainer,
+  LoginWrapper,
+  LogoWrapper,
+  SocialLoginLogo,
+} from "../styles/LoginEmotion";
 import { PinkBtn } from "../styles/BtnsEmotion";
 
 const Login = () => {
@@ -57,10 +63,15 @@ const Login = () => {
     }
   };
 
-  const handleLogin = async (e) => {
-    // e.preventDefault()
+  const handleLogin = async () => {
+    // e.preventDefault();
     await axios
-      .post(`${BACKEND_URL}/user/login`, null, { params: { email, password } })
+      .post(
+        `${BACKEND_URL}/user/login`,
+        // { headers: { "Content-Type": "application/json" } },
+        null,
+        { params: { email, password } }
+      )
       .then((resp) => {
         console.log("로그인 성공!");
         setUser(resp.data.user);
@@ -82,7 +93,10 @@ const Login = () => {
       <LoginContainer>
         <LoginWrapper>
           <LogoWrapper>
-            <img className="login-logo" src={process.env.PUBLIC_URL + `assets/pink_paw.png`} />
+            <img
+              className="login-logo"
+              src={process.env.PUBLIC_URL + `assets/pink_paw.png`}
+            />
             <div className="logo-title">ToGetDog</div>
           </LogoWrapper>
           <InputWrapper>
@@ -108,12 +122,25 @@ const Login = () => {
           </InputWrapper>
           <PinkBtn onClick={checkInput}>로그인</PinkBtn>
           <div className="social-login-wrapper">
-            <SocialLoginLogo src={process.env.PUBLIC_URL + `assets/naver.png`}></SocialLoginLogo>
-            <SocialLoginLogo src={process.env.PUBLIC_URL + `assets/kakao.png`}></SocialLoginLogo>
-            <SocialLoginLogo src={process.env.PUBLIC_URL + `assets/google.jpg`}></SocialLoginLogo>
+            <SocialLoginLogo
+              src={
+                process.env.PUBLIC_URL + `assets/naver.png`
+              }></SocialLoginLogo>
+            <SocialLoginLogo
+              src={
+                process.env.PUBLIC_URL + `assets/kakao.png`
+              }></SocialLoginLogo>
+            <SocialLoginLogo
+              src={
+                process.env.PUBLIC_URL + `assets/google.jpg`
+              }></SocialLoginLogo>
           </div>
           <div className="login-bottom-wrapper">
-            <div className="login-bottom-text">회원가입</div>
+            <div
+              onClick={() => navigate("/signup")}
+              className="login-bottom-text">
+              회원가입
+            </div>
             <div className="login-bottom-text">비밀번호 찾기</div>
           </div>
         </LoginWrapper>
