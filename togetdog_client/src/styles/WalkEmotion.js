@@ -43,7 +43,7 @@ export const MeetingWrapper = styled.div`
 
   .walkList {
     width: 95%;
-    height: calc(100vh - 10rem);
+    height: calc(100vh - 11rem);
     border-radius: 3%;
     background-color: #f5f0ec;
     padding-top: 2.5rem;
