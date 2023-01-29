@@ -82,6 +82,34 @@ export const SingleMeetingWrapper = styled.div`
     object-fit: cover;
   }
 
+  .manyDog {
+    width: 4.2rem;
+    height: 4.2rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 3.2rem;
+  }
+
+  .tinyCircle {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .manyDogProfileImgWrapper {
+    width: 2.52rem;
+    height: 2.52rem;
+    border-radius: 70%;
+    overflow: hidden;
+    margin: -2rem 0rem;
+  }
+
+  .manyDogProfileImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
   .appointmentDate {
     margin: 0;
     margin-top: 0.3rem;

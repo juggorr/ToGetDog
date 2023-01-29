@@ -64,13 +64,34 @@ const SingleMeeting = ({ meeting }) => {
           <p className="appointmentDate">장소 : {meeting.place}</p>
         </div>
       </div>
-      <div className="dogProfileImgWrapper">
-        <img
-          className="dogProfileImg"
-          src={meeting.partnerDogs[0].image}
-          alt="dogProfile"
-        />
-      </div>
+      {meeting.partnerDogs.length === 1 ? (
+        <div className="dogProfileImgWrapper">
+          <img
+            className="dogProfileImg"
+            src={meeting.partnerDogs[0].image}
+            alt="dogProfile"
+          />
+        </div>
+      ) : (
+        <div className="manyDog">
+          <div className="manyDogProfileImgWrapper">
+            <img
+              className="manyDogProfileImg"
+              src={meeting.partnerDogs[0].image}
+              alt="dogProfile"
+            />
+          </div>
+          <div className="tinyCircle"></div>
+          <div className="tinyCircle"></div>
+          <div className="manyDogProfileImgWrapper">
+            <img
+              className="manyDogProfileImg"
+              src={meeting.partnerDogs[1].image}
+              alt="dogProfile"
+            />
+          </div>
+        </div>
+      )}
     </SingleMeetingWrapper>
   );
 };
