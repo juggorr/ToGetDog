@@ -13,8 +13,14 @@ import {
   faSquarePlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUserGroup,
+  faClock,
+  faLocationDot,
+} from "@fortawesome/free-solid-svg-icons";
 
 // 사용할 아이콘을 라이브러리에 추가
 library.add(faDog, faUser, faCommentDots, faCompass, faHome);
 library.add(faHouse, faMagnifyingGlass, faBell, faSquarePlus);
 library.add(faPlus);
+library.add(faUserGroup, faClock, faLocationDot);
