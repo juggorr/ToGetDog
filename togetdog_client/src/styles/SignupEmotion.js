@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const SignupContainer = styled.div`
   height: 100vh;
@@ -70,7 +70,7 @@ export const InputWrapper = styled.div`
   }
 
   .address-box {
-    width: 60%;
+    width: 70%;
     border-bottom: 2px solid #e2e2e2;
     margin-bottom: 5px;
     margin-right: 5px;
