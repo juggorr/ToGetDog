@@ -14,3 +14,8 @@ EXPOSE 3000
 
 # npm start 스크립트 실행
 CMD ["npm", "start"]
+
+FROM nginx:latest
+
+COPY --from=build-stage /app/build /usr/share/nginx/html
+CMD ["nginx", "-g", "daemon off;"]
