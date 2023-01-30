@@ -48,6 +48,22 @@ export const MeetingWrapper = styled.div`
     background-color: #f5f0ec;
     padding-top: 2.5rem;
   }
+
+  .createAppointmentBtn {
+    width: 4rem;
+    height: 4rem;
+    color: white;
+    position: fixed;
+    bottom: 4rem;
+    right: 1.2rem;
+    border-radius: 70%;
+    border: 0.3rem solid white;
+    background-color: #6eb175;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+  }
 `;
 
 export const SingleMeetingWrapper = styled.div`

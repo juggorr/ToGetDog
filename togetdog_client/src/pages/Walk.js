@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   WalkListWrapper,
@@ -100,6 +101,7 @@ const SingleMeeting = ({ meeting }) => {
 const MeetingListWrapper = () => {
   const [active, setActive] = useState(1);
   const [originalMeetings, setOriginalMeetings] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // 임시 userId, 나중에 세션에서 받아와야 함
@@ -169,7 +171,17 @@ const MeetingListWrapper = () => {
         </div>
       </TabList>
       <MeetingWrapper>
-        <div className="walkList">{renderMeetings()}</div>
+        <div className="walkList">
+          {renderMeetings()}
+          <div
+            className="createAppointmentBtn"
+            onClick={() => {
+              navigate("/createAppointment");
+            }}
+          >
+            <FontAwesomeIcon icon="fa-plus"></FontAwesomeIcon>
+          </div>
+        </div>
       </MeetingWrapper>
     </WalkListWrapper>
   );
