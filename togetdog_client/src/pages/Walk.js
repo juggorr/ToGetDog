@@ -174,9 +174,9 @@ const MeetingListWrapper = () => {
         <div className="walkList">
           {renderMeetings()}
           <div
-            className="createAppointmentBtn"
+            className="recommendBtn"
             onClick={() => {
-              navigate("/createAppointment");
+              navigate("/recommend");
             }}
           >
             <FontAwesomeIcon icon="fa-plus"></FontAwesomeIcon>

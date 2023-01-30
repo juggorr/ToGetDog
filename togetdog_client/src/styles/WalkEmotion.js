@@ -49,7 +49,7 @@ export const MeetingWrapper = styled.div`
     padding-top: 2.5rem;
   }
 
-  .createAppointmentBtn {
+  .recommendBtn {
     width: 4rem;
     height: 4rem;
     color: white;
