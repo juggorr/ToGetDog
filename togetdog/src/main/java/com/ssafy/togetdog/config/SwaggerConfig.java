@@ -1,4 +1,4 @@
-package com.ssafy.togetdog.dummy.config;
+package com.ssafy.togetdog.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,42 +35,57 @@ public class SwaggerConfig {
 	}
 
 	@Bean
-	public Docket userApi() {
-		return getDocket("USER", true, "user");
+	public Docket dummyUserApi() {
+		return getDocket("DUMMY USER", true, "user");
 	}
 
 	@Bean
 	public Docket dogApi() {
-		return getDocket("DOG", true, "dog");
+		return getDocket("DUMMY DOG", true, "dog");
 	}
 
 	@Bean
 	public Docket feedApi() {
-		return getDocket("FEED", true, "feed");
+		return getDocket("DUMMY FEED", true, "feed");
 	}
 
 	@Bean
 	public Docket appointmentApi() {
-		return getDocket("APPOINTMENT", true, "Appointment");
+		return getDocket("DUMMY APPOINTMENT", true, "appointment");
 	}
 
 	@Bean
 	public Docket facilityApi() {
-		return getDocket("FACILITY", true, "facility");
+		return getDocket("DUMMY FACILITY", true, "facility");
 	}
 
 	@Bean
 	public Docket notifyApi() {
-		return getDocket("NOTIFY", true, "notify");
+		return getDocket("DUMMY NOTIFY", true, "notify");
 	}
 
 	@Bean
 	public Docket chatApi() {
-		return getDocket("CHAT", true, "chat");
+		return getDocket("DUMMY CHAT", true, "chat");
 	}
 
 	@Bean
 	public Docket searchApi() {
-		return getDocket("SEARCH", true, "search");
+		return getDocket("DUMMY SEARCH", true, "search");
+	}
+	
+	
+	//////////////////////////////////////////////////////////
+	// DEVELOPTING
+	
+	@Bean
+	public Docket user() {
+		return new Docket(DocumentationType.OAS_30).groupName("DO NOT CLICK USER")
+				.useDefaultResponseMessages(true) // Swagger 에서 제공해주는 기본 응답 코드 표시 여부
+				.apiInfo(apiInfo()) // apiInfo정보
+				.select()
+				.apis(RequestHandlerSelectors.basePackage("com.ssafy.togetdog.user.controller"))
+				.paths(PathSelectors.any()) // 아무 경로나 가능
+				.build();
 	}
 }
