@@ -9,13 +9,21 @@ RUN npm install
 # 현재 디렉토리의 모든 파일을 도커 컨테이너의 워킹 디렉토리에 복사한다.
 COPY . .
 
+RUN npm run build
 # 3000번 포트 노출
-EXPOSE 3000
+#EXPOSE 3000
 
 # npm start 스크립트 실행
-CMD ["npm", "start"]
+#CMD ["npm", "start"]
 
 #FROM nginx:latest
+# nginx의 기본 설정을 삭제하고 앱에서 설정한 파일을 복사
+RUN rm -rf /etc/nginx/conf.d
+COPY conf /etc/nginx
 
-#COPY --from=build-stage /app/build /var/www/html
-#CMD ["nginx", "-g", "daemon off;"]
+# 위에서 생성한 앱의 빌드산출물을 nginx의 샘플 앱이 사용하던 폴더로 이동
+COPY --from=build-stage /app/build /usr/share/nginx/html
+
+# 80포트 오픈하고 nginx 실행
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
