@@ -1,10 +1,11 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const SignupContainer = styled.div`
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 2.5rem 0;
 `;
 
 export const SignupWrapper = styled.div`
