@@ -4,28 +4,40 @@ import java.util.Arrays;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.ssafy.togetdog.user.model.service.UserOAuthService;
+
+import lombok.RequiredArgsConstructor;
+
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 	
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+	private final UserOAuthService userOauthService;
+	
+	@Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+                .authorizeRequests()
+                .antMatchers(PERMIT_URL_ARRAY)
+                //.antMatchers("/api/**").hasRole(Role.USER.name())
+    			.permitAll()
+                .anyRequest().authenticated().and() //나머지 URL은 인증된 사용자에게만 허용(로그인한 사용자만)
+                .oauth2Login() // OAuth2 로그인 설정 시작 지점
+        		.userInfoEndpoint() //OAuth2 로그인 후 사용자 정보를 가져올 때의 설정 담당
+        		.userService(userOauthService); //로그인 성공 후 조치를 진행할 UserService 인터페이스 구현체 등록, 로그인 서버에서 정보를 가져오고 나서 추가로 진행하고자 하는 기능 명시 가능
+        return http.build();
     }
 	
 	 private static final String[] PERMIT_URL_ARRAY = {
@@ -43,30 +55,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	            "/swagger-ui/**"
 	    };
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable()
-			.authorizeRequests()
-			.antMatchers(PERMIT_URL_ARRAY)
-			.permitAll()
-			.anyRequest()
-			.authenticated();
-	}
-	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
-	}
-	
-	@Bean
-	public AuthenticationManager authenticationManager() {
-		return new AuthenticationManager() {
-			
-			@Override
-			public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-				return authentication;
-			}
-		};
 	}
 	
     // CORS
