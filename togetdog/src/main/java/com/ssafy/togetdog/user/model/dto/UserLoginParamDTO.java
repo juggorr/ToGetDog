@@ -16,6 +16,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class UserLoginParamDTO {
+	private String email;
+	private String password;
+	
 	private long userId;
 	private String nickName;
 	private String address;
