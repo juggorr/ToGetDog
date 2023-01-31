@@ -31,7 +31,7 @@ public class UserAuthRestController {
 	private static final String FAIL = "fail";
 	private final Logger logger = LoggerFactory.getLogger(UserRestController.class);
 	
-	private final UserOAuthService userOauthService;
+	//private final UserOAuthService userOauthService;
 	
 	
     @GetMapping("/account/login")
