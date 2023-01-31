@@ -1,4 +1,4 @@
-package com.ssafy.togetdog.user.model.etc;
+package com.ssafy.togetdog.user.model.vo;
 
 import lombok.Getter;
 

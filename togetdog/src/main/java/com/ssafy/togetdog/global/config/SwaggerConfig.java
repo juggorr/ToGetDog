@@ -15,8 +15,8 @@ public class SwaggerConfig {
 
 	// Swagger - API 기본 설정
 	private String version = "0.1";
-	private String title = "공통PJT Dummy API Documentation";
-	private String description = "SSAFY 공통 PJT Dummy API";
+	private String title = "공통PJT API Documentation";
+	private String description = "SSAFY 공통 PJT API";
 
 	public ApiInfo apiInfo() {
 		return new ApiInfoBuilder().title(title).description(description).version(version).build();
@@ -33,6 +33,8 @@ public class SwaggerConfig {
 				.paths(PathSelectors.any()) // 아무 경로나 가능
 				.build();
 	}
+	
+	// DUMMY
 
 	@Bean
 	public Docket dummyUserApi() {
