@@ -18,8 +18,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
-import com.ssafy.togetdog.user.model.dto.UserLoginParamDTO;
 import com.ssafy.togetdog.user.model.etc.ProviderType;
 import com.ssafy.togetdog.user.model.etc.RoleType;
 
@@ -92,43 +90,6 @@ public class User implements UserDetails {
     @Column(name = "token")
     private String token;
     
-    public UserLoginParamDTO toUserLoginResponseDTO() {
-    	return UserLoginParamDTO.builder()
-    			.userId(this.userId)
-    			.nickName(this.nickName)
-    			.address(this.address)
-    			.build();
-    }
-    
-    public UserInfoRespDTO toUserInfoResponseDTO() {
-    	String gender = this.gender;
-    	if (gender.equals("f")) gender = "female";
-    	else if (gender.equals("m")) gender = "male";
-    	else gender = "none";
-    	
-    	String social = "origin";
-    	@Size(min = 1, max = 1) ProviderType beforeSocial = this.social;
-    	if (beforeSocial.equals(ProviderType.N)) social = "naver";
-    	else if (beforeSocial.equals(ProviderType.K)) social = "kakao";
-    	else if (beforeSocial.equals(ProviderType.G)) social = "google";
-    	
-    	double rating = 0;
-    	if (this.ratingCount != 0) {
-    		rating = this.ratingSum / this.ratingCount;
-    	}
-    	
-		return UserInfoRespDTO.builder()
-				.email(this.email)
-    			.nickName(this.nickName)
-    			.birth(this.userBirth)
-    			.userGender(gender)
-    			.address(this.address)
-    			.regionCode(this.regionCode)
-    			.social(social)
-    			.rating(rating)
-    			.build();
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
     	  Collection<GrantedAuthority> collect = new ArrayList<>();
