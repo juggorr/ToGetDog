@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 			WaitUserRepository.save(user);
 			return true;
 		} catch (InvalidInputException | DuplicatedInputException e) {
-			logger.error(e.getMessage());
+			logger.error("Input error! : " + e.getMessage());
 			return false;
 		} catch (Exception e) {
 			logger.error("Unexpected error! : " + e.getMessage());
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
 			WaitUserRepository.delete(user);
 			return true;
 		} catch (InvalidInputException | DuplicatedInputException e) {
-			logger.error(e.getMessage());
+			logger.error("Input error! : " + e.getMessage());
 			return false;
 		} catch (Exception e) {
 			logger.error("Unexpected error! : " + e.getMessage());
@@ -81,13 +81,21 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public void saveRefreshToken(long userId, String refreshToken) {
-		userRepository.updateToken(userId, refreshToken);
+		User user = findUserByUserId(userId);
+		if (user != null) {
+			user.setToken(refreshToken);
+			userRepository.save(user);
+		}
 	}
 	
 	@Override
 	@Transactional
 	public void deleteRefreshToken(long userId) {
-		userRepository.deleteToken(userId);
+		User user = findUserByUserId(userId);
+		if (user != null) {
+			user.setToken(null);
+			userRepository.save(user);
+		}
 	}
 	
 	@Override
@@ -111,33 +119,39 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	@Transactional
-	public int updateUserInfo(long userId, UserUpdateParamDTO userDTO) {
+	public void updateUserInfo(long userId, UserUpdateParamDTO userDTO) {
 		checkUpdateValidation(userDTO);
-		return userRepository.updateUser(userId, userDTO.getNickName(), 
-				userDTO.getGender(), userDTO.getBirth(), userDTO.getAddress(), userDTO.getRegionCode());
+		User user = findUserByUserId(userId);
+		if (user != null) {
+			user.setNickName(userDTO.getNickName());
+			user.setGender(userDTO.getGender());
+			user.setUserBirth(userDTO.getBirth());
+			user.setAddress(userDTO.getAddress());
+			user.setRegionCode(userDTO.getRegionCode());
+			userRepository.save(user);
+		}
 	}
 
 	@Override
 	@Transactional
-	public int updatePassword(long userId, String password, String newPassword) {
+	public void updatePassword(long userId, String password, String newPassword) {
 		User user = userRepository.findById(userId).orElse(null);
-		if (user == null ) {
-			return -2;
+		if (user != null ) {
+			if (passwordEncoder.matches(password, user.getPassword())) {
+				user.setPassword(newPassword);
+				userRepository.save(user);
+			}
 		}
-		if (passwordEncoder.matches(password, user.getPassword())) {
-			return userRepository.updatePassword(userId, passwordEncoder.encode(newPassword));
-		}
-		return -1;
 	}
 	
 	@Override
 	@Transactional
-	public int updateTmpPassword(long userId, String tmpPassword) {
+	public void updateTmpPassword(long userId, String tmpPassword) {
 		User user = userRepository.findById(userId).orElse(null);
-		if (user == null ) {
-			return -2;
+		if (user != null ) {
+			user.setPassword(tmpPassword);
+			userRepository.save(user);
 		}
-		return userRepository.updatePassword(userId, passwordEncoder.encode(tmpPassword));
 	}
 	
 	@Override

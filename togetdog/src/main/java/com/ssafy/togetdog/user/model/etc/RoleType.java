@@ -1,4 +1,4 @@
-package com.ssafy.togetdog.user.model.domain;
+package com.ssafy.togetdog.user.model.etc;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

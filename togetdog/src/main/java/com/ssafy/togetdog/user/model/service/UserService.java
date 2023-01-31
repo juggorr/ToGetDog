@@ -11,13 +11,15 @@ public interface UserService {
 	void saveRefreshToken(long userId, String refreshToken);
 	void deleteRefreshToken(long userId);
 	void deleteUser(long userId);
+	void updateUserInfo(long userId, UserUpdateParamDTO userDTO);
+	void updatePassword(long userId, String password, String newPassword);
+	void updateTmpPassword(long userId, String tmpPassword);
+	
 	User findUserByUserId(long userId);
 	User findUserByEmailAndPassword(String email, String password);
 	User findUserByEmail(String email);
 	User findUserByNickName(String nickName);
+	
 	WaitUser findWaitUserByEmail(String email);
 	WaitUser findWaitUserByNickName(String nickname);
-	int updateUserInfo(long userId, UserUpdateParamDTO userDTO);
-	int updatePassword(long userId, String password, String newPassword);
-	int updateTmpPassword(long userId, String tmpPassword);
 }
