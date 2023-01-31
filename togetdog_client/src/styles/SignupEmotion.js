@@ -70,7 +70,7 @@ export const InputWrapper = styled.div`
   }
 
   .address-box {
-    width: 70%;
+    width: 75%;
     border-bottom: 2px solid #e2e2e2;
     margin-bottom: 5px;
     margin-right: 5px;
