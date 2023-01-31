@@ -14,6 +14,8 @@ const EmailSent = () => {
   const authKey = new URLSearchParams(window.location.search).get('authKey');
 
   const handleVerification = async () => {
+    console.log(email);
+    console.log(authKey);
     await axios
       .post(
         `${BACKEND_URL}/user/auth`,
