@@ -7,6 +7,10 @@ import { EmailContainer, EmailWrapper, LogoWrapper } from '../styles/SignupEmoti
 import PinkEmail from './../assets/pink_email.svg';
 
 const EmailSent = () => {
+  const email = new URLSearchParams(window.location.search).get('email');
+  const authKey = new URLSearchParams(window.location.search).get('authKey');
+  console.log(email);
+  console.log(authKey);
   const handleVerification = async () => {
     await axios
       .post(
