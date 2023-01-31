@@ -85,28 +85,26 @@ public class UserRestController {
 	@ApiOperation(value = "회원가입 이메일 인증", notes = "이메일 인증 후 회원가입을 진행합니다.")
 	@PostMapping("/auth")
 	public ResponseEntity<?> registration(
-			@RequestBody EmailAuthParamDTO authDTO
-//			@RequestParam(value = "email") @ApiParam(required = true) String email,
-//			@RequestParam(value = "authKey") @ApiParam(required = true) String authKey
+			@RequestBody @ApiParam(required = true) EmailAuthParamDTO authDTO
 			) {
 		
 		logger.info("Regist Info : {}", authDTO);
 		Map<String, String> resultMap = new HashMap<String, String>();
 		HttpStatus status = null;
 		
-//		WaitUser tmpUser = userService.findWaitUserByEmail(email);
-//		if (tmpUser != null && tmpUser.getAuthKey().equals(authKey)) {
-//			if (userService.registration(tmpUser)) {
-//				resultMap.put("result", SUCCESS);
-//				status = HttpStatus.OK;
-//			} else {
-//				resultMap.put("result", FAIL);
-//				status = HttpStatus.CONFLICT;
-//			}
-//		} else {
-//			resultMap.put("result", FAIL);
-//			status = HttpStatus.BAD_REQUEST;
-//		}
+		WaitUser tmpUser = userService.findWaitUserByEmail(authDTO.getEmail());
+		if (tmpUser != null && tmpUser.getAuthKey().equals(authDTO.getAuthKey())) {
+			if (userService.registration(tmpUser)) {
+				resultMap.put("result", SUCCESS);
+				status = HttpStatus.OK;
+			} else {
+				resultMap.put("result", FAIL);
+				status = HttpStatus.CONFLICT;
+			}
+		} else {
+			resultMap.put("result", FAIL);
+			status = HttpStatus.BAD_REQUEST;
+		}
 		return new ResponseEntity<Map<String, String>>(resultMap, status);
 	}
 	
