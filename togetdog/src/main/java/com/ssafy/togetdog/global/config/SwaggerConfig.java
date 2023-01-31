@@ -1,4 +1,4 @@
-package com.ssafy.togetdog.config;
+package com.ssafy.togetdog.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

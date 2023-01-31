@@ -53,6 +53,9 @@ dependencies {
 
 	// mail sending
 	implementation 'javax.mail:mail:1.4.7'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	
+	// ?
 	implementation 'org.springframework:spring-context-support:5.3.14'
 	implementation 'javax.activation:activation:1.1.1'
 	
