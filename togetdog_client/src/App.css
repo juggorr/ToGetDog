@@ -17,7 +17,8 @@ body {
   }
 }
 
-@media (max-width: 650px) { /* 650px 이하일 때 */
+@media (max-width: 650px) {
+  /* 650px 이하일 때 */
   .App {
     width: 100vw;
   }
@@ -30,4 +31,13 @@ body {
 
 .App {
   min-height: 100vh;
+}
+
+.modal {
+  border: 2px solid black;
+  position: fixed;
+  left: 0;
+  top: 20vh;
+  height: 100%;
+  width: 100%;
 }
