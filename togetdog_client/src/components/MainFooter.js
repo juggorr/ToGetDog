@@ -10,7 +10,7 @@ import { FooterWrapper } from "../styles/MainFooterEmotion";
 
 
 const MainFooter = () => {
-  const [activeNav, setActiveNav] = useState(1);
+  const [activeNav, setActiveNav] = useState(3);
   return (
     <>
       <FooterWrapper>
