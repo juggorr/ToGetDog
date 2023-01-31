@@ -48,7 +48,7 @@ public class UserRestController {
 	private final MailSendService mailService;
 	
 	/***
-	 * User TMP Registration
+	 * Email sending for Registration
 	 * @param UserRegistParamDTO
 	 * @return status 200, 409
 	 */
@@ -124,7 +124,13 @@ public class UserRestController {
 		HttpStatus status = null;
 		
 		
-		// +) 추후 추가 사항 : 이메일 인증 대기 대상 판별하기
+		// +) : 이메일 인증 대기 대상 판별하기
+		WaitUser waitUser = userService.findWaitUserByEmail(email); 
+		if (waitUser != null) {
+			resultMap.put("msg", "가입대기중");
+			resultMap.put("result", FAIL);
+			status = HttpStatus.CONFLICT;
+		}
 		
 		try {
 			User user = userService.findUserByEmailAndPassword(email, password);
@@ -133,9 +139,11 @@ public class UserRestController {
 				long userId = user.getUserId();
 				String accessToken = jwtService.createAccessToken(userId);
 				String refreshToken = jwtService.createRefreshToken(userId);
-				
-				// 이미 있으면 저장하지 않도록 처리할 수 있다
-				userService.saveRefreshToken(userId, refreshToken);
+
+				// If a refresh token has already been issued, it is not issued.
+				if (user.getToken() != null && !user.getToken().equals("")) {
+					userService.saveRefreshToken(userId, refreshToken);
+				}
 				resultMap.put("result", SUCCESS);
 				resultMap.put("user", user.toUserLoginResponseDTO());
 				resultMap.put("access-token", accessToken);
@@ -326,14 +334,9 @@ public class UserRestController {
 		try {
 			if (jwtService.validateToken(token)) {
 				long userId = jwtService.getUserId(token);
-				int result = userService.updateUserInfo(userId, userDTO);
-				if (result > 0 ) {
-					resultMap.put("result", SUCCESS);
-					status = HttpStatus.OK;
-				} else {
-					resultMap.put("result", FAIL);
-					status = HttpStatus.INTERNAL_SERVER_ERROR;
-				}
+				userService.updateUserInfo(userId, userDTO);
+				resultMap.put("result", SUCCESS);
+				status = HttpStatus.OK;
 			} else {
 				resultMap.put("result", FAIL);
 				status = HttpStatus.UNAUTHORIZED;
@@ -367,14 +370,9 @@ public class UserRestController {
 		
 		if (jwtService.validateToken(token)) {
 			long userId = jwtService.getUserId(token);
-			int result = userService.updatePassword(userId, password, newPassword);
-			if (result > 0) {
-				resultMap.put("result", SUCCESS);
-				status = HttpStatus.OK;
-			} else {
-				resultMap.put("result", FAIL);
-				status = HttpStatus.BAD_REQUEST;
-			}
+			userService.updatePassword(userId, password, newPassword);
+			resultMap.put("result", SUCCESS);
+			status = HttpStatus.OK;
 		} else {
 			resultMap.put("result", FAIL);
 			status = HttpStatus.UNAUTHORIZED;
