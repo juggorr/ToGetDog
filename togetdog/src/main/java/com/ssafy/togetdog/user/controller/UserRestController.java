@@ -117,17 +117,16 @@ public class UserRestController {
 	@ApiOperation(value = "로그인", notes = "일반 로그인을 진행합니다.")
 	@PostMapping("/login")
 	public ResponseEntity<?> generalLogin(
-			@RequestParam(value = "email") @ApiParam(required = true) String email, 
-			@RequestParam(value = "password") @ApiParam(required = true) String password
+			@RequestBody @ApiParam(required = true) UserLoginParamDTO loginDTO
 			) {
 		
-		logger.info("login input parameter : {} {}", email, password);
+		logger.info("login input parameter : {}", loginDTO);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 		
 		
 		// +) : 이메일 인증 대기 대상 판별하기
-		WaitUser waitUser = userService.findWaitUserByEmail(email); 
+		WaitUser waitUser = userService.findWaitUserByEmail(loginDTO.getEmail()); 
 		if (waitUser != null) {
 			resultMap.put("msg", "가입대기중");
 			resultMap.put("result", FAIL);
@@ -135,7 +134,7 @@ public class UserRestController {
 		}
 		
 		try {
-			User user = userService.findUserByEmailAndPassword(email, password);
+			User user = userService.findUserByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
 			if (user != null) {
 				// create JWT Token and save
 				long userId = user.getUserId();
