@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 // 홈으로 이동 텍스트 버튼
 export const HomeTextBtn = styled.div`
