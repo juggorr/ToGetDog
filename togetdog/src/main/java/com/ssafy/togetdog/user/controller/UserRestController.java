@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.togetdog.global.exception.UnAuthorizedException;
+import com.ssafy.togetdog.user.model.dto.EmailAuthParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
 import com.ssafy.togetdog.user.model.dto.UserLoginParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserRegistParamDTO;
@@ -84,12 +85,12 @@ public class UserRestController {
 	@ApiOperation(value = "회원가입 이메일 인증", notes = "이메일 인증 후 회원가입을 진행합니다.")
 	@PostMapping("/auth")
 	public ResponseEntity<?> registration(
-			@RequestParam Map<String, Object> param
+			@RequestBody EmailAuthParamDTO authDTO
 //			@RequestParam(value = "email") @ApiParam(required = true) String email,
 //			@RequestParam(value = "authKey") @ApiParam(required = true) String authKey
 			) {
 		
-		logger.info("Regist Info : {}", param);
+		logger.info("Regist Info : {}", authDTO);
 		Map<String, String> resultMap = new HashMap<String, String>();
 		HttpStatus status = null;
 		
