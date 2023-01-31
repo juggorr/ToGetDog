@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.togetdog.global.exception.UnAuthorizedException;
+import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
+import com.ssafy.togetdog.user.model.dto.UserLoginParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserRegistParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserUpdateParamDTO;
 import com.ssafy.togetdog.user.model.entity.User;
@@ -145,7 +147,7 @@ public class UserRestController {
 					userService.saveRefreshToken(userId, refreshToken);
 				}
 				resultMap.put("result", SUCCESS);
-				resultMap.put("user", user.toUserLoginResponseDTO());
+				resultMap.put("user", UserLoginParamDTO.of(user));
 				resultMap.put("access-token", accessToken);
 				status = HttpStatus.OK;
 			} else {
@@ -159,28 +161,6 @@ public class UserRestController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	/***
-	 * @@@@@@@@@@@@@@@@@@@@@@@@@@
-	 * @param code
-	 * @param type
-	 * @return
-	 */
-	@ApiOperation(value = "소셜 로그인", notes = "소셜 로그인(네이버, 카카오, 구글)을 진행합니다.")
-	@PostMapping("/sociallogin")
-	public ResponseEntity<?> socialLogin(
-			@RequestParam String code, 
-			@RequestParam String type) {
-		
-		if (type.equals("naver")) {
-			
-		} else if (type.equals("kakao")) {
-			
-		} else {
-			
-		}
-		return null;
-	}
-	
 	/***
 	 * Logout
 	 * @param token
@@ -290,7 +270,7 @@ public class UserRestController {
 				User user = userService.findUserByUserId(userId);
 				if (user != null) {
 					resultMap.put("result", SUCCESS);
-					resultMap.put("user", user.toUserInfoResponseDTO());
+					resultMap.put("user", UserInfoRespDTO.of(user));
 					status = HttpStatus.OK;
 				} else {
 					resultMap.put("result", FAIL);
