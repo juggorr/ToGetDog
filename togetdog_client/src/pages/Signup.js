@@ -75,7 +75,7 @@ const Signup = () => {
 
   const handleEmailCheck = async (e) => {
     await axios
-      .get(`${LOCAL_SERVER}/user/email`, { params: { email } })
+      .get(`${BACKEND_URL}/user/email`, { params: { email } })
       .then((resp) => {
         if (resp.status === 200) {
           console.log(resp);
@@ -131,7 +131,7 @@ const Signup = () => {
   const handleNickname = async (e) => {
     const nickname = e.target.value;
     await axios
-      .get(`${LOCAL_SERVER}/user/nickname`, { params: { nickname } })
+      .get(`${BACKEND_URL}/user/nickname`, { params: { nickname } })
       .then((resp) => {
         if (resp.status === 200) {
           console.log(resp);
@@ -204,7 +204,7 @@ const Signup = () => {
 
     await axios
       .post(
-        `${LOCAL_SERVER}/user`,
+        `${BACKEND_URL}/user`,
         {
           email: email,
           password: password,
