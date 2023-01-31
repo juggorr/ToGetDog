@@ -33,6 +33,10 @@ export const DogImgWrapper = styled.div`
     margin: 0.3rem 0rem;
   }
 
+  .disabled {
+    filter: brightness(50%);
+  }
+
   .dogProfileImg {
     width: 100%;
     height: 100%;

@@ -7,34 +7,23 @@ import {
 } from "../styles/CreateAppointmentEmotion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const DogImages = ({ dogs }) => {
-  // const [activeDog, setActiveDog] = useState([]);
-  const dogList = [];
+const DogImages = (item) => {
+  const [activeDog, setActiveDog] = useState(false);
 
-  const dogImageAppend = () => {
-    if (dogs) {
-      for (let i = 0; i < dogs.length; i++) {
-        // setActiveDog([...activeDog, false]);
-        dogList.push(
-          <DogImgWrapper key={dogs[i].dogId}>
-            <div
-              className="dogProfileCircle"
-              // onClick={setActiveDog((activeDog[i] = !activeDog[i]))}
-            >
-              <img
-                className="dogProfileImg"
-                src={dogs[i].dogProfile}
-                alt="dog_profile"
-              />
-            </div>
-          </DogImgWrapper>
-        );
-      }
-    }
-    return dogList;
-  };
-
-  return dogImageAppend();
+  return (
+    <DogImgWrapper key={item.dogId}>
+      <div
+        className={activeDog ? "dogProfileCircle" : "dogProfileCircle disabled"}
+        onClick={() => setActiveDog(!activeDog)}
+      >
+        <img
+          className="dogProfileImg"
+          src={item.dogProfile}
+          alt="dog_profile"
+        />
+      </div>
+    </DogImgWrapper>
+  );
 };
 
 const CreateAppointment = () => {
@@ -76,12 +65,18 @@ const CreateAppointment = () => {
           <FontAwesomeIcon icon="fa-user-group" />
           {"   "}나의 강아지를 선택해주세요.
         </p>
-        <DogImages dogs={userData.dog}></DogImages>
+        {userData.dog &&
+          userData.dog.map((item) => (
+            <DogImages dog={item} key={userData.dog.dogId}></DogImages>
+          ))}
         <p className="queryStr">
           <FontAwesomeIcon icon="fa-user-group" />
           {"   "}상대방의 강아지를 선택해주세요.
         </p>
-        <DogImages dogs={partnerData.dog}></DogImages>
+        {partnerData.dog &&
+          partnerData.dog.map((item) => (
+            <DogImages dog={item} key={partnerData.dog.dogId}></DogImages>
+          ))}
         <p className="queryStr">
           <FontAwesomeIcon icon="fa-clock" />
           {"   "}언제 산책할까요?
