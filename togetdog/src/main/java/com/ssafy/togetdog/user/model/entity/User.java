@@ -18,9 +18,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ssafy.togetdog.user.model.domain.RoleType;
 import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
 import com.ssafy.togetdog.user.model.dto.UserLoginParamDTO;
+import com.ssafy.togetdog.user.model.etc.ProviderType;
+import com.ssafy.togetdog.user.model.etc.RoleType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -74,8 +75,9 @@ public class User implements UserDetails {
     
     // g구글, k카카오, n네이버, o일반가입
     @Column(name = "social", length = 1)
+    @Enumerated(EnumType.STRING)
     @Size(min = 1, max = 1)
-    private String social;
+    private ProviderType social;
     
     @Column(name = "rating_sum")
     private long ratingSum;
@@ -104,11 +106,11 @@ public class User implements UserDetails {
     	else if (gender.equals("m")) gender = "male";
     	else gender = "none";
     	
-    	String social = this.social;
-    	if (social.equals("n")) social = "naver";
-    	else if (social.equals("k")) social = "kakao";
-    	else if (social.equals("g")) social = "google";
-    	else social = "origin";
+    	String social = "origin";
+    	@Size(min = 1, max = 1) ProviderType beforeSocial = this.social;
+    	if (beforeSocial.equals(ProviderType.N)) social = "naver";
+    	else if (beforeSocial.equals(ProviderType.K)) social = "kakao";
+    	else if (beforeSocial.equals(ProviderType.G)) social = "google";
     	
     	double rating = 0;
     	if (this.ratingCount != 0) {
