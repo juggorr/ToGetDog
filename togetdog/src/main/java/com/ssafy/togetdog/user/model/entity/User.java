@@ -18,8 +18,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ssafy.togetdog.user.model.etc.ProviderType;
-import com.ssafy.togetdog.user.model.etc.RoleType;
+import com.ssafy.togetdog.user.model.vo.ProviderType;
+import com.ssafy.togetdog.user.model.vo.RoleType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -72,9 +72,8 @@ public class User implements UserDetails {
     private String regionCode;
     
     // g구글, k카카오, n네이버, o일반가입
-    @Column(name = "social", length = 1)
+    @Column(name = "social")
     @Enumerated(EnumType.STRING)
-    @Size(min = 1, max = 1)
     private ProviderType social;
     
     @Column(name = "rating_sum")
