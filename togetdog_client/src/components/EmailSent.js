@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useNavigate } from 'react-router';
 
 import { BACKEND_URL } from '../config';
 
@@ -7,23 +8,25 @@ import { EmailContainer, EmailWrapper, LogoWrapper } from '../styles/SignupEmoti
 import PinkEmail from './../assets/pink_email.svg';
 
 const EmailSent = () => {
+  const navigate = useNavigate();
+
   const email = new URLSearchParams(window.location.search).get('email');
   const authKey = new URLSearchParams(window.location.search).get('authKey');
-  console.log(email);
-  console.log(authKey);
+
   const handleVerification = async () => {
     await axios
       .post(
         `${BACKEND_URL}/user/auth`,
         {
-          email: new URLSearchParams(window.location.search).get('email'),
-          authKey: new URLSearchParams(window.location.search).get('authKey'),
+          email: email,
+          authKey: authKey,
         },
         // { headers: { "Content-Type": "application/json" } },
       )
       .then((resp) => {
         console.log('이메일 인증 성공!');
-        localStorage.removeItem('signupStatus');
+        window.localStorage.removeItem('signupStatus');
+        navigate('/login');
       })
       .catch((err) => {
         console.log(err);

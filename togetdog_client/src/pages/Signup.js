@@ -229,7 +229,7 @@ const Signup = () => {
         // { headers: { "Content-Type": "application/json" } },
       )
       .then((resp) => {
-        localStorage.setItem('signupStatus', true);
+        window.localStorage.setItem('signupStatus', true);
         console.log('회원가입 성공! 이메일 인증으로!');
         console.log(resp);
       })
