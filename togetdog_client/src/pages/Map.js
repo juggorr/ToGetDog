@@ -1,36 +1,30 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+import { BACKEND_URL, LOCAL_SERVER } from "../config";
 import {
   MapContainer,
   PlaceIconWrapper,
   SinglePlaceWrapper,
   PlaceButtonWrapper,
 } from "../styles/MapEmotion";
+import dogHospital from "../assets/dog_hospital.png";
+import dogService from "../assets/dog_service.png";
+import dogRestaurant from "../assets/dog_restaurant.png";
+import dogFaiclity from "../assets/dog_facility.png";
 
 /*global kakao*/
 
 const SinglePlace = ({ Name, Address, Type, Distance }) => {
   let placeIcon;
   if (Type === "반려의료") {
-    placeIcon = (
-      <PlaceIconWrapper
-        src="../../assets/first-aid-kit.png"
-        alt="hospital_img"
-      />
-    );
+    placeIcon = <PlaceIconWrapper src={dogHospital} alt="hospital_img" />;
   } else if (Type === "반려동물 서비스") {
-    placeIcon = (
-      <PlaceIconWrapper src="../../assets/scissors.png" alt="service_img" />
-    );
+    placeIcon = <PlaceIconWrapper src={dogService} alt="service_img" />;
   } else if (Type === "반려동물식당카페") {
-    placeIcon = (
-      <PlaceIconWrapper src="../../assets/cutlery.png" alt="restaurant_img" />
-    );
+    placeIcon = <PlaceIconWrapper src={dogRestaurant} alt="restaurant_img" />;
   } else {
-    placeIcon = (
-      <PlaceIconWrapper src="../../assets/finish.png" alt="etc_img" />
-    );
+    placeIcon = <PlaceIconWrapper src={dogFaiclity} alt="etc_img" />;
   }
 
   return (
@@ -48,21 +42,31 @@ const SinglePlace = ({ Name, Address, Type, Distance }) => {
 
 const Map = () => {
   // const [map, setMap] = useState(null);
-  // 초기 위치 설정 (추후 사용자 위치로 설정하면 됨)
   // const container = document.getElementById("map");
-  const [curLat, setCurLat] = useState(37.501262);
-  const [curLng, setCurLng] = useState(127.03962161);
-  // const [options, setOptions] = useState({
-  //   center: new kakao.maps.LatLng(curLat, curLng),
-  // });
-  // const [kakaoMap, setKakaoMap] = useState(
-  //   new kakao.maps.Map(container, options)
-  // );
+
+  const [curLat, setCurLat] = useState(37.56679717791351);
+  const [curLng, setCurLng] = useState(126.97868056416682);
 
   const [selectPlace, setSelectPlace] = useState("all");
   const [facilities, setFacilities] = useState(null);
-  // const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // 임시 데이터, 수정 필요함
+    // recoil에서 userId 가져와서 바꾸면 Map은 끝!
+    const userId = 1;
+
+    const geocoder = new kakao.maps.services.Geocoder();
+    axios.get(`${BACKEND_URL}/user/${userId}`).then((response) => {
+      geocoder.addressSearch(response.data.address, function (result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+          setCurLat(result[0].y);
+          setCurLng(result[0].x);
+        } else {
+          alert("사용자의 기본 주소를 불러올 수 없습니다.");
+        }
+      });
+    });
+  }, []);
 
   const GetFacilities = (kakaoMap) => {
     const fetchFacilities = async () => {
@@ -71,7 +75,7 @@ const Map = () => {
         // setError(null);
         // setLoading(true);
         const response = await axios.get(
-          `http://i8a807.p.ssafy.io:8081/dummy/facility?latitude=${curLat}&longitude=${curLng}`
+          `${BACKEND_URL}/facility?latitude=${curLat}&longitude=${curLng}`
         );
         setFacilities(response.data.storeList);
       } catch (e) {
@@ -93,7 +97,7 @@ const Map = () => {
       });
     } else {
       // HTML5의 GeoLocation을 사용할 수 없을때
-      // 그냥 사용자 주소로 설정
+      // 그냥 사용자 주소로 설정 (처리 안함)
     }
   };
 
@@ -102,8 +106,6 @@ const Map = () => {
     const container = document.getElementById("map");
     const options = { center: new kakao.maps.LatLng(curLat, curLng) };
     const kakaoMap = new kakao.maps.Map(container, options);
-    // setOptions({ center: new kakao.maps.LatLng(curLat, curLng) });
-    // setKakaoMap(new kakao.maps.Map(container, options));
 
     // 마커가 표시될 위치입니다
     const markerPosition = new kakao.maps.LatLng(curLat, curLng);
@@ -121,13 +123,7 @@ const Map = () => {
       const servicePositions = [];
       const restaurantPositions = [];
       const allPositions = [];
-      // 테스트용 코드
-      // hospitalPositions.push(
-      //   new kakao.maps.LatLng(35.90728623800133, 127.76685537417795)
-      // );
-      // hospitalPositions.push(
-      //   new kakao.maps.LatLng(37.50186640508174, 127.03941271324857)
-      // );
+
       for (let i = 0; i < facilities.length; i++) {
         const newMarker = new kakao.maps.LatLng(
           facilities[i].latitude,
@@ -159,7 +155,7 @@ const Map = () => {
       // 의료 마커를 생성하고 의료 마커 배열에 추가하는 함수입니다
       function createHospitalMarkers() {
         for (let i = 0; i < hospitalPositions.length; i++) {
-          const markerImageSrc = "../../assets/first-aid-kit.png";
+          const markerImageSrc = { dogHospital };
           const imageSize = new kakao.maps.Size(22, 26),
             imageOption = { offset: new kakao.maps.Point(27, 69) };
 
@@ -190,7 +186,7 @@ const Map = () => {
 
       function createServiceMarkers() {
         for (let i = 0; i < servicePositions.length; i++) {
-          const markerImageSrc = "../../assets/scissors.png";
+          const markerImageSrc = { dogService };
           const imageSize = new kakao.maps.Size(22, 26),
             imageOption = { offset: new kakao.maps.Point(27, 69) };
 
@@ -217,7 +213,7 @@ const Map = () => {
 
       function createRestaurantMarkers() {
         for (let i = 0; i < restaurantPositions.length; i++) {
-          const markerImageSrc = "../../assets/cutlery.png";
+          const markerImageSrc = { dogRestaurant };
           const imageSize = new kakao.maps.Size(22, 26),
             imageOption = { offset: new kakao.maps.Point(27, 69) };
 
@@ -244,7 +240,7 @@ const Map = () => {
 
       function createAllMarkers() {
         for (let i = 0; i < allPositions.length; i++) {
-          const markerImageSrc = "../../assets/cutlery.png";
+          const markerImageSrc = { dogFaiclity };
           const imageSize = new kakao.maps.Size(22, 26),
             imageOption = { offset: new kakao.maps.Point(27, 69) };
 
@@ -309,23 +305,6 @@ const Map = () => {
     const facilityList = [];
 
     if (facilities) {
-      // 테스트용 코드
-      // facilityList.push(
-      //   <SinglePlace
-      //     Name={"테스트용 장소"}
-      //     Address={"전북 무주군 설천면 삼공리 942"}
-      //     Type={"반려의료"}
-      //     Distance={"2"}
-      //   />
-      // );
-      // facilityList.push(
-      //   <SinglePlace
-      //     Name={"테스트용 장소2"}
-      //     Address={"서울 강남구 역삼동 678-39"}
-      //     Type={"반려의료"}
-      //     Distance={"230"}
-      //   />
-      // );
       for (let i = 0; i < facilities.length; i++) {
         const curFacility = (
           <SinglePlace
@@ -373,31 +352,22 @@ const Map = () => {
             className="placeButtons"
             onClick={() => setSelectPlace("반려의료")}
           >
-            <PlaceIconWrapper
-              src="../../assets/first-aid-kit.png"
-              alt="hospital_img"
-            />
+            <PlaceIconWrapper src={dogHospital} alt="hospital_img" />
           </span>
           <span
             className="placeButtons"
             onClick={() => setSelectPlace("반려동물 서비스")}
           >
-            <PlaceIconWrapper
-              src="../../assets/scissors.png"
-              alt="service_img"
-            />
+            <PlaceIconWrapper src={dogService} alt="service_img" />
           </span>
           <span
             className="placeButtons"
             onClick={() => setSelectPlace("반려동물식당카페")}
           >
-            <PlaceIconWrapper
-              src="../../assets/cutlery.png"
-              alt="restaurant_img"
-            />
+            <PlaceIconWrapper src={dogRestaurant} alt="restaurant_img" />
           </span>
           <span className="placeButtons" onClick={() => setSelectPlace("all")}>
-            <PlaceIconWrapper src="../../assets/finish.png" alt="etc_img" />
+            <PlaceIconWrapper src={dogFaiclity} alt="etc_img" />
           </span>
         </div>
         <div>
