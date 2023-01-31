@@ -23,7 +23,10 @@ const genderBtnList = [
   },
 ];
 
+const emailRegexp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
 const passwordRegexp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^+=-])(?=.*[0-9]).{8,16}$/;
+const nicknameKorRegexp = /^[가-힣]{1,8}$/; // 한글 1~8자
+const nicknameEngRegexp = /^[a-zA-Z]{2,16}$/; // 영문 2~16자
 
 const Signup = () => {
   const [inputs, setInputs] = useState({
@@ -74,6 +77,15 @@ const Signup = () => {
   };
 
   const handleEmailCheck = async (e) => {
+    if (!emailRegexp.test(email)) {
+      console.log('이메일 형식에 맞지 않음');
+      setInputs({
+        ...inputs,
+        emailCheck: false,
+        emailErrorMsg: '이메일 형식에 맞지 않습니다.',
+      });
+      return;
+    }
     await axios
       .get(`${BACKEND_URL}/user/email`, { params: { email } })
       .then((resp) => {
@@ -130,6 +142,13 @@ const Signup = () => {
   // 닉네임 핸들러 메소드
   const handleNickname = async (e) => {
     const nickname = e.target.value;
+    console.log(nickname);
+    if (!nicknameKorRegexp.test(nickname) && !nicknameEngRegexp.test(nickname)) {
+      console.log('닉네임 형식에 맞지 않음');
+      setNicknameError(false);
+      setNicknameErrorMsg('닉네임은 한글 1~8자 혹은 영문 2~16자');
+      return;
+    }
     await axios
       .get(`${BACKEND_URL}/user/nickname`, { params: { nickname } })
       .then((resp) => {
@@ -160,7 +179,7 @@ const Signup = () => {
 
   const handleBirth = (e) => {
     const birthYear = e.target.value;
-    if (birthYear.length === 4) {
+    if (birthYear >= 1900 && birthYear <= new Date().getFullYear()) {
       setBirthError(true);
       setBirthErrorMsg('');
     } else {
