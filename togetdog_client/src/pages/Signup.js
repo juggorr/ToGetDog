@@ -7,6 +7,7 @@ import { BlackBtn, MainColorLongBtn } from '../styles/BtnsEmotion';
 import OptionBtn from '../components/OptionBtn';
 import { SignupContainer, SignupWrapper, InputWrapper } from '../styles/SignupEmotion';
 import DaumKakaoAddress from '../components/DaumKakaoAddress';
+import EmailSent from '../components/EmailSent';
 
 const genderBtnList = [
   {
@@ -67,6 +68,8 @@ const Signup = () => {
   const [birthErrorMsg, setBirthErrorMsg] = useState('');
   const [addressError, setAddressError] = useState(false);
   const [addressErrorMsg, setAddressErrorMsg] = useState('');
+
+  const signupStatus = localStorage.getItem('signupStatus');
 
   const onChange = (e) => {
     const { name, value } = e.target; // e.target 에서 name 과 value 를 추출
@@ -211,16 +214,6 @@ const Signup = () => {
         genderStr = 'male';
     }
 
-    // const data = {
-    //   email: email,
-    //   password: password,
-    //   nickname: nickname,
-    //   gender: genderStr,
-    //   birth: birth,
-    //   address: address,
-    //   regionCode: sigunguCode,
-    // };
-
     await axios
       .post(
         `${BACKEND_URL}/user`,
@@ -236,7 +229,8 @@ const Signup = () => {
         // { headers: { "Content-Type": "application/json" } },
       )
       .then((resp) => {
-        console.log('회원가입 성공!');
+        localStorage.setItem('signupStatus', true);
+        console.log('회원가입 성공! 이메일 인증으로!');
         console.log(resp);
       })
       .catch((err) => {
@@ -270,132 +264,141 @@ const Signup = () => {
   return (
     <>
       <SignupContainer>
-        <SignupWrapper>
-          <div className='signup-title'>
-            Create a <span className='togetdog'>ToGetDog</span> Account!
-          </div>
-          {/* 이메일 wrapper */}
-          <InputWrapper>
-            <div className='input-title'>
-              이메일<span className='red-dot'>*</span>
+        {signupStatus ? (
+          <EmailSent />
+        ) : (
+          <SignupWrapper>
+            <div className='signup-title'>
+              Create a <span className='togetdog'>ToGetDog</span> Account!
             </div>
-            <div className='horizontal-flex'>
-              <div className='input-box email-box'>
-                <input name='email' className='email-input' placeholder='이메일을 입력해주세요.' onChange={onChange} />
+            {/* 이메일 wrapper */}
+            <InputWrapper>
+              <div className='input-title'>
+                이메일<span className='red-dot'>*</span>
               </div>
-              <BlackBtn onClick={handleEmailCheck}>중복 확인</BlackBtn>
-            </div>
-            <div className={emailCheck ? 'success' : 'error'}>{emailErrorMsg}</div>
-          </InputWrapper>
-          {/* 비밀번호 wrapper */}
-          <InputWrapper>
-            <div className='input-title'>
-              비밀번호<span className='red-dot'>*</span>
-            </div>
-            <div className='horizontal-flex'>
-              <div className='input-box general-input-box'>
-                <input
-                  name='password'
-                  className='email-input'
-                  type='password'
-                  placeholder='비밀번호를 입력해주세요.'
-                  onChange={(e) => handlePassword(e)}
-                />
+              <div className='horizontal-flex'>
+                <div className='input-box email-box'>
+                  <input
+                    name='email'
+                    className='email-input'
+                    placeholder='이메일을 입력해주세요.'
+                    onChange={onChange}
+                  />
+                </div>
+                <BlackBtn onClick={handleEmailCheck}>중복 확인</BlackBtn>
               </div>
-            </div>
-            <div className={passwordError ? 'success' : 'error'}>{passwordErrorMsg}</div>
-          </InputWrapper>
-          {/* 비밀번호 확인 wrapper */}
-          <InputWrapper>
-            <div className='input-title'>
-              비밀번호 확인<span className='red-dot'>*</span>
-            </div>
-            <div className='horizontal-flex'>
-              <div className='input-box general-input-box'>
-                <input
-                  name='passwordCheck'
-                  className='email-input'
-                  type='password'
-                  placeholder='비밀번호를 다시 한번 입력해 주세요.'
-                  onChange={(e) => handlePasswordCheck(e)}
-                />
+              <div className={emailCheck ? 'success' : 'error'}>{emailErrorMsg}</div>
+            </InputWrapper>
+            {/* 비밀번호 wrapper */}
+            <InputWrapper>
+              <div className='input-title'>
+                비밀번호<span className='red-dot'>*</span>
               </div>
-            </div>
-            <div className={passwordCheckError ? 'success' : 'error'}>{passwordCheckErrorMsg}</div>
-          </InputWrapper>
-          {/* 닉네임 선택 wrapper */}
-          <InputWrapper>
-            <div className='input-title'>
-              닉네임<span className='red-dot'>*</span>
-            </div>
-            <div className='horizontal-flex'>
-              <div className='input-box general-input-box'>
-                <input
-                  name='nickname'
-                  className='email-input'
-                  placeholder='닉네임을 입력해 주세요.'
-                  onChange={(e) => handleNickname(e)}
-                />
+              <div className='horizontal-flex'>
+                <div className='input-box general-input-box'>
+                  <input
+                    name='password'
+                    className='email-input'
+                    type='password'
+                    placeholder='비밀번호를 입력해주세요.'
+                    onChange={(e) => handlePassword(e)}
+                  />
+                </div>
               </div>
-            </div>
-            <div className={nicknameError ? 'success' : 'error'}>{nicknameErrorMsg}</div>
-          </InputWrapper>
-          {/* 성별 선택 wrapper */}
-          <InputWrapper>
-            <div className='input-title'>
-              성별
-              <span className='red-dot'>*</span>
-            </div>
-            <div className='horizontal-flex btn-list'>
-              {genderBtnList.map((it) => (
-                <OptionBtn key={it.btn_id} {...it} onClick={handleClickGender} isSelected={it.btn_id === gender} />
-              ))}
-            </div>
-          </InputWrapper>
-          {/* 출생연도 선택 wrapper */}
-          <InputWrapper>
-            <div className='input-title'>
-              출생연도
-              <span className='red-dot'>*</span>
-            </div>
-            <div className='horizontal-flex'>
-              <div className='number-input-box'>
-                <input className='number-input' name='birth' onChange={(e) => handleBirth(e)} placeholder='2000' />
+              <div className={passwordError ? 'success' : 'error'}>{passwordErrorMsg}</div>
+            </InputWrapper>
+            {/* 비밀번호 확인 wrapper */}
+            <InputWrapper>
+              <div className='input-title'>
+                비밀번호 확인<span className='red-dot'>*</span>
               </div>
-              <div className='year'>년</div>
-            </div>
-            <div className='error'>{birthErrorMsg}</div>
-          </InputWrapper>
-          {/* 주소 입력 wrapper */}
-          <InputWrapper>
-            <div className='input-title'>
-              주소<span className='red-dot'>*</span>
-            </div>
-            <div className='horizontal-flex'>
-              <div className='input-box address-box'>
-                <input className='email-input' value={address} name='address' placeholder='역삼동' disabled />
+              <div className='horizontal-flex'>
+                <div className='input-box general-input-box'>
+                  <input
+                    name='passwordCheck'
+                    className='email-input'
+                    type='password'
+                    placeholder='비밀번호를 다시 한번 입력해 주세요.'
+                    onChange={(e) => handlePasswordCheck(e)}
+                  />
+                </div>
               </div>
-              <BlackBtn onClick={handlePopup}>주소 찾기</BlackBtn>
-              {popup && (
-                <DaumKakaoAddress
-                  data={inputs}
-                  setData={setInputs}
-                  error={addressError}
-                  setError={setAddressError}
-                  errorMsg={addressErrorMsg}
-                  setErrorMsg={setAddressErrorMsg}
-                  popup={popup}
-                  setPopup={setPopup}
-                ></DaumKakaoAddress>
-              )}
+              <div className={passwordCheckError ? 'success' : 'error'}>{passwordCheckErrorMsg}</div>
+            </InputWrapper>
+            {/* 닉네임 선택 wrapper */}
+            <InputWrapper>
+              <div className='input-title'>
+                닉네임<span className='red-dot'>*</span>
+              </div>
+              <div className='horizontal-flex'>
+                <div className='input-box general-input-box'>
+                  <input
+                    name='nickname'
+                    className='email-input'
+                    placeholder='닉네임을 입력해 주세요.'
+                    onChange={(e) => handleNickname(e)}
+                  />
+                </div>
+              </div>
+              <div className={nicknameError ? 'success' : 'error'}>{nicknameErrorMsg}</div>
+            </InputWrapper>
+            {/* 성별 선택 wrapper */}
+            <InputWrapper>
+              <div className='input-title'>
+                성별
+                <span className='red-dot'>*</span>
+              </div>
+              <div className='horizontal-flex btn-list'>
+                {genderBtnList.map((it) => (
+                  <OptionBtn key={it.btn_id} {...it} onClick={handleClickGender} isSelected={it.btn_id === gender} />
+                ))}
+              </div>
+            </InputWrapper>
+            {/* 출생연도 선택 wrapper */}
+            <InputWrapper>
+              <div className='input-title'>
+                출생연도
+                <span className='red-dot'>*</span>
+              </div>
+              <div className='horizontal-flex'>
+                <div className='number-input-box'>
+                  <input className='number-input' name='birth' onChange={(e) => handleBirth(e)} placeholder='2000' />
+                </div>
+                <div className='year'>년</div>
+              </div>
+              <div className='error'>{birthErrorMsg}</div>
+            </InputWrapper>
+            {/* 주소 입력 wrapper */}
+            <InputWrapper>
+              <div className='input-title'>
+                주소<span className='red-dot'>*</span>
+              </div>
+              <div className='horizontal-flex'>
+                <div className='input-box address-box'>
+                  <input className='email-input' value={address} name='address' placeholder='역삼동' disabled />
+                </div>
+                <BlackBtn onClick={handlePopup}>주소 찾기</BlackBtn>
+                {popup && (
+                  <DaumKakaoAddress
+                    data={inputs}
+                    setData={setInputs}
+                    error={addressError}
+                    setError={setAddressError}
+                    errorMsg={addressErrorMsg}
+                    setErrorMsg={setAddressErrorMsg}
+                    popup={popup}
+                    setPopup={setPopup}
+                  ></DaumKakaoAddress>
+                )}
+              </div>
+              <div className='error'>{addressErrorMsg}</div>
+            </InputWrapper>
+            <div className='signup-desc'>* 표시는 필수 입력 값입니다.</div>
+            <div className='btn-wrapper'>
+              <MainColorLongBtn onClick={checkOthers}>회원가입</MainColorLongBtn>
             </div>
-            <div className='error'>{addressErrorMsg}</div>
-          </InputWrapper>
-          <div className='signup-desc'>* 표시는 필수 입력 값입니다.</div>
-          <div className='btn-wrapper'>
-            <MainColorLongBtn onClick={checkOthers}>회원가입</MainColorLongBtn>
-          </div>
-        </SignupWrapper>
+          </SignupWrapper>
+        )}
       </SignupContainer>
     </>
   );
