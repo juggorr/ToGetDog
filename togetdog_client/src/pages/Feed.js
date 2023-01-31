@@ -1,10 +1,14 @@
-const Feed = () => {
-  
-  return (
-    <div>
-      Feed
-    </div>
-  )
-}
+import { FeedContainer, FeedPhotoWrapper, FeedProfileWrapper } from '../styles/FeedEmotion';
 
-export default Feed
+const Feed = () => {
+  return (
+    <>
+      <FeedContainer>
+        <FeedProfileWrapper>프로필</FeedProfileWrapper>
+        <FeedPhotoWrapper>포토</FeedPhotoWrapper>
+      </FeedContainer>
+    </>
+  );
+};
+
+export default Feed;
