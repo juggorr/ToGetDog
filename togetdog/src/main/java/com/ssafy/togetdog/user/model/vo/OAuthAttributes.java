@@ -12,45 +12,50 @@ public class OAuthAttributes {
 	private String nameAttributeKey;
     private String name;
     private String email;
+    private ProviderType social;
     
     @Builder
-    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email) {
+    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email, ProviderType social) {
         this.attributes = attributes;
         this.nameAttributeKey = nameAttributeKey;
         this.name = name;
         this.email = email;
+        this.social = social;
     }
     
     public static OAuthAttributes of(String socialName, String userNameAttributeName, Map<String, Object> attributes){        
         if("kakao".equals(socialName)){
-            return ofKakao("id", attributes);
+            return ofKakao(userNameAttributeName, attributes);
         }else if("naver".equals(socialName)) {
-        	return ofNaver("id", attributes);
+        	return ofNaver(userNameAttributeName, attributes);
         }
         return null;
     }
     
+    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
+        Map<String, Object> response = (Map<String, Object>)attributes.get("response");
+        return OAuthAttributes.builder()
+                .name((String) response.get("nickname"))
+                .email((String) response.get("email"))
+                .social(ProviderType.N)
+                .attributes(response)
+                .nameAttributeKey(userNameAttributeName)
+                .build();
+    }
+    
     private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
-        Map<String, Object> kakaoAccount = (Map<String, Object>)attributes.get("kakao_account");
-        Map<String, Object> kakaoProfile = (Map<String, Object>)kakaoAccount.get("profile");
-
+        @SuppressWarnings("unchecked")
+		Map<String, Object> kakaoAccount = (Map<String, Object>)attributes.get("kakao_account");
+        @SuppressWarnings("unchecked")
+		Map<String, Object> kakaoProfile = (Map<String, Object>)kakaoAccount.get("profile");
+        
+        System.out.println(kakaoProfile);
+        
         return OAuthAttributes.builder()
                 .name((String) kakaoProfile.get("nickname"))
                 .email((String) kakaoAccount.get("email"))
                 .nameAttributeKey(userNameAttributeName)
                 .attributes(attributes)
-                .build();
-    }
-    
-    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
-    	
-        Map<String, Object> response = (Map<String, Object>)attributes.get("response");
-
-        return OAuthAttributes.builder()
-                .name((String) response.get("name"))
-                .email((String) response.get("email"))
-                .attributes(response)
-                .nameAttributeKey(userNameAttributeName)
                 .build();
     }
     
