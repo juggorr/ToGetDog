@@ -1,9 +1,19 @@
-import { useRecoilState } from 'recoil';
-import { userState } from '../recoil';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { authAtom, userState } from '../recoil';
 
 const Home = () => {
   const [user, setUser] = useRecoilState(userState);
   console.log(user);
+
+  const auth = useRecoilValue(authAtom);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (auth) navigate('/login');
+  });
 
   return (
     <div>

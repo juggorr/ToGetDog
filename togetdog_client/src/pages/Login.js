@@ -18,7 +18,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (auth) navigate('/');
+    // if (auth) navigate('/');
   });
 
   const setAuth = useSetRecoilState(authAtom);
