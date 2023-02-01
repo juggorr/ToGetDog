@@ -44,7 +44,6 @@ const Map = () => {
   // const [map, setMap] = useState(null);
   // const container = document.getElementById("map");
   const [user, setUser] = useRecoilState(userState);
-  console.log(user);
 
   const [curLat, setCurLat] = useState(37.56679717791351);
   const [curLng, setCurLng] = useState(126.97868056416682);
@@ -56,6 +55,7 @@ const Map = () => {
 
   useEffect(() => {
     const geocoder = new kakao.maps.services.Geocoder();
+    console.log(user);
     geocoder.addressSearch(user.Address, function (result, status) {
       if (status === kakao.maps.services.Status.OK) {
         setCurLat(result[0].y);
