@@ -19,6 +19,23 @@ export const WalkRequest = styled.div`
     color: #717171;
     white-space: pre-wrap;
   }
+
+  .inputWrapper {
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem;
+  }
+
+  .textInput {
+    width: 16rem;
+    margin-right: 1rem;
+    padding: 0.2rem 1rem;
+    height: 2rem;
+    border: none;
+    border-bottom: 1px solid #717171;
+    color: #717171;
+    font-family: "Noto Sans KR", sans-serif;
+  }
 `;
 
 export const DogImgWrapper = styled.div`
@@ -49,23 +66,50 @@ export const TimeWrapper = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-top: 0.6rem;
+  margin-bottom: 1rem;
 
   .dateDiv {
     display: flex;
-    width: 15rem;
+    width: 7rem;
     height: 2.5rem;
+    margin: 0rem 0.2rem;
 
     border: 1px solid #969696;
-    border-radius: 3rem;
+    border-radius: 0.9rem;
     justify-content: center;
     align-items: center;
     font-family: "Inter", sans-serif;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     white-space: pre-wrap;
+    background-color: #f9f9f9;
   }
 
   .calendarDiv {
+    margin: 0rem 0.7rem;
     color: #717171;
   }
+`;
+
+export const DatePickerWrapper = styled.div`
+  margin: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .calendarHeader {
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin: 0rem 1rem;
+  }
+`;
+
+export const DateModalWrapper = styled.div`
+  display: flex;
+`;
+
+export const DayWrapper = styled.span`
+  font-family: "Inter", sans-serif;
 `;
