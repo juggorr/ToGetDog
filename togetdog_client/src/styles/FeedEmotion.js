@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const FeedContainer = styled.div`
   height: calc(100vh - 115px);
@@ -7,12 +7,12 @@ export const FeedContainer = styled.div`
 `;
 
 export const FeedProfileWrapper = styled.div`
-  flex: 3.5;
+  flex: 3;
   padding: 1rem 1rem 0 1rem;
 `;
 
 export const FeedPhotoWrapper = styled.div`
-  flex: 6.5;
+  flex: 7;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
@@ -35,13 +35,60 @@ export const FeedPhoto = styled.img`
 `;
 
 export const FeedProfileTop = styled.div`
-  height: 65%;
+  display: flex;
   background-color: #fff;
+
+  .dog-info-box {
+    width: 40%;
+    padding-left: 1rem;
+  }
+
+  .dog-info {
+    font-size: 0.85rem;
+    color: #777;
+    display: flex;
+    align-items: center;
+  }
+
+  .dog-gender {
+    width: 1.5rem;
+  }
+
+  .profile-etc-wrapper {
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+  }
+
+  .menu-icon {
+    width: 2.5rem;
+  }
+
+  .follow-info {
+    font-size: 0.85rem;
+    padding-top: 1rem;
+    padding-right: 1rem;
+  }
+
+  .follow-text {
+    margin-right: 0.5rem;
+    color: #777;
+  }
 `;
 
 export const FeedProfileBottom = styled.div`
-  height: 35%;
-  background-color: #e2e2e2;
+  display: flex;
+  flex-direction: column;
+  padding-top: 1.5rem;
+
+  .special-text {
+    font-size: 0.8rem;
+  }
+
+  .characters-box {
+    margin-top: 1rem;
+  }
 `;
 
 export const ProfileWrapper = styled.div`
