@@ -7,7 +7,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* 현재 웹스크린의 높이 100%를 최소 높이로 설정 */
+  min-height: 800px; /* 현재 웹스크린의 높이 100%를 최소 높이로 설정 */
   margin: 0;
 }
 
@@ -30,7 +30,7 @@ body {
 }
 
 .App {
-  min-height: 100vh;
+  min-height: 800px;
 }
 
 .modal {
@@ -52,4 +52,13 @@ body {
 
 .pink-font {
   color: #b7147e;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
 }
