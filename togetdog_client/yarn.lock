@@ -2176,6 +2176,22 @@
   dependencies:
     "@types/react" "^17"
 
+"@types/react-transition-group@^4.4.0":
+  version "4.4.5"
+  resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-4.4.5.tgz#aae20dcf773c5aa275d5b9f7cdbca638abc5e416"
+  integrity sha512-juKD/eiSM3/xZYzjuzH6ZwpP+/lejltmiS3QEzV/vmb/Q8+HfDmxu+Baga8UEMGBqV88Nbg4l2hY/K2DkyaLLA==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react@*":
+  version "18.0.27"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.27.tgz#d9425abe187a00f8a5ec182b010d4fd9da703b71"
+  integrity sha512-3vtRKHgVxu3Jp9t718R9BuzoD4NcQ8YJ5XRzsSKxNDiDonD2MXIT1TmSkenxuCycZJoQT5d2vE8LwWJxBC1gmA==
+  dependencies:
+    "@types/prop-types" "*"
+    "@types/scheduler" "*"
+    csstype "^3.0.2"
+
 "@types/react@^17":
   version "17.0.53"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.53.tgz#10d4d5999b8af3d6bc6a9369d7eb953da82442ab"
@@ -7833,6 +7849,18 @@ readdirp@~3.6.0:
   integrity sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==
   dependencies:
     picomatch "^2.2.1"
+
+recoil-persist@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/recoil-persist/-/recoil-persist-4.2.0.tgz#9fbb4a8c158cbb83ceb9dedf795aee24ed15395d"
+  integrity sha512-MHVfML9GxJP3RpkKR4F5rp7DtvzIvjWhowtMao/b7h2k4afMio/4sMAdUtltIrDaeVegH0Iga8Sx5XQ3oD7CzA==
+
+recoil@^0.7.6:
+  version "0.7.6"
+  resolved "https://registry.yarnpkg.com/recoil/-/recoil-0.7.6.tgz#75297ecd70bbfeeb72e861aa6141a86bb6dfcd5e"
+  integrity sha512-hsBEw7jFdpBCY/tu2GweiyaqHKxVj6EqF2/SfrglbKvJHhpN57SANWvPW+gE90i3Awi+A5gssOd3u+vWlT+g7g==
+  dependencies:
+    hamt_plus "1.0.2"
 
 recursive-readdir@^2.2.2:
   version "2.2.3"

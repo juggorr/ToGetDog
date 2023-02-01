@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Select from "react-select";
 import axios from 'axios';
 
-import { DUMMY_URL } from '../config';
-
-
+import { DUMMY_URL } from "../config";
 
 import { MainColorLongBtn } from "../styles/BtnsEmotion";
 import DoubleOptionBtn from "../components/DoubleOptionBtn";
@@ -200,11 +198,6 @@ function DogRegister() {
       });
   }
 
-
-
-
-
-
   // 유효성 검사 및 강아지 등록
   // 1. 필수 입력사항 미 입력 시
   // 해당 버튼에 불이 들어오고 (useRef 사용)
@@ -216,6 +209,13 @@ function DogRegister() {
   
   // 우선 '값을 입력하세요' 메시지 띄우기
   // 모두 통과하면 콘솔에 강아지가 등록되었습니다 메시지
+  const checkEssentials = () => {
+    if (!name || !sex || !breed || !year || !month || !weight
+      || !isNeuterd || !isObedient || !isActive) {
+      console.log('값을 입력하세요')
+    };
+  }
+
 
   return (
     <RegisterContainer>
