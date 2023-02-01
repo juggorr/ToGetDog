@@ -1,6 +1,8 @@
 package com.ssafy.togetdog.board.model.dto;
 
 import com.ssafy.togetdog.board.model.entity.Board;
+import com.ssafy.togetdog.dog.model.entity.Dog;
+import com.ssafy.togetdog.user.model.entity.User;
 
 import lombok.Builder;
 import lombok.Data;
@@ -16,16 +18,16 @@ import lombok.ToString;
 @Data
 public class BoardDto {
 	private long boardId;
-	private long userId;
-	private long dogId;
+	private User user;
+	private Dog dog;
 	private String image;
     private String content;
     
     public Board toEntity() {
     	Board board = Board.builder()
     			.boardId(boardId)
-    			.userId(userId)
-    			.dogId(dogId)
+    			.user(user)
+    			.dog(dog)
     			.image(image)
     			.content(content)
     			.build();
@@ -33,10 +35,11 @@ public class BoardDto {
     }
 
     @Builder
-	public BoardDto(long boardId, long userId, long dogId, String image, String content) {
+	public BoardDto(long boardId, User user, Dog dog, String image, String content) {
+		super();
 		this.boardId = boardId;
-		this.userId = userId;
-		this.dogId = dogId;
+		this.user = user;
+		this.dog = dog;
 		this.image = image;
 		this.content = content;
 	}

@@ -1,4 +1,4 @@
-package com.ssafy.togetdog.board.model.entity;
+package com.ssafy.togetdog.follow.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

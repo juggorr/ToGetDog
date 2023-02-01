@@ -1,9 +1,8 @@
 package com.ssafy.togetdog.board.model.service;
 
-import java.util.Optional;
-
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.togetdog.board.model.dto.BoardDto;
@@ -16,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BoardService {
 
+	@Autowired
 	private final BoardRepository boardRepository;
 	
 	@Transactional
@@ -24,9 +24,4 @@ public class BoardService {
 		return board.getBoardId();
 	}
 	
-	@Transactional
-	public Optional<Board> findById(final BoardDto boardDto) {
-		Optional<Board> board = boardRepository.findById(boardDto.getBoardId());
-		return board;
-	}
 }

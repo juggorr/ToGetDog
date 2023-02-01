@@ -9,10 +9,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
+import com.ssafy.togetdog.dog.model.entity.Dog;
+import com.ssafy.togetdog.user.model.entity.User;
 import com.sun.istack.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -37,15 +41,13 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long boardId;
     
-//    @ManyToOne
-//    @JoinColumn(name="user_id")
-    @Column(name = "user_id")
-    private long userId;
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
     
-//    @ManyToOne
-//    @JoinColumn(name="dog_id")
-    @Column(name = "dog_id")
-    private long dogId;
+    @ManyToOne
+    @JoinColumn(name="dog_id")
+    private Dog dog;
     
     @NotNull
     private String image;
@@ -55,6 +57,7 @@ public class Board {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("comment_id asc")
     private List<Comment> comments = new ArrayList<Comment>();
-
+    
+    
     
 }
