@@ -1,6 +1,11 @@
-import { useEffect, useState } from "react";
-import DatePicker from "react-datepicker";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
+
+// 달력 용도로 사용할 DatePicker
+import DatePicker, { registerLocale } from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { ko } from "date-fns/esm/locale";
+
 import { BACKEND_URL, DUMMY_URL, LOCAL_SERVER } from "../config";
 import {
   CreateAppointmentWrapper,
@@ -19,9 +24,11 @@ const CreateAppointment = () => {
   const [myActiveDogs, setMyActiveDogs] = useState([]);
   const [partnerActiveDogs, setPartnerActiveDogs] = useState([]);
 
+  const [startDate, setStartDate] = useState(new Date());
+
   useEffect(() => {
     axios
-      .get(`http://i8a807.p.ssafy.io:8081/dummy/user/includesDog/${userId}`, {})
+      .get(`${DUMMY_URL}/user/includesDog/${userId}`, {})
       .then(function (response) {
         setUserData(response.data);
       })
@@ -30,10 +37,7 @@ const CreateAppointment = () => {
       });
 
     axios
-      .get(
-        `http://i8a807.p.ssafy.io:8081/dummy/user/includesDog/${partnerId}`,
-        {}
-      )
+      .get(`${DUMMY_URL}/user/includesDog/${partnerId}`, {})
       .then(function (response) {
         setPartnerData(response.data);
       })
@@ -86,6 +90,21 @@ const CreateAppointment = () => {
     );
   };
 
+  const DateModal = () => {
+    return (
+      <DatePicker
+        selected={startDate}
+        onChange={(date) => setStartDate(date)}
+        locale={ko}
+        dateFormat="yyyy/MM/dd hh:mm"
+        minDate={new Date()}
+        showTimeSelect
+        timeFormat="p"
+        timeIntervals={15}
+      />
+    );
+  };
+
   return (
     <CreateAppointmentWrapper>
       <div className="appointmentHeader">산책 요청하기</div>
@@ -118,6 +137,7 @@ const CreateAppointment = () => {
           <FontAwesomeIcon icon="fa-clock" />
           {"   "}언제 산책할까요?
         </p>
+        <DateModal></DateModal>
         <p className="queryStr">
           <FontAwesomeIcon icon="fa-location-dot" />
           {"   "}어디서 산책할까요?
