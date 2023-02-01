@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, forwardRef, useRef } from "react";
 import axios from "axios";
 
 // 달력 용도로 사용할 DatePicker
@@ -11,6 +11,7 @@ import {
   CreateAppointmentWrapper,
   WalkRequest,
   DogImgWrapper,
+  TimeWrapper,
 } from "../styles/CreateAppointmentEmotion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -91,17 +92,30 @@ const CreateAppointment = () => {
   };
 
   const DateModal = () => {
+    const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
+      <TimeWrapper className="example-custom-input" ref={ref}>
+        <div className="dateDiv">{value}</div>
+        <div className="calendarDiv" onClick={onClick}>
+          <FontAwesomeIcon icon="fa-calendar" />
+        </div>
+      </TimeWrapper>
+    ));
+
     return (
-      <DatePicker
-        selected={startDate}
-        onChange={(date) => setStartDate(date)}
-        locale={ko}
-        dateFormat="yyyy/MM/dd hh:mm"
-        minDate={new Date()}
-        showTimeSelect
-        timeFormat="p"
-        timeIntervals={15}
-      />
+      <div>
+        <DatePicker
+          withPortal
+          selected={startDate}
+          onChange={(date) => setStartDate(date)}
+          locale={ko}
+          dateFormat="yyyy/MM/dd   aa HH:mm"
+          minDate={new Date()}
+          showTimeSelect
+          timeFormat="p"
+          timeIntervals={15}
+          customInput={<ExampleCustomInput />}
+        />
+      </div>
     );
   };
 

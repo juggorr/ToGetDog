@@ -43,3 +43,29 @@ export const DogImgWrapper = styled.div`
     object-fit: cover;
   }
 `;
+
+export const TimeWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  .dateDiv {
+    display: flex;
+    width: 15rem;
+    height: 2.5rem;
+
+    border: 1px solid #969696;
+    border-radius: 3rem;
+    justify-content: center;
+    align-items: center;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+  }
+
+  .calendarDiv {
+    color: #717171;
+  }
+`;
