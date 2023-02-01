@@ -48,6 +48,18 @@ export const OptionBtnItem = styled.div`
   border-radius: 0.7rem;
 `;
 
+export const DoubleOptionBtnItem = styled.div`
+  cursor: pointer;
+
+  width: 8rem;
+  height: 2.9rem;
+  line-height: 2.9rem;
+  text-align: center;
+  background-color: #fff;
+  border: 0.1rem solid #4834d4;
+  border-radius: 0.7rem;
+`;
+
 export const MainColorLongBtn = styled.button`
   width: 11rem;
   height: 2.7rem;

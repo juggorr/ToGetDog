@@ -20,6 +20,7 @@ import NotFound from './pages/NotFound';
 import InternalServer from './pages/InternalServer';
 import EmailSent from './components/EmailSent';
 import EmailAuth from './pages/EmailAuth';
+import DogRegister from "./pages/DogRegister";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/emailAuth' element={<EmailAuth />} />
+          <Route path="/dogregister" element={<DogRegister />} />
           <Route path='/500' element={<InternalServer />} />
           <Route path='/*' element={<NotFound />} />
         </Routes>

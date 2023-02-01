@@ -8,7 +8,8 @@ export const FooterWrapper = styled.footer`
   display: flex;
   width: inherit;
   height: 50px;
-  border-top: 2px solid #e2e2e2;
+  border-top: 1px solid #e2e2e2;
+  background: white;
 
   .icon-box {
     width: 20%;
