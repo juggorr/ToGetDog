@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { userState } from "../recoil";
 import axios from "axios";
 
 import { BACKEND_URL, LOCAL_SERVER } from "../config";
@@ -43,6 +45,7 @@ const SinglePlace = ({ Name, Address, Type, Distance }) => {
 const Map = () => {
   // const [map, setMap] = useState(null);
   // const container = document.getElementById("map");
+  const [user, setUser] = useRecoilState(userState);
 
   const [curLat, setCurLat] = useState(37.56679717791351);
   const [curLng, setCurLng] = useState(126.97868056416682);
@@ -51,22 +54,27 @@ const Map = () => {
   const [facilities, setFacilities] = useState(null);
 
   useEffect(() => {
-    // 임시 데이터, 수정 필요함
-    // recoil에서 userId 가져와서 바꾸면 Map은 끝!
-    const userId = 1;
-
     const geocoder = new kakao.maps.services.Geocoder();
-    axios.get(`${BACKEND_URL}/user/${userId}`).then((response) => {
-      geocoder.addressSearch(response.data.address, function (result, status) {
-        if (status === kakao.maps.services.Status.OK) {
-          setCurLat(result[0].y);
-          setCurLng(result[0].x);
-        } else {
-          alert("사용자의 기본 주소를 불러올 수 없습니다.");
-        }
-      });
+    geocoder.addressSearch(user.Address, function (result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+        setCurLat(result[0].y);
+        setCurLng(result[0].x);
+      } else {
+        alert("사용자의 기본 주소를 불러올 수 없습니다.");
+      }
     });
-  }, []);
+  });
+  //   axios.get(`${BACKEND_URL}/user/${userId}`).then((response) => {
+  //     geocoder.addressSearch(response.data.address, function (result, status) {
+  //       if (status === kakao.maps.services.Status.OK) {
+  //         setCurLat(result[0].y);
+  //         setCurLng(result[0].x);
+  //       } else {
+  //         alert("사용자의 기본 주소를 불러올 수 없습니다.");
+  //       }
+  //     });
+  //   });
+  // }, []);
 
   const GetFacilities = (kakaoMap) => {
     const fetchFacilities = async () => {
