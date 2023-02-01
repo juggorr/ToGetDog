@@ -10,6 +10,9 @@ import Chat from './pages/Chat';
 import Feed from './pages/Feed';
 import New from './pages/New';
 
+/*global kakao*/
+import React, { useEffect } from 'react';
+
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 

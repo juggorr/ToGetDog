@@ -10,8 +10,6 @@ import dogService from '../assets/dog_service.png';
 import dogRestaurant from '../assets/dog_restaurant.png';
 import dogFaiclity from '../assets/dog_facility.png';
 
-/*global kakao*/
-
 const SinglePlace = ({ Name, Address, Type, Distance }) => {
   let placeIcon;
   if (Type === '반려의료') {
