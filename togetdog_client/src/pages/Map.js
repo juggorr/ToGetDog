@@ -1,33 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { userState } from '../recoil';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { userState } from "../recoil";
+import axios from "axios";
 
-import { BACKEND_URL, LOCAL_SERVER } from '../config';
-import { MapContainer, PlaceIconWrapper, SinglePlaceWrapper, PlaceButtonWrapper } from '../styles/MapEmotion';
-import dogHospital from '../assets/dog_hospital.png';
-import dogService from '../assets/dog_service.png';
-import dogRestaurant from '../assets/dog_restaurant.png';
-import dogFaiclity from '../assets/dog_facility.png';
+import { BACKEND_URL, LOCAL_SERVER } from "../config";
+import {
+  MapContainer,
+  PlaceIconWrapper,
+  SinglePlaceWrapper,
+  PlaceButtonWrapper,
+} from "../styles/MapEmotion";
+import dogHospital from "../assets/dog_hospital.png";
+import dogService from "../assets/dog_service.png";
+import dogRestaurant from "../assets/dog_restaurant.png";
+import dogFaiclity from "../assets/dog_facility.png";
 
 const SinglePlace = ({ Name, Address, Type, Distance }) => {
   let placeIcon;
-  if (Type === '반려의료') {
-    placeIcon = <PlaceIconWrapper src={dogHospital} alt='hospital_img' />;
-  } else if (Type === '반려동물 서비스') {
-    placeIcon = <PlaceIconWrapper src={dogService} alt='service_img' />;
-  } else if (Type === '반려동물식당카페') {
-    placeIcon = <PlaceIconWrapper src={dogRestaurant} alt='restaurant_img' />;
+  if (Type === "반려의료") {
+    placeIcon = <PlaceIconWrapper src={dogHospital} alt="hospital_img" />;
+  } else if (Type === "반려동물 서비스") {
+    placeIcon = <PlaceIconWrapper src={dogService} alt="service_img" />;
+  } else if (Type === "반려동물식당카페") {
+    placeIcon = <PlaceIconWrapper src={dogRestaurant} alt="restaurant_img" />;
   } else {
-    placeIcon = <PlaceIconWrapper src={dogFaiclity} alt='etc_img' />;
+    placeIcon = <PlaceIconWrapper src={dogFaiclity} alt="etc_img" />;
   }
 
   return (
     <SinglePlaceWrapper>
-      <div className='placeIconDiv'>{placeIcon}</div>
-      <div className='placeDiv'>
-        <p className='placeName'>{Name}</p>
-        <p className='placeText'>
+      <div className="placeIconDiv">{placeIcon}</div>
+      <div className="placeDiv">
+        <p className="placeName">{Name}</p>
+        <p className="placeText">
           {Distance}m | {Address}
         </p>
       </div>
@@ -39,11 +44,12 @@ const Map = () => {
   // const [map, setMap] = useState(null);
   // const container = document.getElementById("map");
   const [user, setUser] = useRecoilState(userState);
+  console.log(user);
 
   const [curLat, setCurLat] = useState(37.56679717791351);
   const [curLng, setCurLng] = useState(126.97868056416682);
 
-  const [selectPlace, setSelectPlace] = useState('all');
+  const [selectPlace, setSelectPlace] = useState("all");
   const [facilities, setFacilities] = useState(null);
 
   const { kakao } = window;
@@ -55,7 +61,7 @@ const Map = () => {
         setCurLat(result[0].y);
         setCurLng(result[0].x);
       } else {
-        alert('사용자의 기본 주소를 불러올 수 없습니다.');
+        alert("사용자의 기본 주소를 불러올 수 없습니다.");
       }
     });
   });
@@ -77,7 +83,9 @@ const Map = () => {
         setFacilities(null);
         // setError(null);
         // setLoading(true);
-        const response = await axios.get(`${BACKEND_URL}/facility?latitude=${curLat}&longitude=${curLng}`);
+        const response = await axios.get(
+          `${BACKEND_URL}/facility?latitude=${curLat}&longitude=${curLng}`
+        );
         setFacilities(response.data.storeList);
       } catch (e) {
         // setError(e);
@@ -104,7 +112,7 @@ const Map = () => {
 
   //처음 지도 그리기
   useEffect(() => {
-    const container = document.getElementById('map');
+    const container = document.getElementById("map");
     const options = { center: new kakao.maps.LatLng(curLat, curLng) };
     const kakaoMap = new kakao.maps.Map(container, options);
 
@@ -126,12 +134,15 @@ const Map = () => {
       const allPositions = [];
 
       for (let i = 0; i < facilities.length; i++) {
-        const newMarker = new kakao.maps.LatLng(facilities[i].latitude, facilities[i].longitude);
-        if (facilities[i].type === '반려의료') {
+        const newMarker = new kakao.maps.LatLng(
+          facilities[i].latitude,
+          facilities[i].longitude
+        );
+        if (facilities[i].type === "반려의료") {
           hospitalPositions.push(newMarker);
-        } else if (facilities[i].type === '반려동물 서비스') {
+        } else if (facilities[i].type === "반려동물 서비스") {
           servicePositions.push(newMarker);
-        } else if (facilities[i].type === '반려동물식당카페') {
+        } else if (facilities[i].type === "반려동물식당카페") {
           restaurantPositions.push(newMarker);
         } else {
           allPositions.push(newMarker);
@@ -148,7 +159,7 @@ const Map = () => {
       createRestaurantMarkers(); // 식당카페 마커를 생성하고 식당카페 마커 배열에 추가합니다
       createAllMarkers();
 
-      changeMarker('all'); // 지도에 전체 마커가 보이도록 설정합니다
+      changeMarker("all"); // 지도에 전체 마커가 보이도록 설정합니다
 
       // 의료 마커를 생성하고 의료 마커 배열에 추가하는 함수입니다
       function createHospitalMarkers() {
@@ -158,7 +169,11 @@ const Map = () => {
             imageOption = { offset: new kakao.maps.Point(27, 69) };
 
           // 마커이미지와 마커를 생성합니다
-          const markerImage = new kakao.maps.MarkerImage(markerImageSrc, imageSize, imageOption);
+          const markerImage = new kakao.maps.MarkerImage(
+            markerImageSrc,
+            imageSize,
+            imageOption
+          );
 
           // 마커를 생성합니다
           const marker = new kakao.maps.Marker({
@@ -184,7 +199,11 @@ const Map = () => {
           const imageSize = new kakao.maps.Size(22, 26),
             imageOption = { offset: new kakao.maps.Point(27, 69) };
 
-          const markerImage = new kakao.maps.MarkerImage(markerImageSrc, imageSize, imageOption);
+          const markerImage = new kakao.maps.MarkerImage(
+            markerImageSrc,
+            imageSize,
+            imageOption
+          );
 
           const marker = new kakao.maps.Marker({
             position: servicePositions[i],
@@ -207,7 +226,11 @@ const Map = () => {
           const imageSize = new kakao.maps.Size(22, 26),
             imageOption = { offset: new kakao.maps.Point(27, 69) };
 
-          const markerImage = new kakao.maps.MarkerImage(markerImageSrc, imageSize, imageOption);
+          const markerImage = new kakao.maps.MarkerImage(
+            markerImageSrc,
+            imageSize,
+            imageOption
+          );
 
           const marker = new kakao.maps.Marker({
             position: restaurantPositions[i],
@@ -230,7 +253,11 @@ const Map = () => {
           const imageSize = new kakao.maps.Size(22, 26),
             imageOption = { offset: new kakao.maps.Point(27, 69) };
 
-          const markerImage = new kakao.maps.MarkerImage(markerImageSrc, imageSize, imageOption);
+          const markerImage = new kakao.maps.MarkerImage(
+            markerImageSrc,
+            imageSize,
+            imageOption
+          );
 
           const marker = new kakao.maps.Marker({
             position: allPositions[i],
@@ -248,19 +275,19 @@ const Map = () => {
       }
 
       function changeMarker() {
-        if (selectPlace === '반려의료') {
+        if (selectPlace === "반려의료") {
           // 의료 마커들만 지도에 표시하도록 설정합니다
           setHospitalMarkers(kakaoMap);
           setServiceMarkers(null);
           setRestaurantMarkers(null);
           setAllMarkers(null);
-        } else if (selectPlace === '반려동물 서비스') {
+        } else if (selectPlace === "반려동물 서비스") {
           // 반려동물 서비스 마커들만 지도에 표시하도록 설정합니다
           setHospitalMarkers(null);
           setServiceMarkers(kakaoMap);
           setRestaurantMarkers(null);
           setAllMarkers(null);
-        } else if (selectPlace === '반려동물식당카페') {
+        } else if (selectPlace === "반려동물식당카페") {
           // 식당카페 마커들만 지도에 표시하도록 설정합니다
           setHospitalMarkers(null);
           setServiceMarkers(null);
@@ -298,13 +325,22 @@ const Map = () => {
           />
         );
 
-        if (selectPlace === 'all') {
+        if (selectPlace === "all") {
           facilityList.push(curFacility);
-        } else if (selectPlace === '반려의료' && facilities[i].type === '반려의료') {
+        } else if (
+          selectPlace === "반려의료" &&
+          facilities[i].type === "반려의료"
+        ) {
           facilityList.push(curFacility);
-        } else if (selectPlace === '반려동물 서비스' && facilities[i].type === '반려동물 서비스') {
+        } else if (
+          selectPlace === "반려동물 서비스" &&
+          facilities[i].type === "반려동물 서비스"
+        ) {
           facilityList.push(curFacility);
-        } else if (selectPlace === '반려동물식당카페' && facilities[i].type === '반려동물식당카페') {
+        } else if (
+          selectPlace === "반려동물식당카페" &&
+          facilities[i].type === "반려동물식당카페"
+        ) {
           facilityList.push(curFacility);
         }
       }
@@ -313,29 +349,38 @@ const Map = () => {
   };
 
   return (
-    <div style={{ padding: '0px 20px' }}>
+    <div style={{ padding: "0px 20px" }}>
       <MapContainer>
-        <div className='mapSquare'>
-          <div id='map' style={{ width: '100%', height: '324px' }}></div>
+        <div className="mapSquare">
+          <div id="map" style={{ width: "100%", height: "324px" }}></div>
         </div>
       </MapContainer>
       <PlaceButtonWrapper>
         <div>
-          <span className='placeButtons' onClick={() => setSelectPlace('반려의료')}>
-            <PlaceIconWrapper src={dogHospital} alt='hospital_img' />
+          <span
+            className="placeButtons"
+            onClick={() => setSelectPlace("반려의료")}
+          >
+            <PlaceIconWrapper src={dogHospital} alt="hospital_img" />
           </span>
-          <span className='placeButtons' onClick={() => setSelectPlace('반려동물 서비스')}>
-            <PlaceIconWrapper src={dogService} alt='service_img' />
+          <span
+            className="placeButtons"
+            onClick={() => setSelectPlace("반려동물 서비스")}
+          >
+            <PlaceIconWrapper src={dogService} alt="service_img" />
           </span>
-          <span className='placeButtons' onClick={() => setSelectPlace('반려동물식당카페')}>
-            <PlaceIconWrapper src={dogRestaurant} alt='restaurant_img' />
+          <span
+            className="placeButtons"
+            onClick={() => setSelectPlace("반려동물식당카페")}
+          >
+            <PlaceIconWrapper src={dogRestaurant} alt="restaurant_img" />
           </span>
-          <span className='placeButtons' onClick={() => setSelectPlace('all')}>
-            <PlaceIconWrapper src={dogFaiclity} alt='etc_img' />
+          <span className="placeButtons" onClick={() => setSelectPlace("all")}>
+            <PlaceIconWrapper src={dogFaiclity} alt="etc_img" />
           </span>
         </div>
         <div>
-          <button className='currentLocation' onClick={curLocation}>
+          <button className="currentLocation" onClick={curLocation}>
             현재 위치
           </button>
         </div>
