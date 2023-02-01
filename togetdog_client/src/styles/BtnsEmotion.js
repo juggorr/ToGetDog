@@ -72,5 +72,5 @@ export const MainColorShortBtn = styled.button`
   color: #fff;
   font-weight: 700;
   font-size: 0.9rem;
-  font-family: Noto Sans KR', sans-serif;
+  font-family: "Lato", sans-serif;
 `;

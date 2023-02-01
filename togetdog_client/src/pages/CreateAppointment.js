@@ -1,5 +1,6 @@
 import { useEffect, useState, forwardRef, useRef } from "react";
 import { useLocation } from "react-router";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { userState } from "../recoil";
@@ -26,6 +27,7 @@ import { MainColorShortBtn } from "../styles/BtnsEmotion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const CreateAppointment = () => {
+  const navigate = useNavigate();
   // 임시 아이디값, 나중에 바꿔줘야함
   const userId = 1;
   const partnerId = 1;
@@ -113,6 +115,16 @@ const CreateAppointment = () => {
   };
 
   const DateModal = ({ type }) => {
+    const handleCalendarOpen = () => {
+      document.addEventListener(
+        "touchstart",
+        (event) => {
+          event.stopPropagation();
+        },
+        true
+      );
+    };
+
     const CustomInput = forwardRef(({ value, onClick }, ref) => (
       <TimeWrapper className="example-custom-input" ref={ref}>
         <div className="dateDiv">{value}</div>
@@ -127,8 +139,14 @@ const CreateAppointment = () => {
     const filterPassedTime = (time) => {
       const currentDate = new Date();
       const selectedDate = new Date(time);
-      return currentDate.getTime() < selectedDate.getTime();
+
+      if (currentDate.getTime() < startDate.getTime()) {
+        return true;
+      } else {
+        return currentDate.getTime() < selectedDate.getTime();
+      }
     };
+
     const renderDayContents = (day, date) => {
       return <DayWrapper>{getDate(date)}</DayWrapper>;
     };
@@ -144,6 +162,7 @@ const CreateAppointment = () => {
         minDate={new Date()}
         customInput={<CustomInput />}
         renderDayContents={renderDayContents}
+        onCalendarOpen={handleCalendarOpen}
         renderCustomHeader={({
           date,
           prevMonthButtonDisabled,
@@ -180,8 +199,8 @@ const CreateAppointment = () => {
         showTimeSelect
         showTimeSelectOnly
         customInput={<CustomInput />}
-        timeIntervals={15}
-        timeCaption="Time"
+        timeIntervals={30}
+        timeCaption="시간"
         filterTime={filterPassedTime}
         dateFormat="h:mm aa"
       />
@@ -202,11 +221,7 @@ const CreateAppointment = () => {
         </p>
         {userData.dog &&
           userData.dog.map((item, idx) => (
-            <DogImages
-              dog={item}
-              userKey={1}
-              key={userData.dog.dogId}
-            ></DogImages>
+            <DogImages dog={item} userKey={1} key={item.dogId}></DogImages>
           ))}
         <p className="queryStr">
           <FontAwesomeIcon icon="fa-user-group" />
@@ -214,11 +229,7 @@ const CreateAppointment = () => {
         </p>
         {partnerData.dog &&
           partnerData.dog.map((item, idx) => (
-            <DogImages
-              dog={item}
-              userKey={2}
-              key={partnerData.dog.dogId}
-            ></DogImages>
+            <DogImages dog={item} userKey={2} key={item.dogId}></DogImages>
           ))}
         <p className="queryStr">
           <FontAwesomeIcon icon="fa-clock" />
@@ -240,6 +251,16 @@ const CreateAppointment = () => {
           />
         </div>
       </WalkRequest>
+      <div className="btnWrapper">
+        <MainColorShortBtn
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          취소하기
+        </MainColorShortBtn>
+        <MainColorShortBtn>요청하기</MainColorShortBtn>
+      </div>
     </CreateAppointmentWrapper>
   );
 };

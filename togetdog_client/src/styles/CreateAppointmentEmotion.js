@@ -8,6 +8,13 @@ export const CreateAppointmentWrapper = styled.div`
     font-weight: 600;
     margin: 1.5rem 0rem;
   }
+
+  .btnWrapper {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 4rem;
+    padding: 0rem 3rem;
+  }
 `;
 
 export const WalkRequest = styled.div`
