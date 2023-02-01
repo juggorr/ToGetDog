@@ -18,8 +18,9 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (auth) navigate('/');
-  });
+    if (auth !== null && auth === JSON.parse(localStorage.getItem('user')) && localStorage.getItem('recoil-persist'))
+      navigate('/');
+  }, []);
 
   const setAuth = useSetRecoilState(authAtom);
 
