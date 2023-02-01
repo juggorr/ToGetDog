@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap');
 
 body {
-  background-color: #f6f6f6;
+  /* background-color: #f6f6f6; */
   display: flex;
   justify-content: center;
   align-items: center;
