@@ -46,7 +46,7 @@ const Map = () => {
   const [selectPlace, setSelectPlace] = useState('all');
   const [facilities, setFacilities] = useState(null);
 
-  const kakao = window.kakao;
+  const { kakao } = window;
 
   useEffect(() => {
     const geocoder = new kakao.maps.services.Geocoder();
