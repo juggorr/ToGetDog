@@ -66,6 +66,15 @@ const Login = () => {
     })
   };
 
+  // 소셜 로그인
+  // 네이버
+  const naverURL = 'https://nid.naver.com/oauth2.0/authorize?' +
+  'response_type=code' +
+  '&client_id=7fC7r9ej9wWJa4f_FEb_' +
+  '&state=NAVER_LOGIN_TEST' +
+  '&redirect_uri=http://70.12.247.230:8080/api/oauth2/login/code/naver'
+
+
   return (
     <>
       <LoginContainer>
@@ -97,7 +106,10 @@ const Login = () => {
           </InputWrapper>
           <PinkBtn onClick={checkInput}>로그인</PinkBtn>
           <div className="social-login-wrapper">
-            <SocialLoginLogo src={process.env.PUBLIC_URL + `assets/naver.png`}></SocialLoginLogo>
+            <SocialLoginLogo 
+              src={process.env.PUBLIC_URL + `assets/naver.png`}
+              onClick={() => {window.open(naverURL)}}
+            ></SocialLoginLogo>
             <SocialLoginLogo src={process.env.PUBLIC_URL + `assets/kakao.png`}></SocialLoginLogo>
             <SocialLoginLogo src={process.env.PUBLIC_URL + `assets/google.jpg`}></SocialLoginLogo>
           </div>
