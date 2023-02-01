@@ -66,13 +66,10 @@ const Login = () => {
     })
   };
 
-  // 소셜 로그인
-  // 네이버
-  const naverURL = 'https://nid.naver.com/oauth2.0/authorize?' +
-  'response_type=code' +
-  '&client_id=7fC7r9ej9wWJa4f_FEb_' +
-  '&state=NAVER_LOGIN_TEST' +
-  '&redirect_uri=http://70.12.247.230:8080/api/oauth2/login/code/naver'
+  // 소셜 로그인 주소
+  const naverURL = 'http://70.12.247.230:8080/oauth2/authorization/naver'
+  const kakaoURL = 'http://70.12.247.230:8080/oauth2/authorization/kakao'
+  const googleURL = 'http://70.12.247.230:8080/oauth2/authorization/google'
 
 
   return (
@@ -110,8 +107,14 @@ const Login = () => {
               src={process.env.PUBLIC_URL + `assets/naver.png`}
               onClick={() => {window.open(naverURL)}}
             ></SocialLoginLogo>
-            <SocialLoginLogo src={process.env.PUBLIC_URL + `assets/kakao.png`}></SocialLoginLogo>
-            <SocialLoginLogo src={process.env.PUBLIC_URL + `assets/google.jpg`}></SocialLoginLogo>
+            <SocialLoginLogo 
+              src={process.env.PUBLIC_URL + `assets/kakao.png`}
+              onClick={() => {window.open(kakaoURL)}} 
+            ></SocialLoginLogo>
+            <SocialLoginLogo 
+              src={process.env.PUBLIC_URL + `assets/google.jpg`}
+              onClick={() => {window.open(googleURL)}}   
+            ></SocialLoginLogo>
           </div>
           <div className="login-bottom-wrapper">
             <div className="login-bottom-text">회원가입</div>
