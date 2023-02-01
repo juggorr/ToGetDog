@@ -139,12 +139,6 @@ public class UserRestController {
 				// create JWT Token and save
 				long userId = user.getUserId();
 				String accessToken = jwtService.createAccessToken(userId);
-				String refreshToken = jwtService.createRefreshToken(userId);
-
-				// If a refresh token has already been issued, it is not issued.
-				if (user.getToken() != null && !user.getToken().equals("")) {
-					userService.saveRefreshToken(userId, refreshToken);
-				}
 				resultMap.put("result", SUCCESS);
 				resultMap.put("user", UserLoginParamDTO.of(user));
 				resultMap.put("access-token", accessToken);
@@ -156,39 +150,6 @@ public class UserRestController {
 		} catch (Exception e) {
 			logger.error("login failed : {}", e);
 			status =  HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
-
-	/***
-	 * Logout
-	 * @param token
-	 * @return
-	 */
-	@ApiOperation(value = "로그아웃", notes = "로그아웃을 진행합니다. 회원 정보를 담은 Token을 제거합니다.")
-	@GetMapping("/logout")
-	public ResponseEntity<?> logout(
-			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token
-			) {
-		
-		logger.info("Logout in");
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = null;
-		
-		try {
-			if(jwtService.validateToken(token)) {
-				long userId = jwtService.getUserId(token);
-				userService.deleteRefreshToken(userId);
-				resultMap.put("message", SUCCESS);
-				status = HttpStatus.OK;
-			} else {
-				resultMap.put("result", FAIL);
-				status = HttpStatus.UNAUTHORIZED;
-			}
-		} catch (Exception e) {
-			resultMap.put("result", FAIL);
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			logger.debug("Unexpected error : {}" + e.getMessage());
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}

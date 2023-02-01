@@ -85,9 +85,6 @@ public class User implements UserDetails {
     @Column(name = "ROLE_TYPE", length = 20)
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
-
-    @Column(name = "token")
-    private String token;
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

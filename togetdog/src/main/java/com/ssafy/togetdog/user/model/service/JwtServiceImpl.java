@@ -35,8 +35,7 @@ import io.jsonwebtoken.security.SignatureException;
 public class JwtServiceImpl implements JwtService {
 
 	public static final Logger logger = LoggerFactory.getLogger(JwtServiceImpl.class);
-	private static final int ACCESS_TOKEN_EXPIRE_MINUTES = 60; // minute
-	private static final int REFRESH_TOKEN_EXPIRE_MINUTES = 2; // week
+	private static final int ACCESS_TOKEN_EXPIRE_MINUTES = 24; // hour
 
 	@Value("${jwt.secret}")
 	private String secretSalt;
@@ -50,17 +49,12 @@ public class JwtServiceImpl implements JwtService {
 
 	@Override
 	public <T> String createAccessToken(long userId) {
-		return create(userId, "togetDog", 1000 * 10 * ACCESS_TOKEN_EXPIRE_MINUTES);
+		return create(userId, "togetDog", 1000 * 10 * 60 * ACCESS_TOKEN_EXPIRE_MINUTES);
 	}
 	
 	@Override
 	public <T> String createAccessToken(long userId, String role) {
-		return create(userId, "togetDog", 1000 * 10 * ACCESS_TOKEN_EXPIRE_MINUTES, role);
-	}
-
-	@Override
-	public <T> String createRefreshToken(long userId) {
-		return create(userId, "togetDog", 1000 * 60 * 60 * 24 * 7 * REFRESH_TOKEN_EXPIRE_MINUTES);
+		return create(userId, "togetDog", 1000 * 10 * 60 * ACCESS_TOKEN_EXPIRE_MINUTES, role);
 	}
 
 	@Override

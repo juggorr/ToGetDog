@@ -5,7 +5,6 @@ import java.util.Map;
 public interface JwtService {
 	<T> String createAccessToken(long userId);
 	<T> String createAccessToken(long userId, String role);
-	<T> String createRefreshToken(long userId);
 	<T> String create(long userId, String subject, long expir);
 	<T> String create(long userId, String subject, long expir, String role);
 	boolean validateToken(String jwtToken);
