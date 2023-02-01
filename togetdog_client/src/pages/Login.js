@@ -66,9 +66,11 @@ const Login = () => {
     await axios
       .post(
         `${BACKEND_URL}/user/login`,
+        {
+          email: email,
+          password: password,
+        },
         // { headers: { "Content-Type": "application/json" } },
-        null,
-        { params: { email, password } },
       )
       .then((resp) => {
         console.log('로그인 성공!');

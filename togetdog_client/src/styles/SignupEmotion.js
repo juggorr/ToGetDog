@@ -122,3 +122,43 @@ export const InputWrapper = styled.div`
     font-size: 0.8rem;
   }
 `;
+
+export const EmailContainer = styled.div`
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // background-color: rgba(0, 0, 0, 0.55);
+`;
+
+export const EmailWrapper = styled.div`
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .email-desc {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+`;
+
+export const LogoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-itmes: center;
+  padding-bottom: 50px;
+
+  .logo-title {
+    font-size: 40px;
+    font-weight
+    color: #000;
+  }
+
+  .email-logo {
+    width: 9rem;
+    height: 9rem;
+    margin: auto;
+    margin-bottom: 2rem;
+  }
+`;

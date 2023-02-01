@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const LoginContainer = styled.div`
   height: 100vh;
@@ -6,7 +6,7 @@ export const LoginContainer = styled.div`
   align-items: center;
   justify-content: center;
   // background-color: rgba(0, 0, 0, 0.55);
-`
+`;
 
 export const LoginWrapper = styled.div`
   width: 300px;
@@ -34,7 +34,7 @@ export const LoginWrapper = styled.div`
     text-decoration: underline;
     font-size: 13px;
   }
-`
+`;
 
 export const LogoWrapper = styled.div`
   display: flex;
@@ -54,7 +54,7 @@ export const LogoWrapper = styled.div`
     font-weight
     color: #000;
   }
-`
+`;
 
 export const InputWrapper = styled.div`
   width: 260px;
@@ -64,7 +64,8 @@ export const InputWrapper = styled.div`
     margin-bottom: 5px;
   }
 
-  .email-input, .password-input {
+  .email-input,
+  .password-input {
     width: 80%;
     font-size: 16px;
     color: #000;
@@ -79,12 +80,11 @@ export const InputWrapper = styled.div`
     color: #ff1b6d;
     font-size: 13px;
   }
-
-`
+`;
 
 export const SocialLoginLogo = styled.img`
   width: 50px;
   border-radius: 50%;
   margin: 0 15px;
   cursor: pointer;
-`
+`;
