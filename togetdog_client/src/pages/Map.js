@@ -63,18 +63,7 @@ const Map = () => {
         alert("사용자의 기본 주소를 불러올 수 없습니다.");
       }
     });
-  });
-  //   axios.get(`${BACKEND_URL}/user/${userId}`).then((response) => {
-  //     geocoder.addressSearch(response.data.address, function (result, status) {
-  //       if (status === kakao.maps.services.Status.OK) {
-  //         setCurLat(result[0].y);
-  //         setCurLng(result[0].x);
-  //       } else {
-  //         alert("사용자의 기본 주소를 불러올 수 없습니다.");
-  //       }
-  //     });
-  //   });
-  // }, []);
+  }, []);
 
   const GetFacilities = (kakaoMap) => {
     const fetchFacilities = async () => {
