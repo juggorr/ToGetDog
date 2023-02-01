@@ -18,6 +18,8 @@ import Signup from './pages/Signup';
 
 import NotFound from './pages/NotFound';
 import InternalServer from './pages/InternalServer';
+import EmailSent from './components/EmailSent';
+import EmailAuth from './pages/EmailAuth';
 
 function App() {
   return (
@@ -36,6 +38,7 @@ function App() {
           {/* 그 이외 필요없는 컴포넌트 */}
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
+          <Route path='/emailAuth' element={<EmailAuth />} />
           <Route path='/500' element={<InternalServer />} />
           <Route path='/*' element={<NotFound />} />
         </Routes>

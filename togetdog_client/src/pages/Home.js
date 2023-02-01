@@ -12,8 +12,9 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (auth) navigate('/login');
-  });
+    if (auth && localStorage.getItem('recoil-persist')) navigate('/');
+    else navigate('/login');
+  }, []);
 
   return (
     <div>
