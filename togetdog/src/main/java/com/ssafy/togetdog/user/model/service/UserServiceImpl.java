@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
 	private final WaitUserRepository WaitUserRepository;
 	
 	@Override
-	@Transactional
 	public boolean tmpRegistration(UserRegistParamDTO userDTO, String authKey) {
 		try {
 			checkRegistrationValidation(userDTO);
@@ -51,7 +50,6 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	@Transactional
 	public boolean registration(WaitUser user) {
 		try {
 			userRepository.save(user.toUser());
@@ -67,7 +65,6 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	@Transactional
 	public User findUserByEmailAndPassword(String email, String password) {
 		User user = userRepository.findByEmail(email).orElse(null);
 		if (user != null) {
@@ -79,46 +76,22 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	@Transactional
-	public void saveRefreshToken(long userId, String refreshToken) {
-		User user = findUserByUserId(userId);
-		if (user != null) {
-			user.setToken(refreshToken);
-			userRepository.save(user);
-		}
-	}
-	
-	@Override
-	@Transactional
-	public void deleteRefreshToken(long userId) {
-		User user = findUserByUserId(userId);
-		if (user != null) {
-			user.setToken(null);
-			userRepository.save(user);
-		}
-	}
-	
-	@Override
-	@Transactional
 	public User findUserByEmail(String email) {
 		return userRepository.findByEmail(email).orElse(null);
 	}
 
 
 	@Override
-	@Transactional
 	public User findUserByNickName(String nickName) {
 		return userRepository.findByNickName(nickName).orElse(null);
 	}
 
 	@Override
-	@Transactional
 	public User findUserByUserId(long userId) {
 		return userRepository.findById(userId).orElse(null);
 	}
 	
 	@Override
-	@Transactional
 	public void updateUserInfo(long userId, UserUpdateParamDTO userDTO) {
 		checkUpdateValidation(userDTO);
 		User user = findUserByUserId(userId);
@@ -133,7 +106,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	@Transactional
 	public void updatePassword(long userId, String password, String newPassword) {
 		User user = userRepository.findById(userId).orElse(null);
 		if (user != null ) {
@@ -145,7 +117,6 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	@Transactional
 	public void updateTmpPassword(long userId, String tmpPassword) {
 		User user = userRepository.findById(userId).orElse(null);
 		if (user != null ) {
@@ -155,19 +126,16 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	@Transactional
 	public void deleteUser(long userId) {
 		userRepository.deleteById(userId);
 	}
 	
 	@Override
-	@Transactional
 	public WaitUser findWaitUserByEmail(String email) {
 		return WaitUserRepository.findByEmail(email).orElse(null);
 	}
 	
 	@Override
-	@Transactional
 	public WaitUser findWaitUserByNickName(String nickname) {
 		return WaitUserRepository.findByNickName(nickname).orElse(null);
 	}

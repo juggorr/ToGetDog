@@ -8,8 +8,6 @@ import com.ssafy.togetdog.user.model.entity.WaitUser;
 public interface UserService {
 	boolean tmpRegistration(UserRegistParamDTO userDTO, String authKey);
 	boolean registration(WaitUser user);
-	void saveRefreshToken(long userId, String refreshToken);
-	void deleteRefreshToken(long userId);
 	void deleteUser(long userId);
 	void updateUserInfo(long userId, UserUpdateParamDTO userDTO);
 	void updatePassword(long userId, String password, String newPassword);

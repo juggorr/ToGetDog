@@ -14,7 +14,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.ssafy.togetdog.user.model.service.UserOAuthService;
+import com.ssafy.togetdog.user.model.service.UserOAuth2Service;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig {
 	
-	//private final UserOAuthService userOauthService;
+	private final UserOAuth2Service userOauth2Service;
 	
 	@Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -33,10 +33,10 @@ public class SecurityConfig {
                 .antMatchers(PERMIT_URL_ARRAY)
                 //.antMatchers("/api/**").hasRole(Role.USER.name())
     			.permitAll()
-                .anyRequest().authenticated().and(); //나머지 URL은 인증된 사용자에게만 허용(로그인한 사용자만)
-                //.oauth2Login() // OAuth2 로그인 설정 시작 지점
-        		//.userInfoEndpoint() //OAuth2 로그인 후 사용자 정보를 가져올 때의 설정 담당
-        		//.userService(userOauthService); //로그인 성공 후 조치를 진행할 UserService 인터페이스 구현체 등록, 로그인 서버에서 정보를 가져오고 나서 추가로 진행하고자 하는 기능 명시 가능
+                .anyRequest().authenticated().and() //나머지 URL은 인증된 사용자에게만 허용(로그인한 사용자만)
+                .oauth2Login() // OAuth2 로그인 설정 시작 지점
+        		.userInfoEndpoint() //OAuth2 로그인 후 사용자 정보를 가져올 때의 설정 담당
+        		.userService(userOauth2Service); //로그인 성공 후 조치를 진행할 UserService 인터페이스 구현체 등록, 로그인 서버에서 정보를 가져오고 나서 추가로 진행하고자 하는 기능 명시 가능
         return http.build();
     }
 	
