@@ -23,7 +23,7 @@ export const FooterWrapper = styled.footer`
   }
 
   .active {
-    color: #BB2649;
+    color: #bb2649;
   }
 `;
 
