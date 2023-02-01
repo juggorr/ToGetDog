@@ -55,7 +55,6 @@ const Map = () => {
 
   useEffect(() => {
     const geocoder = new kakao.maps.services.Geocoder();
-    console.log(user);
     geocoder.addressSearch(user.address, function (result, status) {
       if (status === kakao.maps.services.Status.OK) {
         setCurLat(result[0].y);
