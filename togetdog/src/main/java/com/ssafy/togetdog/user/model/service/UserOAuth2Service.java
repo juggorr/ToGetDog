@@ -16,32 +16,50 @@ import org.springframework.stereotype.Service;
 import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.repository.UserRepository;
 import com.ssafy.togetdog.user.model.vo.OAuthAttributes;
+import com.ssafy.togetdog.user.model.vo.ProviderType;
+import com.ssafy.togetdog.user.model.vo.RoleType;
+import com.ssafy.togetdog.user.model.vo.UserPrincipal;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class UserOAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+public class UserOAuth2Service extends DefaultOAuth2UserService {
 
 	private final UserRepository userRepository;
 	
 	@Override
-	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+	public OAuth2User loadUser(
+			OAuth2UserRequest userRequest
+			) throws OAuth2AuthenticationException {
 		
-		OAuth2UserService<OAuth2UserRequest, OAuth2User> service = new DefaultOAuth2UserService();
-		OAuth2User oAuth2User = service.loadUser(userRequest); // Oath2 정보를 가져옴
+		OAuth2User oAuth2User = super.loadUser(userRequest);
 		
-		String registrationId = userRequest.getClientRegistration().getRegistrationId(); // 소셜 정보 가져옴
-        String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName(); 
+		String registrationId = userRequest.getClientRegistration().getRegistrationId(); // ex) naver
+        String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
         
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
-
+        
         User user = userRepository.findByEmail(attributes.getEmail()).orElse(null);
-
-        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(user.getRoleType().getCode())),
-                attributes.getAttributes(),
-        		attributes.getNameAttributeKey());
+        if (user == null) {
+        	user = User.builder()
+        			.email(attributes.getEmail())
+        			.nickName(attributes.getName())
+        			.password("naverLoginUser")
+        			.social(attributes.getSocial())
+        			.roleType(RoleType.USER)
+        			.build();
+        }
+        
+        System.out.println(user);
+        return UserPrincipal.create(user);
 	}
+	
+	
+//	private User saveOrUpdate(OAuthAttributes attributes) {
+//		User user = userRepository.findByEmail(attributes.getEmail()).map(entity -> entity.update(attributes.getName())).orElse(attributes.toEntity());
+//		return userRepository.save(user);
+//	}
 
 }

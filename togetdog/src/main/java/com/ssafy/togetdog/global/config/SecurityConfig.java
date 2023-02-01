@@ -14,6 +14,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.ssafy.togetdog.global.interceptor.OAuth2AuthenticationSuccessHandler;
+import com.ssafy.togetdog.user.model.repository.OAuth2AuthorizationRequestRepository;
 import com.ssafy.togetdog.user.model.service.UserOAuth2Service;
 
 import lombok.RequiredArgsConstructor;
@@ -28,15 +30,24 @@ public class SecurityConfig {
 	
 	@Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
+        		.httpBasic().disable() // rest api만 가능
+        		.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(PERMIT_URL_ARRAY)
-                //.antMatchers("/api/**").hasRole(Role.USER.name())
-    			.permitAll()
-                .anyRequest().authenticated().and() //나머지 URL은 인증된 사용자에게만 허용(로그인한 사용자만)
+                .antMatchers(PERMIT_URL_ARRAY).permitAll() //..hasRole(Role.USER.name())
+    			.and()
                 .oauth2Login() // OAuth2 로그인 설정 시작 지점
+                .authorizationEndpoint()
+                .baseUri("/oauth2/authorization")
+                .authorizationRequestRepository(oAuth2AuthorizationRequestRepository())
+                .and()
+                .redirectionEndpoint().baseUri("/oauth2/code/**")
+                .and()
         		.userInfoEndpoint() //OAuth2 로그인 후 사용자 정보를 가져올 때의 설정 담당
-        		.userService(userOauth2Service); //로그인 성공 후 조치를 진행할 UserService 인터페이스 구현체 등록, 로그인 서버에서 정보를 가져오고 나서 추가로 진행하고자 하는 기능 명시 가능
+        		.userService(userOauth2Service)
+        		.and()
+              .successHandler(oAuth2AuthenticationSuccessHandler());
+//              .failureHandler(oAuth2AuthenticationFailureHandler());
         return http.build();
     }
 	
@@ -74,4 +85,24 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+    
+    // 쿠키 기반 인가 Repository
+    // 인가 응답을 연계하고 검증할 때 사용
+    @Bean
+    public OAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository() {
+        return new OAuth2AuthorizationRequestRepository();
+    }
+
+//    // OAUTH 인증 성공 핸들러
+    @Bean
+    public OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
+        return new OAuth2AuthenticationSuccessHandler(oAuth2AuthorizationRequestRepository());
+    }
+
+//    // Oauth 인증 실패 핸들러
+//    @Bean
+//    public OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler() {
+//        return new OAuth2AuthenticationFailureHandler(oAuth2AuthorizationRequestRepository());
+//    }
+
 }

@@ -101,7 +101,7 @@ public class MailSendService {
         			new StringBuffer()
         			.append("[Togetdog] 이메일 인증 \n")
         			.append("아래 링크를 클릭하시면 이메일 인증이 완료됩니다. \n")
-        			.append("https://togetdog.site/signup?email=").append(email).append("&authKey=").append(authKey)
+        			.append("https://togetdog.site/emailAuth?email=").append(email).append("&authKey=").append(authKey)
         			.toString());
         	mail.setFrom(new InternetAddress("togetdog@gmail.com"));
         	mail.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(email));
