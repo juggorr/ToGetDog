@@ -11,7 +11,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.togetdog.user.model.dto.UserLoginParamDTO;
+import com.ssafy.togetdog.user.model.dto.UserSocialLoginRespDTO;
 import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.service.JwtService;
 import com.ssafy.togetdog.user.model.service.UserService;
@@ -45,7 +45,7 @@ public class Oauth2RestController {
 			User user = userService.findUserByEmail(authentication.getName());
 			String accessToken = jwtService.createAccessToken(user.getUserId());
 			resultMap.put("result", SUCCESS);
-			resultMap.put("user", UserLoginParamDTO.of(user, user.getEmail()));
+			resultMap.put("user", UserSocialLoginRespDTO.of(user));
 			resultMap.put("access-token", accessToken);
 			status = HttpStatus.OK;
 		}
