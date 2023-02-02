@@ -25,25 +25,3 @@ export const FooterWrapper = styled.footer`
     color: #bb2649;
   }
 `;
-
-// export const DivContainer = styled.div`
-//   display: flex;
-//   // justify-content: space-between;
-
-//   .nested {
-//     // float: left;
-//     width: 20%;
-//     text-align: center;
-
-//     height: 45px;
-//     line-height: 45px;
-//   }
-
-//   .nav-item {
-//     color: black;
-//   }
-
-//   .active {
-//     color: #559968;
-//   }
-// `;
