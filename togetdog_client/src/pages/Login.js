@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { BACKEND_URL } from '../config';
+// import { BACKEND_URL } from '../config';
 import { authAtom, userState } from '../recoil';
 
 import { InputWrapper, LoginContainer, LoginWrapper, LogoWrapper, SocialLoginLogo } from '../styles/LoginEmotion';
@@ -27,6 +27,8 @@ const Login = () => {
 
   const emailRef = useRef();
   const passwordRef = useRef();
+
+  const BACKEND_URL = window.location.origin;
 
   const [user, setUser] = useRecoilState(userState);
 
@@ -67,7 +69,7 @@ const Login = () => {
     // e.preventDefault();
     await axios
       .post(
-        `${window.location.origin}/user/login`,
+        `${BACKEND_URL}/user/login`,
         {
           email: email,
           password: password,
