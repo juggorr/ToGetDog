@@ -1,5 +1,8 @@
 package com.ssafy.togetdog.chat.controller;
 
+import java.time.LocalDateTime;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,20 +13,25 @@ import com.ssafy.togetdog.chat.util.ChatSaveList;
 
 @RestController
 public class ChatSendController {
+
+	@Autowired
+	ChatSaveList csl;
 	
     @MessageMapping("/messages/sessionNum")
     public void setSesstionId(SessionInfo sessionInfo) {
-    	SessionInfo se = sessionInfo;
-    	String url = se.getUrl();
-    	System.out.println(url);
-    	int len = url.length();
-    	se.setUrl(url.substring(len - 18 , len - 10));
-    	ChatSaveList.addSessionId(se);
+    	System.out.println(sessionInfo.getSessionId());
+    	csl.addSessionId(sessionInfo);
     }
     @MessageMapping("/messages/{rooms}")
     @SendTo("/subscribe/rooms/{rooms}")
     public ChatDTO chat(ChatDTO chatDto) {
-		ChatSaveList.saveChat(chatDto);
-    	return chatDto;
+    	chatDto.setIdx(2);
+    	chatDto.setDate(LocalDateTime.now());
+    	
+		if(csl.saveChat(chatDto)) {
+			return chatDto;			
+		}else {
+			return null;
+		}
     }
 }
