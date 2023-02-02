@@ -364,7 +364,6 @@ const CreateAppointment = () => {
   const handleCreateAppointment = async (myDogList, partnerDogList) => {
     await axios
       .post(`${DUMMY_URL}/meeting`, {
-        // refresh token
         userId: userData.userId,
         myDogs: myDogList,
         partnerDogs: partnerDogList,
@@ -373,7 +372,6 @@ const CreateAppointment = () => {
       })
       .then((resp) => {
         console.log("요청 성공");
-
         navigate(-1);
       })
       .catch((err) => {
