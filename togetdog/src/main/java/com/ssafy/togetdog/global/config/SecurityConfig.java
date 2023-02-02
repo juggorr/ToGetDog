@@ -48,8 +48,8 @@ public class SecurityConfig {
         return http.build();
     }
 	
-	 private static final String[] PERMIT_URL_ARRAY = {
-			 	"/**", //다 허용 일단 나중에 걷어내자~~
+	private static final String[] PERMIT_URL_ARRAY = {
+			 	"/**", //다 허용 일단 나중에 수정해야 함
 	            /* swagger v2 */
 	            "/v2/api-docs",
 	            "/swagger-resources",
@@ -61,7 +61,7 @@ public class SecurityConfig {
 	            /* swagger v3 */
 	            "/v3/api-docs/**",
 	            "/swagger-ui/**"
-	    };
+	};
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
