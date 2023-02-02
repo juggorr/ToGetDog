@@ -32,7 +32,7 @@ public class SecurityConfig {
         		.httpBasic().disable() // rest api만 가능
         		.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(PERMIT_URL_ARRAY).permitAll() //..hasRole(Role.USER.name())
+                .antMatchers(PERMIT_URL_ARRAY).permitAll()
     			.and()
                 .oauth2Login() // OAuth2 로그인 설정 시작 지점
                 .authorizationEndpoint()
