@@ -88,7 +88,7 @@ export const FeedProfileBottom = styled.div`
   }
 
   .characters-box {
-    margin-top: 1rem;
+    padding: 0.5rem 0;
   }
 `;
 

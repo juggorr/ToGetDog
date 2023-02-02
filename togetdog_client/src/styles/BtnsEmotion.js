@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 // 홈으로 이동 텍스트 버튼
 export const HomeTextBtn = styled.div`
@@ -64,7 +64,6 @@ export const MainColorLongBtn = styled.button`
 export const OrangeBtn = styled.button`
   background-color: #ffd89d;
   border: none;
-  font-weight: 700;
   padding: 0.3rem 0.5rem;
   border-radius: 0.6rem;
   margin-right: 0.5rem;
@@ -73,7 +72,6 @@ export const OrangeBtn = styled.button`
 export const YellowBtn = styled.button`
   background-color: #fff0cb;
   border: none;
-  font-weight: 700;
   padding: 0.3rem 0.5rem;
   border-radius: 0.6rem;
   margin-right: 0.5rem;
