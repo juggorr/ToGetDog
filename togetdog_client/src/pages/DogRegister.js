@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useNavigate } from 'react-router-dom';
 import Select from "react-select";
 import axios from 'axios';
 
-import { DUMMY_URL } from "../config";
+import { BACKEND_URL, DUMMY_URL } from "../config";
 
 import { MainColorLongBtn } from "../styles/BtnsEmotion";
 import DoubleOptionBtn from "../components/DoubleOptionBtn";
@@ -10,11 +11,13 @@ import {
   RegisterContainer,
   RegisterWrapper, 
   ProfileImage,
+  AddImage,
   InputWrapper
 } from "../styles/DogRegisterEmotion";
 
 
 function DogRegister() {
+  const navigate = useNavigate();
 
   // 견종 리스트 public/breeds.txt에서 불러오기
   const[breedList, setBreedList] = useState([]);
@@ -85,6 +88,12 @@ function DogRegister() {
     },
   ];
   
+  // 강아지 프로필 이미지 업로드
+  const [image, setImage] = useState(null);
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    setImage(URL.createObjectURL(file));
+  };
 
   // 이름, 5글자 이상 입력 불가
   const [name, setName] = useState('');
@@ -114,17 +123,20 @@ function DogRegister() {
   const [month, setMonth] = useState('');
   const handleMonth = ({target: {value}}) => {
     setMonth(value.slice(0, 2));
-  }
+  };
 
-  // 나이 계산해주는 함수
-  const [age, setAge] = useState(0);
-  const ageCalculator = () => {
-    if (year && month) {
-      let thisYear = new Date().getFullYear();
-      let thisMonth = new Date().getMonth() + 1;
-
-      const months = (thisYear - year) * 12 + (thisMonth - month);
-      setAge(months);
+  // 나이 문자열형태로 바꾸기 '202201'
+  const [age, setAge] = useState('');
+  const makeAge = () => {
+    if (year && month && month < 10) {
+      const string = year.toString() + '0' + month.toString();
+      setAge(string);
+      return ;
+    };
+    if (year && month && month >= 10) {
+      const string = year.toString() + month.toString();
+      setAge(string);
+      return ;
     };
   }
 
@@ -158,69 +170,112 @@ function DogRegister() {
     setPerk(value.slice(0, 20));
   };
 
-
-  // 등록하기 버튼 누르면 POST 요청 보내기
-  const clickRegister = async () => {
-    ageCalculator();
-    let sexStr = '';
-    switch (sex) {
-      case 1:
-        sexStr = 'male';
-        break;
-      case 2:
-        sexStr = 'female';
-        break;
-      default:
-        sexStr = 'male';
-    }
-    
-    await axios
-      .post(
-        `${DUMMY_URL}/dog`,
-        {
-          dogName: name,
-          dogGender: sexStr,
-          dogType: breed,
-          dogAge: age,
-          dogWeight: weight,
-          dogNeutered: isNeuterd,
-          dogCharacter1: isObedient,
-          dogCharacter2: isActive,
-          description: perk,
-        },
-      )
-      .then((res) => {
-        console.log('강아지등록..?')
-        console.log(res)
-      })
-      .catch((err) => {
-        console.log(err)
-      });
-  }
-
   // 유효성 검사 및 강아지 등록
   // 1. 필수 입력사항 미 입력 시
   // 해당 버튼에 불이 들어오고 (useRef 사용)
-
-  // 2. 해당 밸류가 적절하지 않은 경우
-  // ex) 이름이 영어인 경우
-  // ex) 몸무게 min, max
-  // ex) 나이 min, max
   
-  // 우선 '값을 입력하세요' 메시지 띄우기
-  // 모두 통과하면 콘솔에 강아지가 등록되었습니다 메시지
-  const checkEssentials = () => {
-    if (!name || !sex || !breed || !year || !month || !weight
-      || !isNeuterd || !isObedient || !isActive) {
+  // 유효성 검사 함수
+  const checkValidation = () => {
+    // 필수 입력 값들이 입력되었는지 확인
+    if (!image || !name || !sex || !breed || !year || !month || 
+      !weight || !isNeuterd || !isObedient || !isActive) {
       console.log('값을 입력하세요')
+      return false;
     };
+    // 이름 유효성 검사
+    const nameRegexp = /가-힣/;
+    // 참 거짓 헷갈림..
+    if (nameRegexp.test(name)) {
+      console.log('이름은 한글로 최대 5글자 입니다.')
+      return false;
+    };
+    // 년도 유효성 검사
+    const checkYear = new Date().getFullYear();
+    if (year < 2000 || year > checkYear) {
+      console.log('적절한 년도를 입력해 주세요')
+      return false;
+    };
+    // 달 유효성 검사
+    const checkMonth = new Date().getMonth() + 1;
+    // 1월부터 12월까지 입력받기
+    if (month < 1 || month > 13) {
+      console.log('적절한 달을 입력해 주세요')
+      return false;
+    };
+    // 미래의 시점 입력 제한
+    if (year === checkYear && month > checkMonth) {
+      console.log('현재나 과거 시점을 등록해 주세요')
+      return false;
+    };
+    // 몸무게 유효성 검사
+    if (weight < 0 || weight > 80) {
+      console.log('적절한 몸무게를 입력해 주세요')
+      return false;
+    };
+    // 모두 통과하면 true 반환
+    return true;
   }
+  
+  const sendPOST = async ()=> {
 
+    const formData = new FormData();
+    formData.append('dogName', name);
+    formData.append('dogGender', sex);
+    formData.append('dogType', breed);
+    formData.append('dogBirth', age);
+    formData.append('dogWeight', weight);
+    formData.append('dogNeutered', isNeuterd);
+    formData.append('dogCharacter1', isObedient);
+    formData.append('dogCharacter2', isActive);
+    formData.append('description', perk);
+    formData.append('dogProfile', image);
+
+    await axios
+      .post(`${DUMMY_URL}/dummy/dog`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then((res) => {
+        console.log(res.data);
+        navigate('/dogregister');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // 버튼누르면 POST 요청 보내기
+  const handleRegister = () => {
+    if (checkValidation()) {
+      sendPOST();
+    } else {
+      console.log('정상 처리되지 않았음');
+      return ;
+    }
+  }
+   
 
   return (
     <RegisterContainer>
       <RegisterWrapper>
-        <ProfileImage />
+        <ProfileImage
+          image={image}
+        >
+          {/* 사진 등록 */}
+          <AddImage>
+            <label htmlFor="imgUp">
+              <div className="label-div" />
+            </label>
+          </AddImage>
+          <input 
+            type="file"
+            id="imgUp"
+            className="input-file"
+            accept="image/jpg, image/png, image/jpeg"
+            onChange={handleImage} 
+          />
+        </ProfileImage>
         {/* 이름 입력 */}
         <InputWrapper>
           <div className="input-title">
@@ -392,11 +447,11 @@ function DogRegister() {
         <div className="signup-desc">*표시는 필수 입력 값입니다.</div>
         <div className="btn-wrapper">
           <MainColorLongBtn
-            onClick={clickRegister}
+            onClick={handleRegister}
           >등록하기</MainColorLongBtn>
         </div>
         {/* 추후에 우리로고로 바꾸기 */}
-        <div className="img-div">
+        <div className="logo-div">
           <img src={process.env.PUBLIC_URL + 'favicon.ico'} alt="paw"></img>
         </div>
       </RegisterWrapper>

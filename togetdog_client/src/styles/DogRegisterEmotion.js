@@ -1,12 +1,15 @@
 import styled from "@emotion/styled";
 import ReactSelect from "react-select";
 
+import plusIcon from "../assets/plusicon3.png";
+import dog_profile from "../assets/dog_profile.png";
+
 export const RegisterContainer = styled.div`
   heignt: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;
 
 export const RegisterWrapper = styled.div`
   padding: 20px;
@@ -25,26 +28,27 @@ export const RegisterWrapper = styled.div`
     justify-content: space-around;
   }
   
-  .img-div {
+  .logo-div {
     padding: 20px;
     display: flex;
     justify-content: center;
+  }
+
+  .image-div {
+    width: 100%;
+    height: 100%;
+  }
+
+  .input-file {
+    display: none;
   }
   
   .age-div {
     float: left;
   }
   
-  .age-input {
-    width: 70px;
-  }
-  
   .weight-div {
     clear: left;
-  }
-  
-  .unique-input {
-    width: 320px;
   }
   
   .signup-desc {
@@ -58,15 +62,46 @@ export const RegisterWrapper = styled.div`
     padding-top: 1.5rem;
   }
   `;
-  
+
   export const ProfileImage = styled.div`
-  background-color: tomato;
+  background-color: #cdcdcd;
   
-  width: 80px;
-  height: 80px;
+  width: 5rem;
+  height: 5rem;
   border-radius: 70%;
-  padding: 20px;
+  padding: 1.25rem;
   margin: auto;
+
+  background-image: ${props => props.image ? `url(${props.image})` : `url(${dog_profile})`};
+  background-size: 100% 100%;
+
+  position: relative;
+
+  .img-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  `;
+
+  export const AddImage = styled.div`
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 70%;
+  padding: 1.25rem;
+  margin: auto;
+
+  position: relative;
+  left: 4rem;
+  top: 3rem;
+
+  background-image: url(${plusIcon});
+  background-size: 100% 100%;
+
+  .label-div {
+    width: 100%;
+    height: 100%;
+  }
   `;
   
   export const InputWrapper = styled.div`
@@ -129,6 +164,11 @@ export const RegisterWrapper = styled.div`
     justify-content: space-around;
   }
 
+  .double-option-btn-on {
+    background-color: #699bf7;
+    color: #fff;
+  }
+
   .yaer {
     font-size: 1rem;
     padding-right: 2rem;
@@ -143,8 +183,7 @@ export const RegisterWrapper = styled.div`
     font-size: 1rem;
     vertical-align: bottom;
   }
-
-`
+`;
 
 // export const ButtonDiv = styled.div`
 //   display: flex;
@@ -164,7 +203,7 @@ export const BreedDrops = styled(ReactSelect)`
   & .Select-placeholder {
     font-size: smaller;
   }
-`
+`;
 // export const ImgDiv = styled.div`
 //   padding: 20px;
 //   display: flex;

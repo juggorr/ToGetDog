@@ -46,6 +46,7 @@ export const OptionBtnItem = styled.div`
   background-color: #fff;
   border: 0.1rem solid #4834d4;
   border-radius: 0.7rem;
+
 `;
 
 export const DoubleOptionBtnItem = styled.div`
@@ -58,6 +59,7 @@ export const DoubleOptionBtnItem = styled.div`
   background-color: #fff;
   border: 0.1rem solid #4834d4;
   border-radius: 0.7rem;
+
 `;
 
 export const MainColorLongBtn = styled.button`
