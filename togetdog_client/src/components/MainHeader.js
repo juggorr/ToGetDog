@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useRecoilState } from 'recoil';
 import { userState } from '../recoil';
@@ -10,7 +10,13 @@ import { HeaderWrapper } from '../styles/MainHeaderEmotion';
 
 function Navbar() {
   const [user, setUser] = useRecoilState(userState);
-  const dongName = user.address.substring(user.address.lastIndexOf(' ') + 1);
+  let dongName = '주소를 등록해주세요';
+
+  if (user) {
+    dongName = user.address.substring(user.address.lastIndexOf(' ') + 1);
+  }
+
+  const navigate = useNavigate();
 
   return (
     <>
