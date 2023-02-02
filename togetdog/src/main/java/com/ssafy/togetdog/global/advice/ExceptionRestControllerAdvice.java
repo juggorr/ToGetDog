@@ -19,6 +19,19 @@ import com.ssafy.togetdog.global.exception.InvalidLoginActingException;
 import com.ssafy.togetdog.global.exception.TokenValidFailedException;
 import com.ssafy.togetdog.global.exception.UnAuthorizedException;
 
+/**
+ * 
+ * @author skyju
+ * Controller의 난잡한 try catch(deep doubt구조)를 해결 하기 위해서
+ * Exception을 Handling 해주는 Advice Class입니다.
+ * 
+ * 이 Advice의 대상 Package로 설정 되면
+ * 이 Advice에 등록되어 있는 Exception은 Advice에서 처리됩니다.
+ * 
+ * 꼭 Exception을 다 읽어보시고 적용하셔야 하며,
+ * 다른 Exception을 추가하신다면 package 대상 파일을 작성한 사람들에게 알려주셔야 합니다.
+ *
+ */
 @RestControllerAdvice(basePackages = {"com.ssafy.togetdog.user.controller", "com.ssafy.togetdog.dog.controller"})
 public class ExceptionRestControllerAdvice extends ResponseEntityExceptionHandler {
 	
