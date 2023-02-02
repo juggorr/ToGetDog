@@ -72,7 +72,12 @@ const Login = () => {
           email: email,
           password: password,
         },
-        { headers: { 'Content-Type': 'application/json' } },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
+        },
       )
       .then((resp) => {
         console.log('로그인 성공!');
