@@ -53,10 +53,6 @@ const CreateAppointment = () => {
 
   const [placeInput, setPlaceInput] = useState();
 
-  // const [myDogError, setMyDogError] = useState(false);
-  // const [partnerDogError, setPartnerDogError] = useState(false);
-  // const [startDateError, setStartDateError] = useState(false);
-  // const [placeError, setPlaceError] = useState(false);
   const myDogError = useRef(false);
   const partnerDogError = useRef(false);
 
@@ -368,6 +364,7 @@ const CreateAppointment = () => {
   const handleCreateAppointment = async (myDogList, partnerDogList) => {
     await axios
       .post(`${DUMMY_URL}/meeting`, {
+        // refresh token
         userId: userData.userId,
         myDogs: myDogList,
         partnerDogs: partnerDogList,

@@ -6,7 +6,7 @@ export const CreateAppointmentWrapper = styled.div`
     font-family: "Noto Sans KR", sans-serif;
     font-size: 1.2rem;
     font-weight: 600;
-    margin: 3rem 0rem;
+    margin: 2rem 0rem;
   }
 
   .btnWrapper {
