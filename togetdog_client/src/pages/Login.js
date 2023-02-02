@@ -80,13 +80,13 @@ const Login = () => {
     await axios
       .post(
         `${BACKEND_URL}/user/login`,
-        encodeURI({
+        {
           email: email,
           password: password,
-        }),
+        },
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json;charset=utf-8",
           },
         }
       )
