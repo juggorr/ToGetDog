@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 // #BB2649 올해의 팬톤 컬러
 
@@ -7,14 +7,13 @@ export const FooterWrapper = styled.footer`
   bottom: 0;
   display: flex;
   width: inherit;
-  height: 50px;
-  border-top: 2px solid #e2e2e2;
+  height: 55px;
 
   .icon-box {
     width: 20%;
     text-align: center;
-    height: 50px;
-    line-height: 50px;
+    height: 55px;
+    line-height: 55px;
   }
 
   .footer-icon {
@@ -23,28 +22,6 @@ export const FooterWrapper = styled.footer`
   }
 
   .active {
-    color: #BB2649;
+    color: #bb2649;
   }
 `;
-
-// export const DivContainer = styled.div`
-//   display: flex;
-//   // justify-content: space-between;
-
-//   .nested {
-//     // float: left;
-//     width: 20%;
-//     text-align: center;
-
-//     height: 45px;
-//     line-height: 45px;
-//   }
-
-//   .nav-item {
-//     color: black;
-//   }
-
-//   .active {
-//     color: #559968;
-//   }
-// `;
