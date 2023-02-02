@@ -36,45 +36,45 @@ public class SwaggerConfig {
 	
 	// DUMMY
 
-	@Bean
-	public Docket dummyUserApi() {
-		return getDocket("DUMMY USER", true, "user");
-	}
-
-	@Bean
-	public Docket dogApi() {
-		return getDocket("DUMMY DOG", true, "dog");
-	}
-
-	@Bean
-	public Docket feedApi() {
-		return getDocket("DUMMY FEED", true, "feed");
-	}
-
-	@Bean
-	public Docket appointmentApi() {
-		return getDocket("DUMMY APPOINTMENT", true, "appointment");
-	}
-
-	@Bean
-	public Docket facilityApi() {
-		return getDocket("DUMMY FACILITY", true, "facility");
-	}
-
-	@Bean
-	public Docket notifyApi() {
-		return getDocket("DUMMY NOTIFY", true, "notify");
-	}
-
-	@Bean
-	public Docket chatApi() {
-		return getDocket("DUMMY CHAT", true, "chat");
-	}
-
-	@Bean
-	public Docket searchApi() {
-		return getDocket("DUMMY SEARCH", true, "search");
-	}
+//	@Bean
+//	public Docket dummyUserApi() {
+//		return getDocket("DUMMY USER", true, "user");
+//	}
+//
+//	@Bean
+//	public Docket dogApi() {
+//		return getDocket("DUMMY DOG", true, "dog");
+//	}
+//
+//	@Bean
+//	public Docket feedApi() {
+//		return getDocket("DUMMY FEED", true, "feed");
+//	}
+//
+//	@Bean
+//	public Docket appointmentApi() {
+//		return getDocket("DUMMY APPOINTMENT", true, "appointment");
+//	}
+//
+//	@Bean
+//	public Docket facilityApi() {
+//		return getDocket("DUMMY FACILITY", true, "facility");
+//	}
+//
+//	@Bean
+//	public Docket notifyApi() {
+//		return getDocket("DUMMY NOTIFY", true, "notify");
+//	}
+//
+//	@Bean
+//	public Docket chatApi() {
+//		return getDocket("DUMMY CHAT", true, "chat");
+//	}
+//
+//	@Bean
+//	public Docket searchApi() {
+//		return getDocket("DUMMY SEARCH", true, "search");
+//	}
 	
 	
 	//////////////////////////////////////////////////////////
@@ -87,6 +87,17 @@ public class SwaggerConfig {
 				.apiInfo(apiInfo()) // apiInfo정보
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.ssafy.togetdog.user.controller"))
+				.paths(PathSelectors.any()) // 아무 경로나 가능
+				.build();
+	}
+	
+	@Bean
+	public Docket board() {
+		return new Docket(DocumentationType.OAS_30).groupName("Board")
+				.useDefaultResponseMessages(true) // Swagger 에서 제공해주는 기본 응답 코드 표시 여부
+				.apiInfo(apiInfo()) // apiInfo정보
+				.select()
+				.apis(RequestHandlerSelectors.basePackage("com.ssafy.togetdog.board.controller"))
 				.paths(PathSelectors.any()) // 아무 경로나 가능
 				.build();
 	}

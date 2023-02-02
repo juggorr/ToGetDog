@@ -18,12 +18,18 @@ import lombok.ToString;
 @Data
 public class BoardDto {
 	private long boardId;
-	private User user;
-	private Dog dog;
+	private long userId;
+	private long dogId;
 	private String image;
     private String content;
     
     public Board toEntity() {
+    	User user = User.builder()
+    			.userId(userId).build();
+    	
+    	Dog dog = Dog.builder()
+    			.dogId(dogId).build();
+    	
     	Board board = Board.builder()
     			.boardId(boardId)
     			.user(user)
@@ -33,14 +39,15 @@ public class BoardDto {
     			.build();
     	return board;
     }
-
-    @Builder
-	public BoardDto(long boardId, User user, Dog dog, String image, String content) {
-		super();
+    	
+	    @Builder
+	public BoardDto(long boardId, long userId, long dogId, String image, String content) {
 		this.boardId = boardId;
-		this.user = user;
-		this.dog = dog;
+		this.userId = userId;
+		this.dogId = dogId;
 		this.image = image;
 		this.content = content;
 	}
+
+
 }

@@ -1,8 +1,12 @@
 package com.ssafy.togetdog.board.controller;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.togetdog.board.model.dto.BoardDto;
+import com.ssafy.togetdog.board.model.dto.CommentDto;
 import com.ssafy.togetdog.board.model.entity.Board;
+import com.ssafy.togetdog.board.model.entity.Comment;
 import com.ssafy.togetdog.board.model.service.BoardService;
+import com.ssafy.togetdog.board.model.service.CommentService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,7 +34,8 @@ import lombok.RequiredArgsConstructor;
 public class BoardRestController {
 	
 	@Autowired
-	private final BoardService boardService; 
+	private final BoardService boardService;
+	private final CommentService commentService;
 	
 	@ApiOperation(value = "홈화면 게시글 리스트", notes = "홈화면에서 구독한 개들의 게시글 표시")
 	@GetMapping("/home")
@@ -67,21 +75,22 @@ public class BoardRestController {
 	
 	@ApiOperation(value = "게시물 삭제", notes = "선택된 단건 게시글을 삭제")
 	@DeleteMapping("/")
-	public Board deleteBoard(@RequestBody BoardDto boardDto) {
-		return null;
+	public void deleteBoard(@RequestBody BoardDto boardDto) {
+		boardService.delete(boardDto.getBoardId());
 	}
 	
 	@ApiOperation(value = "댓글 등록", notes = "게시글애 댓글을 등록함")
 	@PostMapping("/comment")
-	public Long addComment(@RequestBody BoardDto boardDto) {
-//		return commentService.save(boardDto);
-		return null;
+	public ResponseEntity<?> addComment(@RequestBody CommentDto commentDto) {
+		commentService.save(commentDto);
+		List<CommentDto> comments = commentService.findAllCommentsInBoard(commentDto.getBoardId());
+		return new ResponseEntity<List<CommentDto>>(comments, HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "댓글 삭제", notes = "선택된 단건 댓글을 삭제")
 	@DeleteMapping("/comment")
-	public Board deleteComment(@RequestBody BoardDto boardDto) {
-		return null;
+	public void deleteComment(@RequestBody CommentDto commentDto) {
+		commentService.delete(commentDto.getCommentId());
 	}
 	
 	@ApiOperation(value = "좋아요", notes = "게시글애 좋아요")

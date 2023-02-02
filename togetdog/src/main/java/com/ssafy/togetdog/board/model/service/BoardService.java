@@ -23,5 +23,10 @@ public class BoardService {
 		Board board = boardRepository.save(boardDto.toEntity());
 		return board.getBoardId();
 	}
-	
+
+	public void delete(long boardId) {
+		boardRepository.deleteById(boardId);
+	}
+
+
 }

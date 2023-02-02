@@ -18,12 +18,19 @@ import lombok.ToString;
 @Data
 public class CommentDto {
 	private long commentId;
-	private Board board;
-	private User user;
+	private long boardId;
 	private long userId;
 	private String commentContent;
     
     public Comment toEntity() {
+    	User user = User.builder()
+    			.userId(userId).build();
+    	
+    	Board board = Board.builder()
+    			.boardId(boardId)
+    			.image("cant be null") //image값이 null일 수 없어서 쓰레기 값 추가
+    			.build();
+    	
     	Comment comment = Comment.builder()
     			.commentId(commentId)
     			.board(board)
@@ -34,11 +41,10 @@ public class CommentDto {
     }
 
     @Builder
-	public CommentDto(long commentId, Board board, long userId, String commentContent) {
-		super();
+	public CommentDto(long commentId, long boardId, long userId, String commentContent) {
 		this.commentId = commentId;
-		this.board = board;
+		this.boardId = boardId;
 		this.userId = userId;
 		this.commentContent = commentContent;
-	}
+	}	
 }
