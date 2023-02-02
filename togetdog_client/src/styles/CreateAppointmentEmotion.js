@@ -6,7 +6,7 @@ export const CreateAppointmentWrapper = styled.div`
     font-family: "Noto Sans KR", sans-serif;
     font-size: 1.2rem;
     font-weight: 600;
-    margin: 1.5rem 0rem;
+    margin: 3rem 0rem;
   }
 
   .btnWrapper {
@@ -25,6 +25,18 @@ export const WalkRequest = styled.div`
     font-size: 0.8rem;
     color: #717171;
     white-space: pre-wrap;
+  }
+
+  .warningStr {
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 0.8rem;
+    color: #717171;
+    white-space: pre-wrap;
+  }
+
+  .dogImageWrapper {
+    display: flex;
+    direction: row;
   }
 
   .inputWrapper {
@@ -48,6 +60,7 @@ export const WalkRequest = styled.div`
 export const DogImgWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  margin: 0rem 0.3rem;
 
   .dogProfileCircle {
     width: 4.2rem;

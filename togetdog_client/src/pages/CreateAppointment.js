@@ -12,6 +12,8 @@ import { ko } from "date-fns/esm/locale";
 import getYear from "date-fns/getYear";
 import getMonth from "date-fns/getMonth";
 import getDate from "date-fns/getDate";
+import setHours from "date-fns/setHours";
+import setMinutes from "date-fns/setMinutes";
 
 import { BACKEND_URL, DUMMY_URL, LOCAL_SERVER } from "../config";
 import {
@@ -47,32 +49,144 @@ const CreateAppointment = () => {
 
   const [startDate, setStartDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
+  const [dateResult, setDateResult] = useState(new Date());
 
   const [placeInput, setPlaceInput] = useState();
 
-  useEffect(() => {
-    axios
-      .get(`${DUMMY_URL}/user/includesDog/${userId}`, {})
-      .then(function (response) {
-        setUserData(response.data);
-      })
-      .catch(function (error) {
-        // 오류발생시 실행
-      });
+  // const [myDogError, setMyDogError] = useState(false);
+  // const [partnerDogError, setPartnerDogError] = useState(false);
+  // const [startDateError, setStartDateError] = useState(false);
+  // const [placeError, setPlaceError] = useState(false);
+  const myDogError = useRef(false);
+  const partnerDogError = useRef(false);
 
-    axios
-      .get(`${DUMMY_URL}/user/includesDog/${partnerId}`, {})
-      .then(function (response) {
-        setPartnerData(response.data);
-      })
-      .catch(function (error) {
-        // 오류발생시 실행
-      });
+  useEffect(() => {
+    setUserData({
+      userId: 1,
+      nickName: "뽀삐엄마",
+      userAge: 28,
+      userGender: null,
+      address: "서울시 동작구 흑석동",
+      regionCode: "11455",
+      social: "naver",
+      rating: 3.41,
+      dog: [
+        {
+          dogId: 114,
+          dogName: "뽀삐",
+          userId: 1,
+          nickName: null,
+          address: null,
+          dogGender: "female",
+          dogType: "말티즈",
+          dogAge: 72,
+          dogWeight: 3.4,
+          dogNeutered: true,
+          dogCharacter1: "independent",
+          dogCharacter2: "active",
+          description: "활동적이고 순해요",
+          dogProfile:
+            "https://yt3.googleusercontent.com/b_9EipIlhBtnwKayzvdjm8uUuRMte0qhUif5WpazM-EvmTmNEhR6u2UPvnRDjSwvw6-I1INO9Q=s900-c-k-c0x00ffffff-no-rj",
+        },
+        {
+          dogId: 124,
+          dogName: "뭉뭉",
+          userId: 1,
+          nickName: null,
+          address: null,
+          dogGender: "female",
+          dogType: "말티즈",
+          dogAge: 72,
+          dogWeight: 3.4,
+          dogNeutered: true,
+          dogCharacter1: "independent",
+          dogCharacter2: "active",
+          description: "활동적이고 순해요",
+          dogProfile:
+            "https://cdn.pixabay.com/photo/2018/05/13/16/57/dog-3397110__480.jpg",
+        },
+      ],
+      followCnt: 0,
+      follow: false,
+    });
+    // axios
+    //   .get(`${DUMMY_URL}/user/includesDog/${userId}`, {})
+    //   .then(function (response) {
+    //     setUserData(response.data);
+    //   })
+    //   .catch(function (error) {
+    //     // 오류발생시 실행
+    //   });
+
+    setPartnerData({
+      userId: 2,
+      nickName: "뽀삐엄마",
+      userAge: 28,
+      userGender: null,
+      address: "서울시 동작구 흑석동",
+      regionCode: "11455",
+      social: "naver",
+      rating: 3.41,
+      dog: [
+        {
+          dogId: 244,
+          dogName: "보리",
+          userId: 1,
+          nickName: null,
+          address: null,
+          dogGender: "female",
+          dogType: "말티즈",
+          dogAge: 72,
+          dogWeight: 3.4,
+          dogNeutered: true,
+          dogCharacter1: "independent",
+          dogCharacter2: "active",
+          description: "활동적이고 순해요",
+          dogProfile:
+            "https://images.mypetlife.co.kr/content/uploads/2021/10/22152410/IMG_2087-scaled-e1634883900174-1024x739.jpg",
+        },
+        {
+          dogId: 234,
+          dogName: "솜솜",
+          userId: 1,
+          nickName: null,
+          address: null,
+          dogGender: "female",
+          dogType: "말티즈",
+          dogAge: 72,
+          dogWeight: 3.4,
+          dogNeutered: true,
+          dogCharacter1: "independent",
+          dogCharacter2: "active",
+          description: "활동적이고 순해요",
+          dogProfile:
+            "https://media.istockphoto.com/id/1007262234/ko/%EC%82%AC%EC%A7%84/%EA%B7%80%EC%97%AC%EC%9A%B4-%ED%9D%B0%EC%83%89-pomeranian-%EA%B0%95%EC%95%84%EC%A7%80-%EC%8A%A4-%ED%94%BC-%EC%B8%A0.jpg?b=1&s=612x612&w=0&k=20&c=itpd3ey8UxyKIh2WJ2DqdYWO7sBxH1aoXSTkyrhz2T0=",
+        },
+      ],
+      followCnt: 0,
+      follow: false,
+    });
+    // axios
+    //   .get(`${DUMMY_URL}/user/includesDog/${partnerId}`, {})
+    //   .then(function (response) {
+    //     setPartnerData(response.data);
+    //   })
+    //   .catch(function (error) {
+    //     // 오류발생시 실행
+    //   });
   }, [userId, partnerId]);
 
-  const DogImages = (item, idx) => {
-    const [activeDog, setActiveDog] = useState([true, item.dog.dogId]);
+  useEffect(() => {
+    let tempResult = new Date(startDate);
+    tempResult = setHours(tempResult, startTime.getHours());
+    tempResult = setMinutes(tempResult, startTime.getMinutes());
+    setDateResult(tempResult);
+  }, [startDate, startTime]);
 
+  const DogImages = (item) => {
+    const [activeDog, setActiveDog] = useState(true);
+
+    // 처음 강아지 상태 배열 만드는 부분
     useEffect(() => {
       if (item.userKey === 1) {
         setMyActiveDogs([...myActiveDogs, [activeDog, item.dog.dogId]]);
@@ -84,15 +198,33 @@ const CreateAppointment = () => {
       }
     }, []);
 
+    // 클릭하면 상태 변경하는 코드
     useEffect(() => {
       if (item.userKey === 1) {
         let tempActiveDogs = myActiveDogs;
-        tempActiveDogs[idx] = [activeDog, item.dog.dogId];
+        let dogError = true;
+        tempActiveDogs[item.idx] = [activeDog, item.dog.dogId];
         setMyActiveDogs(tempActiveDogs);
+
+        for (let i = 0; i < tempActiveDogs.length; i++) {
+          if (tempActiveDogs[i][0] === true) {
+            dogError = false;
+          }
+        }
+        // setMyDogError(dogError);
+        myDogError.current = dogError;
       } else if (item.userKey === 2) {
         let tempActiveDogs = partnerActiveDogs;
-        tempActiveDogs[idx] = [activeDog, item.dog.dogId];
+        let dogError = true;
+        tempActiveDogs[item.idx] = [activeDog, item.dog.dogId];
         setPartnerActiveDogs(tempActiveDogs);
+        for (let i = 0; i < tempActiveDogs.length; i++) {
+          if (tempActiveDogs[i][0] === true) {
+            dogError = false;
+          }
+        }
+        // setMyDogError(dogError);
+        partnerDogError.current = dogError;
       }
     }, [activeDog]);
 
@@ -211,6 +343,47 @@ const CreateAppointment = () => {
     setPlaceInput(e.target.value);
   };
 
+  const isValid = (e) => {
+    if (myDogError.current === true || partnerDogError.current === true) {
+      console.log("강아지가 없어용");
+    } else if (placeInput === "") {
+      console.log("장소가 없어요");
+    } else {
+      const myDogList = [];
+      const partnerDogList = [];
+      for (let i = 0; i < myActiveDogs.length; i++) {
+        if (myActiveDogs[i][0] === true) {
+          myDogList.push(myActiveDogs[i][1]);
+        }
+      }
+      for (let i = 0; i < partnerActiveDogs.length; i++) {
+        if (partnerActiveDogs[i][0] === true) {
+          partnerDogList.push(partnerActiveDogs[i][1]);
+        }
+      }
+      handleCreateAppointment(myDogList, partnerDogList);
+    }
+  };
+
+  const handleCreateAppointment = async (myDogList, partnerDogList) => {
+    await axios
+      .post(`${DUMMY_URL}/meeting`, {
+        userId: userData.userId,
+        myDogs: myDogList,
+        partnerDogs: partnerDogList,
+        date: dateResult,
+        place: placeInput,
+      })
+      .then((resp) => {
+        console.log("요청 성공");
+
+        navigate(-1);
+      })
+      .catch((err) => {
+        console.log("요청 실패");
+      });
+  };
+
   return (
     <CreateAppointmentWrapper>
       <div className="appointmentHeader">산책 요청하기</div>
@@ -219,18 +392,32 @@ const CreateAppointment = () => {
           <FontAwesomeIcon icon="fa-user-group" />
           {"   "}나의 강아지를 선택해주세요.
         </p>
-        {userData.dog &&
-          userData.dog.map((item, idx) => (
-            <DogImages dog={item} userKey={1} key={item.dogId}></DogImages>
-          ))}
+        <div className="dogImageWrapper">
+          {userData.dog &&
+            userData.dog.map((item, idx) => (
+              <DogImages
+                dog={item}
+                userKey={1}
+                idx={idx}
+                key={item.dogId}
+              ></DogImages>
+            ))}
+        </div>
         <p className="queryStr">
           <FontAwesomeIcon icon="fa-user-group" />
           {"   "}상대방의 강아지를 선택해주세요.
         </p>
-        {partnerData.dog &&
-          partnerData.dog.map((item, idx) => (
-            <DogImages dog={item} userKey={2} key={item.dogId}></DogImages>
-          ))}
+        <div className="dogImageWrapper">
+          {partnerData.dog &&
+            partnerData.dog.map((item, idx) => (
+              <DogImages
+                dog={item}
+                userKey={2}
+                idx={idx}
+                key={item.dogId}
+              ></DogImages>
+            ))}
+        </div>
         <p className="queryStr">
           <FontAwesomeIcon icon="fa-clock" />
           {"   "}언제 산책할까요?
@@ -259,7 +446,7 @@ const CreateAppointment = () => {
         >
           취소하기
         </MainColorShortBtn>
-        <MainColorShortBtn>요청하기</MainColorShortBtn>
+        <MainColorShortBtn onClick={isValid}>요청하기</MainColorShortBtn>
       </div>
     </CreateAppointmentWrapper>
   );
