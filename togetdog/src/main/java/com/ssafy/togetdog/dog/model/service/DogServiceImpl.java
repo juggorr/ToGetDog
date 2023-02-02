@@ -58,7 +58,6 @@ public class DogServiceImpl implements DogService {
 		String today = new SimpleDateFormat("yyMMdd").format(new Date());
 		String saveFolder = filePath + File.separator + today;
 
-		
 				
 	}
 	

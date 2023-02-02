@@ -35,10 +35,10 @@ public class SwaggerConfig {
 	}
 	//////////////////////////////////////////////////////////
 	// DUMMY
-//	@Bean
-//	public Docket dummyUserApi() {
-//		return getDocket("DUMMY", true, "dummy");
-//	}
+	@Bean
+	public Docket dummyUserApi() {
+		return getDocket("DUMMY", true, "dummy");
+	}
 	//////////////////////////////////////////////////////////
 	// DEVELOPTING
 	@Bean
