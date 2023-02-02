@@ -1,4 +1,4 @@
-package com.ssafy.togetdog.user.model.dto;
+package com.ssafy.togetdog.dummy.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserLoginParamDTO {
-	private String email;
-	private String password;
+public class LoginUser {
+	private Long userId;
+	private String nickName;
+	private String address;
 }

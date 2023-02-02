@@ -1,4 +1,4 @@
-package com.ssafy.togetdog.user.model.dto;
+package com.ssafy.togetdog.dog.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserLoginParamDTO {
-	private String email;
-	private String password;
+public class DogProfileImageFileInfo {
+	private String saveFolder;
+	private String originalFile;
+	private String saveFile;
 }
