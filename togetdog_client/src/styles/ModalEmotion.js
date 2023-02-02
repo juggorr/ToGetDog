@@ -20,7 +20,7 @@ export const MenuModalBody = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 6rem;
-  margin-right: 3rem;
+  margin-right: 10%;
 
   .single-menu {
     padding: 0.4rem 0.3rem;

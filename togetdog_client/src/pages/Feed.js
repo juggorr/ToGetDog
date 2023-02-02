@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import FeedProfile from '../components/FeedProfile';
 import MenuModal from '../components/MenuModal';
+import { BACKEND_URL, DUMMY_URL } from '../config';
 import { FeedContainer, FeedPhoto, FeedPhotoWrapper, FeedProfileWrapper } from '../styles/FeedEmotion';
 
 const Feed = () => {
@@ -39,7 +41,28 @@ const Feed = () => {
 
   const [menuBtnClick, setMenuBtnClick] = useState(false);
 
-  const getFeed = () => {};
+  const getFeed = async () => {
+    await axios
+      .get(
+        `${DUMMY_URL}/feed`,
+        { pageNo: 1 },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      )
+      .then((resp) => {
+        console.log(resp);
+      })
+      .catch((err) => {
+        console.log('피드 데이터 불러오기 실패');
+      });
+  };
+
+  useEffect(() => {
+    getFeed();
+  }, []);
 
   return (
     <>
