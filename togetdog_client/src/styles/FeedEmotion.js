@@ -1,9 +1,10 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const FeedContainer = styled.div`
   height: calc(100vh - 115px);
   display: flex;
   flex-direction: column;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 export const FeedProfileWrapper = styled.div`
