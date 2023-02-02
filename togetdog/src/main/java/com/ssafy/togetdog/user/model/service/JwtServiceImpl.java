@@ -85,21 +85,20 @@ public class JwtServiceImpl implements JwtService {
 
 	// 유효기간이 다되어가면 refresh token검사해서 갱신해줘야 함!!
 	@Override
-	public boolean validateToken(String jwtToken) {
+	public void validateToken(String jwtToken) {
 		Jws<Claims> claims = null;
 		try {
 			claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwtToken);
 			logger.debug("claims: {}", claims);
-			return true;
 		} catch (SignatureException | MalformedJwtException e) {
 			logger.error("SignatureException : ", e.getMessage());
-			return false;
+			throw new TokenValidFailedException();
 		} catch (ExpiredJwtException e) {
 			logger.error("Expired JWT token : ", e.getMessage());
-			return false;
+			throw new TokenValidFailedException();
 		} catch (Exception e) {
 			logger.error("Unexpected error : ", e.getMessage());
-			return false;
+			throw new TokenValidFailedException();
 		}
 	}
 
@@ -110,7 +109,7 @@ public class JwtServiceImpl implements JwtService {
 			claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwtToken);
 		} catch (Exception e) {
 			logger.error("jwt parseClaims error : ", e.getMessage());
-			// throw new UnAuthorizedException();
+			throw new TokenValidFailedException();
 		}
 		Map<String, Object> value = claims.getBody();
 		logger.info("value : {}", value);
@@ -123,19 +122,14 @@ public class JwtServiceImpl implements JwtService {
 	}
 
 	public Authentication getAuthentication(String token) {
-		if (validateToken(token)) {
-			Map<String, Object> claims = get(token);
-			Collection<? extends GrantedAuthority> authorities = Arrays
-					.stream(new String[] { claims.get("role").toString() }).map(SimpleGrantedAuthority::new)
-					.collect(Collectors.toList());
-
-			logger.debug("claims subject := [{}]", claims.get("subject"));
-			User principal = new User((String) claims.get("subject"), "", authorities);
-
-			return new UsernamePasswordAuthenticationToken(principal, token, authorities);
-		} else {
-			throw new TokenValidFailedException();
-		}
+		validateToken(token);
+		Map<String, Object> claims = get(token);
+		Collection<? extends GrantedAuthority> authorities = Arrays
+				.stream(new String[] { claims.get("role").toString() }).map(SimpleGrantedAuthority::new)
+				.collect(Collectors.toList());
+		logger.debug("claims subject := [{}]", claims.get("subject"));
+		User principal = new User((String) claims.get("subject"), "", authorities);
+		return new UsernamePasswordAuthenticationToken(principal, token, authorities);
 	}
 
 }

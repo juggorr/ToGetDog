@@ -1,22 +1,16 @@
 package com.ssafy.togetdog.user.model.service;
 
-import java.util.Collections;
-
 import javax.transaction.Transactional;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.repository.UserRepository;
 import com.ssafy.togetdog.user.model.vo.OAuthAttributes;
-import com.ssafy.togetdog.user.model.vo.ProviderType;
 import com.ssafy.togetdog.user.model.vo.RoleType;
 import com.ssafy.togetdog.user.model.vo.UserPrincipal;
 
@@ -46,20 +40,18 @@ public class UserOAuth2Service extends DefaultOAuth2UserService {
         	user = User.builder()
         			.email(attributes.getEmail())
         			.nickName(attributes.getName())
-        			.password("naverLoginUser")
+        			.password("---")
         			.social(attributes.getSocial())
         			.roleType(RoleType.USER)
         			.build();
+        	userRepository.save(user);
+        } else {
+        	// already regist
+        	if (user.getSocial() != attributes.getSocial()) {
+        		return UserPrincipal.disable();
+        	}
         }
-        
-        System.out.println(user);
         return UserPrincipal.create(user);
 	}
-	
-	
-//	private User saveOrUpdate(OAuthAttributes attributes) {
-//		User user = userRepository.findByEmail(attributes.getEmail()).map(entity -> entity.update(attributes.getName())).orElse(attributes.toEntity());
-//		return userRepository.save(user);
-//	}
 
 }

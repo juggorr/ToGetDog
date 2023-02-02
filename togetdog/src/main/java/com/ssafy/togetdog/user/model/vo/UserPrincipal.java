@@ -1,5 +1,6 @@
 package com.ssafy.togetdog.user.model.vo;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -86,6 +87,12 @@ public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
     @Override
     public OidcIdToken getIdToken() {
         return null;
+    }
+    
+    public static UserPrincipal disable() {
+    	return UserPrincipal.builder()
+    			.email("disable")
+    			.build();
     }
 
     public static UserPrincipal create(User user) {
