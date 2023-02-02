@@ -15,7 +15,7 @@ import getDate from "date-fns/getDate";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 
-import { BACKEND_URL, DUMMY_URL, LOCAL_SERVER } from "../config";
+import { BACKEND_URL, DUMMY_URL, NEW_DUMMY_URL } from "../config";
 import {
   CreateAppointmentWrapper,
   WalkRequest,
@@ -51,7 +51,8 @@ const CreateAppointment = () => {
   const [startTime, setStartTime] = useState(new Date());
   const [dateResult, setDateResult] = useState(new Date());
 
-  const [placeInput, setPlaceInput] = useState();
+  // const [placeInput, setPlaceInput] = useState();
+  const placeInput = useRef(null);
 
   const myDogError = useRef(false);
   const partnerDogError = useRef(false);
@@ -336,13 +337,14 @@ const CreateAppointment = () => {
   };
 
   const onChangeInput = (e) => {
-    setPlaceInput(e.target.value);
+    // setPlaceInput(e.target.value);
+    placeInput.current = e.target.value;
   };
 
   const isValid = (e) => {
     if (myDogError.current === true || partnerDogError.current === true) {
       console.log("강아지가 없어용");
-    } else if (placeInput === "") {
+    } else if (placeInput.current === "") {
       console.log("장소가 없어요");
     } else {
       const myDogList = [];
@@ -363,7 +365,7 @@ const CreateAppointment = () => {
 
   const handleCreateAppointment = async (myDogList, partnerDogList) => {
     await axios
-      .post(`${DUMMY_URL}/meeting`, {
+      .post(`${NEW_DUMMY_URL}/meeting`, {
         userId: userData.userId,
         myDogs: myDogList,
         partnerDogs: partnerDogList,
@@ -375,6 +377,7 @@ const CreateAppointment = () => {
         navigate(-1);
       })
       .catch((err) => {
+        console.log(err);
         console.log("요청 실패");
       });
   };
