@@ -67,7 +67,7 @@ const Login = () => {
     // e.preventDefault();
     await axios
       .post(
-        `${BACKEND_URL}/user/login`,
+        `${window.location.origin}/user/login`,
         {
           email: email,
           password: password,
