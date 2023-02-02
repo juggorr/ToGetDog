@@ -12,13 +12,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.togetdog.dummy.domain.AppointMentInfo;
 import com.ssafy.togetdog.dummy.domain.DogDTO;
 import com.ssafy.togetdog.dummy.domain.DogForMeetingDTO;
 import com.ssafy.togetdog.dummy.domain.MeetingDTO;
+import com.ssafy.togetdog.dummy.domain.RatingAppointmentDTO;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -68,16 +71,14 @@ public class DummyAppointmentController {
 
 	@ApiOperation(value = "산책 약속 요청", notes = "새로운 산책 약속을 요청합니다.")
 	@PostMapping
-	public ResponseEntity<?> postingNewAppointment(@RequestParam Map<String, Object> appointmentInfo) {
+	public ResponseEntity<?> postingNewAppointment(@RequestBody AppointMentInfo appointmentInfo) {
 
 		// 구현시 유의 하며 변경 요망
-		long userId = Long.parseLong((String) appointmentInfo.get("userId"));
-		@SuppressWarnings("unchecked")
-		List<DogDTO> myDogs = (List<DogDTO>) appointmentInfo.get("myDogs");
-		@SuppressWarnings("unchecked")
-		List<DogDTO> partnerDogs = (List<DogDTO>) appointmentInfo.get("partnerDogs");
-		Date date = (Date) appointmentInfo.get("date");
-		String place = (String) appointmentInfo.get("place");
+		long userId = Long.parseLong((String) appointmentInfo.getUserId());
+		List<DogDTO> myDogs = appointmentInfo.getMyDogs();
+		List<DogDTO> partnerDogs = appointmentInfo.getPartnerDogs();
+		String date = appointmentInfo.getDate();
+		String place =appointmentInfo.getPlace();
 
 		// print check section /////////////////////////////////////////////////
 		System.out.println("param 전달 값 확인:");
@@ -129,7 +130,8 @@ public class DummyAppointmentController {
 
 	@ApiOperation(value = "산책 별점 매기기", notes = "완료한 산책 약속에 별점을 부여합니다.")
 	@PostMapping("/rating")
-	public ResponseEntity<?> ratingAppointment(@RequestParam String appointmentId, @RequestParam String rating) {
+	public ResponseEntity<?> ratingAppointment(
+			@RequestBody RatingAppointmentDTO ratingAppointmentDTO) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("result", SUCCESS);
 		resultMap.put("msg", "별점이 반영되었습니다.");
