@@ -86,6 +86,7 @@ export const ContentImgWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
   }
 
   .contentImg > input {
@@ -98,5 +99,10 @@ export const ContentImgWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .contentImg > label > img {
+    width: 100%;
+    object-fit: cover;
   }
 `;

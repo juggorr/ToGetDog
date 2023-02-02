@@ -22,6 +22,7 @@ const New = () => {
   const [userData, setUserData] = useState({});
   const [currentDog, setCurrentDog] = useState(null);
   const [imgURL, setImgURL] = useState(null);
+  const imgRef = useRef();
 
   useEffect(() => {
     // 임시 데이터
@@ -116,19 +117,13 @@ const New = () => {
     );
   };
 
-  const ReadURL = (e) => {
-    if (e.target.value && e.target.value[0]) {
-      var reader = new FileReader();
-      reader.onload = function (e) {
-        document.getElementById("preview").src = e.target.result;
-      };
-      reader.readAsDataURL(e.target.value[0]);
-      setImgURL(e.target.value[0]);
-      console.log(imgURL);
-    } else {
-      document.getElementById("preview").src = "";
-      setImgURL(null);
-    }
+  const saveImgFile = () => {
+    const file = imgRef.current.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setImgURL(reader.result);
+    };
   };
 
   return (
@@ -150,20 +145,23 @@ const New = () => {
           {"  "}사진
         </p>
         <ContentImgWrapper>
-          {/* <div className="contentImg">
-            <input type="file" />
-          </div> */}
-          <div class="contentImg">
+          <div className="contentImg">
             <label for="file-input">
-              <img id="preview" src="" alt="content_img" />
-              {imgURL ? null : (
+              {imgURL ? (
+                <img src={imgURL} alt="content_img" />
+              ) : (
                 <div className="iconWrapper">
                   <FontAwesomeIcon icon="fa-square-plus" />
                 </div>
               )}
             </label>
-
-            <input id="file-input" type="file" onChange={ReadURL} />
+            <input
+              type="file"
+              accept="image/*"
+              id="file-input"
+              onChange={saveImgFile}
+              ref={imgRef}
+            />
           </div>
         </ContentImgWrapper>
         <p className="queryStr">
