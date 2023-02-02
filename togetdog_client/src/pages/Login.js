@@ -79,7 +79,7 @@ const Login = () => {
     // e.preventDefault();
     await axios
       .post(
-        `${BACKEND_URL}/user/login`,
+        `http://i8a807.p.ssafy.io/user/login`,
         {
           email: email,
           password: password,
