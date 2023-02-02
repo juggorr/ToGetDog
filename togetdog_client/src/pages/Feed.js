@@ -39,7 +39,7 @@ const Feed = () => {
 
   const [menuBtnClick, setMenuBtnClick] = useState(false);
 
-  useState({}, []);
+  const getFeed = () => {};
 
   return (
     <>
