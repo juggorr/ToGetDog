@@ -1,21 +1,22 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const FeedContainer = styled.div`
+  width: 100%;
   height: calc(100vh - 115px);
   display: flex;
   flex-direction: column;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
 `;
 
 export const FeedProfileWrapper = styled.div`
-  flex: 3;
   padding: 1rem 1rem 0 1rem;
 `;
 
 export const FeedPhotoWrapper = styled.div`
-  flex: 7;
   display: flex;
+  height: 100%;
   justify-content: space-around;
+  align-content: flex-start;
   flex-wrap: wrap;
   overflow-y: scroll;
 `;
@@ -100,5 +101,14 @@ export const ProfileWrapper = styled.div`
 export const MainDogImg = styled.img`
   width: 100px;
   height: 100px;
+  border-radius: 50%;
+`;
+
+export const SubDogImg = styled.img`
+  position: absolute;
+  left: 5.5rem;
+  top: 8.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
   border-radius: 50%;
 `;

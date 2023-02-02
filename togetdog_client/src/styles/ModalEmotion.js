@@ -1,10 +1,16 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const MenuModalWrapper = styled.div`
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
+  @media (min-width: 650px) {
+    width: 360px;
+  }
+
+  @media (max-width: 650px) {
+    /* 650px 이하일 때 */
+    width: 100vw;
+  }
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
   display: flex;
@@ -20,7 +26,7 @@ export const MenuModalBody = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 6rem;
-  margin-right: 10%;
+  margin-right: 2.7rem;
 
   .single-menu {
     padding: 0.4rem 0.3rem;
