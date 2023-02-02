@@ -5,6 +5,7 @@ import {
   CreateBoardWrapper,
   BoardContentWrapper,
   DogImgWrapper,
+  ContentImgWrapper,
 } from "../styles/NewEmotion";
 import { MainColorShortBtn } from "../styles/BtnsEmotion";
 
@@ -20,6 +21,7 @@ const New = () => {
 
   const [userData, setUserData] = useState({});
   const [currentDog, setCurrentDog] = useState(null);
+  const [imgURL, setImgURL] = useState(null);
 
   useEffect(() => {
     // 임시 데이터
@@ -114,6 +116,21 @@ const New = () => {
     );
   };
 
+  const ReadURL = (e) => {
+    if (e.target.value && e.target.value[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        document.getElementById("preview").src = e.target.result;
+      };
+      reader.readAsDataURL(e.target.value[0]);
+      setImgURL(e.target.value[0]);
+      console.log(imgURL);
+    } else {
+      document.getElementById("preview").src = "";
+      setImgURL(null);
+    }
+  };
+
   return (
     <CreateBoardWrapper>
       <div className="boardHeader">게시글 작성</div>
@@ -132,11 +149,30 @@ const New = () => {
           <FontAwesomeIcon icon="fa-image" />
           {"  "}사진
         </p>
+        <ContentImgWrapper>
+          {/* <div className="contentImg">
+            <input type="file" />
+          </div> */}
+          <div class="contentImg">
+            <label for="file-input">
+              <img id="preview" src="" alt="content_img" />
+              {imgURL ? null : (
+                <div className="iconWrapper">
+                  <FontAwesomeIcon icon="fa-square-plus" />
+                </div>
+              )}
+            </label>
 
+            <input id="file-input" type="file" onChange={ReadURL} />
+          </div>
+        </ContentImgWrapper>
         <p className="queryStr">
           <FontAwesomeIcon icon="fa-pen" />
           {"  "}내용
         </p>
+        <div className="textInputWrapper">
+          <textarea className="textInput" />
+        </div>
       </BoardContentWrapper>
       <div className="btnWrapper">
         <MainColorShortBtn
