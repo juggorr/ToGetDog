@@ -22,10 +22,10 @@ const FeedProfile = ({ menuBtnClick, setMenuBtnClick }) => {
           <img src={MenuIcon} className='menu-icon' onClick={() => setMenuBtnClick(true)} />
           <div className='follow-info flex-column'>
             <div>
-              <span className='follow-text'>팔로워</span>382
+              <span className='follow-text'>팔로워</span>132
             </div>
             <div>
-              <span className='follow-text'>팔로잉</span>258
+              <span className='follow-text'>팔로잉</span>128
             </div>
           </div>
         </div>

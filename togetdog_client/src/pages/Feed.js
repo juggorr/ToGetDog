@@ -39,6 +39,8 @@ const Feed = () => {
 
   const [menuBtnClick, setMenuBtnClick] = useState(false);
 
+  useState({}, []);
+
   return (
     <>
       <MenuModal menuLists={menuLists} menuBtnClick={menuBtnClick} setMenuBtnClick={setMenuBtnClick} />
