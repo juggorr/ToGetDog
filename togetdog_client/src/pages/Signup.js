@@ -218,7 +218,7 @@ const Signup = () => {
 
     await axios
       .post(
-        `${BACKEND_URL}/user`,
+        `${window.location.origin}/user`,
         {
           email: email,
           password: password,
