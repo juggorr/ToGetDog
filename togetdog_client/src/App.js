@@ -34,9 +34,9 @@ function App() {
             <Route path="/walk" element={<Walk />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/feed" element={<Feed />} />
+            <Route path="/new" element={<New />} />
           </Route>
           {/* 그 이외 필요없는 컴포넌트 */}
-          <Route path="/new" element={<New />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/emailAuth" element={<EmailAuth />} />
