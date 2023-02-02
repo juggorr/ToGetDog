@@ -3,7 +3,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "../recoil";
 import axios from "axios";
 
-import { BACKEND_URL, LOCAL_SERVER } from "../config";
+import { BACKEND_URL, LOCAL_SERVER, DUMMY_URL } from "../config";
 import {
   MapContainer,
   PlaceIconWrapper,
@@ -72,7 +72,7 @@ const Map = () => {
         // setError(null);
         // setLoading(true);
         const response = await axios.get(
-          `${BACKEND_URL}/facility?latitude=${curLat}&longitude=${curLng}`
+          `${DUMMY_URL}/facility?latitude=${curLat}&longitude=${curLng}`
         );
         setFacilities(response.data.storeList);
       } catch (e) {
