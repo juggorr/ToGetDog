@@ -228,7 +228,12 @@ const Signup = () => {
           address: address,
           regionCode: sigunguCode,
         },
-        { headers: { 'Content-Type': 'application/json' } },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
+        },
       )
       .then((resp) => {
         setEmailStatus(true);
