@@ -34,8 +34,8 @@ public class SwaggerConfig {
 				.build();
 	}
 	
+	//////////////////////////////////////////////////////////
 	// DUMMY
-
 	@Bean
 	public Docket dummyUserApi() {
 		return getDocket("DUMMY USER", true, "user");
@@ -76,17 +76,26 @@ public class SwaggerConfig {
 		return getDocket("DUMMY SEARCH", true, "search");
 	}
 	
-	
 	//////////////////////////////////////////////////////////
 	// DEVELOPTING
-	
 	@Bean
 	public Docket user() {
-		return new Docket(DocumentationType.OAS_30).groupName("DO NOT CLICK USER")
+		return new Docket(DocumentationType.OAS_30).groupName("USER")
 				.useDefaultResponseMessages(true) // Swagger 에서 제공해주는 기본 응답 코드 표시 여부
 				.apiInfo(apiInfo()) // apiInfo정보
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.ssafy.togetdog.user.controller"))
+				.paths(PathSelectors.any()) // 아무 경로나 가능
+				.build();
+	}
+	
+	@Bean
+	public Docket dog() {
+		return new Docket(DocumentationType.OAS_30).groupName("DOG")
+				.useDefaultResponseMessages(true) // Swagger 에서 제공해주는 기본 응답 코드 표시 여부
+				.apiInfo(apiInfo()) // apiInfo정보
+				.select()
+				.apis(RequestHandlerSelectors.basePackage("com.ssafy.togetdog.dog.controller"))
 				.paths(PathSelectors.any()) // 아무 경로나 가능
 				.build();
 	}

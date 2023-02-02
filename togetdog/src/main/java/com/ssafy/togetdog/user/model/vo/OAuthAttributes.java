@@ -1,5 +1,6 @@
 package com.ssafy.togetdog.user.model.vo;
 import java.util.Map;
+import java.util.Optional;
 
 import com.ssafy.togetdog.user.model.entity.User;
 
@@ -26,8 +27,10 @@ public class OAuthAttributes {
     public static OAuthAttributes of(String socialName, String userNameAttributeName, Map<String, Object> attributes){        
         if("kakao".equals(socialName)){
             return ofKakao(userNameAttributeName, attributes);
-        }else if("naver".equals(socialName)) {
+        } else if("naver".equals(socialName)) {
         	return ofNaver(userNameAttributeName, attributes);
+        } else if ("google".equals(socialName)) {
+        	return ofGoogle(userNameAttributeName, attributes);
         }
         return null;
     }
@@ -44,16 +47,31 @@ public class OAuthAttributes {
     }
     
     private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
-        @SuppressWarnings("unchecked")
-		Map<String, Object> kakaoAccount = (Map<String, Object>)attributes.get("kakao_account");
-        @SuppressWarnings("unchecked")
-		Map<String, Object> kakaoProfile = (Map<String, Object>)kakaoAccount.get("profile");
+    	Map<String, Object> response = (Map<String, Object>)attributes.get("kakao_account");
+    	Map<String, Object> profile = (Map<String, Object>) response.get("profile");
         
-        System.out.println(kakaoProfile);
-        
+    	Optional<String> email = Optional.ofNullable(((String) response.get("email")));
+    	String emailStr;
+    	if (email == null) {
+    		emailStr = "none";
+    	} else {
+    		emailStr = email.orElse(null);
+    	}
         return OAuthAttributes.builder()
-                .name((String) kakaoProfile.get("nickname"))
-                .email((String) kakaoAccount.get("email"))
+                .name((String) profile.get("nickname"))
+                .email(emailStr)
+                .social(ProviderType.K)
+                .nameAttributeKey(userNameAttributeName)
+                .attributes(attributes)
+                .build();
+    }
+    
+    private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
+    	
+        return OAuthAttributes.builder()
+                .name((String) attributes.get("name"))
+                .email((String) attributes.get("email"))
+                .social(ProviderType.G)
                 .nameAttributeKey(userNameAttributeName)
                 .attributes(attributes)
                 .build();
@@ -63,6 +81,7 @@ public class OAuthAttributes {
         return User.builder()
                 .nickName(name)
                 .email(email)
+                .social(social)
                 .roleType(RoleType.USER)
                 .build();
     }

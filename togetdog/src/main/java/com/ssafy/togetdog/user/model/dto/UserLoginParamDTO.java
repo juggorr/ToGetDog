@@ -30,4 +30,13 @@ public class UserLoginParamDTO {
     			.address(user.getAddress())
     			.build();
     }
+    
+    public static UserLoginParamDTO of(User user, String email) {
+    	return UserLoginParamDTO.builder()
+    			.userId(user.getUserId())
+    			.email(email)
+    			.nickName(user.getNickName())
+    			.address(user.getAddress())
+    			.build();
+    }
 }

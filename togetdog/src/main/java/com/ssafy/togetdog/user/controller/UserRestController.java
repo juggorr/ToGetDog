@@ -23,6 +23,7 @@ import com.ssafy.togetdog.global.exception.UnAuthorizedException;
 import com.ssafy.togetdog.user.model.dto.EmailAuthParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
 import com.ssafy.togetdog.user.model.dto.UserLoginParamDTO;
+import com.ssafy.togetdog.user.model.dto.UserPasswordParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserRegistParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserUpdateParamDTO;
 import com.ssafy.togetdog.user.model.entity.User;
@@ -300,17 +301,16 @@ public class UserRestController {
 	@PutMapping("/password")
 	public ResponseEntity<?> updatePassword(
 			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@RequestParam(value = "password") @ApiParam(required = true) String password, 
-			@RequestParam(value = "newPassword") @ApiParam(required = true) String newPassword
+			@RequestBody @ApiParam(required = true) UserPasswordParamDTO passwordDTO
 			) {
 		
-		logger.info("updatePassword input parameter : {} {}", password, newPassword);
+		logger.info("updatePassword input parameter : {}", passwordDTO);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 		
 		if (jwtService.validateToken(token)) {
 			long userId = jwtService.getUserId(token);
-			userService.updatePassword(userId, password, newPassword);
+			userService.updatePassword(userId, passwordDTO.getPassword(), passwordDTO.getNewPassword());
 			resultMap.put("result", SUCCESS);
 			status = HttpStatus.OK;
 		} else {
@@ -357,7 +357,7 @@ public class UserRestController {
 	/***
 	 * Password lookup
 	 * @param token
-	 * @return
+	 * @return 200, 401
 	 */
 	@ApiOperation(value = "비밀번호 찾기", notes = "해당 유저의 비밀번호를 재설정하여 이메일로 송부합니다.")
 	@GetMapping("/password")
