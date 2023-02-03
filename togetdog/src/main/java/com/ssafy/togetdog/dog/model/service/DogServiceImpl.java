@@ -20,7 +20,6 @@ import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.dog.model.repository.DogRepository;
 import com.ssafy.togetdog.global.exception.InvalidInputException;
 import com.ssafy.togetdog.global.exception.UnAuthorizedException;
-import com.ssafy.togetdog.user.controller.UserRestController;
 import com.ssafy.togetdog.user.model.entity.User;
 
 import lombok.RequiredArgsConstructor;
@@ -73,27 +72,31 @@ public class DogServiceImpl implements DogService {
 		if (!folder.exists()) folder.mkdirs();
 		
 		if (!originalFileName.isEmpty()) {
-				String saveFileName = UUID.randomUUID().toString() + originalFileName.substring(originalFileName.lastIndexOf('.'));
-				logger.debug("원본 파일 이름 : {}, 실제 저장 파일 이름 : {}", image.getOriginalFilename(), saveFileName);
-				image.transferTo(new File(folder, saveFileName));
+			String saveFileName = UUID.randomUUID().toString() + originalFileName.substring(originalFileName.lastIndexOf('.'));
+			logger.debug("원본 파일 이름 : {}, 실제 저장 파일 이름 : {}", image.getOriginalFilename(), saveFileName);
+			
+			// 실제 저장
+			image.transferTo(new File(folder, saveFileName));
+			
+			Dog dog = Dog.builder()
+					.user(user)
+					.dogName(dogDTO.getDogName())
+					.dogGender(dogDTO.getDogGender())
+					.dogType(dogDTO.getDogType())
+					.dogBirth(dogDTO.getDogBirth())
+					.dogWeight(dogDTO.getDogWeight())
+					.dogNeutered(dogDTO.isDogNeutered())
+					.dogCharacter1(dogDTO.getDogCharacter1())
+					.dogCharacter2(dogDTO.getDogCharacter2())
+					.description(dogDTO.getDescription())
+					.dogImage(saveFolder + saveFileName)
+					.build();
+			
+			// DB 저장
+			dogRepository.save(dog);
 		} else {
 			throw new InvalidInputException();
 		}
-		
-		Dog dog = Dog.builder()
-				.user(user)
-				.dogName(dogDTO.getDogName())
-				.dogGender(dogDTO.getDogGender())
-				.dogType(dogDTO.getDogType())
-				.dogBirth(dogDTO.getDogBirth())
-				.dogWeight(dogDTO.getDogWeight())
-				.dogNeutered(dogDTO.isDogNeutered())
-				.dogCharacter1(dogDTO.getDogCharacter1())
-				.dogCharacter2(dogDTO.getDogCharacter2())
-				.description(dogDTO.getDescription())
-				//.dogImage(dogImage)
-				.build();
-		dogRepository.save(dog);
 				
 	}
 	
