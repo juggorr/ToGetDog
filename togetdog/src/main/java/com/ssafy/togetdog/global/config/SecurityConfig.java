@@ -14,8 +14,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.ssafy.togetdog.global.interceptor.OAuth2AuthenticationSuccessHandler;
-import com.ssafy.togetdog.user.model.repository.OAuth2AuthorizationRequestRepository;
 import com.ssafy.togetdog.user.model.service.UserOAuth2Service;
 
 import lombok.RequiredArgsConstructor;
@@ -34,25 +32,24 @@ public class SecurityConfig {
         		.httpBasic().disable() // rest api만 가능
         		.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(PERMIT_URL_ARRAY).permitAll() //..hasRole(Role.USER.name())
+                .antMatchers(PERMIT_URL_ARRAY).permitAll()
     			.and()
                 .oauth2Login() // OAuth2 로그인 설정 시작 지점
                 .authorizationEndpoint()
                 .baseUri("/oauth2/authorization")
-                .authorizationRequestRepository(oAuth2AuthorizationRequestRepository())
                 .and()
                 .redirectionEndpoint().baseUri("/oauth2/code/**")
                 .and()
         		.userInfoEndpoint() //OAuth2 로그인 후 사용자 정보를 가져올 때의 설정 담당
         		.userService(userOauth2Service)
         		.and()
-              .successHandler(oAuth2AuthenticationSuccessHandler());
+        		.defaultSuccessUrl("/api/auth/login");
 //              .failureHandler(oAuth2AuthenticationFailureHandler());
         return http.build();
     }
 	
-	 private static final String[] PERMIT_URL_ARRAY = {
-			 	"/**", //다 허용 일단 나중에 걷어내자~~
+	private static final String[] PERMIT_URL_ARRAY = {
+			 	"/**", //다 허용 일단 나중에 수정해야 함
 	            /* swagger v2 */
 	            "/v2/api-docs",
 	            "/swagger-resources",
@@ -64,7 +61,7 @@ public class SecurityConfig {
 	            /* swagger v3 */
 	            "/v3/api-docs/**",
 	            "/swagger-ui/**"
-	    };
+	};
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -76,7 +73,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Arrays.asList("*"));
 		configuration.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT"));
 		configuration.setAllowedHeaders(Arrays.asList("*"));
 		configuration.setAllowCredentials(true);
@@ -85,24 +82,5 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-    
-    // 쿠키 기반 인가 Repository
-    // 인가 응답을 연계하고 검증할 때 사용
-    @Bean
-    public OAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository() {
-        return new OAuth2AuthorizationRequestRepository();
-    }
-
-//    // OAUTH 인증 성공 핸들러
-    @Bean
-    public OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
-        return new OAuth2AuthenticationSuccessHandler(oAuth2AuthorizationRequestRepository());
-    }
-
-//    // Oauth 인증 실패 핸들러
-//    @Bean
-//    public OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler() {
-//        return new OAuth2AuthenticationFailureHandler(oAuth2AuthorizationRequestRepository());
-//    }
 
 }
