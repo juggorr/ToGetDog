@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 // 홈으로 이동 텍스트 버튼
 export const HomeTextBtn = styled.div`
@@ -74,6 +74,20 @@ export const MainColorLongBtn = styled.button`
   font-weight: 700;
   font-size: 0.9rem;
   // font-family: Noto Sans KR', sans-serif;
+`;
+
+export const MainColorShortBtn = styled.button`
+  width: 6rem;
+  height: 2.3rem;
+  border-radius: 2rem;
+  border: none;
+  margin: 0.2rem;
+
+  background-color: #559968;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  font-family: "Lato", sans-serif;
 `;
 
 export const OrangeBtn = styled.button`

@@ -1,11 +1,15 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import FeedProfile from '../components/FeedProfile';
 import MenuModal from '../components/MenuModal';
 import { BACKEND_URL, DUMMY_URL } from '../config';
+import { userState } from '../recoil';
 import { FeedContainer, FeedPhoto, FeedPhotoWrapper, FeedProfileWrapper } from '../styles/FeedEmotion';
 
 const Feed = () => {
+  const [user, setUser] = useRecoilState(userState);
+
   const menuLists = [
     {
       menu_id: 1,
@@ -44,7 +48,7 @@ const Feed = () => {
   const getFeedData = async () => {
     await axios
       .get(
-        `${DUMMY_URL}/feed`,
+        `${DUMMY_URL}/feed/${user.userId}`,
         { params: { pageNo: 1 } },
         {
           headers: {
