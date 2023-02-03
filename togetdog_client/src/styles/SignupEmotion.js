@@ -39,6 +39,20 @@ export const SignupWrapper = styled.div`
     font-size: 0.7rem;
     color: red;
   }
+
+  .edit-bottom-wrapper {
+    border-top: 0.125rem solid #e2e2e2;
+    margin-top: 2rem;
+    width: 90%;
+  }
+
+  .edit-bottom-text {
+    color: #aaa;
+    text-decoration: underline;
+    font-size: 13px;
+    float: right;
+    margin-top: 0.25rem;
+  }
 `;
 
 export const InputWrapper = styled.div`

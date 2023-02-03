@@ -220,7 +220,10 @@ function UserEdit() {
         <div className='two-btns-wrapper'>
             <GreyColorShortBtn onClick={checkOthers}>돌아가기</GreyColorShortBtn>
             <MainColorShortBtn onClick={checkOthers}>정보변경</MainColorShortBtn>
-          </div>
+        </div>
+        <div className='edit-bottom-wrapper'>
+          <div className='edit-bottom-text'>회원탈퇴</div>
+        </div>
       </SignupWrapper>
     </SignupContainer>
     </>
