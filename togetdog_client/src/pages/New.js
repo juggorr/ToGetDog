@@ -20,12 +20,11 @@ const New = () => {
   // const [user, setUser] = useRecoilState(userState);
 
   const [userData, setUserData] = useState({});
-  // const [currentDog, setCurrentDog] = useState(null);
-  const [selectedDog, setSelectedDog] = useState(false);
+  const [selectedDog, setSelectedDog] = useState();
   const [imgURL, setImgURL] = useState(null);
-  const currentDog = useRef();
+
   const imgRef = useRef();
-  const contentText = useRef();
+  const contentText = useRef(null);
 
   useEffect(() => {
     // 임시 데이터
@@ -135,9 +134,9 @@ const New = () => {
   };
 
   const checkValid = () => {
-    console.log(currentDog);
-    console.log(imgRef.current.files[0]);
-    console.log(contentText.current);
+    if (selectedDog && imgRef.current.files[0]) {
+      console.log("ok");
+    }
   };
 
   return (
@@ -154,6 +153,9 @@ const New = () => {
               <DogImages dog={item} key={item.dogId} idx={idx}></DogImages>
             ))}
         </div>
+        {selectedDog ? null : (
+          <p className="warningStr">강아지를 선택해주세요.</p>
+        )}
         <p className="queryStr">
           <FontAwesomeIcon icon="fa-image" />
           {"  "}사진
@@ -178,12 +180,17 @@ const New = () => {
             />
           </div>
         </ContentImgWrapper>
+        {imgURL ? null : <p className="warningStr">사진을 선택해주세요.</p>}
         <p className="queryStr">
           <FontAwesomeIcon icon="fa-pen" />
           {"  "}내용
         </p>
         <div className="textInputWrapper">
-          <textarea className="textInput" onChange={saveText} />
+          <textarea
+            className="textInput"
+            onChange={saveText}
+            placeholder="내용을 입력하세요."
+          />
         </div>
       </BoardContentWrapper>
       <div className="btnWrapper">

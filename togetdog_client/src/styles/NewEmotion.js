@@ -27,6 +27,14 @@ export const BoardContentWrapper = styled.div`
     white-space: pre-wrap;
   }
 
+  .warningStr {
+    maring: 0;
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 0.5rem;
+    color: #f24e1e;
+    white-space: pre-wrap;
+  }
+
   .dogImageWrapper {
     display: flex;
     direction: row;
