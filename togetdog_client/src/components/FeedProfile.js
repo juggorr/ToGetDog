@@ -7,6 +7,7 @@ import OrangeCharacterBtn from './OrangeCharacterBtn';
 import YellowCharacterBtn from './YellowCharacterBtn';
 import { PlusBtn } from '../styles/BtnsEmotion';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const FeedProfile = ({ menuBtnClick, setMenuBtnClick, data }) => {
   // data = {
@@ -74,6 +75,10 @@ const FeedProfile = ({ menuBtnClick, setMenuBtnClick, data }) => {
       }
     });
   }
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   return (
     <>
