@@ -1,5 +1,6 @@
 package com.ssafy.togetdog.dog.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,12 +23,13 @@ import com.ssafy.togetdog.dog.model.dto.DogRegistParamDTO;
 import com.ssafy.togetdog.dog.model.dto.DogUpdateParamDTO;
 import com.ssafy.togetdog.dog.model.service.DogService;
 import com.ssafy.togetdog.user.controller.UserRestController;
+import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.service.JwtService;
+import com.ssafy.togetdog.user.model.service.UserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -41,6 +43,7 @@ public class DogRestController {
 	
 	private final DogService dogService;
 	private final JwtService jwtService;
+	private final UserService userService;
 
 	/***
 	 * Dog information lookup
@@ -62,29 +65,34 @@ public class DogRestController {
 	}
 	
 	/***
-	 * Dog information Registration
+	 * Dog Registration
 	 * @param dogInfo
 	 * @return 200
+	 * @throws IOException 
+	 * @throws IllegalStateException 
 	 */
 	@ApiOperation(value = "강아지 정보 등록", notes = "새로운 강아지를 등록합니다.")
 	@PostMapping
 	public ResponseEntity<?> registDog(
-			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@RequestPart @ApiParam(required = true) DogRegistParamDTO dogDTO,
-			@RequestPart @ApiParam(required = true) MultipartFile dogImage
-			) {
-		
-		logger.info("DogInfo registration parameter : {} {}", dogDTO, dogImage.getOriginalFilename());
+			//@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@RequestPart(value="dog") @ApiParam(required = true) DogRegistParamDTO dogDTO,
+			@RequestPart(value="dogProfile") @ApiParam(required = true) MultipartFile dogImage
+			) throws IllegalStateException, IOException {
+		System.out.println("머냐고 시발");
+		logger.info("Dog registration parameter : {} {}", dogDTO, dogImage.getOriginalFilename());
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
-		jwtService.validateToken(token);
-		long userId = jwtService.getUserId(token);
-		dogService.registDog(userId, dogDTO, dogImage);
+		//jwtService.validateToken(token);
+		//long userId = jwtService.getUserId(token);
+		User user = userService.findUserByUserId(21);
+		dogService.registDog(user, dogDTO, dogImage);
+		resultMap.put("result", SUCCESS);
+		resultMap.put("msg", "해당 강아지의 정보를 등록했습니다.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 	
 	/***
-	 * 
+	 * Dog delete (file, db)
 	 * @param dogid
 	 * @return
 	 */
@@ -95,29 +103,39 @@ public class DogRestController {
 			@PathVariable @ApiParam(required = true) String dogid
 			) {
 		
-		logger.info("GetDogInfo parameter : {}", dogid);
+		logger.info("Dog delete in");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = null;
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		jwtService.validateToken(token);
+		long userId = jwtService.getUserId(token);
+		dogService.deleteDog(userId, dogid);
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
 	/***
-	 * 
+	 * Dog update (file, db)
 	 * @param dogInfo
 	 * @return
+	 * @throws IOException 
+	 * @throws IllegalStateException 
 	 */
 	@ApiOperation(value = "강아지 정보 수정", notes = "해당 강아지를 수정합니다.")
 	@PutMapping
 	public ResponseEntity<?> updateDog(
-			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@RequestBody DogUpdateParamDTO dogDTO
-			) {
+			//@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@RequestPart(value="dog") @ApiParam(required = true) DogUpdateParamDTO dogDTO,
+			@RequestPart(value="dogProfile") @ApiParam(required = false) MultipartFile dogImage
+			) throws IllegalStateException, IOException {
 		
-		logger.info("GetDogInfo parameter : {}", dogDTO);
+		logger.info("Dog updateDTO parameter : {}", dogDTO);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = null;
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		//jwtService.validateToken(token);
+		//long userId = jwtService.getUserId(token);
+		User user = userService.findUserByUserId(21);
+		dogService.updateDog(user, dogDTO, dogImage);
+		resultMap.put("result", SUCCESS);
+		resultMap.put("msg", "해당 강아지의 정보를 수정했습니다.");
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 }
