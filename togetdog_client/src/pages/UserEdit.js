@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
-import { BACKEND_URL, LOCAL_SERVER } from '../config';
+import { BACKEND_URL, DUMMY_URL } from '../config';
 
 
-import { BlackBtn, MainColorShortBtn, GreyColorShortBtn } from '../styles/BtnsEmotion';
+import { BlackBtn, MainShortBtn, GreyColorShortBtn } from '../styles/BtnsEmotion';
 import OptionBtn from '../components/OptionBtn';
 import { SignupContainer, SignupWrapper, InputWrapper } from '../styles/SignupEmotion';
 import DaumKakaoAddress from '../components/DaumKakaoAddress';
@@ -28,6 +28,27 @@ const nicknameKorRegexp = /^[가-힣]{1,8}$/; // 한글 1~8자
 const nicknameEngRegexp = /^[a-zA-Z]{2,16}$/; // 영문 2~16자
 
 function UserEdit() {
+
+  const userId = 10
+  const [userData, setUserData] = useState();
+  const birthYear = new Date().getFullYear() - userData.userAge;
+
+
+
+  useEffect(() => {
+    axios
+    .get(`https://togetdog.site/dummy/user/${userId}`)
+    .then((res) => {
+      setUserData(res.data)
+      console.log(res.data)
+      console.log(userData.nickName)
+    })
+    .catch((err) => {
+      console.log(err)
+    });
+  }, [])
+
+
 
   const [inputs, setInputs] = useState({
     nickname: '',
@@ -158,7 +179,7 @@ function UserEdit() {
             <input
               name='nickname'
               className='email-input'
-              placeholder='닉네임을 입력해 주세요.'
+              placeholder={userData.nickName}
               onChange={(e) => handleNickname(e)}
             />
           </div>
@@ -185,7 +206,12 @@ function UserEdit() {
           </div>
           <div className='horizontal-flex'>
             <div className='number-input-box'>
-              <input className='number-input' name='birth' onChange={(e) => handleBirth(e)} placeholder='2000' />
+              <input 
+                className='number-input' 
+                name='birth' 
+                onChange={(e) => handleBirth(e)} 
+                placeholder={birthYear} 
+              />
             </div>
             <div className='year'>년</div>
           </div>
@@ -198,7 +224,12 @@ function UserEdit() {
           </div>
           <div className='horizontal-flex'>
             <div className='input-box address-box'>
-              <input className='email-input' value={address} name='address' placeholder='역삼동' disabled />
+              <input 
+                className='email-input' 
+                value={address} name='address' 
+                placeholder={userData.address} 
+                disabled 
+              />
             </div>
             <BlackBtn onClick={handlePopup}>주소 찾기</BlackBtn>
             {popup && (
@@ -219,7 +250,7 @@ function UserEdit() {
         <div className='signup-desc'>* 표시는 필수 입력 값입니다.</div>
         <div className='two-btns-wrapper'>
             <GreyColorShortBtn onClick={checkOthers}>돌아가기</GreyColorShortBtn>
-            <MainColorShortBtn onClick={checkOthers}>변경하기</MainColorShortBtn>
+            <MainShortBtn onClick={checkOthers}>변경하기</MainShortBtn>
         </div>
         <div className='edit-bottom-wrapper'>
           <div className='edit-bottom-text'>회원탈퇴</div>

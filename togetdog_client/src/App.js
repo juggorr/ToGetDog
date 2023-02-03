@@ -40,8 +40,8 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/emailAuth' element={<EmailAuth />} />
-          <Route path='/userEdit' element={<UserEdit />} />
-          <Route path='/passwordEdit' element={<PasswordEdit />} />
+          <Route path='/useredit' element={<UserEdit />} />
+          <Route path='/passwordedit' element={<PasswordEdit />} />
           <Route path='/500' element={<InternalServer />} />
           <Route path='/*' element={<NotFound />} />
         </Routes>
