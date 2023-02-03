@@ -24,6 +24,9 @@ function PasswordEdit() {
     passwordCheck,
   } = inputs;
 
+  // 추후에 
+  // 현재 접속한 유저 비밀번호
+  // 받아서 해당작업 진행
   const oldPassword = 'aaaaaa!1';
 
   const [inputError, setInputError] = useState(false);
@@ -44,9 +47,6 @@ function PasswordEdit() {
   };
 
   // 기존 비밀번호 핸들러 메소드
-  // 비밀번호와 일치할 경우 그대로
-  // 입력버튼 눌렀을 때 비밀번홍와 일치 하지 않을 경우
-  // 기존 비밀번호와 일치하지 않습니다
   const handleOldPassword = (e) => {
     if (oldPassword === (e.target.value)) {
       setOldPasswordError(false);
