@@ -41,7 +41,6 @@ public class Comment {
     
     @ManyToOne
     @JoinColumn(name="user_id")
-//    @Column(name = "user_id")
     private User user;
     
     @Column(name = "comment_content")

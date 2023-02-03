@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.user.model.entity.User;
 import com.sun.istack.NotNull;
@@ -27,6 +29,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
+@DynamicUpdate
 @Table(name = "BOARD")
 @Builder
 @Getter

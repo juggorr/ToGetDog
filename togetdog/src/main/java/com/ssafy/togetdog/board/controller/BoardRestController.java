@@ -1,8 +1,6 @@
 package com.ssafy.togetdog.board.controller;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,14 +11,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.togetdog.board.model.dto.BoardDto;
 import com.ssafy.togetdog.board.model.dto.CommentDto;
+import com.ssafy.togetdog.board.model.dto.LikeDTO;
 import com.ssafy.togetdog.board.model.entity.Board;
-import com.ssafy.togetdog.board.model.entity.Comment;
 import com.ssafy.togetdog.board.model.service.BoardService;
 import com.ssafy.togetdog.board.model.service.CommentService;
+import com.ssafy.togetdog.board.model.service.LikeService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,6 +36,7 @@ public class BoardRestController {
 	@Autowired
 	private final BoardService boardService;
 	private final CommentService commentService;
+	private final LikeService likeService;
 	
 	@ApiOperation(value = "홈화면 게시글 리스트", notes = "홈화면에서 구독한 개들의 게시글 표시")
 	@GetMapping("/home")
@@ -69,8 +70,9 @@ public class BoardRestController {
 	
 	@ApiOperation(value = "게시물 수정", notes = "선택된 단건 게시글을 수정")
 	@PutMapping("/")
-	public Board modifyBoard(@RequestBody BoardDto boardDto) {
-		return null;
+	public BoardDto modifyBoard(@RequestBody BoardDto boardDto) {
+		BoardDto newBoardDto = boardService.update(boardDto);
+		return newBoardDto;
 	}
 	
 	@ApiOperation(value = "게시물 삭제", notes = "선택된 단건 게시글을 삭제")
@@ -95,15 +97,16 @@ public class BoardRestController {
 	
 	@ApiOperation(value = "좋아요", notes = "게시글애 좋아요")
 	@PostMapping("/like")
-	public Long addLike(@RequestBody BoardDto boardDto) {
-//		return commentService.save(boardDto);
-		return null;
+	public Long addLike(@RequestBody LikeDTO likeDTO) {
+		likeService.save(likeDTO);
+		return  likeService.getLikes(likeDTO.getBoardId());
 	}
 	
 	@ApiOperation(value = "좋아요  취소", notes = "게시글에 좋아요 취소")
 	@DeleteMapping("/like")
-	public Board deleteLike(@RequestBody BoardDto boardDto) {
-		return null;
+	public Long deleteLike(@RequestBody LikeDTO likeDTO) {
+		likeService.delete(likeDTO);
+		return  likeService.getLikes(likeDTO.getBoardId());
 	}
 	
 }

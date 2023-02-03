@@ -49,5 +49,13 @@ public class BoardDto {
 		this.content = content;
 	}
 
+		public BoardDto(Board entity) {
+			this.boardId = entity.getBoardId();
+			this.userId = entity.getUser().getUserId();
+			this.dogId = entity.getDog().getDogId();
+			this.image = entity.getImage();
+			this.content = entity.getContent();
+		}
+
 
 }

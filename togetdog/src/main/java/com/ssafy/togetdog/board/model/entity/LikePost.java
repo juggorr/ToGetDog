@@ -19,14 +19,14 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "LIKE")
+@Table(name = "LIKELIST")
 @Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Like {
+public class LikePost {
 	
     @Id
     @Column(name = "like_id")
