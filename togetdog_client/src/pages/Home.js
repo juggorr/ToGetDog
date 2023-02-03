@@ -6,7 +6,7 @@ import { authAtom, userState } from '../recoil';
 
 const Home = () => {
   const [user, setUser] = useRecoilState(userState);
-  console.log(user);
+  // console.log(user);
 
   const auth = useRecoilValue(authAtom);
   const navigate = useNavigate();

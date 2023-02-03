@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const HeaderWrapper = styled.div`
   display: flex;
@@ -13,12 +13,19 @@ export const HeaderWrapper = styled.div`
     padding: 0 10px;
   }
 
+  .head-left {
+    flex: 7;
+  }
+
+  .head-right {
+    flex: 3;
+  }
+
   .notoSans {
-    font-family: "Noto Sans KR", sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
   }
 
   .dongName-box {
-    width: 150px;
     height: 60px;
     text-align: left;
     line-height: 60px;
