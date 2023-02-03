@@ -125,15 +125,15 @@ function DogRegister() {
   };
   // 나이 문자열형태로 바꾸기 함수 '202201'
   const [age, setAge] = useState('');
-  const makeAge = () => {
+  const makeAge = async () => {
     if (year && month && month < 10) {
       const string = year.toString() + '0' + month.toString();
-      setAge(string);
+      await setAge(string);
       return;
     }
     if (year && month && month >= 10) {
       const string = year.toString() + month.toString();
-      setAge(string);
+      await setAge(string);
       return;
     }
   };
@@ -229,6 +229,7 @@ function DogRegister() {
 
     formData.append('dog', new Blob([JSON.stringify(dog)], { type: 'application/json' }));
     formData.append('dogProfile', image);
+
     // 폼데이터 확인
     // for (let key of formData.keys()) {
     //   console.log(key, ":", formData.get(key));
