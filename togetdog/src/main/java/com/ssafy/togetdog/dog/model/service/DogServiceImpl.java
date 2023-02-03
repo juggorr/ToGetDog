@@ -69,7 +69,7 @@ public class DogServiceImpl implements DogService {
 		}
 		
 		String hostname = InetAddress.getLocalHost().getHostName();
-		System.out.println(hostname);
+		System.out.println("호스트 서버 이름~~~~~~~~~~~" + hostname);
 		
 		checkRegistrationValidation(dogDTO);
 		String originalFileName = image.getOriginalFilename();
