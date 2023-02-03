@@ -19,6 +19,8 @@ import com.ssafy.togetdog.global.exception.InvalidLoginActingException;
 import com.ssafy.togetdog.global.exception.TokenValidFailedException;
 import com.ssafy.togetdog.global.exception.UnAuthorizedException;
 
+import io.jsonwebtoken.io.IOException;
+
 /**
  * 
  * @author skyju
@@ -114,4 +116,12 @@ public class ExceptionRestControllerAdvice extends ResponseEntityExceptionHandle
 		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
+	@ExceptionHandler(IOException.class)
+	public ResponseEntity<?> ioError500(IOException e) {
+		logger.error("500 : IO error : " + e.getMessage());
+		Map<String, String> resultMap = new HashMap<String, String>();
+		resultMap.put("result", FAIL);
+		resultMap.put("msg", "예기치 못한 이유로 전송에 실패했습니다.");
+		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }

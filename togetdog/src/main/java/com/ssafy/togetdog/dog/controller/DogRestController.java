@@ -75,7 +75,7 @@ public class DogRestController {
 	@ApiOperation(value = "강아지 정보 등록", notes = "새로운 강아지를 등록합니다.")
 	@PostMapping
 	public ResponseEntity<?> registDog(
-			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			//@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
 			@RequestPart @ApiParam(required = true) DogRegistParamDTO dogDTO,
 			@RequestPart @ApiParam(required = true) MultipartFile dogImage
 			) throws IllegalStateException, IOException {
@@ -83,9 +83,9 @@ public class DogRestController {
 		logger.info("DogInfo registration parameter : {} {}", dogDTO, dogImage.getOriginalFilename());
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
-		jwtService.validateToken(token);
-		long userId = jwtService.getUserId(token);
-		User user = userService.findUserByUserId(userId);
+		//jwtService.validateToken(token);
+		//long userId = jwtService.getUserId(token);
+		User user = userService.findUserByUserId(21);
 		dogService.registDog(user, dogDTO, dogImage);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}

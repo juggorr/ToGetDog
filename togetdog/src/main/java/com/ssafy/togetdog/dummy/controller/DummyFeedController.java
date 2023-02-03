@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.togetdog.dummy.domain.BoardDTO;
+import com.ssafy.togetdog.dummy.domain.BoardParamDTO;
 import com.ssafy.togetdog.dummy.domain.CommentDTO;
 import com.ssafy.togetdog.dummy.domain.DogDTO;
 import com.ssafy.togetdog.dummy.domain.SimpleBoardDTO;
@@ -164,16 +166,16 @@ public class DummyFeedController {
 	@ApiOperation(value = "게시물 등록", notes = "새로운 게시물을 등록합니다.")
 	@PostMapping("/dummy/board")
 	public ResponseEntity<?> postingBoard(
-			@RequestParam String dogId,
-			@RequestParam(value="image", required = true) MultipartFile image,
-			@RequestParam String content) {
-		
+			@RequestPart(value = "boardContent", required = true) BoardParamDTO boardDTO,
+			@RequestPart(value = "file", required = true) MultipartFile image) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("boardId", 123);
 		resultMap.put("result", SUCCESS);
 		resultMap.put("msg", "게시물이 등록 되었습니다.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
+
+
 
 	@ApiOperation(value = "게시물 삭제", notes = "해당 게시물을 삭제합니다.")
 	@DeleteMapping("/dummy/board")
