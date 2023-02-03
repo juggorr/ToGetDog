@@ -28,7 +28,7 @@ const FeedProfile = ({ menuBtnClick, setMenuBtnClick, data }) => {
   //       dogAge: '70', // 개월수
   //       dogWeight: '3.4',
   //       dogNeutered: true, // 중성화 되어 있음
-  //       dogCharacter1: 'independent', // 독립적
+  //       dogCharacter1: 'disobedient', // 비순종적
   //       dogCharacter2: 'active', // 활동적
   //       description: '활동적이나 순해요',
   //       dogProfile:
@@ -44,7 +44,7 @@ const FeedProfile = ({ menuBtnClick, setMenuBtnClick, data }) => {
   //       dogAge: '100', // 개월수
   //       dogWeight: '5.4',
   //       dogNeutered: true, // 중성화 되어 있음
-  //       dogCharacter1: 'dependent', // 독립적
+  //       dogCharacter1: 'obedient', // 순종적
   //       dogCharacter2: 'inactive', // 활동적
   //       description: '사나워요',
   //       dogProfile: 'https://pbs.twimg.com/media/DWC_IZ0V4AA8KmH.jpg',
@@ -59,7 +59,7 @@ const FeedProfile = ({ menuBtnClick, setMenuBtnClick, data }) => {
   const dogs = data.dogs;
   let currentDog = dogs[0];
   let neutered = currentDog.dogNeutered ? '중성화' : '중성화 X';
-  let character1 = currentDog.dogCharacter1 === 'independent' ? '독립적' : '순종적';
+  let character1 = currentDog.dogCharacter1 === 'obedient' ? '순종적' : '비순종적';
   let character2 = currentDog.dogCharacter2 === 'active' ? '활동적' : '비활동적';
   let ageMonth = currentDog.dogAge;
   let ageYear = ageMonth >= 12 ? `${Math.floor(ageMonth / 12)}살` : `${ageMonth}개월`;
