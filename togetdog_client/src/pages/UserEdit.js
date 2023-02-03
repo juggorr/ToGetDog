@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 import { BACKEND_URL, LOCAL_SERVER } from '../config';
@@ -219,7 +219,7 @@ function UserEdit() {
         <div className='signup-desc'>* 표시는 필수 입력 값입니다.</div>
         <div className='two-btns-wrapper'>
             <GreyColorShortBtn onClick={checkOthers}>돌아가기</GreyColorShortBtn>
-            <MainColorShortBtn onClick={checkOthers}>정보변경</MainColorShortBtn>
+            <MainColorShortBtn onClick={checkOthers}>변경하기</MainColorShortBtn>
         </div>
         <div className='edit-bottom-wrapper'>
           <div className='edit-bottom-text'>회원탈퇴</div>

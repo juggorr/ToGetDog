@@ -40,6 +40,11 @@ export const SignupWrapper = styled.div`
     color: red;
   }
 
+  .input-error {
+    color: red;
+    font-size: 0.8rem;
+  }
+
   .edit-bottom-wrapper {
     border-top: 0.125rem solid #e2e2e2;
     margin-top: 2rem;

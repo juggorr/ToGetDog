@@ -10,6 +10,7 @@ import Chat from './pages/Chat';
 import Feed from './pages/Feed';
 import New from './pages/New';
 import UserEdit from './pages/UserEdit';
+import PasswordEdit from './pages/PasswordEdit';
 
 /*global kakao*/
 import React, { useEffect } from 'react';
@@ -39,8 +40,9 @@ function App() {
           {/* 그 이외 필요없는 컴포넌트 */}
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
-          <Route path='/userEdit' element={<UserEdit />} />
           <Route path='/emailAuth' element={<EmailAuth />} />
+          <Route path='/userEdit' element={<UserEdit />} />
+          <Route path='/passwordEdit' element={<PasswordEdit />} />
           <Route path='/500' element={<InternalServer />} />
           <Route path='/*' element={<NotFound />} />
         </Routes>
