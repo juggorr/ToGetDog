@@ -5,7 +5,7 @@ import { userState } from "../recoil/user";
 import Select from "react-select";
 import axios from 'axios';
 
-import { DUMMY_URL, LOCAL_URL } from "../config";
+import { DUMMY_URL, BACKEND_URL } from "../config";
 
 import { MainColorLongBtn } from "../styles/BtnsEmotion";
 import DoubleOptionBtn from "../components/DoubleOptionBtn";
@@ -22,44 +22,44 @@ const nameRegexp = /^[가-힣]{1,5}$/;
 // 강아지 성별 선택 옵션들
 const sexBtnList = [
   {
-    btn_id: 1,
+    btn_id: 'male',
     text: "왕자님"
   },
   {
-    btn_id: 2,
+    btn_id: 'female',
     text: "공주님"
   },
 ];
 // 강아지 성별 선택 옵션들
 const neuterdBtnList = [
   {
-    btn_id: 1,
+    btn_id: true,
     text: "했어요"
   },
   {
-    btn_id: 2,
+    btn_id: false,
     text: "안 했어요"
   },
 ];
 // 강아지 성격1 선택 옵션들
 const char1BtnList = [
   {
-    btn_id: 1,
+    btn_id: 'obedient',
     text: "순종적"
   },
   {
-    btn_id: 2,
+    btn_id: 'disobedient',
     text: "독립적"
   },
 ];
 // 강아지 성격2 선택 옵션들
 const char2BtnList = [
   {
-    btn_id: 1,
+    btn_id: 'active',
     text: "활동적"
   },
   {
-    btn_id: 2,
+    btn_id: 'inactive',
     text: "비활동적"
   },
 ];
@@ -250,7 +250,7 @@ function DogRegister() {
     //   console.log(key, ":", formData.get(key));
     // }
     await axios
-      .post(`${LOCAL_URL}/api/dog`, formData, {
+      .post(`${BACKEND_URL}/api/dog`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -480,9 +480,9 @@ function DogRegister() {
           >등록하기</MainColorLongBtn>
         </div>
         {/* 추후에 우리로고로 바꾸기 */}
-        <div className="logo-div">
+        {/* <div className="logo-div">
           <img src={process.env.PUBLIC_URL + 'favicon.ico'} alt="paw"></img>
-        </div>
+        </div> */}
       </RegisterWrapper>
     </RegisterContainer>
   );
