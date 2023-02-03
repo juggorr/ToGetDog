@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const LoginContainer = styled.div`
   height: 100vh;
@@ -43,16 +43,8 @@ export const LogoWrapper = styled.div`
   align-itmes: center;
   padding-bottom: 50px;
 
-  .login-logo {
-    width: 150px;
-    height: 150px;
-    margin: auto;
-  }
-
-  .logo-title {
-    font-size: 40px;
-    font-weight
-    color: #000;
+  .logo-img {
+    width: 19rem;
   }
 `;
 

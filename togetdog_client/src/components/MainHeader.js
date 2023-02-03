@@ -21,13 +21,13 @@ function Navbar() {
   return (
     <>
       <HeaderWrapper>
-        <div className='head-icon-wrapper'>
+        <div className='head-icon-wrapper head-left'>
           <div className='dongName-box notoSans'>
             <FontAwesomeIcon className='header-icon' icon='fa-solid fa-house' />
             {dongName}
           </div>
         </div>
-        <div className='head-icon-wrapper'>
+        <div className='head-icon-wrapper head-right'>
           <div className='icon-box'>
             <Link to='/new'>
               <FontAwesomeIcon className='header-icon' icon='fa-solid fa-square-plus' />
