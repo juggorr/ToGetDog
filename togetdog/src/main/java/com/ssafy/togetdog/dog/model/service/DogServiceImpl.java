@@ -71,7 +71,7 @@ public class DogServiceImpl implements DogService {
 		String hostname = InetAddress.getLocalHost().getHostName();
 		System.out.println("호스트 서버 이름~~~~~~~~~~~" + hostname);
 		
-		checkRegistrationValidation(dogDTO);
+		//checkRegistrationValidation(dogDTO);
 		String originalFileName = image.getOriginalFilename();
 
 		String today = new SimpleDateFormat("yyMMdd").format(new Date());
@@ -189,7 +189,6 @@ public class DogServiceImpl implements DogService {
 	 */
 	public void checkRegistrationValidation(DogRegistParamDTO dogDTO) {
 		String dogNameRegexp = "^[가-힇]{1,5}$";
-
 		if (!Pattern.matches(dogNameRegexp, dogDTO.getDogName())) {
 			throw new InvalidInputException();
 		}
