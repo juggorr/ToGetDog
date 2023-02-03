@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-// import { BACKEND_URL, LOCAL_SERVER } from '../config';
+import { BACKEND_URL } from '../config';
 
 import { BlackBtn, MainColorLongBtn } from '../styles/BtnsEmotion';
 import OptionBtn from '../components/OptionBtn';
@@ -9,8 +9,6 @@ import { SignupContainer, SignupWrapper, InputWrapper } from '../styles/SignupEm
 import DaumKakaoAddress from '../components/DaumKakaoAddress';
 import { useNavigate } from 'react-router-dom';
 import EmailSent from '../components/EmailSent';
-
-const BACKEND_URL = window.location.origin + '/api';
 
 const genderBtnList = [
   {
