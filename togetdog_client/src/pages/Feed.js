@@ -45,7 +45,7 @@ const Feed = () => {
     await axios
       .get(
         `${DUMMY_URL}/feed`,
-        { pageNo: 1 },
+        { params: { pageNo: 1 } },
         {
           headers: {
             'Content-Type': 'application/json',
