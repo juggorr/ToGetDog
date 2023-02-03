@@ -197,7 +197,7 @@ public class DogServiceImpl implements DogService {
 		if (!dogGender.equals("male") && !dogGender.equals("female")) {
 			throw new InvalidInputException();
 		}
-		if (dogDTO.getDogBirth().length() > 6 || dogDTO.getDogWeight().length() > 4)  {
+		if (dogDTO.getDogBirth().length() != 6 || dogDTO.getDogWeight().length() > 4)  {
 			throw new InvalidInputException();
 		}
 		try {
