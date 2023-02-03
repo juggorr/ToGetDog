@@ -17,10 +17,11 @@ const Login = () => {
   const auth = useRecoilValue(authAtom);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (auth !== null && auth === JSON.parse(localStorage.getItem('user')) && localStorage.getItem('recoil-persist'))
-      navigate('/');
-  }, []);
+  // 추후 주석 해제 예정 (개발용)
+  // useEffect(() => {
+  //   if (auth !== null && auth === JSON.parse(localStorage.getItem('user')) && localStorage.getItem('recoil-persist'))
+  //     navigate('/');
+  // }, []);
 
   const setAuth = useSetRecoilState(authAtom);
 
@@ -71,7 +72,11 @@ const Login = () => {
           email: email,
           password: password,
         },
-        // { headers: { "Content-Type": "application/json" } },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
       )
       .then((resp) => {
         console.log('로그인 성공!');

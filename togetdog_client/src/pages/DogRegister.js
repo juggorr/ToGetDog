@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Select from "react-select";
 import axios from 'axios';
 
-import { BACKEND_URL, DUMMY_URL } from "../config";
+import { LOCAL_SERVER, DUMMY_URL } from "../config";
 
 import { MainColorLongBtn } from "../styles/BtnsEmotion";
 import DoubleOptionBtn from "../components/DoubleOptionBtn";
@@ -19,9 +19,9 @@ import {
 function DogRegister() {
   const navigate = useNavigate();
 
+  
   // 견종 리스트 public/breeds.txt에서 불러오기
   const[breedList, setBreedList] = useState([]);
-
   // render될 때 비동기로 breeds.txt breedsList에 저장
   useEffect(() => {
     async function fetchData() {
@@ -36,10 +36,8 @@ function DogRegister() {
 
       setBreedList(arr);
     }
-
     fetchData();
   }, [])
-
   // 강아지 성별 선택 옵션들
   const sexBtnList = [
     {
@@ -51,7 +49,6 @@ function DogRegister() {
       text: "공주님"
     },
   ];
-  
   // 강아지 성별 선택 옵션들
   const neuterdBtnList = [
     {
@@ -63,7 +60,6 @@ function DogRegister() {
       text: "안 했어요"
     },
   ];
-  
   // 강아지 성격1 선택 옵션들
   const char1BtnList = [
     {
@@ -75,7 +71,6 @@ function DogRegister() {
       text: "독립적"
     },
   ];
-  
   // 강아지 성격2 선택 옵션들
   const char2BtnList = [
     {
@@ -88,43 +83,38 @@ function DogRegister() {
     },
   ];
   
+  
   // 강아지 프로필 이미지 업로드
   const [image, setImage] = useState(null);
   const handleImage = (e) => {
     const file = e.target.files[0];
     setImage(URL.createObjectURL(file));
   };
-
   // 이름, 5글자 이상 입력 불가
   const [name, setName] = useState('');
   const handleName = ({target: {value}}) => {
     setName(value.slice(0, 5));
   };
-
   // 성별 선택
   const [sex, setSex] = useState('');
   const handleSex = (e) => {
     setSex(e);
   };
-
   // 견종 선택
   const [breed, setBreed] = useState('');
   const handleBreed = (e) => {
     setBreed(e.value);
   }
-
   // 태어난 해, 4글자 이상 입력 불가
   const [year, setYear] = useState('');
   const handleYear = ({target: {value}}) => {
     setYear(value.slice(0, 4));
   };
-
   // 태어난 달, 2글자 이상 입력 불가
   const [month, setMonth] = useState('');
   const handleMonth = ({target: {value}}) => {
     setMonth(value.slice(0, 2));
   };
-
   // 나이 문자열형태로 바꾸기 '202201'
   const [age, setAge] = useState('');
   const makeAge = () => {
@@ -139,36 +129,56 @@ function DogRegister() {
       return ;
     };
   }
-
   // 몸무게, 4글자 이상 입력 불가
   const [weight, setWeight] = useState('');
   const handleWeight = ({target: {value}}) => {
     setWeight(value.slice(0, 4));
   };
-
   // 중성화 여부
   const [isNeuterd, setIsNeuterd] = useState('');
   const handleIsNeuterd = (e) => {
     setIsNeuterd(e);
   };
-
   // 순종적 여부
   const [isObedient, setIsObedient] = useState('');
   const handleIsObedient = (e) => {
     setIsObedient(e);
   };
-
   // 활동적 여부
   const [isActive, setIsActive] = useState('');
   const handleIsActive = (e) => {
     setIsActive(e);
   };
-
   // 특이사항, 20글자 이상 입력 불가
   const [perk, setPerk] = useState('');
   const handlePerk = ({target: {value}}) => {
     setPerk(value.slice(0, 20));
   };
+
+const [inputError, setInputError] = useState(false);
+const [inputErrorMsg, setInputErrorMsg] = useState('');
+const [nameError, setNameError] = useState(false);
+const [nameErrorMsg, setNameErrorMsg] = useState('');
+const [sexError, setSexError] = useState(false);
+const [sexErrorMsg, setSexErrorMsg] = useState('');
+const [breedError, setBreedError] = useState(false);
+const [breedErrorMsg, setBreedErrorMsg] = useState('');
+const [yearError, setYearError] = useState(false);
+const [yearErrorMsg, setYearErrorMsg] = useState('');
+const [monthError, setMonthError] = useState(false);
+const [monthErrorMsg, setMonthErrorMsg] = useState('');
+const [weightError, setWeightError] = useState(false);
+const [weightErrorMsg, setWeightErrorMsg] = useState('');
+const [isNeuteredError, setIsNeuteredError] = useState(false);
+const [isNeuteredErrorMsg, setIsNeuteredErrorMsg] = useState('');
+const [isObedientError, setIsObedientError] = useState(false);
+const [isObedientErrorMsg, setIsObedientErrorMsg] = useState('');
+const [isActiveError, setIsActiveError] = useState(false);
+const [isActiveErrorMsg, setIsActiveErrorMsg] = useState('');
+
+
+
+
 
   // 유효성 검사 및 강아지 등록
   // 1. 필수 입력사항 미 입력 시
@@ -179,6 +189,8 @@ function DogRegister() {
     // 필수 입력 값들이 입력되었는지 확인
     if (!image || !name || !sex || !breed || !year || !month || 
       !weight || !isNeuterd || !isObedient || !isActive) {
+      setInputError(true);
+      setInputErrorMsg('필수 값이 입력되지 않았습니다')
       console.log('값을 입력하세요')
       return false;
     };
@@ -192,6 +204,8 @@ function DogRegister() {
     // 년도 유효성 검사
     const checkYear = new Date().getFullYear();
     if (year < 2000 || year > checkYear) {
+      setYearError(true);
+      setYearErrorMsg('적절한 년도를 입력해 주세요');
       console.log('적절한 년도를 입력해 주세요')
       return false;
     };
@@ -219,19 +233,23 @@ function DogRegister() {
   const sendPOST = async ()=> {
 
     const formData = new FormData();
-    formData.append('dogName', name);
-    formData.append('dogGender', sex);
-    formData.append('dogType', breed);
-    formData.append('dogBirth', age);
-    formData.append('dogWeight', weight);
-    formData.append('dogNeutered', isNeuterd);
-    formData.append('dogCharacter1', isObedient);
-    formData.append('dogCharacter2', isActive);
-    formData.append('description', perk);
+    const dog = {
+      dogName: name,
+      dogGender: sex,
+      dogType: breed,
+      dogBirth: age,
+      dogWeight: weight,
+      dogNeutered: isNeuterd,
+      dogCharacter1: isObedient,
+      dogCharacter2: isActive,
+      description: perk,
+    }
+
+    formData.append('dog', dog);
     formData.append('dogProfile', image);
 
     await axios
-      .post(`${DUMMY_URL}/dummy/dog`, formData, {
+      .post(`${LOCAL_SERVER}/dummy/dog`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -248,6 +266,7 @@ function DogRegister() {
   // 버튼누르면 POST 요청 보내기
   const handleRegister = () => {
     if (checkValidation()) {
+      makeAge();
       sendPOST();
     } else {
       console.log('정상 처리되지 않았음');
@@ -362,6 +381,7 @@ function DogRegister() {
               <div className="month">월</div>
             </div>
           </div>
+          <div className={yearError ? null : 'error'}>{yearErrorMsg}</div>
         </InputWrapper>
         {/* 몸무게 입력 */}
         <InputWrapper>
@@ -445,6 +465,7 @@ function DogRegister() {
           <p className="small-font">특이사항은 20자 이내로 입력해주세요.</p>
         </InputWrapper>
         <div className="signup-desc">*표시는 필수 입력 값입니다.</div>
+        <div className={inputError ? null : 'error'}>{inputErrorMsg}</div>
         <div className="btn-wrapper">
           <MainColorLongBtn
             onClick={handleRegister}

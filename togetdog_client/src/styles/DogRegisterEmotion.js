@@ -61,6 +61,11 @@ export const RegisterWrapper = styled.div`
   .btn-wrapper {
     padding-top: 1.5rem;
   }
+
+  .error {
+    color: red;
+    font-size: 0.8rem;
+  }
   `;
 
   export const ProfileImage = styled.div`
@@ -182,6 +187,11 @@ export const RegisterWrapper = styled.div`
   .kilogram {
     font-size: 1rem;
     vertical-align: bottom;
+  }
+
+  .error {
+    color: red;
+    font-size: 0.8rem;
   }
 `;
 
