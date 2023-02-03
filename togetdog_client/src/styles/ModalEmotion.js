@@ -1,6 +1,7 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const MenuModalWrapper = styled.div`
+  z-index: 1;
   position: fixed;
   top: 0;
   @media (min-width: 650px) {
