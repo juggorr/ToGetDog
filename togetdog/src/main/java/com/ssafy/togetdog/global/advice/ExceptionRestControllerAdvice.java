@@ -19,6 +19,8 @@ import com.ssafy.togetdog.global.exception.InvalidLoginActingException;
 import com.ssafy.togetdog.global.exception.TokenValidFailedException;
 import com.ssafy.togetdog.global.exception.UnAuthorizedException;
 
+import io.jsonwebtoken.io.IOException;
+
 /**
  * 
  * @author skyju
@@ -32,6 +34,7 @@ import com.ssafy.togetdog.global.exception.UnAuthorizedException;
  * 다른 Exception을 추가하신다면 package 대상 파일을 작성한 사람들에게 알려주셔야 합니다.
  *
  */
+
 @RestControllerAdvice(basePackages = {"com.ssafy.togetdog.user.controller", "com.ssafy.togetdog.dog.controller"})
 public class ExceptionRestControllerAdvice extends ResponseEntityExceptionHandler {
 	
@@ -114,4 +117,12 @@ public class ExceptionRestControllerAdvice extends ResponseEntityExceptionHandle
 		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
+	@ExceptionHandler(IOException.class)
+	public ResponseEntity<?> ioError500(IOException e) {
+		logger.error("500 : IO error : " + e.getMessage());
+		Map<String, String> resultMap = new HashMap<String, String>();
+		resultMap.put("result", FAIL);
+		resultMap.put("msg", "예기치 못한 이유로 전송에 실패했습니다.");
+		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }

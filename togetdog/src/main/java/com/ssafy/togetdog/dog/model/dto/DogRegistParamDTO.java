@@ -12,7 +12,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class DogRegistParamDTO {
-	private long dogId;
 	private String dogName;
 	private String dogGender;
 	private String dogType;
