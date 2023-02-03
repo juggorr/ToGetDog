@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState} from 'recoil';
 import { userState } from "../recoil/user";
@@ -63,15 +63,15 @@ const char2BtnList = [
     text: "비활동적"
   },
 ];
+
+
 function DogRegister() {
   
   const navigate = useNavigate();
   
   // 견종 리스트 public/breeds.txt에서 불러오기
   const[breedList, setBreedList] = useState([]);
-  // render될 때 
-  // 비동기로 breeds.txt breedsList에 저장
-  // 올해 year, month설정
+  // render될 때 비동기로 breeds.txt breedsList에 저장
   useEffect(() => {
     async function fetchData() {
       const res = await axios.get('./breeds.txt');
@@ -175,7 +175,7 @@ function DogRegister() {
 
 // female male
 // 몸무게 4자리 (1.23 가능)
-// 순종적 obedient in
+// 순종적 obedient disobedient
 // 활동적 active inactive
   
   // 유효성 검사 함수
@@ -250,7 +250,7 @@ function DogRegister() {
     //   console.log(key, ":", formData.get(key));
     // }
     await axios
-      .post(`/api/dog`, formData, {
+      .post(`${LOCAL_URL}/api/dog`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
