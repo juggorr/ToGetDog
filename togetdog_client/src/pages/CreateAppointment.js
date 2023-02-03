@@ -15,7 +15,7 @@ import getDate from "date-fns/getDate";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 
-import { BACKEND_URL, DUMMY_URL, NEW_DUMMY_URL } from "../config";
+import { BACKEND_URL, DUMMY_URL } from "../config";
 import {
   CreateAppointmentWrapper,
   WalkRequest,
@@ -365,13 +365,21 @@ const CreateAppointment = () => {
 
   const handleCreateAppointment = async (myDogList, partnerDogList) => {
     await axios
-      .post(`${NEW_DUMMY_URL}/meeting`, {
-        userId: userData.userId,
-        myDogs: myDogList,
-        partnerDogs: partnerDogList,
-        date: dateResult,
-        place: placeInput,
-      })
+      .post(
+        `${DUMMY_URL}/meeting`,
+        {
+          userId: userData.userId,
+          myDogs: myDogList,
+          partnerDogs: partnerDogList,
+          date: dateResult,
+          place: placeInput.current,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((resp) => {
         console.log("요청 성공");
         navigate(-1);
