@@ -78,7 +78,7 @@ const FeedProfile = ({ menuBtnClick, setMenuBtnClick, data }) => {
 
   useEffect(() => {
     console.log(data);
-  }, [data]);
+  }, []);
 
   return (
     <>

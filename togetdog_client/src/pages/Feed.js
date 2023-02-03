@@ -72,6 +72,7 @@ const Feed = () => {
     feedData = getFeedData(); // 처음 렌더링 할 때만 Feed 데이터 받아오기
     feedProfileData = feedData.user;
     feedPhotoData = feedData.feed;
+    console.log(feedProfileData);
   }, []);
 
   return (
