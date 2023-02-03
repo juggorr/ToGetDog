@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-import { BACKEND_URL, LOCAL_SERVER } from '../config';
+import { BACKEND_URL } from '../config';
 
 import { BlackBtn, MainColorLongBtn } from '../styles/BtnsEmotion';
 import OptionBtn from '../components/OptionBtn';
