@@ -214,12 +214,19 @@ function DogRegister() {
   };
 
   const sendPOST = async () => {
+    console.log(age);
     const formData = new FormData();
+    let newBirth = month;
+    if (month < 10 && month.length == 1) {
+      newBirth = year + '0' + month;
+    } else {
+      newBirth = year + month;
+    }
     const dog = {
       dogName: name,
       dogGender: sex,
       dogType: breed,
-      dogBirth: age,
+      dogBirth: newBirth,
       dogWeight: weight,
       dogNeutered: isNeuterd,
       dogCharacter1: isObedient,
@@ -227,12 +234,16 @@ function DogRegister() {
       description: perk,
     };
 
+    console.log(dog);
+
     formData.append('dog', new Blob([JSON.stringify(dog)], { type: 'application/json' }));
     formData.append('dogProfile', image);
 
+    console.log(formData.get('dog'));
+
     // 폼데이터 확인
     // for (let key of formData.keys()) {
-    //   console.log(key, ":", formData.get(key));
+    //   console.log(key, ':', formData.get(key));
     // }
     await axios
       .post(`${BACKEND_URL}/dog`, formData, {
