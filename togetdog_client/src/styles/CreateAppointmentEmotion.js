@@ -29,8 +29,8 @@ export const WalkRequest = styled.div`
 
   .warningStr {
     font-family: "Noto Sans KR", sans-serif;
-    font-size: 0.8rem;
-    color: #717171;
+    font-size: 0.5rem;
+    color: #f24e1e;
     white-space: pre-wrap;
   }
 

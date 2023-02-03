@@ -46,12 +46,12 @@ const CreateAppointment = () => {
   const [partnerData, setPartnerData] = useState({});
   const [myActiveDogs, setMyActiveDogs] = useState([]);
   const [partnerActiveDogs, setPartnerActiveDogs] = useState([]);
+  const [requestError, setRequestError] = useState(false);
 
   const [startDate, setStartDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
   const [dateResult, setDateResult] = useState(new Date());
 
-  // const [placeInput, setPlaceInput] = useState();
   const placeInput = useRef(null);
 
   const myDogError = useRef(false);
@@ -337,16 +337,16 @@ const CreateAppointment = () => {
   };
 
   const onChangeInput = (e) => {
-    // setPlaceInput(e.target.value);
     placeInput.current = e.target.value;
   };
 
-  const isValid = (e) => {
+  const isValid = () => {
     if (myDogError.current === true || partnerDogError.current === true) {
-      console.log("강아지가 없어용");
-    } else if (placeInput.current === "") {
-      console.log("장소가 없어요");
+      setRequestError(true);
+    } else if (!placeInput.current) {
+      setRequestError(true);
     } else {
+      setRequestError(false);
       const myDogList = [];
       const partnerDogList = [];
       for (let i = 0; i < myActiveDogs.length; i++) {
@@ -435,6 +435,9 @@ const CreateAppointment = () => {
             placeholder="장소를 입력해주세요."
           />
         </div>
+        {requestError ? (
+          <p className="warningStr">입력값이 없는 항목이 있습니다.</p>
+        ) : null}
       </WalkRequest>
       <div className="btnWrapper">
         <MainColorShortBtn
