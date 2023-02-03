@@ -10,7 +10,7 @@ import DaumKakaoAddress from '../components/DaumKakaoAddress';
 import { useNavigate } from 'react-router-dom';
 import EmailSent from '../components/EmailSent';
 
-const BACKEND_URL = window.location.origin;
+const BACKEND_URL = window.location.origin + '/api';
 
 const genderBtnList = [
   {
