@@ -57,6 +57,8 @@ const FeedProfile = ({ menuBtnClick, setMenuBtnClick, data }) => {
 
   const navigate = useNavigate();
   const dogs = data.dogs;
+  console.log(data);
+  console.log(dogs);
   let currentDog = dogs[0];
   let neutered = currentDog.dogNeutered ? '중성화' : '중성화 X';
   let character1 = currentDog.dogCharacter1 === 'obedient' ? '순종적' : '비순종적';
