@@ -234,7 +234,7 @@ function DogRegister() {
     //   console.log(key, ":", formData.get(key));
     // }
     await axios
-      .post(`${BACKEND_URL}/api/dog`, formData, {
+      .post(`${BACKEND_URL}/dog`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
