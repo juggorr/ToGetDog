@@ -76,8 +76,8 @@ public class DogRestController {
 	@PostMapping
 	public ResponseEntity<?> registDog(
 			//@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@RequestPart @ApiParam(required = true) DogRegistParamDTO dogDTO,
-			@RequestPart @ApiParam(required = true) MultipartFile dogImage
+			@RequestPart(value="dog") @ApiParam(required = true) DogRegistParamDTO dogDTO,
+			@RequestPart(value="dogProfile") @ApiParam(required = true) MultipartFile dogImage
 			) throws IllegalStateException, IOException {
 		
 		logger.info("DogInfo registration parameter : {} {}", dogDTO, dogImage.getOriginalFilename());

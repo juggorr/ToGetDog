@@ -56,7 +56,8 @@ public class DummyDogController {
 	@ApiOperation(value = "강아지 정보 등록", notes = "새로운 강아지를 등록합니다.")
 	@PostMapping
 	public ResponseEntity<?> registDog(
-			@RequestPart DogRegistParamDTO dogDTO, @RequestPart MultipartFile file) {
+			@RequestPart DogRegistParamDTO dogDTO,
+			@RequestPart MultipartFile file) {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("result", SUCCESS);
 		resultMap.put("msg", "해당 강아지의 정보를 등록했습니다.");
