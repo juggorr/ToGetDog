@@ -1,9 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState} from 'recoil';
+import { userState } from "../recoil/user";
 import Select from "react-select";
 import axios from 'axios';
 
-import { LOCAL_SERVER, DUMMY_URL } from "../config";
+import { DUMMY_URL, LOCAL_URL } from "../config";
 
 import { MainColorLongBtn } from "../styles/BtnsEmotion";
 import DoubleOptionBtn from "../components/DoubleOptionBtn";
@@ -16,79 +18,95 @@ import {
 } from "../styles/DogRegisterEmotion";
 
 
+const nameRegexp = /^[가-힣]{1,5}$/;
+// 강아지 성별 선택 옵션들
+const sexBtnList = [
+  {
+    btn_id: 1,
+    text: "왕자님"
+  },
+  {
+    btn_id: 2,
+    text: "공주님"
+  },
+];
+// 강아지 성별 선택 옵션들
+const neuterdBtnList = [
+  {
+    btn_id: 1,
+    text: "했어요"
+  },
+  {
+    btn_id: 2,
+    text: "안 했어요"
+  },
+];
+// 강아지 성격1 선택 옵션들
+const char1BtnList = [
+  {
+    btn_id: 1,
+    text: "순종적"
+  },
+  {
+    btn_id: 2,
+    text: "독립적"
+  },
+];
+// 강아지 성격2 선택 옵션들
+const char2BtnList = [
+  {
+    btn_id: 1,
+    text: "활동적"
+  },
+  {
+    btn_id: 2,
+    text: "비활동적"
+  },
+];
 function DogRegister() {
+  
   const navigate = useNavigate();
-
   
   // 견종 리스트 public/breeds.txt에서 불러오기
   const[breedList, setBreedList] = useState([]);
-  // render될 때 비동기로 breeds.txt breedsList에 저장
+  // render될 때 
+  // 비동기로 breeds.txt breedsList에 저장
+  // 올해 year, month설정
   useEffect(() => {
     async function fetchData() {
       const res = await axios.get('./breeds.txt');
       const text = await res.data.split('\r\n');
-      
       // breedList형식 {value: 'value', label: 'value'}으로 바꾸기
       const arr = await text.map((item) => {
-
         return { value: `${item}`, label: `${item}` }
       })
-
       setBreedList(arr);
     }
     fetchData();
   }, [])
-  // 강아지 성별 선택 옵션들
-  const sexBtnList = [
-    {
-      btn_id: 1,
-      text: "왕자님"
-    },
-    {
-      btn_id: 2,
-      text: "공주님"
-    },
-  ];
-  // 강아지 성별 선택 옵션들
-  const neuterdBtnList = [
-    {
-      btn_id: 1,
-      text: "했어요"
-    },
-    {
-      btn_id: 2,
-      text: "안 했어요"
-    },
-  ];
-  // 강아지 성격1 선택 옵션들
-  const char1BtnList = [
-    {
-      btn_id: 1,
-      text: "순종적"
-    },
-    {
-      btn_id: 2,
-      text: "독립적"
-    },
-  ];
-  // 강아지 성격2 선택 옵션들
-  const char2BtnList = [
-    {
-      btn_id: 1,
-      text: "활동적"
-    },
-    {
-      btn_id: 2,
-      text: "비활동적"
-    },
-  ];
+
+  const [inputError, setInputError] = useState(false);
+  const [inputErrorMsg, setInputErrorMsg] = useState('');
+  const [nameError, setNameError] = useState(false);
+  const [nameErrorMsg, setNameErrorMsg] = useState('');
+  const [yearError, setYearError] = useState(false);
+  const [yearErrorMsg, setYearErrorMsg] = useState('');
+  const [monthError, setMonthError] = useState(false);
+  const [monthErrorMsg, setMonthErrorMsg] = useState('');
+  // 미래시점 입력시 발생하는 err
+  // const [ageError, setAgeError] = useState(false);
+  // const [ageErrorMsg, setAgeErrorMsg] = useState('');
+  const [weightError, setWeightError] = useState(false);
+  const [weightErrorMsg, setWeightErrorMsg] = useState('');
   
   
   // 강아지 프로필 이미지 업로드
+  const [imgURL, setImgURL] = useState('');
   const [image, setImage] = useState(null);
   const handleImage = (e) => {
     const file = e.target.files[0];
-    setImage(URL.createObjectURL(file));
+    setImage(file);
+    setImgURL(URL.createObjectURL(file));
   };
   // 이름, 5글자 이상 입력 불가
   const [name, setName] = useState('');
@@ -115,7 +133,7 @@ function DogRegister() {
   const handleMonth = ({target: {value}}) => {
     setMonth(value.slice(0, 2));
   };
-  // 나이 문자열형태로 바꾸기 '202201'
+  // 나이 문자열형태로 바꾸기 함수 '202201'
   const [age, setAge] = useState('');
   const makeAge = () => {
     if (year && month && month < 10) {
@@ -155,34 +173,10 @@ function DogRegister() {
     setPerk(value.slice(0, 20));
   };
 
-const [inputError, setInputError] = useState(false);
-const [inputErrorMsg, setInputErrorMsg] = useState('');
-const [nameError, setNameError] = useState(false);
-const [nameErrorMsg, setNameErrorMsg] = useState('');
-const [sexError, setSexError] = useState(false);
-const [sexErrorMsg, setSexErrorMsg] = useState('');
-const [breedError, setBreedError] = useState(false);
-const [breedErrorMsg, setBreedErrorMsg] = useState('');
-const [yearError, setYearError] = useState(false);
-const [yearErrorMsg, setYearErrorMsg] = useState('');
-const [monthError, setMonthError] = useState(false);
-const [monthErrorMsg, setMonthErrorMsg] = useState('');
-const [weightError, setWeightError] = useState(false);
-const [weightErrorMsg, setWeightErrorMsg] = useState('');
-const [isNeuteredError, setIsNeuteredError] = useState(false);
-const [isNeuteredErrorMsg, setIsNeuteredErrorMsg] = useState('');
-const [isObedientError, setIsObedientError] = useState(false);
-const [isObedientErrorMsg, setIsObedientErrorMsg] = useState('');
-const [isActiveError, setIsActiveError] = useState(false);
-const [isActiveErrorMsg, setIsActiveErrorMsg] = useState('');
-
-
-
-
-
-  // 유효성 검사 및 강아지 등록
-  // 1. 필수 입력사항 미 입력 시
-  // 해당 버튼에 불이 들어오고 (useRef 사용)
+// female male
+// 몸무게 4자리 (1.23 가능)
+// 순종적 obedient in
+// 활동적 active inactive
   
   // 유효성 검사 함수
   const checkValidation = () => {
@@ -191,14 +185,13 @@ const [isActiveErrorMsg, setIsActiveErrorMsg] = useState('');
       !weight || !isNeuterd || !isObedient || !isActive) {
       setInputError(true);
       setInputErrorMsg('필수 값이 입력되지 않았습니다')
-      console.log('값을 입력하세요')
       return false;
     };
     // 이름 유효성 검사
-    const nameRegexp = /가-힣/;
     // 참 거짓 헷갈림..
-    if (nameRegexp.test(name)) {
-      console.log('이름은 한글로 최대 5글자 입니다.')
+    if (!nameRegexp.test(name)) {
+      setNameError(true);
+      setNameErrorMsg('이름은 한글로 1~5글자 입니다')
       return false;
     };
     // 년도 유효성 검사
@@ -213,17 +206,19 @@ const [isActiveErrorMsg, setIsActiveErrorMsg] = useState('');
     const checkMonth = new Date().getMonth() + 1;
     // 1월부터 12월까지 입력받기
     if (month < 1 || month > 13) {
-      console.log('적절한 달을 입력해 주세요')
+      setMonthError(true);
+      setMonthErrorMsg('적절한 월을 입력해 주세요');
       return false;
     };
     // 미래의 시점 입력 제한
     if (year === checkYear && month > checkMonth) {
-      console.log('현재나 과거 시점을 등록해 주세요')
+      
       return false;
     };
     // 몸무게 유효성 검사
     if (weight < 0 || weight > 80) {
-      console.log('적절한 몸무게를 입력해 주세요')
+      setWeightError(true);
+      setWeightErrorMsg('적절한 몸무게를 입력해 주세요');
       return false;
     };
     // 모두 통과하면 true 반환
@@ -245,14 +240,20 @@ const [isActiveErrorMsg, setIsActiveErrorMsg] = useState('');
       description: perk,
     }
 
-    formData.append('dog', dog);
+    formData.append(
+      'dog', 
+      new Blob([JSON.stringify(dog)], { type: "application/json" })
+      );
     formData.append('dogProfile', image);
-
+    // 폼데이터 확인
+    // for (let key of formData.keys()) {
+    //   console.log(key, ":", formData.get(key));
+    // }
     await axios
-      .post(`${LOCAL_SERVER}/dummy/dog`, formData, {
+      .post(`/api/dog`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          'Content-Type': 'multipart/form-data',
+        },
       })
       .then((res) => {
         console.log(res.data);
@@ -263,10 +264,13 @@ const [isActiveErrorMsg, setIsActiveErrorMsg] = useState('');
       });
   };
 
-  // 버튼누르면 POST 요청 보내기
+  // 버튼누르면
   const handleRegister = () => {
+    // 유효성 검사 통과 시
     if (checkValidation()) {
+      // 나이 바꿔주기 (2022.07 => '202207')
       makeAge();
+      // POST요청 보내기
       sendPOST();
     } else {
       console.log('정상 처리되지 않았음');
@@ -279,7 +283,7 @@ const [isActiveErrorMsg, setIsActiveErrorMsg] = useState('');
     <RegisterContainer>
       <RegisterWrapper>
         <ProfileImage
-          image={image}
+          image={imgURL}
         >
           {/* 사진 등록 */}
           <AddImage>
@@ -313,6 +317,7 @@ const [isActiveErrorMsg, setIsActiveErrorMsg] = useState('');
               />
             </div>
           </div>
+          <div className={nameError ? 'success' : 'error'}>{nameErrorMsg}</div>
         </InputWrapper>
         {/* 성별 입력 */}
         <InputWrapper>
@@ -381,7 +386,9 @@ const [isActiveErrorMsg, setIsActiveErrorMsg] = useState('');
               <div className="month">월</div>
             </div>
           </div>
-          <div className={yearError ? null : 'error'}>{yearErrorMsg}</div>
+          <div className={yearError ? 'success' : 'error'}>{yearErrorMsg}</div>
+          <div className={monthError ? 'success' : 'error'}>{monthErrorMsg}</div>
+          <p className="small-font">정확히 모른다면 추정 나이를 입력해 주세요</p>
         </InputWrapper>
         {/* 몸무게 입력 */}
         <InputWrapper>
@@ -402,6 +409,7 @@ const [isActiveErrorMsg, setIsActiveErrorMsg] = useState('');
             </div>
             <div className="kilogram">kg</div>
           </div>
+          <div className={weightError ? 'success' : 'error'}>{weightErrorMsg}</div>
         </InputWrapper>
         {/* 중성화 여부 */}
         <InputWrapper>
