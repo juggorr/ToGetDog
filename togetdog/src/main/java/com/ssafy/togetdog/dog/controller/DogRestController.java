@@ -78,8 +78,8 @@ public class DogRestController {
 			@RequestPart(value="dog") @ApiParam(required = true) DogRegistParamDTO dogDTO,
 			@RequestPart(value="dogProfile") @ApiParam(required = true) MultipartFile dogImage
 			) throws IllegalStateException, IOException {
-		
-		logger.info("DogInfo registration parameter : {} {}", dogDTO, dogImage.getOriginalFilename());
+		System.out.println("머냐고 시발");
+		logger.info("Dog registration parameter : {} {}", dogDTO, dogImage.getOriginalFilename());
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		//jwtService.validateToken(token);
@@ -103,7 +103,7 @@ public class DogRestController {
 			@PathVariable @ApiParam(required = true) String dogid
 			) {
 		
-		logger.info("GetDogInfo parameter : {}", dogid);
+		logger.info("Dog delete in");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		jwtService.validateToken(token);
@@ -127,7 +127,7 @@ public class DogRestController {
 			@RequestPart(value="dogProfile") @ApiParam(required = false) MultipartFile dogImage
 			) throws IllegalStateException, IOException {
 		
-		logger.info("GetDogInfo parameter : {}", dogDTO);
+		logger.info("Dog updateDTO parameter : {}", dogDTO);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		//jwtService.validateToken(token);

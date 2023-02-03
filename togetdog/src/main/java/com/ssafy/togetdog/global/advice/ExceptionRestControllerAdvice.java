@@ -34,6 +34,7 @@ import io.jsonwebtoken.io.IOException;
  * 다른 Exception을 추가하신다면 package 대상 파일을 작성한 사람들에게 알려주셔야 합니다.
  *
  */
+
 @RestControllerAdvice(basePackages = {"com.ssafy.togetdog.user.controller", "com.ssafy.togetdog.dog.controller"})
 public class ExceptionRestControllerAdvice extends ResponseEntityExceptionHandler {
 	

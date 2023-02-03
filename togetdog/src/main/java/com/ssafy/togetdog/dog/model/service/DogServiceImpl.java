@@ -2,6 +2,7 @@ package com.ssafy.togetdog.dog.model.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -66,6 +67,10 @@ public class DogServiceImpl implements DogService {
 		if (user == null) {
 			throw new UnAuthorizedException();
 		}
+		
+		String hostname = InetAddress.getLocalHost().getHostName();
+		System.out.println(hostname);
+		
 		checkRegistrationValidation(dogDTO);
 		String originalFileName = image.getOriginalFilename();
 
@@ -184,12 +189,8 @@ public class DogServiceImpl implements DogService {
 	 */
 	public void checkRegistrationValidation(DogRegistParamDTO dogDTO) {
 		String dogNameRegexp = "^[가-힇]{1,5}$";
-		String dogTypeRegexp = "^[가-힇]{1,25}$";
 
 		if (!Pattern.matches(dogNameRegexp, dogDTO.getDogName())) {
-			throw new InvalidInputException();
-		}
-		if (!Pattern.matches(dogTypeRegexp, dogDTO.getDogType())) {
 			throw new InvalidInputException();
 		}
 		String dogGender = dogDTO.getDogGender();
