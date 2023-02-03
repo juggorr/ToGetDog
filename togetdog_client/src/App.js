@@ -20,6 +20,7 @@ import NotFound from "./pages/NotFound";
 import InternalServer from "./pages/InternalServer";
 import EmailSent from "./components/EmailSent";
 import EmailAuth from "./pages/EmailAuth";
+import EditBoard from "./pages/EditBoard";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           </Route>
           {/* 그 이외 필요없는 컴포넌트 */}
           <Route path="/new" element={<New />} />
+          <Route path="/editBoard" element={<EditBoard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/emailAuth" element={<EmailAuth />} />
