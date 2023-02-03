@@ -31,7 +31,6 @@ const New = () => {
       .get(`${DUMMY_URL}/user/includesDog/${user.userId}`, {})
       .then((response) => {
         setUserData(response.data);
-
         setSelectedDog(userData.dog[0].dogId);
       })
       .catch((error) => {
