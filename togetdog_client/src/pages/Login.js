@@ -79,14 +79,14 @@ const Login = () => {
     // e.preventDefault();
     await axios
       .post(
-        `http://i8a807.p.ssafy.io/user/login`,
+        `${BACKEND_URL}/user/login`,
         {
           email: email,
           password: password,
         },
         {
           headers: {
-            "Content-Type": "application/json;charset=utf-8",
+            "Content-Type": "application/json",
           },
         }
       )
