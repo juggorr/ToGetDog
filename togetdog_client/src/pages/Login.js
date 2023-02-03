@@ -28,7 +28,8 @@ const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
 
-  const BACKEND_URL = window.location.origin;
+  const BACKEND_URL = window.location.origin + '/api';
+  console.log(BACKEND_URL);
 
   const [user, setUser] = useRecoilState(userState);
 
