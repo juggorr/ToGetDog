@@ -35,13 +35,13 @@ const Feed = () => {
     {
       menu_id: 6,
       text: '로그아웃',
-      link: '/',
+      link: '/logout',
     },
   ];
 
   const [menuBtnClick, setMenuBtnClick] = useState(false);
 
-  const getFeed = async () => {
+  const getFeedData = async () => {
     await axios
       .get(
         `${DUMMY_URL}/feed`,
@@ -54,14 +54,20 @@ const Feed = () => {
       )
       .then((resp) => {
         console.log(resp);
+        return resp.data;
       })
       .catch((err) => {
         console.log('피드 데이터 불러오기 실패');
       });
   };
 
+  let feedData = {};
+  let feedProfileData = {};
+  let feedPhotoData = {};
   useEffect(() => {
-    getFeed();
+    feedData = getFeedData(); // 처음 렌더링 할 때만 Feed 데이터 받아오기
+    feedProfileData = feedData.user;
+    feedPhotoData = feedData.feed;
   }, []);
 
   return (
@@ -69,7 +75,7 @@ const Feed = () => {
       <FeedContainer>
         <MenuModal menuLists={menuLists} menuBtnClick={menuBtnClick} setMenuBtnClick={setMenuBtnClick} />
         <FeedProfileWrapper>
-          <FeedProfile menuBtnClick={menuBtnClick} setMenuBtnClick={setMenuBtnClick} />
+          <FeedProfile menuBtnClick={menuBtnClick} setMenuBtnClick={setMenuBtnClick} data={feedProfileData} />
         </FeedProfileWrapper>
         <FeedPhotoWrapper>
           <FeedPhoto src='https://mblogthumb-phinf.pstatic.net/MjAxODA0MTVfMjY2/MDAxNTIzNzgzNTMyMTk5.XluZh00E4Hzkl1Oif19d5UPPXJqzFisXFa_3BT6sTJgg.dOueWfo5LscEpJSYAi56N7p91H_PJLM4IjOvVSexYzYg.JPEG.jjingjjing92/20180410_215717.jpg?type=w800' />
