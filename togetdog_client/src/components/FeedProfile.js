@@ -1,54 +1,47 @@
-import {
-  FeedProfileTop,
-  FeedProfileBottom,
-  MainDogImg,
-  SubDogImg,
-} from "../styles/FeedEmotion";
+import { FeedProfileTop, FeedProfileBottom, MainDogImg, SubDogImg } from '../styles/FeedEmotion';
 
-import Girl from "../assets/girl.png";
-import MenuIcon from "../assets/menu_icon.png";
-import OrangeCharacterBtn from "./OrangeCharacterBtn";
-import YellowCharacterBtn from "./YellowCharacterBtn";
-import { PlusBtn } from "../styles/BtnsEmotion";
+import Girl from '../assets/girl.png';
+import MenuIcon from '../assets/menu_icon.png';
+import OrangeCharacterBtn from './OrangeCharacterBtn';
+import YellowCharacterBtn from './YellowCharacterBtn';
+import { PlusBtn } from '../styles/BtnsEmotion';
 
 const FeedProfile = ({ menuBtnClick, setMenuBtnClick }) => {
   return (
     <>
       {/* 프로필 상단 */}
       <FeedProfileTop>
-        <MainDogImg src="https://mblogthumb-phinf.pstatic.net/MjAxOTA1MDhfMTQ2/MDAxNTU3MzAxNzQ4NDIw.MWkemnXiB57Tbm2kNMrDNj4uVImaujgUayV8GSKWA9Mg._lcDUVLNrYzYR9M36qGCdD1Kp0qLNxoZaqqkj-5-tswg.JPEG.hellohappypet/1.jpg?type=w800"></MainDogImg>
-        <div className="dog-info-box">
+        <MainDogImg src='https://mblogthumb-phinf.pstatic.net/MjAxOTA1MDhfMTQ2/MDAxNTU3MzAxNzQ4NDIw.MWkemnXiB57Tbm2kNMrDNj4uVImaujgUayV8GSKWA9Mg._lcDUVLNrYzYR9M36qGCdD1Kp0qLNxoZaqqkj-5-tswg.JPEG.hellohappypet/1.jpg?type=w800'></MainDogImg>
+        <div className='dog-info-box'>
           <div>뽀삐</div>
-          <div className="dog-info">
+          <div className='dog-info'>
             폼피츠 / 4살
-            <img src={Girl} className="dog-gender" />
+            <img src={Girl} className='dog-gender' />
           </div>
         </div>
-        <SubDogImg src="https://pbs.twimg.com/media/DWC_IZ0V4AA8KmH.jpg" />
-        <PlusBtn>+</PlusBtn>
-        <div className="profile-etc-wrapper">
-          <img
-            src={MenuIcon}
-            className="menu-icon"
-            onClick={() => setMenuBtnClick(true)}
-          />
-          <div className="follow-info flex-column">
+        <div className='sub-dogs'>
+          <SubDogImg src='https://pbs.twimg.com/media/DWC_IZ0V4AA8KmH.jpg' />
+          <PlusBtn>+</PlusBtn>
+        </div>
+        <div className='profile-etc-wrapper'>
+          <img src={MenuIcon} className='menu-icon' onClick={() => setMenuBtnClick(true)} />
+          <div className='follow-info flex-column'>
             <div>
-              <span className="follow-text">팔로워</span>132
+              <span className='follow-text'>팔로워</span>132
             </div>
             <div>
-              <span className="follow-text">팔로잉</span>128
+              <span className='follow-text'>팔로잉</span>128
             </div>
           </div>
         </div>
       </FeedProfileTop>
       {/* 특이사항, 성격 들어가는 부분 */}
       <FeedProfileBottom>
-        <div className="special-text">개를 보면 흥분해요</div>
-        <div className="characters-box">
-          <OrangeCharacterBtn text={"#중성화"} />
-          <YellowCharacterBtn text={"#독립적"} />
-          <YellowCharacterBtn text={"#활동적"} />
+        <div className='special-text'>개를 보면 흥분해요</div>
+        <div className='characters-box'>
+          <OrangeCharacterBtn text={'#중성화'} />
+          <YellowCharacterBtn text={'#독립적'} />
+          <YellowCharacterBtn text={'#활동적'} />
         </div>
       </FeedProfileBottom>
     </>

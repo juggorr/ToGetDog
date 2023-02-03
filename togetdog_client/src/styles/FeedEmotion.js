@@ -1,11 +1,11 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const FeedContainer = styled.div`
   width: 100%;
   height: calc(100vh - 115px);
   display: flex;
   flex-direction: column;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 export const FeedProfileWrapper = styled.div`
@@ -77,6 +77,13 @@ export const FeedProfileTop = styled.div`
     margin-right: 0.5rem;
     color: #777;
   }
+
+  .sub-dogs {
+    display: flex;
+    position: absolute;
+    top: 8.5rem;
+    padding-left: 4.5rem;
+  }
 `;
 
 export const FeedProfileBottom = styled.div`
@@ -105,10 +112,8 @@ export const MainDogImg = styled.img`
 `;
 
 export const SubDogImg = styled.img`
-  position: absolute;
-  left: 5.5rem;
-  top: 8.5rem;
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;
+  margin-right: 0.3rem;
 `;

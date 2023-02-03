@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 // 홈으로 이동 텍스트 버튼
 export const HomeTextBtn = styled.div`
@@ -93,9 +93,6 @@ export const YellowBtn = styled.button`
 `;
 
 export const PlusBtn = styled.button`
-  position: absolute;
-  left: 9.2rem;
-  top: 8.5rem;
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;
