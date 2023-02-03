@@ -16,10 +16,9 @@ import React, { useEffect } from "react";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
-import NotFound from "./pages/NotFound";
-import InternalServer from "./pages/InternalServer";
-import EmailSent from "./components/EmailSent";
-import EmailAuth from "./pages/EmailAuth";
+import NotFound from './pages/NotFound';
+import InternalServer from './pages/InternalServer';
+import EmailAuth from './pages/EmailAuth';
 
 function App() {
   return (
