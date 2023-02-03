@@ -1,3 +1,4 @@
-export const BACKEND_URL = 'https://togetdog.site/api';
-export const DUMMY_URL = 'https://togetdog.site/dummy';
-export const LOCAL_URL = 'http://70.12.247.230:8080';
+// export const BACKEND_URL = 'https://togetdog.site/api';
+export const BACKEND_URL = window.location.origin + '/api';
+// export const DUMMY_URL = 'https://togetdog.site/dummy';
+export const DUMMY_URL = window.location.origin + '/dummy';
