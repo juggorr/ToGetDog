@@ -79,8 +79,8 @@ export const ContentImgWrapper = styled.div`
   align-items: center;
 
   .contentImg {
-    width: 10rem;
-    height: 10rem;
+    width: 8rem;
+    height: 8rem;
     background-color: #606060;
     border-radius: 0.5rem;
     display: flex;

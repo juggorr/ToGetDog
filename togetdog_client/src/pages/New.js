@@ -20,9 +20,12 @@ const New = () => {
   // const [user, setUser] = useRecoilState(userState);
 
   const [userData, setUserData] = useState({});
-  const [currentDog, setCurrentDog] = useState(null);
+  // const [currentDog, setCurrentDog] = useState(null);
+  const [selectedDog, setSelectedDog] = useState(false);
   const [imgURL, setImgURL] = useState(null);
+  const currentDog = useRef();
   const imgRef = useRef();
+  const contentText = useRef();
 
   useEffect(() => {
     // 임시 데이터
@@ -76,36 +79,34 @@ const New = () => {
     });
     // axios
     //   .get(`${DUMMY_URL}/user/includesDog/${userId}`, {})
-    //   .then(function (response) {
+    //   .then((response) => {
     //     setUserData(response.data);
     //     currentDog.current = response.data.dog[0].dogId;
+    //     // setCurrentDog(userData.dog[0].dogId);
     //   })
-    //   .catch(function (error) {
+    //   .catch((error) => {
     //     // 오류발생시 실행
     //   });
 
-    if (userData.dog) {
-      setCurrentDog(userData.dog[0].dogId);
-      console.log(userData.dog);
-      console.log(" 초기", currentDog);
-    }
+    // if (userData.dog) {
+    //   setCurrentDog(userData.dog[0].dogId);
+    //   console.log(userData.dog);
+    //   console.log("초기", currentDog);
+    // }
   }, []);
 
   const DogImages = (item) => {
-    const [activeDog, setActiveDog] = useState(false);
-
-    // 클릭하면 상태 변경하는 코드
-    useEffect(() => {}, [activeDog]);
-
     return (
       <DogImgWrapper key={item.dog.dogId}>
         <div
           className={
-            currentDog === item.dog.dogId
+            selectedDog === item.dog.dogId
               ? "dogProfileCircle"
               : "dogProfileCircle disabled"
           }
-          onClick={() => setActiveDog(!activeDog)}
+          onClick={() => {
+            setSelectedDog(item.dog.dogId);
+          }}
         >
           <img
             className="dogProfileImg"
@@ -117,13 +118,26 @@ const New = () => {
     );
   };
 
-  const saveImgFile = () => {
+  const saveImgFile = (e) => {
     const file = imgRef.current.files[0];
     const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setImgURL(reader.result);
-    };
+
+    if (e.target.files[0]) {
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setImgURL(reader.result);
+      };
+    }
+  };
+
+  const saveText = (e) => {
+    contentText.current = e.target.value;
+  };
+
+  const checkValid = () => {
+    console.log(currentDog);
+    console.log(imgRef.current.files[0]);
+    console.log(contentText.current);
   };
 
   return (
@@ -136,8 +150,8 @@ const New = () => {
         </p>
         <div className="dogImageWrapper">
           {userData.dog &&
-            userData.dog.map((item) => (
-              <DogImages dog={item} key={item.dogId}></DogImages>
+            userData.dog.map((item, idx) => (
+              <DogImages dog={item} key={item.dogId} idx={idx}></DogImages>
             ))}
         </div>
         <p className="queryStr">
@@ -146,7 +160,7 @@ const New = () => {
         </p>
         <ContentImgWrapper>
           <div className="contentImg">
-            <label for="file-input">
+            <label htmlFor="file-input">
               {imgURL ? (
                 <img src={imgURL} alt="content_img" />
               ) : (
@@ -169,7 +183,7 @@ const New = () => {
           {"  "}내용
         </p>
         <div className="textInputWrapper">
-          <textarea className="textInput" />
+          <textarea className="textInput" onChange={saveText} />
         </div>
       </BoardContentWrapper>
       <div className="btnWrapper">
@@ -180,7 +194,7 @@ const New = () => {
         >
           취소
         </MainColorShortBtn>
-        <MainColorShortBtn>작성</MainColorShortBtn>
+        <MainColorShortBtn onClick={checkValid}>작성</MainColorShortBtn>
       </div>
     </CreateBoardWrapper>
   );
