@@ -60,3 +60,31 @@ export const MainColorLongBtn = styled.button`
   font-size: 0.9rem;
   // font-family: Noto Sans KR', sans-serif;
 `;
+
+export const MainColorShortBtn = styled.button`
+  width: 7rem;
+  height: 2.7rem;
+  border-radius: 2rem;
+  border: none;
+
+  background-color: #559968;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  // font-family: Noto Sans KR', sans-serif;
+`;
+
+export const GreyColorShortBtn = styled.button`
+  width: 7rem;
+  height: 2.7rem;
+  border-radius: 2rem;
+  border: none;
+  margin-right: 1rem;
+  mrgin-left: 1rem;
+
+  background-color: #717171;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  // font-family: Noto Sans KR', sans-serif;
+`;

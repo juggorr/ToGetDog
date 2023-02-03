@@ -28,6 +28,11 @@ export const SignupWrapper = styled.div`
     padding-top: 1.5rem;
   }
 
+  .two-btns-wrapper {
+    padding-top: 1.5rem;
+    justify-content: space-around;
+  }
+
   .signup-desc {
     width: 270px;
     text-align: left;
