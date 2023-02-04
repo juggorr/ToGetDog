@@ -61,7 +61,7 @@ public class Board {
     
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("comment_id asc")
-    private List<Comment> comments = new ArrayList<>();
+    private List<Comment> comments;
     
     
     
