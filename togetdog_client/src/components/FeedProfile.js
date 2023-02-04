@@ -62,12 +62,12 @@ const FeedProfile = ({ menuBtnClick, setMenuBtnClick, data }) => {
 
   const navigate = useNavigate();
   const dogs = data.dogs;
+  console.log(data);
+  console.log(dogs);
   let currentDog = dogs[0];
-  let neutered = currentDog.dogNeutered ? "중성화" : "중성화 X";
-  let character1 =
-    currentDog.dogCharacter1 === "obedient" ? "순종적" : "비순종적";
-  let character2 =
-    currentDog.dogCharacter2 === "active" ? "활동적" : "비활동적";
+  let neutered = currentDog.dogNeutered ? '중성화' : '중성화 X';
+  let character1 = currentDog.dogCharacter1 === 'obedient' ? '순종적' : '비순종적';
+  let character2 = currentDog.dogCharacter2 === 'active' ? '활동적' : '비활동적';
   let ageMonth = currentDog.dogAge;
   let ageYear =
     ageMonth >= 12 ? `${Math.floor(ageMonth / 12)}살` : `${ageMonth}개월`;
@@ -80,6 +80,10 @@ const FeedProfile = ({ menuBtnClick, setMenuBtnClick, data }) => {
       }
     });
   }
+
+  useEffect(() => {
+    console.log(data);
+  }, []);
 
   return (
     <>
