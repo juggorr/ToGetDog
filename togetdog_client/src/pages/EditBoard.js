@@ -56,23 +56,18 @@ const EditBoard = () => {
   };
 
   const checkValid = async () => {
+    const dataObj = { pageNo: pageNo, boardId: boardId, content: contentText };
+    // console.log(dataObj);
     await axios
-      .put(
-        `${DUMMY_URL}/board` +
-          `?pageNo=${pageNo}&boardId=${boardId}&content=${contentText}`,
-        {
-          pageNo: pageNo,
-          boardId: boardId,
-          content: contentText,
+      .put(`${DUMMY_URL}/board`, null, {
+        params: dataObj,
+        headers: {
+          "Content-Type": "application/json",
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      })
       .then((response) => {
-        navigate(`/board/${boardId}`);
+        console.log(response);
+        // navigate(`/board/${boardId}`);
       })
       .catch((err) => {
         console.log(err);
