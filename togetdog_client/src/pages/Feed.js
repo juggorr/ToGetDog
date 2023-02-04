@@ -49,11 +49,14 @@ const Feed = () => {
   ];
 
   const [menuBtnClick, setMenuBtnClick] = useState(false);
+  const [feedData, setFeedData] = useState({});
+  const [feedProfileData, setFeedProfileData] = useState({});
+  const [feedPhotoData, setFeedPhotoData] = useState({});
 
   const fetchFeedData = async () => {
     await axios
       .get(
-        `${DUMMY_URL}/feed/${user.userId}`,
+        `https://i8a807.p.ssafy.io/dummy/feed/${user.userId}`,
         { params: { pageNo: 1 } },
         {
           headers: {
@@ -63,21 +66,17 @@ const Feed = () => {
       )
       .then((resp) => {
         console.log(resp);
-        return resp.data;
+        setFeedData(resp.data);
       })
       .catch((err) => {
         console.log("피드 데이터 불러오기 실패");
       });
   };
 
-  let feedData = {};
-  let feedProfileData = {};
-  let feedPhotoData = {};
-  useEffect(() => {
-    feedData = fetchFeedData(); // 처음 렌더링 할 때만 Feed 데이터 받아오기
-    console.log(feedData + " feedData 출력");
-    feedProfileData = feedData.user;
-    feedPhotoData = feedData.feed;
+  useEffect(async () => {
+    await fetchFeedData(); // 처음 렌더링 할 때만 Feed 데이터 받아오기
+    setFeedProfileData(feedData.user);
+    setFeedPhotoData(feedData.feed);
   }, []);
 
   return (
