@@ -16,7 +16,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @Data
-public class BoardDto {
+public class BoardDTO {
 	private long boardId;
 	private long userId;
 	private long dogId;
@@ -40,8 +40,8 @@ public class BoardDto {
     	return board;
     }
     	
-	    @Builder
-	public BoardDto(long boardId, long userId, long dogId, String image, String content) {
+    @Builder
+	public BoardDTO(long boardId, long userId, long dogId, String image, String content) {
 		this.boardId = boardId;
 		this.userId = userId;
 		this.dogId = dogId;
@@ -49,13 +49,13 @@ public class BoardDto {
 		this.content = content;
 	}
 
-		public BoardDto(Board entity) {
-			this.boardId = entity.getBoardId();
-			this.userId = entity.getUser().getUserId();
-			this.dogId = entity.getDog().getDogId();
-			this.image = entity.getImage();
-			this.content = entity.getContent();
-		}
+	public BoardDTO(Board entity) {
+		this.boardId = entity.getBoardId();
+		this.userId = entity.getUser().getUserId();
+		this.dogId = entity.getDog().getDogId();
+		this.image = entity.getImage();
+		this.content = entity.getContent();
+	}
 
 
 }

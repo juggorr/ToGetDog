@@ -16,7 +16,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @Data
-public class CommentDto {
+public class CommentDTO {
 	private long commentId;
 	private long boardId;
 	private long userId;
@@ -41,7 +41,7 @@ public class CommentDto {
     }
 
     @Builder
-	public CommentDto(long commentId, long boardId, long userId, String commentContent) {
+	public CommentDTO(long commentId, long boardId, long userId, String commentContent) {
 		this.commentId = commentId;
 		this.boardId = boardId;
 		this.userId = userId;

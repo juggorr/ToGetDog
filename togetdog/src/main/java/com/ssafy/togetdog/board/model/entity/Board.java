@@ -16,7 +16,9 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.togetdog.board.model.dto.CommentDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.user.model.entity.User;
 import com.sun.istack.NotNull;
@@ -59,7 +61,7 @@ public class Board {
     
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("comment_id asc")
-    private List<Comment> comments = new ArrayList<Comment>();
+    private List<Comment> comments = new ArrayList<>();
     
     
     

@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.togetdog.board.model.dto.BoardDto;
-import com.ssafy.togetdog.board.model.dto.CommentDto;
+import com.ssafy.togetdog.board.model.dto.BoardDTO;
+import com.ssafy.togetdog.board.model.dto.CommentDTO;
 import com.ssafy.togetdog.board.model.dto.LikeDTO;
 import com.ssafy.togetdog.board.model.entity.Board;
 import com.ssafy.togetdog.board.model.entity.Comment;
@@ -49,7 +49,7 @@ public class LikeService {
 	}
 
 	public Long getLikes(long boardId) {
-		BoardDto boardDto = new BoardDto();
+		BoardDTO boardDto = new BoardDTO();
 		boardDto.setBoardId(boardId);
 		boardDto.setImage("");
 		return likeRepository.countByBoard(boardDto.toEntity());

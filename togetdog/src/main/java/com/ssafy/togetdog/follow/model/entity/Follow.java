@@ -32,7 +32,7 @@ public class Follow {
     @Id
     @Column(name = "follow_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long likeId;
+    private long followId;
     
     @ManyToOne
     @JoinColumn(name="user_id")

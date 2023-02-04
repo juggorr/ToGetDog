@@ -53,12 +53,11 @@ public class SwaggerConfig {
 	
 	@Bean
 	public Docket board() {
-		return new Docket(DocumentationType.OAS_30).groupName("Board")
-				.useDefaultResponseMessages(true) // Swagger 에서 제공해주는 기본 응답 코드 표시 여부
-				.apiInfo(apiInfo()) // apiInfo정보
-				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.ssafy.togetdog.board.controller"))
-				.paths(PathSelectors.any()) // 아무 경로나 가능
-				.build();
+		return getDocket("Board", true, "board");
+	}
+	
+	@Bean
+	public Docket follow() {
+		return getDocket("FOLLOW", true, "follow");
 	}
 }
