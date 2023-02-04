@@ -50,7 +50,7 @@ const Feed = () => {
 
   const [menuBtnClick, setMenuBtnClick] = useState(false);
 
-  const getFeedData = async () => {
+  const fetchFeedData = async () => {
     await axios
       .get(
         `${DUMMY_URL}/feed/${user.userId}`,
@@ -74,11 +74,11 @@ const Feed = () => {
   let feedProfileData = {};
   let feedPhotoData = {};
   useEffect(() => {
-    feedData = getFeedData(); // 처음 렌더링 할 때만 Feed 데이터 받아오기
-    console.log(feedData);
+    feedData = fetchFeedData(); // 처음 렌더링 할 때만 Feed 데이터 받아오기
+    console.log(feedData + " feedData 출력");
     feedProfileData = feedData.user;
     feedPhotoData = feedData.feed;
-  }, [feedData]);
+  }, []);
 
   return (
     <>
