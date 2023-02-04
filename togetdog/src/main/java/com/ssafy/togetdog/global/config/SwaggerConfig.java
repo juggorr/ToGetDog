@@ -50,4 +50,14 @@ public class SwaggerConfig {
 	public Docket dog() {
 		return getDocket("DOG", true, "dog");
 	}
+	
+	@Bean
+	public Docket board() {
+		return getDocket("Board", true, "board");
+	}
+	
+	@Bean
+	public Docket follow() {
+		return getDocket("FOLLOW", true, "follow");
+	}
 }
