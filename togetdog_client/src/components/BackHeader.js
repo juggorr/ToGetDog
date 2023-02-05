@@ -1,4 +1,3 @@
-import React from "react";
 import "./FontAwesome";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { BackHeaderWrapper } from "../styles/MainHeaderEmotion";

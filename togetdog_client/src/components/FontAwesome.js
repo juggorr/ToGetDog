@@ -33,4 +33,3 @@ library.add(faPlus);
 library.add(faUserGroup, faClock, faLocationDot);
 library.add(faCalendar, faChevronLeft, faChevronRight);
 library.add(faImage, faPen);
-library.add(faArrowLeft);
