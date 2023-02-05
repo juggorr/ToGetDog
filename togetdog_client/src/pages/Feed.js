@@ -236,6 +236,7 @@ const Feed = () => {
                   src={MenuIcon}
                   className="menu-icon"
                   onClick={() => setMenuBtnClick(true)}
+                  alt="menu"
                 />
                 <div className="follow-info flex-column">
                   <div>

@@ -9,6 +9,7 @@ import Walk from "./pages/Walk";
 import Chat from "./pages/Chat";
 import Feed from "./pages/Feed";
 import New from "./pages/New";
+import Board from "./pages/Board";
 
 /*global kakao*/
 import React, { useEffect } from "react";
@@ -20,6 +21,8 @@ import NotFound from "./pages/NotFound";
 import InternalServer from "./pages/InternalServer";
 import EmailAuth from "./pages/EmailAuth";
 import DogRegister from "./pages/DogRegister";
+import SubLayout from "./components/SubLayout";
+
 // import DogEdit from "./pages/DogEdit";
 
 function App() {
@@ -34,6 +37,10 @@ function App() {
             <Route path="/walk" element={<Walk />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/feed/:userId" element={<Feed />} />
+          </Route>
+          {/* BackHeader, Footer 필요한 컴포넌트 */}
+          <Route element={<SubLayout />}>
+            <Route path="/board/:boardId" element={<Board />} />
           </Route>
           {/* 그 이외 필요없는 컴포넌트 */}
           <Route path="/new" element={<New />} />
