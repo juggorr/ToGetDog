@@ -5,6 +5,22 @@ import { userState } from "../recoil";
 
 import axios from "axios";
 import { BACKEND_URL, DUMMY_URL } from "../config";
+import { HeaderWrapper } from "../styles/MainHeaderEmotion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const NotificationsHeader = () => {
+  const navigate = useNavigate();
+
+  return (
+    <HeaderWrapper>
+      <div className="icon-box">
+        <div className="header-icon" onClick={() => navigate(-1)}>
+          <FontAwesomeIcon icon="fa-arrow-left" />
+        </div>
+      </div>
+    </HeaderWrapper>
+  );
+};
 
 const Notifications = () => {
   const navigate = useNavigate();
@@ -33,6 +49,7 @@ const Notifications = () => {
 
   return (
     <div>
+      <NotificationsHeader></NotificationsHeader>
       {notifications.map((item) => (
         <p>{item.type}</p>
       ))}
