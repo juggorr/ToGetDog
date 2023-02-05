@@ -43,7 +43,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/board")
+@RequestMapping("/api")
 @Api("Board API")
 public class BoardRestController {
 	
@@ -127,7 +127,7 @@ public class BoardRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "피드 하단 게시물 리스트", notes = "피드 하단에 보일 게시글 리스트를 반환")
-	@GetMapping("/list/{dogId}")
+	@GetMapping("/board/list/{dogId}")
 	public ResponseEntity<?> getBoardListByDogId(@PathVariable long dogId,@RequestBody int pageNo){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
@@ -146,7 +146,7 @@ public class BoardRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "게시글 단건 가져오기", notes = "boardId에 해당하는 게시글 반환")
-	@GetMapping("/{boardId}")
+	@GetMapping("/board/{boardId}")
 	public ResponseEntity<?> getBoard(@PathVariable long boardId){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
@@ -167,7 +167,7 @@ public class BoardRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "게시글 등록", notes = "게시글을 등록함")
-	@PostMapping("/")
+	@PostMapping("/board")
 	public ResponseEntity<?> addBoard(@RequestBody BoardDTO boardDto) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
@@ -183,7 +183,7 @@ public class BoardRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "게시물 수정", notes = "선택된 단건 게시글을 수정")
-	@PutMapping("/")
+	@PutMapping("/board")
 	public ResponseEntity<?> modifyBoard(@RequestBody BoardDTO boardDto) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
@@ -201,7 +201,7 @@ public class BoardRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "게시물 삭제", notes = "선택된 단건 게시글을 삭제")
-	@DeleteMapping("/")
+	@DeleteMapping("/board")
 	public ResponseEntity<?> deleteBoard(@RequestBody BoardDTO boardDto) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
@@ -218,7 +218,7 @@ public class BoardRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "댓글 등록", notes = "게시글애 댓글을 등록함")
-	@PostMapping("/comment")
+	@PostMapping("/board/comment")
 	public ResponseEntity<?> addComment(@RequestBody CommentDTO commentDto) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		commentService.save(commentDto);
@@ -236,7 +236,7 @@ public class BoardRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "댓글 삭제", notes = "선택된 단건 댓글을 삭제")
-	@DeleteMapping("/comment")
+	@DeleteMapping("/board/comment")
 	public ResponseEntity<?> deleteComment(@RequestBody CommentDTO commentDto) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
@@ -255,7 +255,7 @@ public class BoardRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "좋아요", notes = "게시글에 좋아요")
-	@PostMapping("/like")
+	@PostMapping("/board/like")
 	public ResponseEntity<?> addLike(@RequestBody LikeDTO likeDTO) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
@@ -273,7 +273,7 @@ public class BoardRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "좋아요  취소", notes = "게시글에 좋아요 취소")
-	@DeleteMapping("/like")
+	@DeleteMapping("/board/like")
 	public ResponseEntity<?> deleteLike(@RequestBody LikeDTO likeDTO) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
