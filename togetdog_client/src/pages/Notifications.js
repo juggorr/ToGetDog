@@ -5,8 +5,11 @@ import { userState } from "../recoil";
 
 import axios from "axios";
 import { BACKEND_URL, DUMMY_URL } from "../config";
+import { NotificationsWrapper } from "../styles/NotificationsEmotion";
 import { HeaderWrapper } from "../styles/MainHeaderEmotion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import WalkingWithDog from "../assets/walking_with_dog.png";
+import CancelEvent from "../assets/cancel-event.png";
 
 const NotificationsHeader = () => {
   const navigate = useNavigate();
@@ -22,12 +25,23 @@ const NotificationsHeader = () => {
   );
 };
 
+const SingleNotification = (data) => {
+  const navigate = useNavigate();
+
+  return (
+    <div>
+      <div>{data.type}</div>
+      {data.type ? <div>11</div> : <div>2</div>}
+    </div>
+  );
+};
+
 const Notifications = () => {
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
   const [notifications, setNotifications] = useState([]);
   const [canceled, setCanceled] = useState(false);
-  const meetingCnt = useRef(0);
+  const [meetingCnt, setMeetingCnt] = useState();
 
   useEffect(() => {
     const getNotifications = async () => {
@@ -36,7 +50,8 @@ const Notifications = () => {
         .then((response) => {
           setNotifications(response.data.notifyInfo.notice);
           setCanceled(response.data.notifyInfo.meetingCancel);
-          meetingCnt.current = response.data.notifyInfo.meetingCnt;
+          setMeetingCnt(response.data.notifyInfo.meetingCnt);
+
           console.log(response.data);
         })
         .catch((error) => {
@@ -50,9 +65,36 @@ const Notifications = () => {
   return (
     <div>
       <NotificationsHeader></NotificationsHeader>
-      {notifications.map((item) => (
-        <p>{item.type}</p>
-      ))}
+      <NotificationsWrapper>
+        <div className="walkRequestWrapper">
+          <div className="walkRequest">
+            <div className="imgWrapper">
+              <img className="walkIcon" src={WalkingWithDog} alt="walkIcon" />
+            </div>
+            <p>산책 요청 {meetingCnt}개</p>
+          </div>
+          <div className="toRequests">
+            {meetingCnt === 0 ? null : <div className="notiCircle"></div>}
+            <FontAwesomeIcon icon="fa-chevron-right" />
+          </div>
+        </div>
+        {canceled ? (
+          <div className="cancelWrapper">
+            <div className="walkRequest">
+              <div className="imgWrapper">
+                <img className="walkIcon" src={CancelEvent} alt="walkIcon" />
+              </div>
+              <p>취소된 산책 약속이 있습니다.</p>
+            </div>
+            <div className="toRequests">
+              <FontAwesomeIcon icon="fa-chevron-right" />
+            </div>
+          </div>
+        ) : null}
+        {notifications.map((item, idx) => (
+          <SingleNotification item={item} type={idx % 2}></SingleNotification>
+        ))}
+      </NotificationsWrapper>
     </div>
   );
 };
