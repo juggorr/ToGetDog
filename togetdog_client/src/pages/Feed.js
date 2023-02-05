@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import FeedProfile from "../components/FeedProfile";
 import MenuModal from "../components/MenuModal";
 import OrangeCharacterBtn from "../components/OrangeCharacterBtn";
 import YellowCharacterBtn from "../components/YellowCharacterBtn";
@@ -22,6 +21,7 @@ import {
 import Boy from "../assets/boy.png";
 import Girl from "../assets/girl.png";
 import MenuIcon from "../assets/menu_icon.png";
+import FollowBtn from "../components/FollowBtn";
 
 const Feed = () => {
   const [user, setUser] = useRecoilState(userState);
@@ -88,7 +88,7 @@ const Feed = () => {
       },
     ],
     user: {
-      userId: 123,
+      userId: 3,
       nickName: "뽀삐엄마",
       userAge: 28,
       userGender: null,
@@ -152,6 +152,7 @@ const Feed = () => {
   }
   const [subDogs, setSubDogs] = useState(tmpSubDogs);
   const [isLoading, setLoading] = useState(true);
+  const [followStatus, setFollowStatus] = useState(feedUserData.follow);
 
   const navigate = useNavigate();
 
@@ -229,23 +230,31 @@ const Feed = () => {
                 <PlusBtn onClick={() => navigate("/dogregister")}>+</PlusBtn>
               )}
             </div>
-            <div className="profile-etc-wrapper">
-              <img
-                src={MenuIcon}
-                className="menu-icon"
-                onClick={() => setMenuBtnClick(true)}
-              />
-              <div className="follow-info flex-column">
-                <div>
-                  <span className="follow-text">팔로워</span>
-                  {currentDog.followCnt}
-                </div>
-                <div>
-                  <span className="follow-text">팔로잉</span>
-                  {feedUserData.followCnt}
+            {feedUserData.userId === user.userId ? (
+              <div className="profile-etc-wrapper">
+                <img
+                  src={MenuIcon}
+                  className="menu-icon"
+                  onClick={() => setMenuBtnClick(true)}
+                  alt="menu"
+                />
+                <div className="follow-info flex-column">
+                  <div>
+                    <span className="follow-text">팔로워</span>
+                    {currentDog.followCnt}
+                  </div>
+                  <div>
+                    <span className="follow-text">팔로잉</span>
+                    {feedUserData.followCnt}
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <FollowBtn
+                followStatus={followStatus}
+                setFollowStatus={setFollowStatus}
+              />
+            )}
           </FeedProfileTop>
           {/* 특이사항, 성격 들어가는 부분 */}
           <FeedProfileBottom>

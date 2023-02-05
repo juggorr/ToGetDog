@@ -9,6 +9,7 @@ export const RegisterContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 `;
 
 export const RegisterWrapper = styled.div`
@@ -27,7 +28,7 @@ export const RegisterWrapper = styled.div`
     display: flex;
     justify-content: space-around;
   }
-  
+
   .logo-div {
     padding: 20px;
     display: flex;
@@ -42,15 +43,15 @@ export const RegisterWrapper = styled.div`
   .input-file {
     display: none;
   }
-  
+
   .age-div {
     float: left;
   }
-  
+
   .weight-div {
     clear: left;
   }
-  
+
   .signup-desc {
     width: 270px;
     text-align: left;
@@ -71,19 +72,21 @@ export const RegisterWrapper = styled.div`
     color: red;
     font-size: 0.8rem;
   }
-  `;
+`;
 
-  export const ProfileImage = styled.div`
-  background-color: #cdcdcd;
-  
+export const ProfileImage = styled.div`
+  background-color: #fff6e3;
+  border: 1px solid #e2e2e2;
+
   width: 5rem;
   height: 5rem;
   border-radius: 70%;
   padding: 1.25rem;
   margin: auto;
 
-  background-image: ${props => props.image ? `url(${props.image})` : `url(${dog_profile})`};
-  background-size: 100% 100%;
+  background-image: ${(props) =>
+    props.image ? `url(${props.image})` : `url(${dog_profile})`};
+  background-size: cover;
 
   position: relative;
 
@@ -92,9 +95,9 @@ export const RegisterWrapper = styled.div`
     height: 100%;
     object-fit: cover;
   }
-  `;
+`;
 
-  export const AddImage = styled.div`
+export const AddImage = styled.div`
   width: 0.625rem;
   height: 0.625rem;
   border-radius: 70%;
@@ -112,26 +115,26 @@ export const RegisterWrapper = styled.div`
     width: 100%;
     height: 100%;
   }
-  `;
-  
-  export const InputWrapper = styled.div`
+`;
+
+export const InputWrapper = styled.div`
   width: 17rem;
   display: flex;
   flex-direction: column;
   background-color: #fff;
   margin-bottom: 1rem;
-  
+
   .input-title {
     font-size: 1rem;
     margin-bottom: 0.5rem;
   }
-  
+
   .red-dot {
     color: red;
     margin-left: 3px;
     font-weight: 700;
   }
-  
+
   .horizontal-flex {
     display: flex;
   }
@@ -179,10 +182,9 @@ export const RegisterWrapper = styled.div`
     color: #fff;
   }
 
-  .yaer {
+  .year {
     font-size: 1rem;
-    padding-right: 2rem;
-    color: red;
+    padding-right: 1.5rem;
   }
 
   .month {
@@ -207,11 +209,10 @@ export const RegisterWrapper = styled.div`
 
 // react-select로 dropdown 띠우기
 export const BreedDrops = styled(ReactSelect)`
-  &.Select--multi  {
-
+  &.Select--multi {
     .Select-value {
-        display: inline-flex;
-        align-items: center;
+      display: inline-flex;
+      align-items: center;
     }
   }
 
