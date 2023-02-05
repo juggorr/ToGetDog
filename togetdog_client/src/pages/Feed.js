@@ -1,16 +1,27 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import FeedProfile from "../components/FeedProfile";
 import MenuModal from "../components/MenuModal";
+import OrangeCharacterBtn from "../components/OrangeCharacterBtn";
+import YellowCharacterBtn from "../components/YellowCharacterBtn";
 import { BACKEND_URL, DUMMY_URL } from "../config";
 import { userState } from "../recoil";
+import { PlusBtn } from "../styles/BtnsEmotion";
 import {
   FeedContainer,
   FeedPhoto,
   FeedPhotoWrapper,
+  FeedProfileBottom,
+  FeedProfileTop,
   FeedProfileWrapper,
+  MainDogImg,
+  SubDogImg,
 } from "../styles/FeedEmotion";
+import Boy from "../assets/boy.png";
+import Girl from "../assets/girl.png";
+import MenuIcon from "../assets/menu_icon.png";
 
 const Feed = () => {
   const [user, setUser] = useRecoilState(userState);
@@ -49,35 +60,139 @@ const Feed = () => {
   ];
 
   const [menuBtnClick, setMenuBtnClick] = useState(false);
-  const [feedData, setFeedData] = useState({});
-  const [feedProfileData, setFeedProfileData] = useState({});
-  const [feedPhotoData, setFeedPhotoData] = useState({});
-
-  const fetchFeedData = async () => {
-    await axios
-      .get(
-        `https://i8a807.p.ssafy.io/dummy/feed/${user.userId}`,
-        { params: { pageNo: 1 } },
+  const [feedData, setFeedData] = useState({
+    result: "success",
+    feed: [
+      {
+        dog: {
+          dogId: 114,
+          dogName: "뽀삐",
+          userId: 123,
+          nickName: null,
+          address: null,
+          dogGender: "female",
+          dogType: "말티즈",
+          dogAge: 72,
+          dogWeight: 3.4,
+          dogNeutered: true,
+          dogCharacter1: "obedient",
+          dogCharacter2: "active",
+          description: "활동적이고 순해요",
+          dogProfile:
+            "https://mblogthumb-phinf.pstatic.net/MjAxOTA1MDhfMTQ2/MDAxNTU3MzAxNzQ4NDIw.MWkemnXiB57Tbm2kNMrDNj4uVImaujgUayV8GSKWA9Mg._lcDUVLNrYzYR9M36qGCdD1Kp0qLNxoZaqqkj-5-tswg.JPEG.hellohappypet/1.jpg?type=w800",
+          followCnt: 214,
+        },
+        boardId: 123,
+        image:
+          "https://mblogthumb-phinf.pstatic.net/MjAxOTA1MDhfMTQ2/MDAxNTU3MzAxNzQ4NDIw.MWkemnXiB57Tbm2kNMrDNj4uVImaujgUayV8GSKWA9Mg._lcDUVLNrYzYR9M36qGCdD1Kp0qLNxoZaqqkj-5-tswg.JPEG.hellohappypet/1.jpg?type=w800",
+      },
+    ],
+    user: {
+      userId: 123,
+      nickName: "뽀삐엄마",
+      userAge: 28,
+      userGender: null,
+      address: "서울시 동작구 흑석동",
+      regionCode: "11455",
+      social: "naver",
+      rating: 3.41,
+      dogs: [
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((resp) => {
-        console.log(resp);
-        setFeedData(resp.data);
-      })
-      .catch((err) => {
-        console.log("피드 데이터 불러오기 실패");
-      });
-  };
+          dogId: 114,
+          dogName: "뽀삐",
+          userId: 123,
+          nickName: null,
+          address: null,
+          dogGender: "female",
+          dogType: "말티즈",
+          dogAge: 72,
+          dogWeight: 3.4,
+          dogNeutered: true,
+          dogCharacter1: "obedient",
+          dogCharacter2: "active",
+          description: "활동적이고 순해요",
+          dogProfile:
+            "https://mblogthumb-phinf.pstatic.net/MjAxOTA1MDhfMTQ2/MDAxNTU3MzAxNzQ4NDIw.MWkemnXiB57Tbm2kNMrDNj4uVImaujgUayV8GSKWA9Mg._lcDUVLNrYzYR9M36qGCdD1Kp0qLNxoZaqqkj-5-tswg.JPEG.hellohappypet/1.jpg?type=w800",
+          followCnt: 214,
+        },
+        {
+          dogId: 115,
+          dogName: "초코",
+          userId: 123,
+          nickName: null,
+          address: null,
+          dogGender: "male",
+          dogType: "비숑",
+          dogAge: 84,
+          dogWeight: 4.5,
+          dogNeutered: false,
+          dogCharacter1: "disobedient",
+          dogCharacter2: "active",
+          description: "활동적이고 순해요",
+          dogProfile:
+            "https://mblogthumb-phinf.pstatic.net/MjAxOTA1MDhfMTQ2/MDAxNTU3MzAxNzQ4NDIw.MWkemnXiB57Tbm2kNMrDNj4uVImaujgUayV8GSKWA9Mg._lcDUVLNrYzYR9M36qGCdD1Kp0qLNxoZaqqkj-5-tswg.JPEG.hellohappypet/1.jpg?type=w800",
+          followCnt: 333,
+        },
+      ],
+      followCnt: 300,
+      follow: true,
+    },
+  });
+  const [feedUserData, setFeedUserData] = useState(feedData.user);
+  const [feedDogData, setFeedDogData] = useState(feedUserData.dogs);
+  const [feedPhotoData, setFeedPhotoData] = useState(feedData.feed);
+  const [currentDog, setCurrentDog] = useState(feedDogData[0]);
+  let tmpSubDogs = [];
+  if (feedDogData.length > 1) {
+    feedDogData.map((dog) => {
+      if (dog.dogId !== currentDog.dogId) {
+        tmpSubDogs.push(dog);
+      }
+    });
+  }
+  const [subDogs, setSubDogs] = useState(tmpSubDogs);
+  const [isLoading, setLoading] = useState(true);
 
-  useEffect(async () => {
-    await fetchFeedData(); // 처음 렌더링 할 때만 Feed 데이터 받아오기
-    setFeedProfileData(feedData.user);
-    setFeedPhotoData(feedData.feed);
-  }, []);
+  const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `https://i8a807.p.ssafy.io/dummy/feed/${user.userId}`,
+  //       { params: { pageNo: 1 } },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     )
+  //     .then((resp) => {
+  //       console.log(resp);
+  //       setFeedData(resp.data);
+  //       setFeedUserData(feedData.user);
+  //       setFeedDogData(feedUserData.dogs);
+  //       setFeedPhotoData(feedData.feed);
+  //       setCurrentDog(setFeedDogData[0]);
+  //       let tmpSubDogs = [];
+  //       if (feedDogData.length > 1) {
+  //         feedDogData.map((dog) => {
+  //           if (dog.dogId !== currentDog.dogId) {
+  //             tmpSubDogs.push(dog);
+  //           }
+  //         });
+  //       }
+  //       setSubDogs(tmpSubDogs);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log("피드 데이터 불러오기 실패");
+  //     });
+  //   console.log(JSON.stringify(feedData));
+  // }, []);
+
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <>
@@ -88,11 +203,71 @@ const Feed = () => {
           setMenuBtnClick={setMenuBtnClick}
         />
         <FeedProfileWrapper>
-          <FeedProfile
-            menuBtnClick={menuBtnClick}
-            setMenuBtnClick={setMenuBtnClick}
-            data={feedProfileData}
-          />
+          {/* 프로필 상단 */}
+          <FeedProfileTop>
+            <MainDogImg src={currentDog.dogProfile}></MainDogImg>
+            <div className="dog-info-box">
+              <div>{currentDog.dogName}</div>
+              <div className="dog-info">
+                {`${currentDog.dogType} / ${
+                  currentDog.dogAge >= 12
+                    ? `${Math.floor(currentDog.dogAge / 12)}살`
+                    : `${currentDog.dogAge}개월`
+                }`}
+                {currentDog.dogGender === "male" ? (
+                  <img src={Boy} className="dog-gender" />
+                ) : (
+                  <img src={Girl} className="dog-gender" />
+                )}
+              </div>
+            </div>
+            <div className="sub-dogs">
+              {subDogs.map((subdog) => (
+                <SubDogImg src={subdog.dogProfile} key={subdog.dogId} />
+              ))}
+              {feedDogData.length === 3 ? null : (
+                <PlusBtn onClick={() => navigate("/dogregister")}>+</PlusBtn>
+              )}
+            </div>
+            <div className="profile-etc-wrapper">
+              <img
+                src={MenuIcon}
+                className="menu-icon"
+                onClick={() => setMenuBtnClick(true)}
+              />
+              <div className="follow-info flex-column">
+                <div>
+                  <span className="follow-text">팔로워</span>
+                  {currentDog.followCnt}
+                </div>
+                <div>
+                  <span className="follow-text">팔로잉</span>
+                  {feedUserData.followCnt}
+                </div>
+              </div>
+            </div>
+          </FeedProfileTop>
+          {/* 특이사항, 성격 들어가는 부분 */}
+          <FeedProfileBottom>
+            <div className="special-text">{currentDog.description}</div>
+            <div className="characters-box">
+              <OrangeCharacterBtn
+                text={`#${currentDog.dogNeutered ? "중성화" : "중성화 X"}`}
+              />
+              <YellowCharacterBtn
+                text={`#${
+                  currentDog.dogCharacter1 === "obedient"
+                    ? "순종적"
+                    : "비순종적"
+                }`}
+              />
+              <YellowCharacterBtn
+                text={`#${
+                  currentDog.dogCharacter2 === "active" ? "활동적" : "비활동적"
+                }`}
+              />
+            </div>
+          </FeedProfileBottom>
         </FeedProfileWrapper>
         <FeedPhotoWrapper>
           <FeedPhoto src="https://mblogthumb-phinf.pstatic.net/MjAxODA0MTVfMjY2/MDAxNTIzNzgzNTMyMTk5.XluZh00E4Hzkl1Oif19d5UPPXJqzFisXFa_3BT6sTJgg.dOueWfo5LscEpJSYAi56N7p91H_PJLM4IjOvVSexYzYg.JPEG.jjingjjing92/20180410_215717.jpg?type=w800" />
