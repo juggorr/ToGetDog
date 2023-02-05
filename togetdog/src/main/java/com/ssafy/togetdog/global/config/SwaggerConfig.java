@@ -60,4 +60,9 @@ public class SwaggerConfig {
 	public Docket follow() {
 		return getDocket("FOLLOW", true, "follow");
 	}
+	
+	@Bean
+	public Docket appointment() {
+		return getDocket("APPOINTMENT", true, "appointment");
+	}
 }
