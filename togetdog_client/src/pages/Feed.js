@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import FeedProfile from "../components/FeedProfile";
 import MenuModal from "../components/MenuModal";
 import OrangeCharacterBtn from "../components/OrangeCharacterBtn";
 import YellowCharacterBtn from "../components/YellowCharacterBtn";

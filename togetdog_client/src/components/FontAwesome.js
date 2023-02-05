@@ -17,6 +17,7 @@ import {
   faUserGroup,
   faClock,
   faLocationDot,
+  faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCalendar,
@@ -32,3 +33,4 @@ library.add(faPlus);
 library.add(faUserGroup, faClock, faLocationDot);
 library.add(faCalendar, faChevronLeft, faChevronRight);
 library.add(faImage, faPen);
+library.add(faArrowLeft);
