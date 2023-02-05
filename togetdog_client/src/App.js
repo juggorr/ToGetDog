@@ -20,6 +20,7 @@ import NotFound from './pages/NotFound';
 import InternalServer from './pages/InternalServer';
 import EmailAuth from './pages/EmailAuth';
 import DogRegister from './pages/DogRegister';
+import FollowList from './pages/FollowList';
 // import DogEdit from "./pages/DogEdit";
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
           <Route path='/emailAuth' element={<EmailAuth />} />
           <Route path='/dogregister' element={<DogRegister />} />
           {/* <Route path='/dogedit' element={<DogEdit />} /> */}
+          <Route path='/followlist' element={<FollowList />} />
           <Route path='/500' element={<InternalServer />} />
           <Route path='/*' element={<NotFound />} />
         </Routes>
