@@ -41,27 +41,27 @@ const Feed = () => {
     {
       menu_id: 1,
       text: "내 정보 보기",
-      func: navigate("/"),
+      func: "/",
     },
     {
       menu_id: 2,
       text: "프로필 수정",
-      func: navigate("/"),
+      func: "/",
     },
     {
       menu_id: 3,
       text: "강아지 프로필 수정",
-      func: navigate("/"),
+      func: "/",
     },
     {
       menu_id: 4,
       text: "강아지 프로필 삭제",
-      func: navigate("/"),
+      func: "/",
     },
     {
       menu_id: 5,
       text: "계정 비밀번호 변경",
-      func: navigate("/"),
+      func: "/",
     },
     {
       menu_id: 6,
@@ -88,6 +88,7 @@ const Feed = () => {
 
   useEffect(() => {
     if (!auth || !localStorage.getItem("recoil-persist")) {
+      console.log("hi");
       navigate("/login");
       return;
     }
