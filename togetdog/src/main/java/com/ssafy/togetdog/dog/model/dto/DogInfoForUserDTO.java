@@ -14,6 +14,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @ToString
 public class DogInfoForUserDTO extends DogInfoRespDTO {
+	private boolean isFollowing;
 	private int dogFollwerCnt;
 
 	public static DogInfoForUserDTO of(Dog dog) {
