@@ -2,18 +2,10 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { MenuModalWrapper, MenuModalBody } from "../styles/ModalEmotion";
 
-// menuList에는 menu_id, text, link가 담겨있음
+// menuList에는 menu_id, text, func가 담겨있음
 
 const MenuModal = ({ menuLists, menuBtnClick, setMenuBtnClick }) => {
-  const navigate = useNavigate();
-
   const outSection = useRef();
-
-  const handleMenu = ({ link }) => {
-    console.log(link);
-    console.log(typeof link);
-    // navigate(link);
-  };
 
   return (
     <>
@@ -27,10 +19,7 @@ const MenuModal = ({ menuLists, menuBtnClick, setMenuBtnClick }) => {
           }}>
           <MenuModalBody>
             {menuLists.map((it) => (
-              <div
-                key={it.menu_id}
-                className="single-menu"
-                onClick={handleMenu(it.link)}>
+              <div key={it.menu_id} className="single-menu" onClick={it.func}>
                 {it.text}
               </div>
             ))}
