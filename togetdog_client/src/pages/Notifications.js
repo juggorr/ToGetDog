@@ -51,8 +51,6 @@ const Notifications = () => {
           setNotifications(response.data.notifyInfo.notice);
           setCanceled(response.data.notifyInfo.meetingCancel);
           setMeetingCnt(response.data.notifyInfo.meetingCnt);
-
-          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -92,7 +90,11 @@ const Notifications = () => {
           </div>
         ) : null}
         {notifications.map((item, idx) => (
-          <SingleNotification item={item} type={idx % 2}></SingleNotification>
+          <SingleNotification
+            item={item}
+            type={idx % 2}
+            key={idx}
+          ></SingleNotification>
         ))}
       </NotificationsWrapper>
     </div>
