@@ -71,10 +71,12 @@ public class DogServiceImpl implements DogService {
 			throw new UnAuthorizedException();
 		}
 		
+		// InetAddress~
+		// 부팅시 한번만 static으로 사용하지 않으면 성능이슈가 있따고 합니다.
 		String hostname = InetAddress.getLocalHost().getHostName();
 		System.out.println("호스트 서버 이름~~~~~~~~~~~" + hostname);
 		
-		//checkRegistrationValidation(dogDTO);
+		checkRegistrationValidation(dogDTO);
 		String originalFileName = image.getOriginalFilename();
 
 		String today = new SimpleDateFormat("yyMMdd").format(new Date());
@@ -88,23 +90,10 @@ public class DogServiceImpl implements DogService {
 			String saveFileName = UUID.randomUUID().toString()
 					+ originalFileName.substring(originalFileName.lastIndexOf('.'));
 			logger.debug("registDog save path : {}", saveFolder + saveFileName);
-			// 실제 저장
+			// file save
 			image.transferTo(new File(folder, saveFileName));
-			Dog dog = Dog.builder()
-					.user(user)
-					.dogName(dogDTO.getDogName())
-					.dogGender(dogDTO.getDogGender())
-					.dogType(dogDTO.getDogType())
-					.dogBirth(dogDTO.getDogBirth())
-					.dogWeight(dogDTO.getDogWeight())
-					.dogNeutered(dogDTO.isDogNeutered())
-					.dogCharacter1(dogDTO.getDogCharacter1())
-					.dogCharacter2(dogDTO.getDogCharacter2())
-					.description(dogDTO.getDescription())
-					.dogImage(saveFolder + saveFileName).build();
-
-			// DB 저장
-			dogRepository.save(dog);
+			// DB insert
+			dogRepository.save(dogDTO.of(dogDTO, saveFolder + saveFileName));
 		} else {
 			throw new InvalidInputException();
 		}
@@ -138,19 +127,10 @@ public class DogServiceImpl implements DogService {
 		}
 		checkRegistrationValidation(dogDTO);
 		Dog dog = findDogByDogId(dogDTO.getDogId());
+		
 		// file 수정은 안해도 되는 경우
 		if (image.isEmpty()) {
-			dog.setDogName(dogDTO.getDogName());
-			dog.setDogGender(dogDTO.getDogGender());
-			dog.setDogType(dogDTO.getDogType());
-			dog.setDogBirth(dogDTO.getDogBirth());
-			dog.setDogWeight(dogDTO.getDogWeight());
-			dog.setDogNeutered(dogDTO.isDogNeutered());
-			dog.setDogCharacter1(dogDTO.getDogCharacter1());
-			dog.setDogCharacter2(dogDTO.getDogCharacter2());
-			dog.setDescription(dogDTO.getDescription());
-			
-			dogRepository.save(dog);
+			dogRepository.save(DogUpdateParamDTO.of(dogDTO));
 		} else {
 			// 기존 file 삭제
 			File file = new File(dog.getDogImage());
@@ -165,19 +145,9 @@ public class DogServiceImpl implements DogService {
 				String saveFileName = UUID.randomUUID().toString()
 						+ originalFileName.substring(originalFileName.lastIndexOf('.'));
 				logger.debug("updateDog save path : {}", saveFolder + saveFileName);
+				// 새로운 file 등록
 				image.transferTo(new File(folder, saveFileName));
-				
-				dog.setDogName(dogDTO.getDogName());
-				dog.setDogGender(dogDTO.getDogGender());
-				dog.setDogType(dogDTO.getDogType());
-				dog.setDogBirth(dogDTO.getDogBirth());
-				dog.setDogWeight(dogDTO.getDogWeight());
-				dog.setDogNeutered(dogDTO.isDogNeutered());
-				dog.setDogCharacter1(dogDTO.getDogCharacter1());
-				dog.setDogCharacter2(dogDTO.getDogCharacter2());
-				dog.setDescription(dogDTO.getDescription());
-				dog.setDogImage(saveFolder + saveFileName);
-				dogRepository.save(dog);
+				dogRepository.save(DogUpdateParamDTO.of(dogDTO, saveFolder + saveFileName));
 			} else {
 				throw new InvalidInputException();
 			}
