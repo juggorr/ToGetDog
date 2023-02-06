@@ -76,8 +76,10 @@ const Feed = () => {
 
   useEffect(() => {
     console.log(auth);
-    if (!auth || !localStorage.getItem('recoil-persist')) navigate('/login');
-    return;
+    if (!auth || !localStorage.getItem('recoil-persist')) {
+      navigate('/login');
+      return;
+    }
 
     axios
       .get(
