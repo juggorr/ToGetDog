@@ -98,9 +98,9 @@ public class BoardRestController {
 	public ResponseEntity<?> getFeed(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
 			@PathVariable long userId,@RequestBody int pageNo){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		logger.info("return boardList : {}", jwtService.getUserId(token));
+//		logger.info("return boardList : {}", jwtService.getUserId(token));
 		jwtService.validateToken(token);
-		logger.info("return boardList : {}", jwtService.getUserId(token));
+//		logger.info("return boardList : {}", jwtService.getUserId(token));
 		
 		UserInfoRespDTO userInfo = userService.getUserInfo(Long.toString(userId));
 		UserIncludesDogsDTO userDTO = new UserIncludesDogsDTO(userInfo);
@@ -112,6 +112,7 @@ public class BoardRestController {
 			dog.setDogFollwerCnt(followService.getFollowers(dogId));
 			//토큰 값 해결되면 토큰 값 이용해서 넘겨야함
 			dog.setFollowing(followService.isFollowing(jwtService.getUserId(token), dogId));
+//			dog.setFollowing(followService.isFollowing(4, dogId));
 		}
 		userDTO.setDogs(dogList);
 		userDTO.setFollowCnt(followService.getFollowings(userId));
