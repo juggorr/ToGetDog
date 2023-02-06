@@ -25,6 +25,7 @@ import DogRegister from "./pages/DogRegister";
 import SubLayout from "./components/SubLayout";
 
 // import DogEdit from "./pages/DogEdit";
+import Notifications from "./pages/Notifications";
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
           <Route path="/emailAuth" element={<EmailAuth />} />
           <Route path="/dogregister" element={<DogRegister />} />
           {/* <Route path='/dogedit' element={<DogEdit />} /> */}
+          <Route path="/notifications" element={<Notifications />} />
           <Route path="/500" element={<InternalServer />} />
           <Route path="/*" element={<NotFound />} />
           <Route path="/createAppointment" element={<CreateAppointment />} />
