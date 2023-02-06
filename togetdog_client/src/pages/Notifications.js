@@ -5,7 +5,10 @@ import { userState } from "../recoil";
 
 import axios from "axios";
 import { BACKEND_URL, DUMMY_URL } from "../config";
-import { NotificationsWrapper } from "../styles/NotificationsEmotion";
+import {
+  NotificationsWrapper,
+  SingleNotificationWrapper,
+} from "../styles/NotificationsEmotion";
 import { HeaderWrapper } from "../styles/MainHeaderEmotion";
 import UserIcon from "../components/UserIcon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,11 +33,20 @@ const SingleNotification = (data) => {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <UserIcon text={data.item.nickName} idx={data.type}></UserIcon>
+    <SingleNotificationWrapper>
+      <UserIcon text={data.item.nickName} idx={data.idx}></UserIcon>
 
-      {/* {data.type ? <div>11</div> : <div>2</div>} */}
-    </div>
+      {data.item.type === "좋아요" ? (
+        <div className="textWrapper">
+          {data.item.nickName}님이 {data.item.dogName}님의 게시물을 좋아합니다.
+        </div>
+      ) : null}
+      {data.item.type === "팔로우" ? (
+        <div className="textWrapper">
+          {data.item.nickName}님이 {data.item.dogName}님을 팔로우했습니다.
+        </div>
+      ) : null}
+    </SingleNotificationWrapper>
   );
 };
 
@@ -99,7 +111,7 @@ const Notifications = () => {
         {notifications.map((item, idx) => (
           <SingleNotification
             item={item}
-            type={idx}
+            idx={idx}
             key={idx}
           ></SingleNotification>
         ))}

@@ -49,3 +49,22 @@ export const NotificationsWrapper = styled.div`
     margin: 0rem 1rem;
   }
 `;
+
+export const SingleNotificationWrapper = styled.div`
+  margin: 0.2rem 0rem;
+  padding: 0.2rem 0.5rem;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #bcbcbc;
+
+  .textWrapper {
+    margin-left: 0.5rem;
+    display: block;
+    padding-right: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 0.9rem;
+  }
+`;
