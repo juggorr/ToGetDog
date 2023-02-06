@@ -72,7 +72,7 @@ public class BoardRestController {
 	@ApiOperation(value = "홈화면 게시글 리스트", notes = "홈화면에서 구독한 개들의 게시글 표시")
 	@GetMapping("/home")
 	public ResponseEntity<?> getBoardListForHome(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@RequestBody int myId, @RequestBody int pageNo){
+			@RequestBody int myId, @RequestParam(value = "pageNo") int pageNo){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
 //		List<DogInfoRespDTO> followList = followService.getFollowingList(myId);
@@ -97,7 +97,7 @@ public class BoardRestController {
 	@ApiOperation(value = "피드 조회", notes = "피드 상단은 강아지 정보, 피드 하단은 게시글 리스트")
 	@GetMapping("/feed/{userId}")
 	public ResponseEntity<?> getFeed(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@PathVariable long userId,@RequestParam int pageNo){
+			@PathVariable long userId, @RequestParam(value = "pageNo") int pageNo){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		logger.info("return boardList : {}", jwtService.getUserId(token));
 		jwtService.validateToken(token);
@@ -140,7 +140,7 @@ public class BoardRestController {
 	@ApiOperation(value = "피드 하단 게시물 리스트", notes = "피드 하단에 보일 게시글 리스트를 반환")
 	@GetMapping("/list/{dogId}")
 	public ResponseEntity<?> getBoardListByDogId(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@PathVariable long dogId,@RequestBody int pageNo){
+			@PathVariable long dogId, @RequestParam(value = "pageNo") int pageNo){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
 		
