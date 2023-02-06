@@ -98,7 +98,9 @@ public class BoardRestController {
 	public ResponseEntity<?> getFeed(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
 			@PathVariable long userId,@RequestBody int pageNo){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
+		logger.info("return boardList : {}", jwtService.getUserId(token));
 		jwtService.validateToken(token);
+		logger.info("return boardList : {}", jwtService.getUserId(token));
 		
 		UserInfoRespDTO userInfo = userService.getUserInfo(Long.toString(userId));
 		UserIncludesDogsDTO userDTO = new UserIncludesDogsDTO(userInfo);
