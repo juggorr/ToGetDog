@@ -40,7 +40,7 @@ public interface UserService {
 	UserInfoRespDTO getUserInfo(String userid);
 	User findUserByUserId(long userId);	
 	User findUserByEmailAndPassword(String email, String password);
-	
+
 	// wait user
 	WaitUser findWaitUserByEmail(String email);
 	WaitUser findWaitUserByNickName(String nickname);
