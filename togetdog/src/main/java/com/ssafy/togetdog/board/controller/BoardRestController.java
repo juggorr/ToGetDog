@@ -46,7 +46,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/board")
+@RequestMapping("/api")
 @Api("Board API")
 public class BoardRestController {
 	
