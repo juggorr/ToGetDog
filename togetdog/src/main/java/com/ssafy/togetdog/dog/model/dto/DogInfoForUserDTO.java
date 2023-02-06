@@ -40,3 +40,4 @@ public class DogInfoForUserDTO extends DogInfoRespDTO {
 				.build();
 	}
 }
+

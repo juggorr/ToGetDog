@@ -163,7 +163,17 @@ public class DogServiceImpl implements DogService {
 
 	@Override
 	public List<Dog> findDogsByUser(User user) {
-		return dogRepository.findByUser(user).orElse(null);
+		return dogRepository.findAllByUser(user).orElse(null);
+	}
+	
+	@Override
+	public List<DogInfoForUserDTO> findDogsByUserId(long userId) {
+		User user = new User();
+		user.setUserId(userId);
+		List<Dog> dogs = findDogsByUser(user);
+		List<DogInfoForUserDTO> dogList = dogs.stream().map(d ->DogInfoForUserDTO.of(d))
+				 .collect(Collectors.toList());
+		return dogList;
 	}
 
 	
@@ -207,14 +217,5 @@ public class DogServiceImpl implements DogService {
 		}
 	}
 
-	@Override
-	public List<DogInfoForUserDTO> findDogsByUserId(long userId) {
-		User user = new User();
-		user.setUserId(userId);
-		List<Dog> dList = dogRepository.findAllByUser(user);
-		List<DogInfoForUserDTO> dogList = dList.stream().map(d ->DogInfoForUserDTO.of(d))
-				 .collect(Collectors.toList());
-		return dogList;
-	}
-
 }
+
