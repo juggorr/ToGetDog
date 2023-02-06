@@ -41,7 +41,7 @@ export const FeedProfileTop = styled.div`
   background-color: #fff;
 
   .dog-info-box {
-    width: 50%;
+    width: 45%;
     padding-left: 1rem;
   }
 
