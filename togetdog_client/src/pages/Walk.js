@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useRecoilState } from "recoil";
+import { userState } from "../recoil";
+import { BACKEND_URL, DUMMY_URL } from "../config";
 import {
   WalkListWrapper,
   TabList,
@@ -99,14 +102,13 @@ const SingleMeeting = ({ meeting }) => {
 };
 
 const MeetingListWrapper = () => {
+  const [user, setUser] = useRecoilState(userState);
   const [active, setActive] = useState(1);
   const [originalMeetings, setOriginalMeetings] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 임시 userId, 나중에 세션에서 받아와야 함
-    const userId = 1;
-    const url = `http://i8a807.p.ssafy.io:8081/dummy/meeting?userId=${userId}`;
+    const url = `${DUMMY_URL}/meeting?userId=${user.userId}`;
     axios
       .get(url)
       .then(function (response) {
@@ -129,9 +131,7 @@ const MeetingListWrapper = () => {
       );
       if (originalMeetings[i].status === "confirmed" && active === 1) {
         meetings.push(singleMeet);
-      } else if (originalMeetings[i].status === "sent" && active === 2) {
-        meetings.push(singleMeet);
-      } else if (originalMeetings[i].status === "received" && active === 2) {
+      } else if (originalMeetings[i].status === "wait" && active === 2) {
         meetings.push(singleMeet);
       } else if (originalMeetings[i].status === "cancelled" && active === 3) {
         meetings.push(singleMeet);
