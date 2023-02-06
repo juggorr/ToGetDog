@@ -256,16 +256,20 @@ const Feed = () => {
             <div className="margin-bottom"></div>
           )}
         </FeedProfileWrapper>
-        <FeedPhotoWrapper>
-          {filteredPhotoData.map((filteredPhoto) => (
-            <FeedPhoto
-              onClick={() => navigate(`/board/${filteredPhoto.boardId}`)}
-              src={
-                `https://i8a807.p.ssafy.io/image/board/` + filteredPhoto.image
-              }
-            />
-          ))}
-        </FeedPhotoWrapper>
+        {filteredPhotoData.length === 0 ? (
+          <div className="no-photo">등록된 사진이 없습니다.</div>
+        ) : (
+          <FeedPhotoWrapper>
+            {filteredPhotoData.map((filteredPhoto) => (
+              <FeedPhoto
+                onClick={() => navigate(`/board/${filteredPhoto.boardId}`)}
+                src={
+                  `https://i8a807.p.ssafy.io/image/board/` + filteredPhoto.image
+                }
+              />
+            ))}
+          </FeedPhotoWrapper>
+        )}
       </FeedContainer>
     </>
   );

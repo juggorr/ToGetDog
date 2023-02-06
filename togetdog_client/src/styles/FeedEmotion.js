@@ -6,6 +6,12 @@ export const FeedContainer = styled.div`
   display: flex;
   flex-direction: column;
   font-family: "Noto Sans KR", sans-serif;
+
+  .no-photo {
+    height: 100%;
+    line-height: 100%;
+    text-align: center;
+  }
 `;
 
 export const FeedProfileWrapper = styled.div`
