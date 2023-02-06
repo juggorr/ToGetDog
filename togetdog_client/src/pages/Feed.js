@@ -80,6 +80,18 @@ const Feed = () => {
   // const pageNo = location.state.pageNo;
   const pageNo = 1;
 
+  const swapMainDog = (targetDogId) => {
+    let tmpSubDogs = [];
+    for (let dog of feedDogData) {
+      if (dog.dogId === targetDogId) {
+        setCurrentDog(dog);
+      } else {
+        tmpSubDogs.push(dog);
+      }
+    }
+    setSubDogs(tmpSubDogs);
+  };
+
   useEffect(() => {
     if (!auth || !localStorage.getItem("recoil-persist")) {
       navigate("/login");
@@ -164,6 +176,7 @@ const Feed = () => {
                     `https://i8a807.p.ssafy.io/image/dog/` + subdog.dogProfile
                   }
                   key={subdog.dogId}
+                  onClick={() => swapMainDog(subdog.dogId)}
                 />
               ))}
               {feedDogData.length === 3 ||
