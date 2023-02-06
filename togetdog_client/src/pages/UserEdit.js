@@ -11,15 +11,15 @@ import DaumKakaoAddress from '../components/DaumKakaoAddress';
 
 const genderBtnList = [
   {
-    btn_id: 1,
+    btn_id: 'male',
     text: '남자',
   },
   {
-    btn_id: 2,
+    btn_id: 'female',
     text: '여자',
   },
   {
-    btn_id: 3,
+    btn_id: 'none',
     text: '기타',
   },
 ];
@@ -31,7 +31,7 @@ function UserEdit() {
 
   const userId = 10
   const [userData, setUserData] = useState();
-  const birthYear = new Date().getFullYear() - userData.userAge;
+  const thisYear = new Date().getFullYear();
 
 
 
@@ -40,22 +40,18 @@ function UserEdit() {
     .get(`https://togetdog.site/dummy/user/${userId}`)
     .then((res) => {
       setUserData(res.data)
-      console.log(res.data)
-      console.log(userData.nickName)
     })
     .catch((err) => {
       console.log(err)
     });
   }, [])
 
-
-
   const [inputs, setInputs] = useState({
-    nickname: '',
-    gender: 1, // 성별 default 값 '남자'로 설정
-    birth: '',
-    address: '',
-    sigunguCode: '',
+    nickname: userData.nickName,
+    gender: userData.userGender, // 성별 default 값 '남자'로 설정
+    birth: thisYear - userData.userAge,
+    address: userData.address,
+    sigunguCode: userData.regionCode,
   });
 
   const {
@@ -65,7 +61,6 @@ function UserEdit() {
     address,
     sigunguCode,
   } = inputs;
-
 
   const [nicknameError, setNicknameError] = useState(false);
   const [nicknameErrorMsg, setNicknameErrorMsg] = useState('');
@@ -179,7 +174,7 @@ function UserEdit() {
             <input
               name='nickname'
               className='email-input'
-              placeholder={userData.nickName}
+              placeholder={userData?.nickName}
               onChange={(e) => handleNickname(e)}
             />
           </div>
@@ -210,7 +205,7 @@ function UserEdit() {
                 className='number-input' 
                 name='birth' 
                 onChange={(e) => handleBirth(e)} 
-                placeholder={birthYear} 
+                placeholder={userData? thisYear - userData.userAge : thisYear} 
               />
             </div>
             <div className='year'>년</div>
@@ -227,7 +222,7 @@ function UserEdit() {
               <input 
                 className='email-input' 
                 value={address} name='address' 
-                placeholder={userData.address} 
+                placeholder={userData?.address} 
                 disabled 
               />
             </div>
