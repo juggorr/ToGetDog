@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useRecoilState } from "recoil";
@@ -6,16 +6,37 @@ import { userState } from "../recoil";
 
 import "./FontAwesome";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { HeaderWrapper, searchModal } from "../styles/MainHeaderEmotion";
+import { HeaderWrapper, SearchModal } from "../styles/MainHeaderEmotion";
 
 const Modal = ({ setModalOpen }) => {
   const navigate = useNavigate();
+  const inputText = useRef();
+
+  const onChange = (e) => {
+    inputText.current = e.target.value;
+  };
 
   return (
-    <searchModal>
-      <div onClick={() => setModalOpen(false)}>뒤로가기</div>
-      <div>검색</div>
-    </searchModal>
+    <SearchModal>
+      <div className="inside">
+        <div onClick={() => setModalOpen(false)} className="iconWrapper">
+          <FontAwesomeIcon icon="fa-arrow-left" />
+        </div>
+        <input
+          type="search"
+          className="searchInput"
+          placeholder="검색어를 입력해주세요."
+          onChange={onChange}
+        />
+        <div
+          className="searchBtn"
+          onClick={() => navigate("/search", { keyword: inputText.current })}
+        >
+          <FontAwesomeIcon icon="fa-magnifying-glass" />
+        </div>
+      </div>
+      <div onClick={() => setModalOpen(false)} className="outside"></div>
+    </SearchModal>
   );
 };
 
