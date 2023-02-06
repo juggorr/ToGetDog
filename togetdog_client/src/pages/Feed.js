@@ -75,29 +75,18 @@ const Feed = () => {
   const auth = useRecoilValue(authAtom);
 
   useEffect(() => {
-    console.log(auth);
     if (!auth || !localStorage.getItem('recoil-persist')) {
       navigate('/login');
       return;
     }
 
-    let pageNo = 1;
-
     axios
-      .get(
-        `${BACKEND_URL}/feed/${user.userId}`,
-        {
-          params: {
-            pageNo,
-          },
+      .get(`${BACKEND_URL}/feed/${user.userId}?pageNo=1`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: auth,
         },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: auth,
-          },
-        },
-      )
+      })
       .then((resp) => {
         console.log(resp);
         console.log(resp.data);
