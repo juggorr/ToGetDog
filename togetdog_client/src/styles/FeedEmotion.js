@@ -9,8 +9,9 @@ export const FeedContainer = styled.div`
 
   .no-photo {
     height: 100%;
-    line-height: 100%;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
