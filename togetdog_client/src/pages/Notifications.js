@@ -7,6 +7,7 @@ import axios from "axios";
 import { BACKEND_URL, DUMMY_URL } from "../config";
 import { NotificationsWrapper } from "../styles/NotificationsEmotion";
 import { HeaderWrapper } from "../styles/MainHeaderEmotion";
+import UserIcon from "../components/UserIcon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import WalkingWithDog from "../assets/walking_with_dog.png";
 import CancelEvent from "../assets/cancel-event.png";
@@ -30,8 +31,9 @@ const SingleNotification = (data) => {
 
   return (
     <div>
-      <div>{data.type}</div>
-      {data.type ? <div>11</div> : <div>2</div>}
+      <UserIcon text={data.item.nickName} idx={data.type}></UserIcon>
+
+      {/* {data.type ? <div>11</div> : <div>2</div>} */}
     </div>
   );
 };
@@ -48,9 +50,14 @@ const Notifications = () => {
       await axios
         .get(`${DUMMY_URL}/notify`, {})
         .then((response) => {
-          setNotifications(response.data.notifyInfo.notice);
+          setNotifications([
+            ...response.data.notifyInfo.notice,
+            ...response.data.notifyInfo.notice,
+          ]);
           setCanceled(response.data.notifyInfo.meetingCancel);
           setMeetingCnt(response.data.notifyInfo.meetingCnt);
+
+          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -92,7 +99,7 @@ const Notifications = () => {
         {notifications.map((item, idx) => (
           <SingleNotification
             item={item}
-            type={idx % 2}
+            type={idx}
             key={idx}
           ></SingleNotification>
         ))}
