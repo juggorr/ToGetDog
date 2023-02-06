@@ -60,99 +60,100 @@ const Feed = () => {
   ];
 
   const [menuBtnClick, setMenuBtnClick] = useState(false);
-  const [feedData, setFeedData] = useState({
-    result: "success",
-    feed: [
-      {
-        dog: {
-          dogId: 114,
-          dogName: "뽀삐",
-          userId: 123,
-          nickName: null,
-          address: null,
-          dogGender: "female",
-          dogType: "말티즈",
-          dogAge: 72,
-          dogWeight: 3.4,
-          dogNeutered: true,
-          dogCharacter1: "obedient",
-          dogCharacter2: "active",
-          description: "활동적이고 순해요",
-          dogProfile:
-            "https://mblogthumb-phinf.pstatic.net/MjAxOTA1MDhfMTQ2/MDAxNTU3MzAxNzQ4NDIw.MWkemnXiB57Tbm2kNMrDNj4uVImaujgUayV8GSKWA9Mg._lcDUVLNrYzYR9M36qGCdD1Kp0qLNxoZaqqkj-5-tswg.JPEG.hellohappypet/1.jpg?type=w800",
-          followCnt: 214,
-        },
-        boardId: 123,
-        image:
-          "https://mblogthumb-phinf.pstatic.net/MjAxOTA1MDhfMTQ2/MDAxNTU3MzAxNzQ4NDIw.MWkemnXiB57Tbm2kNMrDNj4uVImaujgUayV8GSKWA9Mg._lcDUVLNrYzYR9M36qGCdD1Kp0qLNxoZaqqkj-5-tswg.JPEG.hellohappypet/1.jpg?type=w800",
-      },
-    ],
-    user: {
-      userId: 3,
-      nickName: "뽀삐엄마",
-      userAge: 28,
-      userGender: null,
-      address: "서울시 동작구 흑석동",
-      regionCode: "11455",
-      social: "naver",
-      rating: 3.41,
-      dogs: [
-        {
-          dogId: 114,
-          dogName: "뽀삐",
-          userId: 123,
-          nickName: null,
-          address: null,
-          dogGender: "female",
-          dogType: "말티즈",
-          dogAge: 72,
-          dogWeight: 3.4,
-          dogNeutered: true,
-          dogCharacter1: "obedient",
-          dogCharacter2: "active",
-          description: "활동적이고 순해요",
-          dogProfile:
-            "https://mblogthumb-phinf.pstatic.net/MjAxOTA1MDhfMTQ2/MDAxNTU3MzAxNzQ4NDIw.MWkemnXiB57Tbm2kNMrDNj4uVImaujgUayV8GSKWA9Mg._lcDUVLNrYzYR9M36qGCdD1Kp0qLNxoZaqqkj-5-tswg.JPEG.hellohappypet/1.jpg?type=w800",
-          followCnt: 214,
-        },
-        {
-          dogId: 115,
-          dogName: "초코",
-          userId: 123,
-          nickName: null,
-          address: null,
-          dogGender: "male",
-          dogType: "비숑",
-          dogAge: 84,
-          dogWeight: 4.5,
-          dogNeutered: false,
-          dogCharacter1: "disobedient",
-          dogCharacter2: "active",
-          description: "활동적이고 순해요",
-          dogProfile:
-            "https://mblogthumb-phinf.pstatic.net/MjAxOTA1MDhfMTQ2/MDAxNTU3MzAxNzQ4NDIw.MWkemnXiB57Tbm2kNMrDNj4uVImaujgUayV8GSKWA9Mg._lcDUVLNrYzYR9M36qGCdD1Kp0qLNxoZaqqkj-5-tswg.JPEG.hellohappypet/1.jpg?type=w800",
-          followCnt: 333,
-        },
-      ],
-      followCnt: 300,
-      follow: true,
-    },
-  });
-  const [feedUserData, setFeedUserData] = useState(feedData.user);
-  const [feedDogData, setFeedDogData] = useState(feedUserData.dogs);
-  const [feedPhotoData, setFeedPhotoData] = useState(feedData.feed);
-  const [currentDog, setCurrentDog] = useState(feedDogData[0]);
-  let tmpSubDogs = [];
-  if (feedDogData.length > 1) {
-    feedDogData.map((dog) => {
-      if (dog.dogId !== currentDog.dogId) {
-        tmpSubDogs.push(dog);
-      }
-    });
-  }
-  const [subDogs, setSubDogs] = useState(tmpSubDogs);
+  const [feedData, setFeedData] = useState();
+  // const [feedData, setFeedData] = useState({
+  //   result: "success",
+  //   feed: [
+  //     {
+  //       dog: {
+  //         dogId: 114,
+  //         dogName: "뽀삐",
+  //         userId: 123,
+  //         nickName: null,
+  //         address: null,
+  //         dogGender: "female",
+  //         dogType: "말티즈",
+  //         dogAge: 72,
+  //         dogWeight: 3.4,
+  //         dogNeutered: true,
+  //         dogCharacter1: "obedient",
+  //         dogCharacter2: "active",
+  //         description: "활동적이고 순해요",
+  //         dogProfile:
+  //           "https://mblogthumb-phinf.pstatic.net/MjAxOTA1MDhfMTQ2/MDAxNTU3MzAxNzQ4NDIw.MWkemnXiB57Tbm2kNMrDNj4uVImaujgUayV8GSKWA9Mg._lcDUVLNrYzYR9M36qGCdD1Kp0qLNxoZaqqkj-5-tswg.JPEG.hellohappypet/1.jpg?type=w800",
+  //         followCnt: 214,
+  //       },
+  //       boardId: 123,
+  //       image:
+  //         "https://mblogthumb-phinf.pstatic.net/MjAxOTA1MDhfMTQ2/MDAxNTU3MzAxNzQ4NDIw.MWkemnXiB57Tbm2kNMrDNj4uVImaujgUayV8GSKWA9Mg._lcDUVLNrYzYR9M36qGCdD1Kp0qLNxoZaqqkj-5-tswg.JPEG.hellohappypet/1.jpg?type=w800",
+  //     },
+  //   ],
+  //   user: {
+  //     userId: 3,
+  //     nickName: "뽀삐엄마",
+  //     userAge: 28,
+  //     userGender: null,
+  //     address: "서울시 동작구 흑석동",
+  //     regionCode: "11455",
+  //     social: "naver",
+  //     rating: 3.41,
+  //     dogs: [
+  //       {
+  //         dogId: 114,
+  //         dogName: "뽀삐",
+  //         userId: 123,
+  //         nickName: null,
+  //         address: null,
+  //         dogGender: "female",
+  //         dogType: "말티즈",
+  //         dogAge: 72,
+  //         dogWeight: 3.4,
+  //         dogNeutered: true,
+  //         dogCharacter1: "obedient",
+  //         dogCharacter2: "active",
+  //         description: "활동적이고 순해요",
+  //         dogProfile:
+  //           "https://mblogthumb-phinf.pstatic.net/MjAxOTA1MDhfMTQ2/MDAxNTU3MzAxNzQ4NDIw.MWkemnXiB57Tbm2kNMrDNj4uVImaujgUayV8GSKWA9Mg._lcDUVLNrYzYR9M36qGCdD1Kp0qLNxoZaqqkj-5-tswg.JPEG.hellohappypet/1.jpg?type=w800",
+  //         followCnt: 214,
+  //       },
+  //       {
+  //         dogId: 115,
+  //         dogName: "초코",
+  //         userId: 123,
+  //         nickName: null,
+  //         address: null,
+  //         dogGender: "male",
+  //         dogType: "비숑",
+  //         dogAge: 84,
+  //         dogWeight: 4.5,
+  //         dogNeutered: false,
+  //         dogCharacter1: "disobedient",
+  //         dogCharacter2: "active",
+  //         description: "활동적이고 순해요",
+  //         dogProfile:
+  //           "https://mblogthumb-phinf.pstatic.net/MjAxOTA1MDhfMTQ2/MDAxNTU3MzAxNzQ4NDIw.MWkemnXiB57Tbm2kNMrDNj4uVImaujgUayV8GSKWA9Mg._lcDUVLNrYzYR9M36qGCdD1Kp0qLNxoZaqqkj-5-tswg.JPEG.hellohappypet/1.jpg?type=w800",
+  //         followCnt: 333,
+  //       },
+  //     ],
+  //     followCnt: 300,
+  //     follow: true,
+  //   },
+  // });
+  const [feedUserData, setFeedUserData] = useState();
+  const [feedDogData, setFeedDogData] = useState();
+  const [feedPhotoData, setFeedPhotoData] = useState();
+  const [currentDog, setCurrentDog] = useState();
+  // let tmpSubDogs = [];
+  // if (feedDogData.length > 1) {
+  //   feedDogData.map((dog) => {
+  //     if (dog.dogId !== currentDog.dogId) {
+  //       tmpSubDogs.push(dog);
+  //     }
+  //   });
+  // }
+  const [subDogs, setSubDogs] = useState();
   const [isLoading, setLoading] = useState(true);
-  const [followStatus, setFollowStatus] = useState(feedUserData.follow);
+  const [followStatus, setFollowStatus] = useState();
 
   const navigate = useNavigate();
   const auth = useRecoilValue(authAtom);
@@ -170,16 +171,19 @@ const Feed = () => {
         }
       )
       .then((resp) => {
+        console.log(resp);
+        console.log(resp.data);
         console.log(resp.data + "data");
         setFeedData(resp.data);
-        setFeedUserData(feedData.user);
-        setFeedDogData(feedUserData.dogs);
-        setFeedPhotoData(feedData.feed);
-        setCurrentDog(feedUserData.dogs[0]);
+        setFeedUserData(resp.data.user);
+        setFeedDogData(resp.data.user.dogs);
+        setFeedPhotoData(resp.data.feed);
+        setCurrentDog(resp.data.user.dogs[0]);
         let tmpSubDogs = [];
-        if (feedUserData.dogs.length > 1) {
-          feedUserData.dogs.map((dog) => {
-            if (dog.dogId !== currentDog.dogId) {
+
+        if (resp.data.user.dogs.length > 1) {
+          resp.data.user.dogs.map((dog) => {
+            if (dog.dogId !== resp.data.user.dogs[0].dogId) {
               tmpSubDogs.push(dog);
             }
           });
