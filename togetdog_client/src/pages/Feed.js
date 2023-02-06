@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import MenuModal from '../components/MenuModal';
 import OrangeCharacterBtn from '../components/OrangeCharacterBtn';
@@ -74,6 +74,10 @@ const Feed = () => {
   const navigate = useNavigate();
   const auth = useRecoilValue(authAtom);
 
+  // const location = useLocation()
+  // const pageNo = location.state.pageNo;
+  const pageNo = 1;
+
   useEffect(() => {
     if (!auth || !localStorage.getItem('recoil-persist')) {
       navigate('/login');
@@ -81,7 +85,7 @@ const Feed = () => {
     }
 
     axios
-      .get(`${BACKEND_URL}/feed/${user.userId}?pageNo=1`, {
+      .get(`${BACKEND_URL}/feed/${user.userId}?pageNo=${pageNo}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: auth,
@@ -144,7 +148,7 @@ const Feed = () => {
             </div>
             <div className='sub-dogs'>
               {subDogs.map((subdog) => (
-                <SubDogImg src={subdog.dogProfile} key={subdog.dogId} />
+                <SubDogImg src={`https://i8a807.p.ssafy.io/image/dog/` + subdog.dogProfile} key={subdog.dogId} />
               ))}
               {feedDogData.length === 3 ? null : <PlusBtn onClick={() => navigate('/dogregister')}>+</PlusBtn>}
             </div>
@@ -152,7 +156,7 @@ const Feed = () => {
               <div className='profile-etc-wrapper'>
                 <img src={MenuIcon} className='menu-icon' onClick={() => setMenuBtnClick(true)} alt='menu' />
                 <div className='follow-info flex-column'>
-                  <div>
+                  <div onClick={() => navigate('/')}>
                     <span className='follow-text'>팔로워</span>
                     {currentDog.dogFollowerCnt}
                   </div>
