@@ -10,6 +10,7 @@ import {
   MeetingWrapper,
   SingleMeetingWrapper,
 } from "../styles/WalkEmotion";
+import { LightColorLongBtn } from "../styles/BtnsEmotion.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const SingleMeeting = ({ meeting }) => {
@@ -173,6 +174,17 @@ const MeetingListWrapper = () => {
       <MeetingWrapper>
         <div className="walkList">
           {renderMeetings()}
+          {originalMeetings.length === 0 && active === 1 ? (
+            <div className="noMeeting">
+              <div className="noMeetingTextWrapper">
+                <p className="noMeetingText">예정된 산책 약속이 없어요.</p>
+                <p className="noMeetingText">산책 친구를 찾아보세요!</p>
+              </div>
+              <LightColorLongBtn onClick={() => navigate("/recommend")}>
+                새 친구 찾기
+              </LightColorLongBtn>
+            </div>
+          ) : null}
           <div
             className="recommendBtn"
             onClick={() => {
