@@ -81,12 +81,14 @@ const Feed = () => {
       return;
     }
 
+    let pageNo = 1;
+
     axios
       .get(
         `${BACKEND_URL}/feed/${user.userId}`,
         {
           params: {
-            pageNo: 1,
+            pageNo,
           },
         },
         {
