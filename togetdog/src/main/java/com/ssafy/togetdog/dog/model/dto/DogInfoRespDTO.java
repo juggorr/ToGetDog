@@ -10,7 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
+@SuperBuilder
 @Builder
 @Setter
 @Getter
@@ -51,6 +53,17 @@ public class DogInfoRespDTO {
 				.dogCharacter1(dog.getDogCharacter1())
 				.dogCharacter2(dog.getDogCharacter2())
 				.description(dog.getDescription())
+				.dogProfile(dog.getDogImage())
+				.build();
+	}
+
+
+	public static DogInfoRespDTO of(Dog dog) {
+		return DogInfoRespDTO.builder()
+				.dogId(dog.getDogId())
+				.userId(dog.getUser().getUserId())
+				.dogName(dog.getDogName())
+				.dogGender(dog.getDogGender())
 				.dogProfile(dog.getDogImage())
 				.build();
 	}

@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.togetdog.dog.model.dto.DogInfoForUserDTO;
 import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.dto.DogRegistParamDTO;
 import com.ssafy.togetdog.dog.model.dto.DogUpdateParamDTO;
@@ -203,6 +205,16 @@ public class DogServiceImpl implements DogService {
 		if (dogDTO.getDescription().length() > 40) {
 			throw new InvalidInputException();
 		}
+	}
+
+	@Override
+	public List<DogInfoForUserDTO> findDogsByUserId(long userId) {
+		User user = new User();
+		user.setUserId(userId);
+		List<Dog> dList = dogRepository.findAllByUser(user);
+		List<DogInfoForUserDTO> dogList = dList.stream().map(d ->DogInfoForUserDTO.of(d))
+				 .collect(Collectors.toList());
+		return dogList;
 	}
 
 }

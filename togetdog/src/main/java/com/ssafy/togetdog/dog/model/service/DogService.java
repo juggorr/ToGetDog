@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.togetdog.dog.model.dto.DogInfoForUserDTO;
 import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.dto.DogRegistParamDTO;
 import com.ssafy.togetdog.dog.model.dto.DogUpdateParamDTO;
