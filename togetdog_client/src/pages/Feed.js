@@ -114,6 +114,8 @@ const Feed = () => {
         setLoading(false);
       })
       .catch((err) => {
+        console.log(err);
+        console.log(err.msg);
         console.log('피드 데이터 불러오기 실패');
       });
   }, []);
