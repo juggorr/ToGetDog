@@ -148,7 +148,7 @@ const Feed = () => {
             </div>
             <div className='sub-dogs'>
               {subDogs.map((subdog) => (
-                <SubDogImg src={subdog.dogProfile} key={subdog.dogId} />
+                <SubDogImg src={`https://i8a807.p.ssafy.io/image/dog/` + subdog.dogProfile} key={subdog.dogId} />
               ))}
               {feedDogData.length === 3 ? null : <PlusBtn onClick={() => navigate('/dogregister')}>+</PlusBtn>}
             </div>
