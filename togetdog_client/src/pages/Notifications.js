@@ -75,8 +75,6 @@ const Notifications = () => {
           ]);
           setCanceled(response.data.notifyInfo.meetingCancel);
           setMeetingCnt(response.data.notifyInfo.meetingCnt);
-
-          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
