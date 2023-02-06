@@ -128,16 +128,18 @@ const Feed = () => {
           <FeedProfileTop>
             <MainDogImg src={`https://i8a807.p.ssafy.io/image/dog/` + currentDog.dogProfile}></MainDogImg>
             <div className='dog-info-box'>
-              <div>{currentDog.dogName}</div>
-              <div className='dog-info'>
-                {`${currentDog.dogType} / ${
-                  currentDog.dogAge >= 12 ? `${Math.floor(currentDog.dogAge / 12)}살` : `${currentDog.dogAge}개월`
-                }`}
+              <div>
+                {currentDog.dogName}
                 {currentDog.dogGender === 'male' ? (
                   <img src={Boy} className='dog-gender' />
                 ) : (
                   <img src={Girl} className='dog-gender' />
                 )}
+              </div>
+              <div className='dog-info'>
+                {`${currentDog.dogType} / ${
+                  currentDog.dogAge >= 12 ? `${Math.floor(currentDog.dogAge / 12)}살` : `${currentDog.dogAge}개월`
+                }`}
               </div>
             </div>
             <div className='sub-dogs'>
