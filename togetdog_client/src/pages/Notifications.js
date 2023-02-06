@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { userState } from "../recoil";
+// import { useRecoilState } from "recoil";
+// import { userState } from "../recoil";
 
 import axios from "axios";
 import { BACKEND_URL, DUMMY_URL } from "../config";
@@ -32,10 +32,17 @@ const NotificationsHeader = () => {
 const SingleNotification = (data) => {
   const navigate = useNavigate();
 
-  return (
-    <SingleNotificationWrapper>
-      <UserIcon text={data.item.nickName} idx={data.idx}></UserIcon>
+  const onClick = (e) => {
+    if (data.item.type === "좋아요") {
+      navigate(`/board/${data.item.id}`);
+    } else if (data.item.type === "팔로우") {
+      navigate(`feed/${data.item.id}`);
+    }
+  };
 
+  return (
+    <SingleNotificationWrapper onClick={() => onClick()}>
+      <UserIcon text={data.item.nickName} idx={data.idx}></UserIcon>
       {data.item.type === "좋아요" ? (
         <div className="textWrapper">
           {data.item.nickName}님이 {data.item.dogName}님의 게시물을 좋아합니다.
@@ -52,7 +59,7 @@ const SingleNotification = (data) => {
 
 const Notifications = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useRecoilState(userState);
+  // const [user, setUser] = useRecoilState(userState);
   const [notifications, setNotifications] = useState([]);
   const [canceled, setCanceled] = useState(false);
   const [meetingCnt, setMeetingCnt] = useState();
@@ -79,11 +86,22 @@ const Notifications = () => {
     getNotifications();
   }, []);
 
+  const cancelClick = () => {
+    axios
+      .put(`${DUMMY_URL}/notify/cancel`, {})
+      .then((response) => {
+        navigate("/walk");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div>
       <NotificationsHeader></NotificationsHeader>
       <NotificationsWrapper>
-        <div className="walkRequestWrapper">
+        <div className="walkRequestWrapper" onClick={() => navigate("/walk")}>
           <div className="walkRequest">
             <div className="imgWrapper">
               <img className="walkIcon" src={WalkingWithDog} alt="walkIcon" />
@@ -96,7 +114,7 @@ const Notifications = () => {
           </div>
         </div>
         {canceled ? (
-          <div className="cancelWrapper">
+          <div className="cancelWrapper" onClick={() => cancelClick()}>
             <div className="walkRequest">
               <div className="imgWrapper">
                 <img className="walkIcon" src={CancelEvent} alt="walkIcon" />
