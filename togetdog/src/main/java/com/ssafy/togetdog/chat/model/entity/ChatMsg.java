@@ -33,12 +33,11 @@ public class ChatMsg {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-
 	@Column(name = "chatting_idx")
 	private long idx;
 	
 	@Column(name = "chatting_user_id")
-	private String userId;
+	private long userId;
 	
 	@Column(name = "chatting_room_id")
 	private long roomId;
@@ -51,6 +50,7 @@ public class ChatMsg {
 	
 	public ChatDTO toDTO() {
 		return ChatDTO.builder()
+				.id(this.id)
 				.idx(this.idx)
 				.userId(this.userId)
 				.roomId(this.roomId)
@@ -58,5 +58,12 @@ public class ChatMsg {
 				.date(this.date)
 				.build();
 	}
-
+	public ChatDTO toChatList() {
+		return ChatDTO.builder()
+				.idx(this.idx)
+				.userId(this.userId)
+				.content(this.content)
+				.date(this.date)
+				.build();
+	}
 }

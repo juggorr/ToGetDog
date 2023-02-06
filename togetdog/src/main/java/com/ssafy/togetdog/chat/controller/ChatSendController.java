@@ -22,10 +22,10 @@ public class ChatSendController {
     	System.out.println(sessionInfo.getSessionId());
     	csl.addSessionId(sessionInfo);
     }
-    @MessageMapping("/messages/{rooms}")
-    @SendTo("/subscribe/rooms/{rooms}")
+    @MessageMapping("/messages/{roomId}")
+    @SendTo("/subscribe/roomId/{roomId}")
     public ChatDTO chat(ChatDTO chatDto) {
-    	chatDto.setIdx(2);
+    	chatDto.setIdx(2);	// 바꿔야함
     	chatDto.setDate(LocalDateTime.now());
     	
 		if(csl.saveChat(chatDto)) {

@@ -19,9 +19,11 @@ import lombok.ToString;
 @ToString
 public class ChatDTO {
 
+	private long id;
+	
 	private long idx;
 	
-	private String userId;
+	private long userId;
 	
 	private long roomId;
 
@@ -33,6 +35,7 @@ public class ChatDTO {
 	
 	public ChatMsg toEntity() {
 		return ChatMsg.builder()
+				.id(this.id)
 		.idx(this.idx)
 		.userId(this.userId)
 		.roomId(this.roomId)

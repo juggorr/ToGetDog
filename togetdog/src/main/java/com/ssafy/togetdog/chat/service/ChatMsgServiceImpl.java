@@ -2,6 +2,7 @@ package com.ssafy.togetdog.chat.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -28,5 +29,20 @@ public class ChatMsgServiceImpl implements ChatMsgService{
 			saveMsg.add(cDto.toEntity());
 		}
 		chatMsgRepo.saveAll(saveMsg);
+	}
+	
+	@Transactional
+	public List<ChatDTO> findMessage(long roomId) {
+		List<ChatMsg> list =  chatMsgRepo.findByRoomId(roomId).orElse(null);
+		if(list == null)
+			return null;
+		return list.stream()
+				.map(ChatMsg::toChatList)
+				.collect(Collectors.toList());
+	}
+
+	@Transactional
+	public Long chatCount(long roomId) {
+		return chatMsgRepo.countByRoomId(roomId);
 	}
 }

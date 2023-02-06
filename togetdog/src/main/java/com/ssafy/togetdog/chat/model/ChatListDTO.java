@@ -9,9 +9,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SessionInfo {
-	private String sessionId;
+public class ChatListDTO {
 	private long userId;
-	private long roomId;
-
+	private int userAge;
+	private String gender;
+	private String address;
+	private long chatRoomId;
+	private String lastChatContent;
 }
