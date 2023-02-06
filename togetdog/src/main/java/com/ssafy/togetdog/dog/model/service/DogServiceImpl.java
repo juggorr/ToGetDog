@@ -89,7 +89,7 @@ public class DogServiceImpl implements DogService {
 			// file save
 			image.transferTo(new File(folder, saveFileName));
 			// DB insert
-			String DBsaveName = "image" + File.pathSeparator + "dog" + File.pathSeparator + today + File.separator + saveFileName;
+			String DBsaveName = "image/dog/" + today + File.separator + saveFileName;
 			dogRepository.save(dogDTO.of(dogDTO, user, DBsaveName));
 		} else {
 			throw new InvalidInputException();
@@ -144,7 +144,7 @@ public class DogServiceImpl implements DogService {
 				logger.debug("updateDog save path : {}", saveFolder + saveFileName);
 				// 새로운 file 등록
 				image.transferTo(new File(folder, saveFileName));
-				String DBsaveName = "image" + File.pathSeparator + "dog" + File.pathSeparator + today + File.separator + saveFileName;
+				String DBsaveName = "image/dog/" + today + File.separator + saveFileName;
 				dogRepository.save(DogUpdateParamDTO.of(dogDTO, DBsaveName));
 			} else {
 				throw new InvalidInputException();
