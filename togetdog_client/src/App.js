@@ -23,6 +23,7 @@ import EmailAuth from "./pages/EmailAuth";
 import CreateAppointment from "./pages/CreateAppointment";
 import DogRegister from "./pages/DogRegister";
 import SubLayout from "./components/SubLayout";
+import Search from "./pages/Search";
 
 // import DogEdit from "./pages/DogEdit";
 import Notifications from "./pages/Notifications";
@@ -55,6 +56,7 @@ function App() {
           <Route path="/500" element={<InternalServer />} />
           <Route path="/*" element={<NotFound />} />
           <Route path="/createAppointment" element={<CreateAppointment />} />
+          <Route path="/search" element={<Search />} />
         </Routes>
       </div>
     </BrowserRouter>
