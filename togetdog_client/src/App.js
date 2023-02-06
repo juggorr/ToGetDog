@@ -23,7 +23,7 @@ import EmailAuth from "./pages/EmailAuth";
 import CreateAppointment from "./pages/CreateAppointment";
 import DogRegister from "./pages/DogRegister";
 import SubLayout from "./components/SubLayout";
-import FollowList from './pages/FollowList';
+import FollowerList from './pages/FollowerList';
 
 
 // import DogEdit from "./pages/DogEdit";
@@ -53,7 +53,7 @@ function App() {
           <Route path="/emailAuth" element={<EmailAuth />} />
           <Route path="/dogregister" element={<DogRegister />} />
           {/* <Route path='/dogedit' element={<DogEdit />} /> */}
-          <Route path='/followlist' element={<FollowList />} />
+          <Route path='/followerlist' element={<FollowerList />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/500" element={<InternalServer />} />
           <Route path="/*" element={<NotFound />} />
