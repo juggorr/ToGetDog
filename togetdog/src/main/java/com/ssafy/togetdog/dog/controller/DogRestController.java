@@ -78,7 +78,6 @@ public class DogRestController {
 			@RequestPart(value="dog") @ApiParam(required = true) DogRegistParamDTO dogDTO,
 			@RequestPart(value="dogProfile") @ApiParam(required = true) MultipartFile dogImage
 			) throws IllegalStateException, IOException {
-		System.out.println("머냐고 시발");
 		logger.info("Dog registration parameter : {} {}", dogDTO, dogImage.getOriginalFilename());
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
