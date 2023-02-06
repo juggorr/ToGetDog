@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,10 +40,12 @@ import com.ssafy.togetdog.dog.model.service.DogService;
 import com.ssafy.togetdog.follow.model.service.FollowService;
 import com.ssafy.togetdog.user.model.dto.UserIncludesDogsDTO;
 import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
+import com.ssafy.togetdog.user.model.service.JwtService;
 import com.ssafy.togetdog.user.model.service.UserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -62,6 +65,7 @@ public class AppointmentRestController {
 //	private final LikeService likeService;
 //	private final FollowService followService;
 	private final AppointmentService appointmentService;
+	private final JwtService jwtService;
 		
 	/***
 	 * get appointment list
@@ -69,7 +73,7 @@ public class AppointmentRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "산책 리스트 조회", notes = "산책 예정된 약속/대기중 요청/종료된 약속 리스트, status가 confirmed/wait/cancelled, done")
-	@GetMapping("/")
+	@GetMapping
 	public ResponseEntity<?> getFeed(@RequestBody int userId){ // 추후 토큰으로 바꿔야함
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
@@ -89,11 +93,11 @@ public class AppointmentRestController {
 	 */
 	@ApiOperation(value = "산책 약속 요청", notes = "산책 요청을 보냄")
 	@PostMapping
-	public ResponseEntity<?> requestAppointment(@RequestBody AppointmentAddDTO registDTO) {
+	public ResponseEntity<?> requestAppointment(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@RequestBody @ApiParam(required = true) AppointmentAddDTO registDTO) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		Long myId = 4L;
-//		Long myId = jwt;
-		LocalDateTime now = LocalDateTime.now();
+//		Long myId = 4L;
+		Long myId = jwtService.getUserId(token);
 		
 		logger.info("=================== registDto : {}", registDTO);
 		
@@ -109,120 +113,86 @@ public class AppointmentRestController {
 			dog.setDogId(pDog);
 			partnerDogList.add(dog);
 		}
-//		appointmentService.addAppointment(myId, userId, myDogs, partnerDogs, date, place);
-		appointmentService.addAppointment(myId, 1L, myDogList, partnerDogList, now, "멀티캠퍼스");
+		appointmentService.addAppointment(myId, registDTO.getReceivedUserId(), myDogList, partnerDogList, registDTO.getDateTime(), registDTO.getPlace());
+//		appointmentService.addAppointment(myId, 1L, myDogList, partnerDogList, now, "멀티캠퍼스");
 		
 		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "도착도착");
+		resultMap.put("msg", "산책 요청이 발송되었습니다!");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 	
-//	/***
-//	 * update board
-//	 * @param boardId, content
-//	 * @return status 200, 401, 500
-//	 */
-//	@ApiOperation(value = "게시물 수정", notes = "선택된 단건 게시글을 수정")
-//	@PutMapping("/")
-//	public ResponseEntity<?> modifyBoard(@RequestBody BoardDTO boardDto) {
-//		Map<String, Object> resultMap = new HashMap<String, Object>();
-//		
-//		BoardDTO newBoardDto = boardService.update(boardDto);
-//		
-//		resultMap.put("result", SUCCESS);
-//		resultMap.put("board", newBoardDto);
-//		resultMap.put("msg", "게시물이 수정되었습니다.");
-//		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
-//	}
-//	
-//	/***
-//	 * delete board
-//	 * @param boardId
-//	 * @return status 200, 401, 500
-//	 */
-//	@ApiOperation(value = "게시물 삭제", notes = "선택된 단건 게시글을 삭제")
-//	@DeleteMapping("/")
-//	public ResponseEntity<?> deleteBoard(@RequestBody BoardDTO boardDto) {
-//		Map<String, Object> resultMap = new HashMap<String, Object>();
-//		
-//		boardService.delete(boardDto);
-//		
-//		resultMap.put("result", SUCCESS);
-//		resultMap.put("msg", "게시물이 삭제되었습니다.");
-//		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
-//	}
-//	
-//	/***
-//	 * write comment on a board
-//	 * @param boardId
-//	 * @return status 200, 401, 500
-//	 */
-//	@ApiOperation(value = "댓글 등록", notes = "게시글애 댓글을 등록함")
-//	@PostMapping("/comment")
-//	public ResponseEntity<?> addComment(@RequestBody CommentDTO commentDto) {
-//		Map<String, Object> resultMap = new HashMap<String, Object>();
-//		commentService.save(commentDto);
-//		List<CommentDTO> comments = commentService.findAllCommentsInBoard(commentDto.getBoardId());
-//		
-//		resultMap.put("result", SUCCESS);
-//		resultMap.put("comments", comments);
-//		resultMap.put("msg", "댓글이 등록되었습니다.");
-//		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
-//	}
-//	
-//	/***
-//	 * delete comment on a board
-//	 * @param boardId
-//	 * @return status 200, 401, 500
-//	 */
-//	@ApiOperation(value = "댓글 삭제", notes = "선택된 단건 댓글을 삭제")
-//	@DeleteMapping("/comment")
-//	public ResponseEntity<?> deleteComment(@RequestBody CommentDTO commentDto) {
-//		Map<String, Object> resultMap = new HashMap<String, Object>();
-//		
-//		commentService.delete(commentDto.getCommentId());
-//		List<CommentDTO> comments = commentService.findAllCommentsInBoard(commentDto.getBoardId());
-//		
-//		resultMap.put("result", SUCCESS);
-//		resultMap.put("comments", comments);
-//		resultMap.put("msg", "댓글이 삭제되었습니다.");
-//		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
-//	}
-//	
-//	/***
-//	 * like board
-//	 * @param boardId
-//	 * @return status 200, 401, 500
-//	 */
-//	@ApiOperation(value = "좋아요", notes = "게시글에 좋아요")
-//	@PostMapping("/like")
-//	public ResponseEntity<?> addLike(@RequestBody LikeDTO likeDTO) {
-//		Map<String, Object> resultMap = new HashMap<String, Object>();
-//		
-//		likeService.save(likeDTO);
-//		
-//		resultMap.put("result", SUCCESS);
-//		resultMap.put("likeCnt", likeService.getLikes(likeDTO.getBoardId()));
-//		resultMap.put("msg", "게시글 좋아요!");
-//		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
-//	}
-//	
-//	/***
-//	 * unlike board
-//	 * @param boardId
-//	 * @return status 200, 401, 500
-//	 */
-//	@ApiOperation(value = "좋아요  취소", notes = "게시글에 좋아요 취소")
-//	@DeleteMapping("/like")
-//	public ResponseEntity<?> deleteLike(@RequestBody LikeDTO likeDTO) {
-//		Map<String, Object> resultMap = new HashMap<String, Object>();
-//		
-//		likeService.delete(likeDTO);
-//
-//		resultMap.put("result", SUCCESS);
-//		resultMap.put("likeCnt", likeService.getLikes(likeDTO.getBoardId()));
-//		resultMap.put("msg", "게시글 좋아요 취소!");
-//		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
-//	}
+	/***
+	 * cancel appointment
+	 * @param token, roomId
+	 * @return status 200, 401, 500
+	 */
+	@ApiOperation(value = "산책 취소", notes = "선택된 산책 요청 취소")
+	@PutMapping("/cancel")
+	public ResponseEntity<?> cancelAppointment(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@RequestParam(value="appointmentId") @ApiParam(required = true) long roomId) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		appointmentService.updateAppointment(roomId, "cancelled");
+		
+		resultMap.put("result", SUCCESS);
+		resultMap.put("msg", "산책 요청이 취소되었습니다.");
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+	}
+	
+	/***
+	 * accept appointment
+	 * @param token, roomId
+	 * @return status 200, 401, 500
+	 */
+	@ApiOperation(value = "산책 수락", notes = "선택된 산책 요청 수락")
+	@PutMapping("/accept")
+	public ResponseEntity<?> acceptAppointment(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@RequestParam(value="appointmentId") @ApiParam(required = true) long roomId) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		appointmentService.updateAppointment(roomId, "confirmed");
+		
+		resultMap.put("result", SUCCESS);
+		resultMap.put("msg", "산책 요청이 수락되었습니다.");
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+	}
+	
+	/***
+	 * reject appointment
+	 * @param token, roomId
+	 * @return status 200, 401, 500
+	 */
+	@ApiOperation(value = "산책 거절", notes = "선택된 산책 요청 거절")
+	@DeleteMapping
+	public ResponseEntity<?> rejectAppointment(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@RequestParam(value="appointmentId") @ApiParam(required = true) long roomId) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		appointmentService.deleteAppointment(roomId);
+		
+		resultMap.put("result", SUCCESS);
+		resultMap.put("msg", "산책 요청이 거절되었습니다.");
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+	}
+	
+	/***
+	 * rate User
+	 * @param token, roomId
+	 * @return status 200, 401, 500
+	 */
+	@ApiOperation(value = "산책 별점", notes = "산책한 상대에게 산책 별점 부여")
+	@PostMapping("/rating")
+	public ResponseEntity<?> ratingUSer(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@RequestParam(value="appointmentId") @ApiParam(required = true) long roomId,
+			@RequestParam(value="rating") @ApiParam(required = true) int rating) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		long userId = jwtService.getUserId(token);
+		appointmentService.rateAppointment(userId, roomId, rating);
+		
+		resultMap.put("result", SUCCESS);
+		resultMap.put("msg", "별점이 부여되었습니다.");
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+	}
 	
 }

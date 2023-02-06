@@ -1,6 +1,7 @@
 package com.ssafy.togetdog.appointment.model.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,5 +13,4 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 	List<Appointment> findAllBySentUser(User user);
 
 	List<Appointment> findAllByReceivedUser(User user);
-
 }

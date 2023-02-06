@@ -3,6 +3,7 @@ package com.ssafy.togetdog.appointment.model.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -91,6 +92,48 @@ public class AppointmentService {
 					.toReceivedAppointment(appointment.getRoomId(), dog.getDogId()));
 		}
 		
+		
+	}
+
+	public void updateAppointment(long roomId, String status) {
+		Appointment appointment = appointmentRepository.findById(roomId).orElse(null);
+		appointment.setStatus(status);
+		appointmentRepository.save(appointment);
+		
+	}
+
+	public void deleteAppointment(long roomId) {
+		Optional<Appointment> appointment = appointmentRepository.findById(roomId);
+		//entity mapping이 안돼서 하위 속성 삭제 먼저함
+		receivedAppointmentRepository.deleteByAppointment(appointment);
+		sentAppointmentRepository.deleteByAppointment(appointment);
+		appointmentRepository.deleteById(roomId);		
+	}
+
+	public void rateAppointment(long userId, long roomId, int rating) {
+		Appointment appointment = appointmentRepository.findById(roomId).orElse(null);
+		logger.info("rateAppointment ==== appointemnt : {}", appointment);
+		if(appointment.getSentUser().getUserId() == userId) {
+			if(appointment.isSenderRated()) return;
+			long bSum = appointment.getReceivedUser().getRatingSum();
+			long aSum = bSum + rating;
+			long bCnt = appointment.getReceivedUser().getRatingCount();
+			long aCnt = bCnt + 1;
+			appointment.getReceivedUser().setRatingSum(aSum);
+			appointment.getReceivedUser().setRatingCount(aCnt);
+			appointment.setSenderRated(true);
+			appointmentRepository.save(appointment);
+		} else {
+			if(appointment.isReceiverRated()) return;
+			long bSum = appointment.getSentUser().getRatingSum();
+			long aSum = bSum + rating;
+			long bCnt = appointment.getSentUser().getRatingCount();
+			long aCnt = bCnt + 1;
+			appointment.getSentUser().setRatingSum(aSum);
+			appointment.getSentUser().setRatingCount(aCnt);
+			appointment.setReceiverRated(true);
+			appointmentRepository.save(appointment);
+		}
 		
 	}
 

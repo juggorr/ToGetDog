@@ -2,13 +2,16 @@ package com.ssafy.togetdog.appointment.model.entity;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.ssafy.togetdog.user.model.entity.User;
@@ -33,7 +36,7 @@ public class Appointment {
     @Id
     @Column(name = "room_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY, optional = false)
+//    @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
     private long roomId;
     
     @ManyToOne
