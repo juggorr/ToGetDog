@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { userState } from "../recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { authAtom, userState } from "../recoil";
 import axios from "axios";
 import {
   CreateBoardWrapper,
@@ -16,6 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const New = () => {
   const navigate = useNavigate();
+  const auth = useRecoilValue(authAtom);
 
   const [user, setUser] = useRecoilState(userState);
 
@@ -28,7 +29,11 @@ const New = () => {
 
   useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/user/includesDog/${user.userId}`, {})
+      .get(`${BACKEND_URL}/user/includesDog/${user.userId}`, {
+        headers: {
+          Authorization: auth,
+        },
+      })
       .then((response) => {
         setUserData(response.data);
         setSelectedDog(userData.dog[0].dogId);
@@ -53,7 +58,7 @@ const New = () => {
           }}>
           <img
             className="dogProfileImg"
-            src={item.dog.dogProfile}
+            src={`https://i8a807.p.ssafy.io/image/dog/` + item.dog.dogProfile}
             alt={item.dog.dogName}
           />
         </div>
