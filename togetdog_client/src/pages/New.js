@@ -28,12 +28,13 @@ const New = () => {
 
   useEffect(() => {
     axios
-      .get(`${DUMMY_URL}/user/includesDog/${user.userId}`, {})
+      .get(`${BACKEND_URL}/user/includesDog/${user.userId}`, {})
       .then((response) => {
         setUserData(response.data);
         setSelectedDog(userData.dog[0].dogId);
       })
       .catch((error) => {
+        console.log(error);
         // 오류발생시 실행
       });
   }, []);
@@ -49,8 +50,7 @@ const New = () => {
           }
           onClick={() => {
             setSelectedDog(item.dog.dogId);
-          }}
-        >
+          }}>
           <img
             className="dogProfileImg"
             src={item.dog.dogProfile}
@@ -87,7 +87,7 @@ const New = () => {
         new Blob([JSON.stringify(boardContent)], { type: "application/json" })
       );
       await axios
-        .post(`${DUMMY_URL}/board`, formData, {
+        .post(`${BACKEND_URL}/board`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -159,8 +159,7 @@ const New = () => {
         <MainColorShortBtn
           onClick={() => {
             navigate(-1);
-          }}
-        >
+          }}>
           취소
         </MainColorShortBtn>
         <MainColorShortBtn onClick={checkValid}>작성</MainColorShortBtn>

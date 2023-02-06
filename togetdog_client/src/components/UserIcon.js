@@ -1,9 +1,24 @@
 import { UserIconCircle } from "../styles/BtnsEmotion";
+import { useNavigate } from "react-router-dom";
+
 
 const UserIcon = (props) => {
+  // 버튼 눌러서 해당 프로필로 이동하도록
+  // feed 작업내용 올라오면 해당 url로 수정
+  const navigate = useNavigate();
+  const onClick = () => {
+    navigate('/', {
+      state: {
+        userId: props.idx,
+      }
+    });
+  };
+
   // <UserIcon text={nickName(string)} idx={idx(int)}></UserIcon> 형태로 써주세요
   return (
-    <UserIconCircle>
+    <UserIconCircle
+      onClick={onClick}
+    >
       <div
         className={
           "circle" +
