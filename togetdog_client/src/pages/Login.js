@@ -19,10 +19,10 @@ const Login = () => {
   const navigate = useNavigate();
 
   // 추후 주석 해제 예정 (개발용)
-  // useEffect(() => {
-  //   if (auth !== null && auth === JSON.parse(localStorage.getItem('user')) && localStorage.getItem('recoil-persist'))
-  //     navigate('/');
-  // }, []);
+  useEffect(() => {
+    if (auth !== null && auth === JSON.parse(localStorage.getItem('user')) && localStorage.getItem('recoil-persist'))
+      navigate('/');
+  }, []);
 
   const setAuth = useSetRecoilState(authAtom);
 
