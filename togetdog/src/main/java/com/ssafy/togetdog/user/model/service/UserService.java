@@ -29,9 +29,11 @@ public interface UserService {
 	void updateTmpPassword(long userId, String tmpPassword);
 	
 	/* about lookup - select */
+	// email
 	void emailDuplicateCheck(String email);
 	User findUserByEmail(String email);
 	
+	// nickname
 	void nickNameDuplicateCheck(String nickname);
 	User findUserByNickName(String nickName);
 	
@@ -39,6 +41,7 @@ public interface UserService {
 	User findUserByUserId(long userId);	
 	User findUserByEmailAndPassword(String email, String password);
 	
+	// wait user
 	WaitUser findWaitUserByEmail(String email);
 	WaitUser findWaitUserByNickName(String nickname);
 }

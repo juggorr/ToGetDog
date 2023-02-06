@@ -197,7 +197,7 @@ public class UserServiceImpl implements UserService {
 	public WaitUser findWaitUserByNickName(String nickname) {
 		return waitUserRepository.findByNickName(nickname).orElse(null);
 	}
-
+	
 	///////////////////////////////
 
 	/***
