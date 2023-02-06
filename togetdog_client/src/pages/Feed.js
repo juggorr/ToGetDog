@@ -112,12 +112,6 @@ const Feed = () => {
         setFeedData(resp.data);
         setFeedUserData(resp.data.user);
         setFeedDogData(resp.data.user.dogs);
-        setFeedPhotoData(resp.data.feed);
-        setFilteredPhotoData(
-          resp.data.feed.filter(
-            (feedPhoto) => feedPhoto.dogId === resp.data.user.dogs[0].dogId
-          )
-        );
         setCurrentDog(resp.data.user.dogs[0]);
         setFollowStatus(resp.data.user.dogs);
         let tmpSubDogs = [];
@@ -130,6 +124,11 @@ const Feed = () => {
           });
         }
         setSubDogs(tmpSubDogs);
+        setFeedPhotoData(resp.data.feed);
+        let filteredPhotos = resp.data.feed.filter(
+          (feedPhoto) => feedPhoto.dogId === resp.data.user.dogs[0].dogId
+        );
+        setFilteredPhotoData(filteredPhotos);
         setLoading(false);
       })
       .catch((err) => {
