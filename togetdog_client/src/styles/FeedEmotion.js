@@ -12,7 +12,7 @@ export const FeedProfileWrapper = styled.div`
   padding: 1rem 1rem 0 1rem;
 
   .margin-bottom {
-    height: 5rem;
+    height: 2rem;
   }
 `;
 
