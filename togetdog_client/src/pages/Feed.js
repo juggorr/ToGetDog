@@ -75,8 +75,7 @@ const Feed = () => {
   const [isLoading, setLoading] = useState(true);
   const [followStatus, setFollowStatus] = useState(false);
 
-  const location = useLocation();
-  const feedUserId = location.pathname.split("/").reverse()[0];
+  // const location = useLocation()
   // const pageNo = location.state.pageNo;
   const pageNo = 1;
 
@@ -87,7 +86,7 @@ const Feed = () => {
     }
 
     axios
-      .get(`${BACKEND_URL}/feed/${feedUserId}?pageNo=${pageNo}`, {
+      .get(`${BACKEND_URL}/feed/${user.userId}?pageNo=${pageNo}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: auth,
@@ -170,7 +169,7 @@ const Feed = () => {
                 <PlusBtn onClick={() => navigate("/dogregister")}>+</PlusBtn>
               )}
             </div>
-            {feedUserId === user.userId ? (
+            {feedUserData.userId === user.userId ? (
               <div className="profile-etc-wrapper">
                 <img
                   src={MenuIcon}
