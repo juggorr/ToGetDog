@@ -26,6 +26,7 @@ import SubLayout from "./components/SubLayout";
 
 // import DogEdit from "./pages/DogEdit";
 import Notifications from "./pages/Notifications";
+import Recommend from "./pages/Recommend";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
             <Route path="/walk" element={<Walk />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/feed/:userId" element={<Feed />} />
+            <Route path="/recommend" element={<Recommend />} />
           </Route>
           {/* BackHeader, Footer 필요한 컴포넌트 */}
           <Route element={<SubLayout />}>
