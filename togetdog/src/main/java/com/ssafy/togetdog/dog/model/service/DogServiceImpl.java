@@ -2,7 +2,6 @@ package com.ssafy.togetdog.dog.model.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -25,6 +24,7 @@ import com.ssafy.togetdog.dog.model.dto.DogRegistParamDTO;
 import com.ssafy.togetdog.dog.model.dto.DogUpdateParamDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.dog.model.repository.DogRepository;
+import com.ssafy.togetdog.global.exception.ExcessNumberOfDogsException;
 import com.ssafy.togetdog.global.exception.InvalidInputException;
 import com.ssafy.togetdog.global.exception.UnAuthorizedException;
 import com.ssafy.togetdog.user.model.entity.User;
@@ -70,11 +70,8 @@ public class DogServiceImpl implements DogService {
 		if (user == null) {
 			throw new UnAuthorizedException();
 		}
-		
-		// InetAddress~
-		// 부팅시 한번만 static으로 사용하지 않으면 성능이슈가 있따고 합니다.
-		String hostname = InetAddress.getLocalHost().getHostName();
-		System.out.println("호스트 서버 이름~~~~~~~~~~~" + hostname);
+		// InetAddress : 부팅시 한번만 static으로 사용하지 않으면 성능이슈가 있다고 합니다.
+		// String hostname = InetAddress.getLocalHost().getHostName();
 		
 		checkRegistrationValidation(dogDTO);
 		String originalFileName = image.getOriginalFilename();
@@ -89,11 +86,12 @@ public class DogServiceImpl implements DogService {
 		if (!originalFileName.isEmpty()) {
 			String saveFileName = UUID.randomUUID().toString()
 					+ originalFileName.substring(originalFileName.lastIndexOf('.'));
-			logger.debug("registDog save path : {}", saveFolder + saveFileName);
+			logger.debug("registDog save path : {}", saveFolder + "/" + saveFileName);
 			// file save
 			image.transferTo(new File(folder, saveFileName));
 			// DB insert
-			dogRepository.save(dogDTO.of(dogDTO, saveFolder + saveFileName));
+			String DBsaveName = today + File.separator + saveFileName;
+			dogRepository.save(dogDTO.of(dogDTO, user, DBsaveName));
 		} else {
 			throw new InvalidInputException();
 		}
@@ -147,15 +145,40 @@ public class DogServiceImpl implements DogService {
 				logger.debug("updateDog save path : {}", saveFolder + saveFileName);
 				// 새로운 file 등록
 				image.transferTo(new File(folder, saveFileName));
-				dogRepository.save(DogUpdateParamDTO.of(dogDTO, saveFolder + saveFileName));
+				String DBsaveName = today + File.separator + saveFileName;
+				dogRepository.save(DogUpdateParamDTO.of(dogDTO, DBsaveName));
 			} else {
 				throw new InvalidInputException();
 			}
 		}
 	}
 	
-	///////////////////////////////
 
+	@Override
+	public void checkInsertPossible(User user) {
+		List<Dog> dogs = findDogsByUser(user);
+		if (dogs.size() > 3) {
+			throw new ExcessNumberOfDogsException();
+		}
+	}
+
+	@Override
+	public List<Dog> findDogsByUser(User user) {
+		return dogRepository.findAllByUser(user).orElse(null);
+	}
+	
+	@Override
+	public List<DogInfoForUserDTO> findDogsByUserId(long userId) {
+		User user = new User();
+		user.setUserId(userId);
+		List<Dog> dogs = findDogsByUser(user);
+		List<DogInfoForUserDTO> dogList = dogs.stream().map(d ->DogInfoForUserDTO.of(d))
+				 .collect(Collectors.toList());
+		return dogList;
+	}
+
+	
+	///////////////////////////////
 	/***
 	 * Validation for Dog Registration
 	 * @param DogRegistParamDTO
@@ -195,14 +218,5 @@ public class DogServiceImpl implements DogService {
 		}
 	}
 
-	@Override
-	public List<DogInfoForUserDTO> findDogsByUserId(long userId) {
-		User user = new User();
-		user.setUserId(userId);
-		List<Dog> dList = dogRepository.findAllByUser(user);
-		List<DogInfoForUserDTO> dogList = dList.stream().map(d ->DogInfoForUserDTO.of(d))
-				 .collect(Collectors.toList());
-		return dogList;
-	}
-
 }
+

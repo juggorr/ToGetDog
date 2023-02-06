@@ -262,30 +262,5 @@ public class UserRestController {
 		resultMap.put("result", SUCCESS);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
-	
-	/***
-	 * @@@@@@@@@@@@@@@@@@@@@@@@@@
-	 * User information includes one's dog information
-	 * @param token
-	 * @param userid
-	 * @return
-	 */
-	@ApiOperation(value = "강아지 정보를 포함한 유저 정보 조회", notes = "해당 유저가 등록한 강아지 정보를 포함한 유저의 정보를 반환합니다.")
-	@GetMapping("/includesDog/{userid}")
-	public ResponseEntity<?> getUserIncludesDogs (
-			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@PathVariable long userid
-			) {
-		
-		logger.info("getUserIncludesDogs input parameter : {}", userid);
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = null;
-		
-		jwtService.validateToken(token);
-		//long userId = jwtService.getUserId(token);
-		//User user = userService.findUserByUserId(userId);
-		// dog info searching logic
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
 
 }

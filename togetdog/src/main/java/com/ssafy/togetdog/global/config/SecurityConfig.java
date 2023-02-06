@@ -1,7 +1,5 @@
 package com.ssafy.togetdog.global.config;
 
-import java.util.Arrays;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -31,6 +29,8 @@ public class SecurityConfig {
         http
         		.httpBasic().disable() // rest api만 가능
         		.csrf().disable()
+        		.cors().configurationSource(corsConfigurationSource())
+        		.and()
                 .authorizeRequests()
                 .antMatchers(PERMIT_URL_ARRAY).permitAll()
     			.and()
@@ -45,7 +45,7 @@ public class SecurityConfig {
         		.and()
         		.defaultSuccessUrl("/api/auth/login");
 //              .failureHandler(oAuth2AuthenticationFailureHandler());
-        return http.build();
+        return http.build(); 
     }
 	
 	private static final String[] PERMIT_URL_ARRAY = {
@@ -73,10 +73,11 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-		configuration.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT"));
-		configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.addAllowedOriginPattern("*");
+		configuration.addAllowedMethod("*");
+		configuration.addAllowedHeader("*");
 		configuration.setAllowCredentials(true);
+		configuration.addExposedHeader("Authorization");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
