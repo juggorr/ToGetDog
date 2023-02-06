@@ -104,6 +104,18 @@ export const MainColorShortBtn = styled.button`
   font-family: "Lato", sans-serif;
 `;
 
+export const LightColorLongBtn = styled.button`
+  width: 9rem;
+  height: 2.7rem;
+  border-radius: 2rem;
+  border: none;
+  background-color: #6eb175;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  // font-family: Noto Sans KR', sans-serif;
+`;
+
 export const OrangeBtn = styled.button`
   background-color: #ffd89d;
   border: none;
