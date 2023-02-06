@@ -30,43 +30,36 @@ const Feed = () => {
 
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
-    setAuth(null);
-    navigate("/login");
-  };
-
   const menuLists = [
     {
       menu_id: 1,
       text: "내 정보 보기",
-      func: "/",
+      link: "/",
     },
     {
       menu_id: 2,
       text: "프로필 수정",
-      func: "/",
+      link: "/",
     },
     {
       menu_id: 3,
       text: "강아지 프로필 수정",
-      func: "/",
+      link: "/",
     },
     {
       menu_id: 4,
       text: "강아지 프로필 삭제",
-      func: "/",
+      link: "/",
     },
     {
       menu_id: 5,
       text: "계정 비밀번호 변경",
-      func: "/",
+      link: "/",
     },
     {
       menu_id: 6,
       text: "로그아웃",
-      func: { handleLogout },
+      link: "/logout",
     },
   ];
 
@@ -88,7 +81,6 @@ const Feed = () => {
 
   useEffect(() => {
     if (!auth || !localStorage.getItem("recoil-persist")) {
-      console.log("hi");
       navigate("/login");
       return;
     }
