@@ -42,6 +42,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.parameters.RequestParam;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -96,7 +97,7 @@ public class BoardRestController {
 	@ApiOperation(value = "피드 조회", notes = "피드 상단은 강아지 정보, 피드 하단은 게시글 리스트")
 	@GetMapping("/feed/{userId}")
 	public ResponseEntity<?> getFeed(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@PathVariable long userId,@RequestBody int pageNo){
+			@PathVariable long userId,@RequestParam int pageNo){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		logger.info("return boardList : {}", jwtService.getUserId(token));
 		jwtService.validateToken(token);
