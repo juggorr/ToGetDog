@@ -7,11 +7,12 @@ import { BACKEND_URL } from '../config';
 import { authAtom, userState } from '../recoil';
 
 import { InputWrapper, LoginContainer, LoginWrapper, LogoWrapper, SocialLoginLogo } from '../styles/LoginEmotion';
-import { PinkBtn } from '../styles/BtnsEmotion';
-import PinkPaw from './../assets/pink_paw.svg';
+import { BlackLongBtn } from '../styles/BtnsEmotion';
+
 import naverLogo from '../assets/naver.png';
 import googleLogo from '../assets/google.jpg';
 import kakaoLogo from '../assets/kakao.png';
+import ToGetDog from '../assets/togetdog.png';
 
 const Login = () => {
   const auth = useRecoilValue(authAtom);
@@ -102,8 +103,7 @@ const Login = () => {
       <LoginContainer>
         <LoginWrapper>
           <LogoWrapper>
-            <img className='login-logo' src={PinkPaw} />
-            <div className='logo-title'>ToGetDog</div>
+            <img src={ToGetDog} className='logo-img' />
           </LogoWrapper>
           <InputWrapper>
             <div className='input-wrapper'>
@@ -126,7 +126,7 @@ const Login = () => {
             </div>
             <div className='error-msg'>{passwordError}</div>
           </InputWrapper>
-          <PinkBtn onClick={checkInput}>로그인</PinkBtn>
+          <BlackLongBtn onClick={checkInput}>로그인</BlackLongBtn>
           <div className='social-login-wrapper'>
             <SocialLoginLogo src={naverLogo}></SocialLoginLogo>
             <SocialLoginLogo src={googleLogo}></SocialLoginLogo>
