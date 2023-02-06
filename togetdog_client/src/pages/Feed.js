@@ -157,8 +157,8 @@ const Feed = () => {
               />
             )}
             {feedDogData.length === 0 ? (
-              <div className="dog-info-box">
-                <div>{"등록된 강아지가 없습니다."}</div>
+              <div className="no-dog-info-box">
+                <div className="no-dogs-txt">{"등록된 강아지가 없습니다."}</div>
               </div>
             ) : (
               <div className="dog-info-box">
@@ -247,7 +247,9 @@ const Feed = () => {
                 />
               </div>
             </FeedProfileBottom>
-          ) : null}
+          ) : (
+            <div className="margin-bottom"></div>
+          )}
         </FeedProfileWrapper>
         <FeedPhotoWrapper>
           <FeedPhoto
