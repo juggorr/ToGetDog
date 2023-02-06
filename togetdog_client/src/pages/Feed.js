@@ -75,7 +75,8 @@ const Feed = () => {
   const [isLoading, setLoading] = useState(true);
   const [followStatus, setFollowStatus] = useState(false);
 
-  // const location = useLocation()
+  const location = useLocation();
+  const feedUserId = location.pathname.split("/").reverse()[0];
   // const pageNo = location.state.pageNo;
   const pageNo = 1;
 
@@ -86,7 +87,7 @@ const Feed = () => {
     }
 
     axios
-      .get(`${BACKEND_URL}/feed/${user.userId}?pageNo=${pageNo}`, {
+      .get(`${BACKEND_URL}/feed/${feedUserId}?pageNo=${pageNo}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: auth,
