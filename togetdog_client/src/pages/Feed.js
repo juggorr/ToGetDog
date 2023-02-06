@@ -69,6 +69,7 @@ const Feed = () => {
   const [feedUserData, setFeedUserData] = useState();
   const [feedDogData, setFeedDogData] = useState();
   const [feedPhotoData, setFeedPhotoData] = useState();
+  const [filteredPhotoData, setFilteredPhotoData] = useState();
   const [currentDog, setCurrentDog] = useState();
 
   const [subDogs, setSubDogs] = useState();
@@ -112,6 +113,11 @@ const Feed = () => {
         setFeedUserData(resp.data.user);
         setFeedDogData(resp.data.user.dogs);
         setFeedPhotoData(resp.data.feed);
+        setFilteredPhotoData(
+          resp.data.feed.filter(
+            (feedPhoto) => feedPhoto.dogId === resp.data.user.dogs[0].dogId
+          )
+        );
         setCurrentDog(resp.data.user.dogs[0]);
         setFollowStatus(resp.data.user.dogs);
         let tmpSubDogs = [];
@@ -252,16 +258,14 @@ const Feed = () => {
           )}
         </FeedProfileWrapper>
         <FeedPhotoWrapper>
-          {feedPhotoData
-            .filter((feedPhoto) => feedPhoto.dogId === currentDog.dogId)
-            .map((filteredPhoto) => (
-              <FeedPhoto
-                onClick={() => navigate(`/board/${filteredPhoto.boardId}`)}
-                src={
-                  `https://i8a807.p.ssafy.io/image/board/` + filteredPhoto.image
-                }
-              />
-            ))}
+          {filteredPhotoData.map((filteredPhoto) => (
+            <FeedPhoto
+              onClick={() => navigate(`/board/${filteredPhoto.boardId}`)}
+              src={
+                `https://i8a807.p.ssafy.io/image/board/` + filteredPhoto.image
+              }
+            />
+          ))}
         </FeedPhotoWrapper>
       </FeedContainer>
     </>
