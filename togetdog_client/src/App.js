@@ -56,8 +56,8 @@ function App() {
           <Route path="/emailAuth" element={<EmailAuth />} />
           <Route path="/dogregister" element={<DogRegister />} />
           {/* <Route path='/dogedit' element={<DogEdit />} /> */}
-          <Route path='/followerlist' element={<FollowerList />} />
-          <Route path='/followinglist' element={<FollowingList />} />
+          <Route path='/followerlist/:dogId' element={<FollowerList />} />
+          <Route path='/followinglist/:userId' element={<FollowingList />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/500" element={<InternalServer />} />
           <Route path="/*" element={<NotFound />} />

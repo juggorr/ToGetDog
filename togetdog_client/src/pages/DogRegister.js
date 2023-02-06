@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { userState } from "../recoil/user";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { authAtom, userState } from "../recoil";
 import Select from "react-select";
 import axios from "axios";
 
@@ -33,11 +33,11 @@ const genderBtnList = [
 // 강아지 성별 선택 옵션들
 const neuterdBtnList = [
   {
-    btn_id: true,
+    btn_id: 1,
     text: "중성화",
   },
   {
-    btn_id: false,
+    btn_id: 2,
     text: "중성화 X",
   },
 ];
@@ -65,6 +65,10 @@ const char2BtnList = [
 ];
 
 function DogRegister() {
+  // const [user, setUser] = useRecoilState(userState);
+  const auth = useRecoilValue(authAtom);
+
+
   const navigate = useNavigate();
 
   // 견종 리스트 public/breeds.txt에서 불러오기
@@ -131,19 +135,19 @@ function DogRegister() {
     setMonth(value.slice(0, 2));
   };
   // 나이 문자열형태로 바꾸기 함수 '202201'
-  const [age, setAge] = useState("");
-  const makeAge = async () => {
-    if (year && month && month < 10) {
-      const string = year.toString() + "0" + month.toString();
-      await setAge(string);
-      return;
-    }
-    if (year && month && month >= 10) {
-      const string = year.toString() + month.toString();
-      await setAge(string);
-      return;
-    }
-  };
+  // const [age, setAge] = useState("");
+  // const makeAge = async () => {
+  //   if (year && month && month < 10) {
+  //     const string = year.toString() + "0" + month.toString();
+  //     await setAge(string);
+  //     return;
+  //   }
+  //   if (year && month && month >= 10) {
+  //     const string = year.toString() + month.toString();
+  //     await setAge(string);
+  //     return;
+  //   }
+  // };
   // 몸무게, 4글자 이상 입력 불가
   const [weight, setWeight] = useState("");
   const handleWeight = ({ target: { value } }) => {
@@ -232,14 +236,17 @@ function DogRegister() {
   };
 
   const sendPOST = async () => {
-    console.log(age);
+    // console.log(age);
     const formData = new FormData();
     let newBirth = month;
-    if (month < 10 && month.length == 1) {
+    if (month < 10 && month.length === 1) {
       newBirth = year + "0" + month;
     } else {
       newBirth = year + month;
     }
+
+    // isNeuterd 설정
+
     const dog = {
       dogName: name,
       dogGender: sex,
@@ -252,7 +259,7 @@ function DogRegister() {
       description: perk,
     };
 
-    console.log(dog);
+    // console.log(dog);
 
     formData.append(
       "dog",
@@ -260,7 +267,7 @@ function DogRegister() {
     );
     formData.append("dogProfile", image);
 
-    console.log(formData.get("dog"));
+    // console.log(formData.get("dog"));
 
     // 폼데이터 확인
     // for (let key of formData.keys()) {
@@ -270,11 +277,12 @@ function DogRegister() {
       .post(`${BACKEND_URL}/dog`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: auth,
         },
       })
       .then((res) => {
         console.log(res.data);
-        navigate("/dogregister");
+        navigate("/");
       })
       .catch((err) => {
         console.log(err);
@@ -286,7 +294,7 @@ function DogRegister() {
     // 유효성 검사 통과 시
     if (checkValidation()) {
       // 나이 바꿔주기 (2022.07 => '202207')
-      makeAge();
+      // makeAge();
       // POST요청 보내기
       sendPOST();
     } else {
