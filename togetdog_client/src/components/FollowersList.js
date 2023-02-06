@@ -7,7 +7,7 @@ const FollowersList = ({ followers }) => {
   return followers.length > 0 ? (
     <div className='list-div'>
       {followers.map((follower) => (
-        <FollowUserList className='' key={follower.userId}>
+        <FollowUserList key={follower.userId}>
           <UserFollow 
             user={follower}
           />
