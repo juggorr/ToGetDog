@@ -1,17 +1,17 @@
 import React from 'react';
 
 import UserFollow from './UserFollow';
-import { FollowUserList } from '../styles/FollowerList';
+import { FollowList } from '../styles/FollowerListEmotion';
 
 const FollowersList = ({ followers }) => {
   return followers.length > 0 ? (
-    <div className='list-div'>
+    <div className="list-div">
       {followers.map((follower) => (
-        <FollowUserList key={follower.userId}>
+        <FollowList key={follower.userId}>
           <UserFollow 
             user={follower}
           />
-        </FollowUserList>
+        </FollowList>
       ))}
     </div>
   ) : (

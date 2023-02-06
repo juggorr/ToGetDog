@@ -6,12 +6,14 @@ import axios from 'axios';
 import FollowersList from "../components/FollowersList";
 import { 
   ListContainer, 
-  ListWrapper } from "../styles/FollowerList";
+  ListWrapper } from "../styles/FollowerListEmotion";
 
 // 강아지 ID 받아야함
 function FollowerList() {
 
   // navigate로 넘어온 강아지Id 받기
+  // useEffect에 넣어야할 것 같기도함
+
   const location = useLocation();
   const dogId = location.state.dogId;
 

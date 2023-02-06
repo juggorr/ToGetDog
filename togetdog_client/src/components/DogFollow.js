@@ -1,17 +1,18 @@
-import UserIcon from "./UserIcon";
+import DogIcon from "./DogIcon";
 import { useNavigate } from "react-router-dom";
 
 import { UserName } from "../styles/FollowerListEmotion";
 
 
-function UserFollow({ user }) {
+function DogFollow({ dog }) {
   const navigate = useNavigate();
 
   // 사진, 이름 클릭시 해당 인물 피드로 이동
   const onClick = () => {
     navigate('/', {
       state: {
-        userId: user.userId,
+        dogId: dog.dogId,
+        userId: dog.userId,
       }
     });
   };
@@ -19,15 +20,16 @@ function UserFollow({ user }) {
   
   return(
     <>
-      <UserIcon 
-        text={user.nickName}
-        idx={user.userId}
+      <DogIcon 
+        img={dog.dogProfile}
+        idx={dog.dogId}
+        userId={dog.userId}
       />
       <UserName onClick={onClick}>
-          {user.nickName}
+          {dog.dogName}
       </UserName>
     </>
   );
 }
 
-export default UserFollow;
+export default DogFollow;

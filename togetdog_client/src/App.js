@@ -24,6 +24,7 @@ import CreateAppointment from "./pages/CreateAppointment";
 import DogRegister from "./pages/DogRegister";
 import SubLayout from "./components/SubLayout";
 import FollowerList from './pages/FollowerList';
+import FollowingList from "./pages/FollowingList";
 
 
 // import DogEdit from "./pages/DogEdit";
@@ -56,6 +57,7 @@ function App() {
           <Route path="/dogregister" element={<DogRegister />} />
           {/* <Route path='/dogedit' element={<DogEdit />} /> */}
           <Route path='/followerlist' element={<FollowerList />} />
+          <Route path='/followinglist' element={<FollowingList />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/500" element={<InternalServer />} />
           <Route path="/*" element={<NotFound />} />

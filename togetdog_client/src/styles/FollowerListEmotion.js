@@ -22,7 +22,7 @@ export const ListContainer = styled.div`
   // }
 `;
 
-export const FollowUserList = styled.ul`
+export const FollowList = styled.ul`
   width: 20rem;
   list-style: none;
   padding: 0;
