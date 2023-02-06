@@ -11,23 +11,23 @@ const Home = () => {
   const navigate = useNavigate();
 
   // 추후 바로 아래 코드 삭제 예정 (개발용)
-  localStorage.setItem(
-    "recoil-persist",
-    JSON.stringify({
-      userState: {
-        email: "kacamimi@naver.com",
-        userId: 21,
-        nickName: "민주",
-        address: "부천시 원미구 약대동",
-      },
-    })
-  );
+  // localStorage.setItem(
+  //   "recoil-persist",
+  //   JSON.stringify({
+  //     userState: {
+  //       email: "kacamimi@naver.com",
+  //       userId: 21,
+  //       nickName: "민주",
+  //       address: "부천시 원미구 약대동",
+  //     },
+  //   })
+  // );
 
   // 추후 주석 해제 예정 (개발용)
-  // useEffect(() => {
-  //   if (auth && localStorage.getItem('recoil-persist')) navigate('/');
-  //   else navigate('/login');
-  // }, []);
+  useEffect(() => {
+    if (auth && localStorage.getItem("recoil-persist")) navigate("/");
+    else navigate("/login");
+  }, []);
 
   return (
     <div>
