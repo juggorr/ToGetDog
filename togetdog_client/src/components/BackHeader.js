@@ -1,0 +1,22 @@
+import "./FontAwesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { BackHeaderWrapper } from "../styles/MainHeaderEmotion";
+import { useNavigate } from "react-router";
+
+const BackHeader = () => {
+  const navigate = useNavigate();
+  return (
+    <>
+      <BackHeaderWrapper>
+        <div className="back-arrow-box" onClick={() => navigate(-1)}>
+          <FontAwesomeIcon
+            className="back-arrow"
+            icon="fa-solid fa-arrow-left"
+          />
+        </div>
+      </BackHeaderWrapper>
+    </>
+  );
+};
+
+export default BackHeader;

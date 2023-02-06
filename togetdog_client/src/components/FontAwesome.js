@@ -17,7 +17,10 @@ import {
   faUserGroup,
   faClock,
   faLocationDot,
+  faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as fasHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
 import {
   faCalendar,
   faChevronLeft,
@@ -32,3 +35,4 @@ library.add(faPlus);
 library.add(faUserGroup, faClock, faLocationDot);
 library.add(faCalendar, faChevronLeft, faChevronRight);
 library.add(faImage, faPen);
+library.add(faArrowLeft, fasHeart, farHeart);

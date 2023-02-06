@@ -9,6 +9,7 @@ import Walk from "./pages/Walk";
 import Chat from "./pages/Chat";
 import Feed from "./pages/Feed";
 import New from "./pages/New";
+import Board from "./pages/Board";
 
 /*global kakao*/
 import React, { useEffect } from "react";
@@ -18,9 +19,12 @@ import Signup from "./pages/Signup";
 
 import NotFound from "./pages/NotFound";
 import InternalServer from "./pages/InternalServer";
-import EmailSent from "./components/EmailSent";
 import EmailAuth from "./pages/EmailAuth";
 import CreateAppointment from "./pages/CreateAppointment";
+import DogRegister from "./pages/DogRegister";
+import SubLayout from "./components/SubLayout";
+
+// import DogEdit from "./pages/DogEdit";
 
 function App() {
   return (
@@ -33,13 +37,19 @@ function App() {
             <Route path="/map" element={<Map />} />
             <Route path="/walk" element={<Walk />} />
             <Route path="/chat" element={<Chat />} />
-            <Route path="/feed" element={<Feed />} />
+            <Route path="/feed/:userId" element={<Feed />} />
+          </Route>
+          {/* BackHeader, Footer 필요한 컴포넌트 */}
+          <Route element={<SubLayout />}>
+            <Route path="/board/:boardId" element={<Board />} />
           </Route>
           {/* 그 이외 필요없는 컴포넌트 */}
           <Route path="/new" element={<New />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/emailAuth" element={<EmailAuth />} />
+          <Route path="/dogregister" element={<DogRegister />} />
+          {/* <Route path='/dogedit' element={<DogEdit />} /> */}
           <Route path="/500" element={<InternalServer />} />
           <Route path="/*" element={<NotFound />} />
           <Route path="/createAppointment" element={<CreateAppointment />} />

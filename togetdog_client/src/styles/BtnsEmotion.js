@@ -63,6 +63,18 @@ export const OptionBtnItem = styled.div`
   border-radius: 0.7rem;
 `;
 
+export const DoubleOptionBtnItem = styled.div`
+  cursor: pointer;
+
+  width: 8rem;
+  height: 2.9rem;
+  line-height: 2.9rem;
+  text-align: center;
+  background-color: #fff;
+  border: 0.1rem solid #4834d4;
+  border-radius: 0.7rem;
+`;
+
 export const MainColorLongBtn = styled.button`
   width: 11rem;
   height: 2.7rem;
@@ -117,4 +129,24 @@ export const PlusBtn = styled.button`
   line-height: 3.5rem;
   text-align: center;
   color: #fff;
+`;
+
+export const FollowBtnOn = styled.button`
+  width: 4rem;
+  height: 2rem;
+  line-height: 2rem;
+  background-color: #699bf7;
+  color: #fff;
+  border: none;
+  border-radius: 0.7rem;
+`;
+
+export const FollowBtnOff = styled.button`
+  width: 4rem;
+  height: 2rem;
+  line-height: 2rem;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 0.7rem;
 `;
