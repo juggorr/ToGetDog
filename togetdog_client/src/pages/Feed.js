@@ -160,12 +160,12 @@ const Feed = () => {
   useEffect(() => {
     axios
       .get(
-        `${BACKEND_URL}/feed/${user.userId}`,
+        `${DUMMY_URL}/feed/${user.userId}`,
         { params: { pageNo: 1 } },
         {
           headers: {
             'Content-Type': 'application/json',
-            'Access-Token': auth,
+            Authorization: auth,
           },
         },
       )
