@@ -264,7 +264,6 @@ public class UserRestController {
 	}
 	
 	/***
-	 * @@@@@@@@@@@@@@@@@@@@@@@@@@
 	 * User information includes one's dog information
 	 * @param token
 	 * @param userid
@@ -282,8 +281,8 @@ public class UserRestController {
 		HttpStatus status = null;
 		
 		jwtService.validateToken(token);
-		//long userId = jwtService.getUserId(token);
-		//User user = userService.findUserByUserId(userId);
+		long userId = jwtService.getUserId(token);
+		User user = userService.findUserByUserId(userId);
 		// dog info searching logic
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}

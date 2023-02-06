@@ -24,3 +24,4 @@ public interface DogService {
 	
 	boolean checkInsertPossible(User user);
 }
+
