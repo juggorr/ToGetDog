@@ -74,9 +74,10 @@ public class AppointmentRestController {
 	 */
 	@ApiOperation(value = "산책 리스트 조회", notes = "산책 예정된 약속/대기중 요청/종료된 약속 리스트, status가 confirmed/wait/cancelled, done")
 	@GetMapping
-	public ResponseEntity<?> getFeed(@RequestBody int userId){ // 추후 토큰으로 바꿔야함
+	public ResponseEntity<?> getFeed(){ // 추후 토큰으로 바꿔야함
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
+		long userId = 1L;
 		List<AppointmentInfoRespDTO> appointemntInfo = appointmentService.findAllByUserId(userId);
 		
 		
@@ -182,7 +183,7 @@ public class AppointmentRestController {
 	 */
 	@ApiOperation(value = "산책 별점", notes = "산책한 상대에게 산책 별점 부여")
 	@PostMapping("/rating")
-	public ResponseEntity<?> ratingUSer(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+	public ResponseEntity<?> ratingUser(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
 			@RequestParam(value="appointmentId") @ApiParam(required = true) long roomId,
 			@RequestParam(value="rating") @ApiParam(required = true) int rating) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -195,4 +196,23 @@ public class AppointmentRestController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 	
+//	/***
+//	 * recommend 
+//	 * @param token, roomId
+//	 * @return status 200, 401, 500
+//	 */
+//	@ApiOperation(value = "산책 별점", notes = "산책한 상대에게 산책 별점 부여")
+//	@PostMapping("/rating")
+//	public ResponseEntity<?> ratingUSer(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+//			@RequestParam(value="appointmentId") @ApiParam(required = true) long roomId,
+//			@RequestParam(value="rating") @ApiParam(required = true) int rating) {
+//		Map<String, Object> resultMap = new HashMap<String, Object>();
+//		
+//		long userId = jwtService.getUserId(token);
+//		appointmentService.rateAppointment(userId, roomId, rating);
+//		
+//		resultMap.put("result", SUCCESS);
+//		resultMap.put("msg", "별점이 부여되었습니다.");
+//		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+//	}
 }

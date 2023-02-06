@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ssafy.togetdog.appointment.model.entity.Appointment;
-import com.ssafy.togetdog.appointment.model.entity.ReceivedAppointment;
 import com.ssafy.togetdog.appointment.model.entity.SentAppointment;
 
 public interface SentAppointmentRepository extends JpaRepository<SentAppointment, Long> {
