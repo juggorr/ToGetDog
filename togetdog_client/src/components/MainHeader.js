@@ -1,25 +1,37 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { useRecoilState } from "recoil";
 import { userState } from "../recoil";
 
 import "./FontAwesome";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { HeaderWrapper } from "../styles/MainHeaderEmotion";
+import { HeaderWrapper, searchModal } from "../styles/MainHeaderEmotion";
+
+const Modal = ({ setModalOpen }) => {
+  const navigate = useNavigate();
+
+  return (
+    <searchModal>
+      <div onClick={() => setModalOpen(false)}>뒤로가기</div>
+      <div>검색</div>
+    </searchModal>
+  );
+};
 
 function Navbar() {
+  const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
+  const [modalOpen, setModalOpen] = useState(false);
   let dongName = "주소를 등록해주세요";
 
   if (user) {
     dongName = user.address.substring(user.address.lastIndexOf(" ") + 1);
   }
 
-  const navigate = useNavigate();
-
   return (
     <>
+      {modalOpen && <Modal setModalOpen={setModalOpen} />}
       <HeaderWrapper>
         <div className="head-icon-wrapper head-left">
           <div className="dongName-box notoSans">
@@ -34,7 +46,7 @@ function Navbar() {
               icon="fa-solid fa-square-plus"
             />
           </div>
-          <div className="icon-box" onClick={() => navigate("/search")}>
+          <div className="icon-box" onClick={() => setModalOpen(true)}>
             <FontAwesomeIcon
               className="header-icon"
               icon="fa-solid fa-magnifying-glass"

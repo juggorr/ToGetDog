@@ -59,3 +59,7 @@ export const BackHeaderWrapper = styled.div`
     padding: 1rem;
   }
 `;
+
+export const searchModal = styled.div`
+  position: absolute;
+`;
