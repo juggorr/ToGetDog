@@ -14,6 +14,7 @@ const Modal = ({ setModalOpen }) => {
 
   const onChange = (e) => {
     inputText.current = e.target.value;
+    console.log(inputText.current);
   };
 
   return (
@@ -30,7 +31,9 @@ const Modal = ({ setModalOpen }) => {
         />
         <div
           className="searchBtn"
-          onClick={() => navigate("/search", { keyword: inputText.current })}
+          onClick={() =>
+            navigate("/search", { state: { keyword: inputText.current } })
+          }
         >
           <FontAwesomeIcon icon="fa-magnifying-glass" />
         </div>
