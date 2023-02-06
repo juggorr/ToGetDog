@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const BoardContainer = styled.div`
   display: flex;
@@ -37,6 +37,7 @@ export const BoardUserInfo = styled.div`
   .dog-name {
     font-size: 1rem;
     padding-bottom: 0.2rem;
+    display: flex;
   }
 
   .dog-info {
