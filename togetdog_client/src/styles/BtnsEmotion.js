@@ -1,4 +1,6 @@
 import styled from "@emotion/styled";
+import dog_profile from "../assets/dog2.jpg";
+
 
 // 홈으로 이동 텍스트 버튼
 export const HomeTextBtn = styled.div`
@@ -143,34 +145,6 @@ export const PlusBtn = styled.button`
   color: #fff;
 `;
 
-export const MainShortBtn = styled.button`
-  width: 7rem;
-  height: 2.7rem;
-  border-radius: 2rem;
-  border: none;
-
-  background-color: #559968;
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.9rem;
-  // font-family: Noto Sans KR', sans-serif;
-`;
-
-export const GreyColorShortBtn = styled.button`
-  width: 7rem;
-  height: 2.7rem;
-  border-radius: 2rem;
-  border: none;
-  margin-right: 1rem;
-  mrgin-left: 1rem;
-
-  background-color: #717171;
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.9rem;
-  // font-family: Noto Sans KR', sans-serif;
-`;
-
 export const FollowBtnOn = styled.button`
   width: 4rem;
   height: 2rem;
@@ -224,5 +198,11 @@ export const UserIconCircle = styled.div`
 
   .five {
     background-color: #81b4be;
+  }
+
+  .image {
+    background-image: ${(props) =>
+      props.image ? `url(${props.image})` : `url(${dog_profile})`};
+    background-size: cover;
   }
 `;
