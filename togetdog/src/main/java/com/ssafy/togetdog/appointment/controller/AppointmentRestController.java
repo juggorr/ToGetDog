@@ -17,10 +17,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.togetdog.appointment.model.dto.AppointmentAddDTO;
+import com.ssafy.togetdog.appointment.model.dto.AppointmentInfoRegistDTO;
 import com.ssafy.togetdog.appointment.model.dto.AppointmentInfoRespDTO;
 import com.ssafy.togetdog.appointment.model.service.AppointmentService;
 import com.ssafy.togetdog.board.model.dto.BoardDTO;
@@ -40,13 +43,12 @@ import com.ssafy.togetdog.user.model.service.UserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/meeting")
-@Api("Board API")
+@Api("Appointment API")
 public class AppointmentRestController {
 	
 	/*ExceptionRestControllerAdvice에서 exception 처리를 하는 대상 controller입니다.*/
@@ -66,7 +68,7 @@ public class AppointmentRestController {
 	 * @param dogId, pageNo
 	 * @return status 200, 401, 500
 	 */
-	@ApiOperation(value = "산책 리스트 조회", notes = "산책 예정된 약속/대기중 요청/종료된 약속 리스트, status가 confirmed/sent, received/cancelled, done")
+	@ApiOperation(value = "산책 리스트 조회", notes = "산책 예정된 약속/대기중 요청/종료된 약속 리스트, status가 confirmed/wait/cancelled, done")
 	@GetMapping("/")
 	public ResponseEntity<?> getFeed(@RequestBody int userId){ // 추후 토큰으로 바꿔야함
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -85,26 +87,24 @@ public class AppointmentRestController {
 	 * @param userId, myDogs, partnerDogs, date, place
 	 * @return status 200, 401, 500
 	 */
-	@ApiOperation(value = "게시글 등록", notes = "게시글을 등록함")
-	@PostMapping("/")
-	public ResponseEntity<?> requestAppointment(/*@RequestBody long userId,*/ @RequestParam List<Long> myDogs,
-			@RequestParam List<Long> partnerDogs/*, @RequestBody LocalDateTime date, @RequestBody String place*/) {
+	@ApiOperation(value = "산책 약속 요청", notes = "산책 요청을 보냄")
+	@PostMapping
+	public ResponseEntity<?> requestAppointment(@RequestBody AppointmentAddDTO registDTO) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Long myId = 4L;
 //		Long myId = jwt;
 		LocalDateTime now = LocalDateTime.now();
 		
-		logger.info("=================== mydog : {}", myDogs);
-		logger.info("=================== pdog : {}", partnerDogs);
+		logger.info("=================== registDto : {}", registDTO);
 		
 		List<Dog> myDogList = new ArrayList<Dog>();
-		for (Long pDog : myDogs) {
+		for (Long pDog : registDTO.getSentDogs()) {
 			Dog dog = new Dog();
 			dog.setDogId(pDog);
 			myDogList.add(dog);
 		}
 		List<Dog> partnerDogList = new ArrayList<Dog>();
-		for (Long pDog : partnerDogs) {
+		for (Long pDog : registDTO.getReceivedDogs()) {
 			Dog dog = new Dog();
 			dog.setDogId(pDog);
 			partnerDogList.add(dog);
@@ -113,8 +113,7 @@ public class AppointmentRestController {
 		appointmentService.addAppointment(myId, 1L, myDogList, partnerDogList, now, "멀티캠퍼스");
 		
 		resultMap.put("result", SUCCESS);
-//		resultMap.put("boardId", boardService.save(boardDto));
-		resultMap.put("msg", "게시물이 등록되었습니다.");
+		resultMap.put("msg", "도착도착");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 	
