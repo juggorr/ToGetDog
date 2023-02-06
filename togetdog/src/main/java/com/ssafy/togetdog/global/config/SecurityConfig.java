@@ -77,6 +77,7 @@ public class SecurityConfig {
 		configuration.addAllowedMethod("*");
 		configuration.addAllowedHeader("*");
 		configuration.setAllowCredentials(true);
+		configuration.addExposedHeader("X-AUTH-TOKEN");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
