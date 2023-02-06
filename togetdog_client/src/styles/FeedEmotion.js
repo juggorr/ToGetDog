@@ -1,11 +1,11 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const FeedContainer = styled.div`
   width: 100%;
   height: calc(100vh - 115px);
   display: flex;
   flex-direction: column;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
 `;
 
 export const FeedProfileWrapper = styled.div`
@@ -65,6 +65,8 @@ export const FeedProfileTop = styled.div`
 
   .menu-icon {
     width: 2.5rem;
+    color: black;
+    font-size: 2rem;
   }
 
   .follow-info {

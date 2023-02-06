@@ -63,6 +63,18 @@ export const OptionBtnItem = styled.div`
   border-radius: 0.7rem;
 `;
 
+export const DoubleOptionBtnItem = styled.div`
+  cursor: pointer;
+
+  width: 8rem;
+  height: 2.9rem;
+  line-height: 2.9rem;
+  text-align: center;
+  background-color: #fff;
+  border: 0.1rem solid #4834d4;
+  border-radius: 0.7rem;
+`;
+
 export const MainColorLongBtn = styled.button`
   width: 11rem;
   height: 2.7rem;
@@ -117,4 +129,60 @@ export const PlusBtn = styled.button`
   line-height: 3.5rem;
   text-align: center;
   color: #fff;
+`;
+
+export const FollowBtnOn = styled.button`
+  width: 4rem;
+  height: 2rem;
+  line-height: 2rem;
+  background-color: #699bf7;
+  color: #fff;
+  border: none;
+  border-radius: 0.7rem;
+`;
+
+export const FollowBtnOff = styled.button`
+  width: 4rem;
+  height: 2rem;
+  line-height: 2rem;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 0.7rem;
+`;
+
+export const UserIconCircle = styled.div`
+  .circle {
+    width: 4rem;
+    height: 4rem;
+    margin: 0.5rem 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 70%;
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 1.2rem;
+  }
+
+  .one {
+    background-color: #949f76;
+  }
+
+  .two {
+    background-color: #e5d8bd;
+  }
+
+  .three {
+    background-color: #998769;
+  }
+
+  .four {
+    background-color: #d1d9cf;
+  }
+
+  .five {
+    background-color: #81b4be;
+  }
 `;

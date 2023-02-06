@@ -66,8 +66,8 @@ const EditBoard = () => {
         },
       })
       .then((response) => {
-        console.log(response);
-        // navigate(`/board/${boardId}`);
+        // console.log(response);
+        navigate(`/board/${boardId}`);
       })
       .catch((err) => {
         console.log(err);
