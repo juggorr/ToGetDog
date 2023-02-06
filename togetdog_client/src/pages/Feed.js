@@ -75,22 +75,18 @@ const Feed = () => {
   const auth = useRecoilValue(authAtom);
 
   useEffect(() => {
-    console.log(auth);
+    if (!auth || !localStorage.getItem('recoil-persist')) {
+      navigate('/login');
+      return;
+    }
+
     axios
-      .get(
-        `${BACKEND_URL}/feed/${user.userId}`,
-        {
-          params: {
-            pageNo: 1,
-          },
+      .get(`${BACKEND_URL}/feed/${user.userId}?pageNo=1`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: auth,
         },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: auth,
-          },
-        },
-      )
+      })
       .then((resp) => {
         console.log(resp);
         console.log(resp.data);
@@ -114,6 +110,7 @@ const Feed = () => {
         setLoading(false);
       })
       .catch((err) => {
+        console.log(err);
         console.log('피드 데이터 불러오기 실패');
       });
   }, []);
@@ -129,18 +126,20 @@ const Feed = () => {
         <FeedProfileWrapper>
           {/* 프로필 상단 */}
           <FeedProfileTop>
-            <MainDogImg src={currentDog.dogProfile}></MainDogImg>
+            <MainDogImg src={`https://i8a807.p.ssafy.io/image/dog/` + currentDog.dogProfile}></MainDogImg>
             <div className='dog-info-box'>
-              <div>{currentDog.dogName}</div>
-              <div className='dog-info'>
-                {`${currentDog.dogType} / ${
-                  currentDog.dogAge >= 12 ? `${Math.floor(currentDog.dogAge / 12)}살` : `${currentDog.dogAge}개월`
-                }`}
+              <div>
+                {currentDog.dogName}
                 {currentDog.dogGender === 'male' ? (
                   <img src={Boy} className='dog-gender' />
                 ) : (
                   <img src={Girl} className='dog-gender' />
                 )}
+              </div>
+              <div className='dog-info'>
+                {`${currentDog.dogType} / ${
+                  currentDog.dogAge >= 12 ? `${Math.floor(currentDog.dogAge / 12)}살` : `${currentDog.dogAge}개월`
+                }`}
               </div>
             </div>
             <div className='sub-dogs'>
@@ -155,7 +154,7 @@ const Feed = () => {
                 <div className='follow-info flex-column'>
                   <div>
                     <span className='follow-text'>팔로워</span>
-                    {currentDog.followCnt}
+                    {currentDog.dogFollowerCnt}
                   </div>
                   <div>
                     <span className='follow-text'>팔로잉</span>
