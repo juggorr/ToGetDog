@@ -126,7 +126,7 @@ const Feed = () => {
         <FeedProfileWrapper>
           {/* 프로필 상단 */}
           <FeedProfileTop>
-            <MainDogImg src={currentDog.dogProfile}></MainDogImg>
+            <MainDogImg src={`https://i8a807.p.ssafy.io/image/dog/` + currentDog.dogProfile}></MainDogImg>
             <div className='dog-info-box'>
               <div>{currentDog.dogName}</div>
               <div className='dog-info'>
@@ -152,7 +152,7 @@ const Feed = () => {
                 <div className='follow-info flex-column'>
                   <div>
                     <span className='follow-text'>팔로워</span>
-                    {currentDog.followCnt}
+                    {currentDog.dogFollowerCnt}
                   </div>
                   <div>
                     <span className='follow-text'>팔로잉</span>
