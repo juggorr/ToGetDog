@@ -38,4 +38,9 @@ export const MenuModalBody = styled.div`
   .single-menu:last-child {
     border-bottom: none;
   }
+
+  .two-btns-wrapper {
+    padding-top: 1.5rem;
+    justify-content: space-around;
+  }
 `;
