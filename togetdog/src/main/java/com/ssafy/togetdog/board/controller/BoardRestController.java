@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,10 +35,12 @@ import com.ssafy.togetdog.dog.model.service.DogService;
 import com.ssafy.togetdog.follow.model.service.FollowService;
 import com.ssafy.togetdog.user.model.dto.UserIncludesDogsDTO;
 import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
+import com.ssafy.togetdog.user.model.service.JwtService;
 import com.ssafy.togetdog.user.model.service.UserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
 
@@ -57,6 +60,7 @@ public class BoardRestController {
 	private final CommentService commentService;
 	private final LikeService likeService;
 	private final FollowService followService;
+	private final JwtService jwtService;
 	
 	/***
 	 * get home
@@ -66,8 +70,10 @@ public class BoardRestController {
 	// 모든 게시물 다 가져오는 상황
 	@ApiOperation(value = "홈화면 게시글 리스트", notes = "홈화면에서 구독한 개들의 게시글 표시")
 	@GetMapping("/home")
-	public ResponseEntity<?> getBoardListForHome(@RequestBody int myId, @RequestBody int pageNo){
+	public ResponseEntity<?> getBoardListForHome(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@RequestBody int myId, @RequestBody int pageNo){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
+		jwtService.validateToken(token);
 //		List<DogInfoRespDTO> followList = followService.getFollowingList(myId);
 //		List<Long> dogIds = new ArrayList<Long>();
 //		for (DogInfoRespDTO follow : followList) {
@@ -89,8 +95,10 @@ public class BoardRestController {
 	 */
 	@ApiOperation(value = "피드 조회", notes = "피드 상단은 강아지 정보, 피드 하단은 게시글 리스트")
 	@GetMapping("/feed/{userId}")
-	public ResponseEntity<?> getFeed(@PathVariable long userId,@RequestBody int pageNo){
+	public ResponseEntity<?> getFeed(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@PathVariable long userId,@RequestBody int pageNo){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
+		jwtService.validateToken(token);
 		
 		UserInfoRespDTO userInfo = userService.getUserInfo(Long.toString(userId));
 		UserIncludesDogsDTO userDTO = new UserIncludesDogsDTO(userInfo);
@@ -100,10 +108,10 @@ public class BoardRestController {
 		for (DogInfoForUserDTO dog : dogList) {
 			long dogId = dog.getDogId();
 			dog.setDogFollwerCnt(followService.getFollowers(dogId));
+			//토큰 값 해결되면 토큰 값 이용해서 넘겨야함
+			dog.setFollowing(followService.isFollowing(jwtService.getUserId(token), dogId));
 		}
 		userDTO.setDogs(dogList);
-		//토큰 값 해결되면 토큰 값 이용해서 넘겨야함
-//		userDTO.setFollow(followService.isFollowing(토큰userid, userId));
 		userDTO.setFollowCnt(followService.getFollowings(userId));
 
 		logger.debug("return User info : {}", userInfo);
@@ -127,9 +135,11 @@ public class BoardRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "피드 하단 게시물 리스트", notes = "피드 하단에 보일 게시글 리스트를 반환")
-	@GetMapping("/board/list/{dogId}")
-	public ResponseEntity<?> getBoardListByDogId(@PathVariable long dogId,@RequestBody int pageNo){
+	@GetMapping("/list/{dogId}")
+	public ResponseEntity<?> getBoardListByDogId(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@PathVariable long dogId,@RequestBody int pageNo){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
+		jwtService.validateToken(token);
 		
 		Page<BoardDTO> boardList = boardService.getAllByDogId(dogId, pageNo - 1);
 		logger.info("return boardList : {}", boardList);
@@ -146,9 +156,11 @@ public class BoardRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "게시글 단건 가져오기", notes = "boardId에 해당하는 게시글 반환")
-	@GetMapping("/board/{boardId}")
-	public ResponseEntity<?> getBoard(@PathVariable long boardId){
+	@GetMapping("/{boardId}")
+	public ResponseEntity<?> getBoard(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@PathVariable long boardId){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
+		jwtService.validateToken(token);
 		
 		BoardShowDTO boardDto = boardService.getOne(boardId);
 		logger.info("retrun found board : {}", boardDto);
@@ -167,9 +179,11 @@ public class BoardRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "게시글 등록", notes = "게시글을 등록함")
-	@PostMapping("/board")
-	public ResponseEntity<?> addBoard(@RequestBody BoardDTO boardDto) {
+	@PostMapping("/")
+	public ResponseEntity<?> addBoard(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@RequestBody BoardDTO boardDto) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
+		jwtService.validateToken(token);
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("boardId", boardService.save(boardDto));
@@ -183,9 +197,11 @@ public class BoardRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "게시물 수정", notes = "선택된 단건 게시글을 수정")
-	@PutMapping("/board")
-	public ResponseEntity<?> modifyBoard(@RequestBody BoardDTO boardDto) {
+	@PutMapping("/")
+	public ResponseEntity<?> modifyBoard(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@RequestBody BoardDTO boardDto) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
+		jwtService.validateToken(token);
 		
 		BoardDTO newBoardDto = boardService.update(boardDto);
 		
@@ -201,9 +217,11 @@ public class BoardRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "게시물 삭제", notes = "선택된 단건 게시글을 삭제")
-	@DeleteMapping("/board")
-	public ResponseEntity<?> deleteBoard(@RequestBody BoardDTO boardDto) {
+	@DeleteMapping("/")
+	public ResponseEntity<?> deleteBoard(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@RequestBody BoardDTO boardDto) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
+		jwtService.validateToken(token);
 		
 		boardService.delete(boardDto);
 		
@@ -218,9 +236,11 @@ public class BoardRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "댓글 등록", notes = "게시글애 댓글을 등록함")
-	@PostMapping("/board/comment")
-	public ResponseEntity<?> addComment(@RequestBody CommentDTO commentDto) {
+	@PostMapping("/comment")
+	public ResponseEntity<?> addComment(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@RequestBody CommentDTO commentDto) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
+		jwtService.validateToken(token);
 		commentService.save(commentDto);
 		List<CommentDTO> comments = commentService.findAllCommentsInBoard(commentDto.getBoardId());
 		
@@ -236,9 +256,11 @@ public class BoardRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "댓글 삭제", notes = "선택된 단건 댓글을 삭제")
-	@DeleteMapping("/board/comment")
-	public ResponseEntity<?> deleteComment(@RequestBody CommentDTO commentDto) {
+	@DeleteMapping("/comment")
+	public ResponseEntity<?> deleteComment(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@RequestBody CommentDTO commentDto) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
+		jwtService.validateToken(token);
 		
 		commentService.delete(commentDto.getCommentId());
 		List<CommentDTO> comments = commentService.findAllCommentsInBoard(commentDto.getBoardId());
@@ -255,9 +277,11 @@ public class BoardRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "좋아요", notes = "게시글에 좋아요")
-	@PostMapping("/board/like")
-	public ResponseEntity<?> addLike(@RequestBody LikeDTO likeDTO) {
+	@PostMapping("/like")
+	public ResponseEntity<?> addLike(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@RequestBody LikeDTO likeDTO) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
+		jwtService.validateToken(token);
 		
 		likeService.save(likeDTO);
 		
@@ -273,9 +297,11 @@ public class BoardRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "좋아요  취소", notes = "게시글에 좋아요 취소")
-	@DeleteMapping("/board/like")
-	public ResponseEntity<?> deleteLike(@RequestBody LikeDTO likeDTO) {
+	@DeleteMapping("/like")
+	public ResponseEntity<?> deleteLike(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@RequestBody LikeDTO likeDTO) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
+		jwtService.validateToken(token);
 		
 		likeService.delete(likeDTO);
 
