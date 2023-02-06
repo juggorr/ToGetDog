@@ -87,7 +87,10 @@ public class FollowService {
 		Dog dog = new Dog();
 		dog.setDogId(dogId);
 
-		return followRepository.findByUserAndDog(user, dog);
+		if(followRepository.countByUserAndDog(user, dog) > 0)
+			return true;
+		else
+			return false;
 	}
 
 }
