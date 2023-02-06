@@ -187,7 +187,7 @@ public class UserServiceImpl implements UserService {
 	public void deleteUser(long userId) {
 		userRepository.deleteById(userId);
 	}
-
+	
 	@Override
 	public WaitUser findWaitUserByEmail(String email) {
 		return waitUserRepository.findByEmail(email).orElse(null);
