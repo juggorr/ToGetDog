@@ -2,18 +2,13 @@ package com.ssafy.togetdog.dog.model.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +22,7 @@ import com.ssafy.togetdog.dog.model.repository.DogRepository;
 import com.ssafy.togetdog.global.exception.ExcessNumberOfDogsException;
 import com.ssafy.togetdog.global.exception.InvalidInputException;
 import com.ssafy.togetdog.global.exception.UnAuthorizedException;
+import com.ssafy.togetdog.global.util.FileUploadUtil;
 import com.ssafy.togetdog.user.model.entity.User;
 
 import lombok.RequiredArgsConstructor;
@@ -37,7 +33,7 @@ import lombok.RequiredArgsConstructor;
 public class DogServiceImpl implements DogService {
 
 	private final DogRepository dogRepository;
-	private final Logger logger = LoggerFactory.getLogger(DogServiceImpl.class);
+	private final FileUploadUtil fileUploadUtil;
 
 	@Value("${file.path.upload-images-dogs}")
 	private String dogImageFilePath;
@@ -73,29 +69,10 @@ public class DogServiceImpl implements DogService {
 		// InetAddress : 부팅시 한번만 static으로 사용하지 않으면 성능이슈가 있다고 합니다.
 		// String hostname = InetAddress.getLocalHost().getHostName();
 		checkInsertPossible(user);
-		
 		checkRegistrationValidation(dogDTO);
-		String originalFileName = image.getOriginalFilename();
-
-		String today = new SimpleDateFormat("yyMMdd").format(new Date());
-		String saveFolder = dogImageFilePath + File.separator + today;
-
-		File folder = new File(saveFolder);
-		if (!folder.exists())
-			folder.mkdirs();
-
-		if (!originalFileName.isEmpty()) {
-			String saveFileName = UUID.randomUUID().toString()
-					+ originalFileName.substring(originalFileName.lastIndexOf('.'));
-			logger.debug("registDog save path : {}", saveFolder + "/" + saveFileName);
-			// file save
-			image.transferTo(new File(folder, saveFileName));
-			// DB insert
-			String DBsaveName = today + File.separator + saveFileName;
-			dogRepository.save(dogDTO.of(dogDTO, user, DBsaveName));
-		} else {
-			throw new InvalidInputException();
-		}
+		
+		String savePath = fileUploadUtil.fileUpload(image, dogImageFilePath);
+		dogRepository.save(dogDTO.of(dogDTO, user, savePath));
 	}
 	
 	/* 강아지 정보 삭제하기 */
@@ -131,26 +108,8 @@ public class DogServiceImpl implements DogService {
 		if (image.isEmpty()) {
 			dogRepository.save(DogUpdateParamDTO.of(dogDTO));
 		} else {
-			// 기존 file 삭제
-			File file = new File(dog.getDogImage());
-			file.delete();
-			
-			String originalFileName = image.getOriginalFilename();
-			String today = new SimpleDateFormat("yyMMdd").format(new Date());
-			String saveFolder = dogImageFilePath + File.separator + today;
-			File folder = new File(saveFolder);
-			if (!folder.exists()) folder.mkdirs();
-			if (!originalFileName.isEmpty()) {
-				String saveFileName = UUID.randomUUID().toString()
-						+ originalFileName.substring(originalFileName.lastIndexOf('.'));
-				logger.debug("updateDog save path : {}", saveFolder + saveFileName);
-				// 새로운 file 등록
-				image.transferTo(new File(folder, saveFileName));
-				String DBsaveName = today + File.separator + saveFileName;
-				dogRepository.save(DogUpdateParamDTO.of(dogDTO, DBsaveName));
-			} else {
-				throw new InvalidInputException();
-			}
+			String savePath = fileUploadUtil.fileUpload(image, dogImageFilePath);
+			dogRepository.save(dogDTO.of(dogDTO, user, savePath));
 		}
 	}
 	
