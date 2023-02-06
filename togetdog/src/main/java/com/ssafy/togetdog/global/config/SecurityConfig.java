@@ -31,7 +31,7 @@ public class SecurityConfig {
         http
         		.httpBasic().disable() // rest api만 가능
         		.csrf().disable()
-        		.cors()
+        		.cors().configurationSource(corsConfigurationSource())
         		.and()
                 .authorizeRequests()
                 .antMatchers(PERMIT_URL_ARRAY).permitAll()
