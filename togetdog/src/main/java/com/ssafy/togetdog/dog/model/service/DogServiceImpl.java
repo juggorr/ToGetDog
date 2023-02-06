@@ -24,6 +24,7 @@ import com.ssafy.togetdog.dog.model.dto.DogRegistParamDTO;
 import com.ssafy.togetdog.dog.model.dto.DogUpdateParamDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.dog.model.repository.DogRepository;
+import com.ssafy.togetdog.global.exception.ExcessNumberOfDogsException;
 import com.ssafy.togetdog.global.exception.InvalidInputException;
 import com.ssafy.togetdog.global.exception.UnAuthorizedException;
 import com.ssafy.togetdog.user.model.entity.User;
@@ -154,12 +155,11 @@ public class DogServiceImpl implements DogService {
 	
 
 	@Override
-	public boolean checkInsertPossible(User user) {
+	public void checkInsertPossible(User user) {
 		List<Dog> dogs = findDogsByUser(user);
 		if (dogs.size() > 3) {
-			return false;
+			throw new ExcessNumberOfDogsException();
 		}
-		return true;
 	}
 
 	@Override

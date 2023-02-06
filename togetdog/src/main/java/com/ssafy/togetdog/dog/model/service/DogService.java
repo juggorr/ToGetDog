@@ -22,6 +22,6 @@ public interface DogService {
 	void updateDog(User user, DogUpdateParamDTO dogDTO, MultipartFile dogImage) throws IllegalStateException, IOException;
 	void deleteDog(long userId, String dogId);
 	
-	boolean checkInsertPossible(User user);
+	void checkInsertPossible(User user);
 }
 
