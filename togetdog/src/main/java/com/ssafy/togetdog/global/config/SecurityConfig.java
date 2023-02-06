@@ -1,7 +1,5 @@
 package com.ssafy.togetdog.global.config;
 
-import java.util.Arrays;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -47,7 +45,7 @@ public class SecurityConfig {
         		.and()
         		.defaultSuccessUrl("/api/auth/login");
 //              .failureHandler(oAuth2AuthenticationFailureHandler());
-        return http.build();
+        return http.build(); 
     }
 	
 	private static final String[] PERMIT_URL_ARRAY = {
@@ -75,9 +73,9 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-		configuration.setAllowedMethods(Arrays.asList("*"));
-		configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.addAllowedOrigin("*");
+		configuration.addAllowedMethod("*");
+		configuration.addAllowedHeader("*");
 		configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
