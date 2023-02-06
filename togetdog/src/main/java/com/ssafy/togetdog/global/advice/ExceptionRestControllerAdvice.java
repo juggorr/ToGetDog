@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.ssafy.togetdog.global.exception.DuplicatedInputException;
+import com.ssafy.togetdog.global.exception.ExcessNumberOfDogsException;
 import com.ssafy.togetdog.global.exception.InvalidInputException;
 import com.ssafy.togetdog.global.exception.InvalidLoginActingException;
 import com.ssafy.togetdog.global.exception.TokenValidFailedException;
@@ -106,6 +107,15 @@ public class ExceptionRestControllerAdvice extends ResponseEntityExceptionHandle
 		resultMap.put("msg", "가입대기중");
 		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.CONFLICT);
 	}
+	
+	@ExceptionHandler(ExcessNumberOfDogsException.class)
+	public ResponseEntity<?> ExcessNumDog(ExcessNumberOfDogsException e) {
+		logger.error("409 : ExcessNumDog error : " + e.getMessage());
+		Map<String, String> resultMap = new HashMap<String, String>();
+		resultMap.put("result", FAIL);
+		resultMap.put("msg", "등록 가능한 강아지 마리 수를 초과했습니다.");
+		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.CONFLICT);
+	}
 
 	// 500
 	@ExceptionHandler(MessagingException.class)
@@ -125,4 +135,5 @@ public class ExceptionRestControllerAdvice extends ResponseEntityExceptionHandle
 		resultMap.put("msg", "예기치 못한 이유로 전송에 실패했습니다.");
 		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
 }
