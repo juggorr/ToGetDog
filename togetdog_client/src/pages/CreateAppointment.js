@@ -5,7 +5,6 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import { userState } from "../recoil";
 
-// 달력 용도로 사용할 DatePicker
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
@@ -30,11 +29,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const CreateAppointment = () => {
   const navigate = useNavigate();
-  // 임시 아이디값, 나중에 바꿔줘야함
-  const userId = 1;
-  const partnerId = 1;
-  // const [user, setUser] = useRecoilState(userState);
-  // const { partnerId } = useLocation();
+  // 임시 아이디값
+  // const userId = 1;
+  // const partnerId = 1;
+  const [user, setUser] = useRecoilState(userState);
+  const { partnerId } = useLocation();
 
   // 다른 파일에서 useNavigate 쓸때 이런식으로
   // const handleClick = (e) => {
@@ -58,120 +57,24 @@ const CreateAppointment = () => {
   const partnerDogError = useRef(false);
 
   useEffect(() => {
-    setUserData({
-      userId: 1,
-      nickName: "뽀삐엄마",
-      userAge: 28,
-      userGender: null,
-      address: "서울시 동작구 흑석동",
-      regionCode: "11455",
-      social: "naver",
-      rating: 3.41,
-      dog: [
-        {
-          dogId: 114,
-          dogName: "뽀삐",
-          userId: 1,
-          nickName: null,
-          address: null,
-          dogGender: "female",
-          dogType: "말티즈",
-          dogAge: 72,
-          dogWeight: 3.4,
-          dogNeutered: true,
-          dogCharacter1: "independent",
-          dogCharacter2: "active",
-          description: "활동적이고 순해요",
-          dogProfile:
-            "https://yt3.googleusercontent.com/b_9EipIlhBtnwKayzvdjm8uUuRMte0qhUif5WpazM-EvmTmNEhR6u2UPvnRDjSwvw6-I1INO9Q=s900-c-k-c0x00ffffff-no-rj",
-        },
-        {
-          dogId: 124,
-          dogName: "뭉뭉",
-          userId: 1,
-          nickName: null,
-          address: null,
-          dogGender: "female",
-          dogType: "말티즈",
-          dogAge: 72,
-          dogWeight: 3.4,
-          dogNeutered: true,
-          dogCharacter1: "independent",
-          dogCharacter2: "active",
-          description: "활동적이고 순해요",
-          dogProfile:
-            "https://cdn.pixabay.com/photo/2018/05/13/16/57/dog-3397110__480.jpg",
-        },
-      ],
-      followCnt: 0,
-      follow: false,
-    });
-    // axios
-    //   .get(`${DUMMY_URL}/user/includesDog/${userId}`, {})
-    //   .then(function (response) {
-    //     setUserData(response.data);
-    //   })
-    //   .catch(function (error) {
-    //     // 오류발생시 실행
-    //   });
+    axios
+      .get(`${DUMMY_URL}/user/includesDog/${user.userId}`, {})
+      .then(function (response) {
+        setUserData(response.data);
+      })
+      .catch(function (error) {
+        // 오류발생시 실행
+      });
 
-    setPartnerData({
-      userId: 2,
-      nickName: "뽀삐엄마",
-      userAge: 28,
-      userGender: null,
-      address: "서울시 동작구 흑석동",
-      regionCode: "11455",
-      social: "naver",
-      rating: 3.41,
-      dog: [
-        {
-          dogId: 244,
-          dogName: "보리",
-          userId: 1,
-          nickName: null,
-          address: null,
-          dogGender: "female",
-          dogType: "말티즈",
-          dogAge: 72,
-          dogWeight: 3.4,
-          dogNeutered: true,
-          dogCharacter1: "independent",
-          dogCharacter2: "active",
-          description: "활동적이고 순해요",
-          dogProfile:
-            "https://images.mypetlife.co.kr/content/uploads/2021/10/22152410/IMG_2087-scaled-e1634883900174-1024x739.jpg",
-        },
-        {
-          dogId: 234,
-          dogName: "솜솜",
-          userId: 1,
-          nickName: null,
-          address: null,
-          dogGender: "female",
-          dogType: "말티즈",
-          dogAge: 72,
-          dogWeight: 3.4,
-          dogNeutered: true,
-          dogCharacter1: "independent",
-          dogCharacter2: "active",
-          description: "활동적이고 순해요",
-          dogProfile:
-            "https://media.istockphoto.com/id/1007262234/ko/%EC%82%AC%EC%A7%84/%EA%B7%80%EC%97%AC%EC%9A%B4-%ED%9D%B0%EC%83%89-pomeranian-%EA%B0%95%EC%95%84%EC%A7%80-%EC%8A%A4-%ED%94%BC-%EC%B8%A0.jpg?b=1&s=612x612&w=0&k=20&c=itpd3ey8UxyKIh2WJ2DqdYWO7sBxH1aoXSTkyrhz2T0=",
-        },
-      ],
-      followCnt: 0,
-      follow: false,
-    });
-    // axios
-    //   .get(`${DUMMY_URL}/user/includesDog/${partnerId}`, {})
-    //   .then(function (response) {
-    //     setPartnerData(response.data);
-    //   })
-    //   .catch(function (error) {
-    //     // 오류발생시 실행
-    //   });
-  }, [userId, partnerId]);
+    axios
+      .get(`${DUMMY_URL}/user/includesDog/${partnerId}`, {})
+      .then(function (response) {
+        setPartnerData(response.data);
+      })
+      .catch(function (error) {
+        // 오류발생시 실행
+      });
+  }, []);
 
   useEffect(() => {
     let tempResult = new Date(startDate);
@@ -364,15 +267,22 @@ const CreateAppointment = () => {
   };
 
   const handleCreateAppointment = async (myDogList, partnerDogList) => {
+    console.log({
+      userId: user.userId,
+      myDogs: myDogList,
+      partnerDogs: partnerDogList,
+      date: dateResult,
+      place: placeInput.current,
+    });
     await axios
       .post(
-        `${DUMMY_URL}/meeting`,
+        `${DUMMY_URL}/dummy/meeting`,
         {
-          userId: userData.userId,
+          date: dateResult,
           myDogs: myDogList,
           partnerDogs: partnerDogList,
-          date: dateResult,
           place: placeInput.current,
+          userId: user.userId,
         },
         {
           headers: {
@@ -381,12 +291,10 @@ const CreateAppointment = () => {
         }
       )
       .then((resp) => {
-        console.log("요청 성공");
         navigate(-1);
       })
       .catch((err) => {
         console.log(err);
-        console.log("요청 실패");
       });
   };
 
