@@ -91,6 +91,7 @@ public class AppointmentRestController {
 			@RequestParam List<Long> partnerDogs/*, @RequestBody LocalDateTime date, @RequestBody String place*/) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Long myId = 4L;
+//		Long myId = jwt;
 		LocalDateTime now = LocalDateTime.now();
 		
 		logger.info("=================== mydog : {}", myDogs);

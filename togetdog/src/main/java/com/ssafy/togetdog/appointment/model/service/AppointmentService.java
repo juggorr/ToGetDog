@@ -76,7 +76,7 @@ public class AppointmentService {
 		apInfoRegistDTO.setReceivedUserId(userId);
 		apInfoRegistDTO.setDateTime(date);
 		apInfoRegistDTO.setPlace(place);
-		apInfoRegistDTO.setStatus("sent");
+		apInfoRegistDTO.setStatus("wait");
 		Appointment appointment = apInfoRegistDTO.toAppointment();
 		appointmentRepository.save(appointment);
 		
