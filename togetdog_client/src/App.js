@@ -20,6 +20,7 @@ import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import InternalServer from "./pages/InternalServer";
 import EmailAuth from "./pages/EmailAuth";
+import CreateAppointment from "./pages/CreateAppointment";
 import DogRegister from "./pages/DogRegister";
 import SubLayout from "./components/SubLayout";
 
@@ -51,6 +52,7 @@ function App() {
           {/* <Route path='/dogedit' element={<DogEdit />} /> */}
           <Route path="/500" element={<InternalServer />} />
           <Route path="/*" element={<NotFound />} />
+          <Route path="/createAppointment" element={<CreateAppointment />} />
         </Routes>
       </div>
     </BrowserRouter>
