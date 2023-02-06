@@ -28,6 +28,8 @@ const Feed = () => {
   const setAuth = useSetRecoilState(authAtom);
   const [user, setUser] = useRecoilState(userState);
 
+  const navigate = useNavigate();
+
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem("user");
@@ -39,32 +41,32 @@ const Feed = () => {
     {
       menu_id: 1,
       text: "내 정보 보기",
-      link: "/",
+      func: navigate("/"),
     },
     {
       menu_id: 2,
       text: "프로필 수정",
-      link: "/",
+      func: navigate("/"),
     },
     {
       menu_id: 3,
       text: "강아지 프로필 수정",
-      link: "/",
+      func: navigate("/"),
     },
     {
       menu_id: 4,
       text: "강아지 프로필 삭제",
-      link: "/",
+      func: navigate("/"),
     },
     {
       menu_id: 5,
       text: "계정 비밀번호 변경",
-      link: "/",
+      func: navigate("/"),
     },
     {
       menu_id: 6,
       text: "로그아웃",
-      link: { handleLogout },
+      func: { handleLogout },
     },
   ];
 
@@ -79,8 +81,6 @@ const Feed = () => {
   const [subDogs, setSubDogs] = useState();
   const [isLoading, setLoading] = useState(true);
   const [followStatus, setFollowStatus] = useState(false);
-
-  const navigate = useNavigate();
 
   // const location = useLocation()
   // const pageNo = location.state.pageNo;
