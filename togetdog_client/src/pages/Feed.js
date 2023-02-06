@@ -156,17 +156,16 @@ const Feed = () => {
 
   const navigate = useNavigate();
   const auth = useRecoilValue(authAtom);
-  console.log(auth);
 
   useEffect(() => {
     axios
       .get(
-        `${DUMMY_URL}/feed/${user.userId}`,
+        `${BACKEND_URL}/feed/${user.userId}`,
         { params: { pageNo: 1 } },
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: auth,
+            'Access-Token': auth,
           },
         },
       )
