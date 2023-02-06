@@ -36,9 +36,9 @@ const MenuModal = ({ menuLists, menuBtnClick, setMenuBtnClick }) => {
               <div
                 key={it.menu_id}
                 className="single-menu"
-                onClick={
-                  it.link === "/logout" ? handleLogout() : navigate(it.link)
-                }>
+                onClick={() => {
+                  it.link === "/logout" ? handleLogout() : navigate(it.link);
+                }}>
                 {it.text}
               </div>
             ))}
