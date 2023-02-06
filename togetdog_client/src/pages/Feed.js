@@ -78,12 +78,12 @@ const Feed = () => {
     console.log(auth);
     axios
       .get(
-        `${BACKEND_URL}/feed/${user.userId}`,
-        {
-          params: {
-            pageNo: 1,
-          },
-        },
+        `${BACKEND_URL}/feed/${user.userId}?pageNo=1`,
+        // {
+        //   params: {
+        //     pageNo: 1,
+        //   },
+        // },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ const Feed = () => {
       })
       .catch((err) => {
         console.log(err);
-        console.log(err.msg);
+        console.log(err.message);
         console.log('피드 데이터 불러오기 실패');
       });
   }, []);
