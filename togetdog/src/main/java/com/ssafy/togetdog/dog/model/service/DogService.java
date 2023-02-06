@@ -15,9 +15,11 @@ import com.ssafy.togetdog.user.model.entity.User;
 public interface DogService {
 	DogInfoRespDTO getDogInfo(String dogid) throws NumberFormatException;
 	Dog findDogByDogId(long dogId);
+	List<Dog> findDogsByUser(User user);
 	
 	void registDog(User user, DogRegistParamDTO dogDTO, MultipartFile dogImage) throws IllegalStateException, IOException;
 	void updateDog(User user, DogUpdateParamDTO dogDTO, MultipartFile dogImage) throws IllegalStateException, IOException;
 	void deleteDog(long userId, String dogId);
-	List<DogInfoForUserDTO> findDogsByUserId(long userId);
+	
+	boolean checkInsertPossible(User user);
 }
