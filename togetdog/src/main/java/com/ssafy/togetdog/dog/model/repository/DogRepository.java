@@ -9,5 +9,5 @@ import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.user.model.entity.User;
 
 public interface DogRepository extends JpaRepository<Dog, Long> {
-	Optional<List<Dog>> findByUser(User user);
+	Optional<List<Dog>> findAllByUser(User user);
 }
