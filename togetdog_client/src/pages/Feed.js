@@ -108,7 +108,6 @@ const Feed = () => {
       .then((resp) => {
         console.log(resp);
         console.log(resp.data);
-        console.log(resp.data + "data");
         setFeedData(resp.data);
         setFeedUserData(resp.data.user);
         setFeedDogData(resp.data.user.dogs);
@@ -148,27 +147,39 @@ const Feed = () => {
         <FeedProfileWrapper>
           {/* 프로필 상단 */}
           <FeedProfileTop>
-            <MainDogImg
-              src={
-                `https://i8a807.p.ssafy.io/image/dog/` + currentDog.dogProfile
-              }></MainDogImg>
-            <div className="dog-info-box">
-              <div>
-                {currentDog.dogName}
-                {currentDog.dogGender === "male" ? (
-                  <img src={Boy} className="dog-gender" />
-                ) : (
-                  <img src={Girl} className="dog-gender" />
-                )}
+            {feedDogData.length === 0 ? (
+              <MainDogImg src="https://media.istockphoto.com/id/509962049/vector/cute-puppy-sits.jpg?s=612x612&w=0&k=20&c=hm9wNYwzB2sXwrySGNi83WzH5B7ubDMk1NKJw73W7tg=" />
+            ) : (
+              <MainDogImg
+                src={
+                  `https://i8a807.p.ssafy.io/image/dog/` + currentDog.dogProfile
+                }
+              />
+            )}
+            {feedDogData.length === 0 ? (
+              <div className="dog-info-box">
+                <div>{"등록된 강아지가 없습니다."}</div>
               </div>
-              <div className="dog-info">
-                {`${currentDog.dogType} / ${
-                  currentDog.dogAge >= 12
-                    ? `${Math.floor(currentDog.dogAge / 12)}살`
-                    : `${currentDog.dogAge}개월`
-                }`}
+            ) : (
+              <div className="dog-info-box">
+                <div>
+                  {currentDog.dogName}
+                  {currentDog.dogGender === "male" ? (
+                    <img src={Boy} className="dog-gender" />
+                  ) : (
+                    <img src={Girl} className="dog-gender" />
+                  )}
+                </div>
+                <div className="dog-info">
+                  {`${currentDog.dogType} / ${
+                    currentDog.dogAge >= 12
+                      ? `${Math.floor(currentDog.dogAge / 12)}살`
+                      : `${currentDog.dogAge}개월`
+                  }`}
+                </div>
               </div>
-            </div>
+            )}
+
             <div className="sub-dogs">
               {subDogs.map((subdog) => (
                 <SubDogImg
@@ -193,44 +204,50 @@ const Feed = () => {
                   alt="menu"
                 />
                 <div className="follow-info flex-column">
-                  <div onClick={() => navigate("/")}>
-                    <span className="follow-text">팔로워</span>
-                    {currentDog.dogFollowerCnt}
-                  </div>
+                  {currentDog ? (
+                    <div onClick={() => navigate("/")}>
+                      <span className="follow-text">팔로워</span>
+                      {currentDog.dogFollowerCnt}
+                    </div>
+                  ) : null}
                   <div>
                     <span className="follow-text">팔로잉</span>
                     {feedUserData.followCnt}
                   </div>
                 </div>
               </div>
-            ) : (
+            ) : currentDog ? (
               <FollowBtn
                 followStatus={followStatus}
                 setFollowStatus={setFollowStatus}
               />
-            )}
+            ) : null}
           </FeedProfileTop>
           {/* 특이사항, 성격 들어가는 부분 */}
-          <FeedProfileBottom>
-            <div className="special-text">{currentDog.description}</div>
-            <div className="characters-box">
-              <OrangeCharacterBtn
-                text={`#${currentDog.dogNeutered ? "중성화" : "중성화 X"}`}
-              />
-              <YellowCharacterBtn
-                text={`#${
-                  currentDog.dogCharacter1 === "obedient"
-                    ? "순종적"
-                    : "비순종적"
-                }`}
-              />
-              <YellowCharacterBtn
-                text={`#${
-                  currentDog.dogCharacter2 === "active" ? "활동적" : "비활동적"
-                }`}
-              />
-            </div>
-          </FeedProfileBottom>
+          {currentDog ? (
+            <FeedProfileBottom>
+              <div className="special-text">{currentDog.description}</div>
+              <div className="characters-box">
+                <OrangeCharacterBtn
+                  text={`#${currentDog.dogNeutered ? "중성화" : "중성화 X"}`}
+                />
+                <YellowCharacterBtn
+                  text={`#${
+                    currentDog.dogCharacter1 === "obedient"
+                      ? "순종적"
+                      : "비순종적"
+                  }`}
+                />
+                <YellowCharacterBtn
+                  text={`#${
+                    currentDog.dogCharacter2 === "active"
+                      ? "활동적"
+                      : "비활동적"
+                  }`}
+                />
+              </div>
+            </FeedProfileBottom>
+          ) : null}
         </FeedProfileWrapper>
         <FeedPhotoWrapper>
           <FeedPhoto
