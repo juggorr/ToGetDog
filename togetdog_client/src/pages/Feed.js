@@ -166,7 +166,8 @@ const Feed = () => {
                   key={subdog.dogId}
                 />
               ))}
-              {feedDogData.length === 3 ? null : (
+              {feedDogData.length === 3 ||
+              feedUserData.userId !== user.userId ? null : (
                 <PlusBtn onClick={() => navigate("/dogregister")}>+</PlusBtn>
               )}
             </div>
