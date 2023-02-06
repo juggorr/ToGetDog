@@ -78,7 +78,7 @@ const Feed = () => {
     console.log(auth);
     axios
       .get(
-        `https://togetdog.site/api/feed/${user.userId}`,
+        `${BACKEND_URL}/feed/${user.userId}`,
         {
           params: {
             pageNo: 1,
