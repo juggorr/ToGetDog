@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.togetdog.dog.model.service.DogService;
 import com.ssafy.togetdog.user.model.dto.EmailAuthParamDTO;
+import com.ssafy.togetdog.user.model.dto.UserIncludesDogsRespDTO;
 import com.ssafy.togetdog.user.model.dto.UserLoginParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserLoginRespDTO;
 import com.ssafy.togetdog.user.model.dto.UserPasswordParamDTO;
@@ -43,13 +45,13 @@ import lombok.RequiredArgsConstructor;
 @Api("USER API")
 public class UserRestController {
 	
-	/*ExceptionRestControllerAdvice에서 exception 처리를 하는 대상 controller입니다.*/
 	private static final String SUCCESS = "success";
 	private final Logger logger = LoggerFactory.getLogger(UserRestController.class);
 	
 	private final UserService userService;
 	private final JwtService jwtService;
 	private final MailSendService mailService;
+	private final DogService dogService;
 	
 	/***
 	 * Email sending for Registration
@@ -262,5 +264,29 @@ public class UserRestController {
 		resultMap.put("result", SUCCESS);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
+	
 
+	/***
+	 * User information includes dogs lookup
+	 * @param token
+	 * @param userId
+	 * @return
+	 */
+	@ApiOperation(value = "강아지 정보 포함 회원", notes = "강아지 정보를 포함한 회원 정보를 조회합니다.")
+	@GetMapping("/includesDog/{userid}")
+	public ResponseEntity<?> findPassword(
+			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@PathVariable("userid") String userId
+			) {
+		
+		logger.info("findPassword in");
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		jwtService.validateToken(token);
+		long userid = Long.parseLong(userId);
+		User user = userService.findUserByUserId(userid);
+		resultMap.put("result", SUCCESS);
+		resultMap.put("user", UserIncludesDogsRespDTO.of(user, dogService.findDogsByUserId(userid)));
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+	}
 }

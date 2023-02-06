@@ -63,7 +63,7 @@ public class DogServiceImpl implements DogService {
 	/* 강아지 정보 등록하기 */
 	@Override
 	public void registDog(User user, DogRegistParamDTO dogDTO, MultipartFile image)
-			throws IllegalStateException, IOException, InvalidInputException {
+			throws IllegalStateException, IOException, InvalidInputException, ExcessNumberOfDogsException {
 		if (dogDTO == null || image.isEmpty()) {
 			throw new InvalidInputException();
 		}
@@ -72,6 +72,7 @@ public class DogServiceImpl implements DogService {
 		}
 		// InetAddress : 부팅시 한번만 static으로 사용하지 않으면 성능이슈가 있다고 합니다.
 		// String hostname = InetAddress.getLocalHost().getHostName();
+		checkInsertPossible(user);
 		
 		checkRegistrationValidation(dogDTO);
 		String originalFileName = image.getOriginalFilename();
