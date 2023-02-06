@@ -150,3 +150,39 @@ export const FollowBtnOff = styled.button`
   border: none;
   border-radius: 0.7rem;
 `;
+
+export const UserIconCircle = styled.div`
+  .circle {
+    width: 4rem;
+    height: 4rem;
+    margin: 0.5rem 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 70%;
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 1.2rem;
+  }
+
+  .one {
+    background-color: #949f76;
+  }
+
+  .two {
+    background-color: #e5d8bd;
+  }
+
+  .three {
+    background-color: #998769;
+  }
+
+  .four {
+    background-color: #d1d9cf;
+  }
+
+  .five {
+    background-color: #81b4be;
+  }
+`;
