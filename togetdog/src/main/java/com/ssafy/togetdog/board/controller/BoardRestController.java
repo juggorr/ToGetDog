@@ -110,7 +110,7 @@ public class BoardRestController {
 		logger.debug("return dog info : {}", dogList);
 		for (DogInfoForUserDTO dog : dogList) {
 			long dogId = dog.getDogId();
-			dog.setDogFollwerCnt(followService.getFollowers(dogId));
+			dog.setDogFollowerCnt(followService.getFollowers(dogId));
 			//토큰 값 해결되면 토큰 값 이용해서 넘겨야함
 			dog.setFollowing(followService.isFollowing(jwtService.getUserId(token), dogId));
 //			dog.setFollowing(followService.isFollowing(4, dogId));

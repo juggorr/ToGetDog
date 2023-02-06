@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 public class DogInfoForUserDTO extends DogInfoRespDTO {
 	private boolean isFollowing;
-	private int dogFollwerCnt;
+	private int dogFollowerCnt;
 
 	public static DogInfoForUserDTO of(Dog dog) {
 		//birth 기준으로 개월 수 변환
