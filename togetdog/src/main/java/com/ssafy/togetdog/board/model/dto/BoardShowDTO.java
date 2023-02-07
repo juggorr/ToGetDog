@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Builder
 @Getter
 @Setter
 @ToString
@@ -27,6 +26,8 @@ public class BoardShowDTO {
 	private DogInfoRespDTO dog;
 	private String image;
 	private String content;
+	private boolean isLiked;
+	private int likeCnt;
 	private List<CommentDTO> comments;
 
 	public BoardShowDTO(long boardId, long userId, DogInfoRespDTO dog, String image, String content, List<CommentDTO> comments) {

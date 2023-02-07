@@ -29,7 +29,7 @@ public class CommentService {
 		//stream 써서 코드 발전 시킬 수 있음
 		List<CommentDTO> cmts = new ArrayList<CommentDTO>();
 		for (Comment comment : comments) {
-			CommentDTO commentDto = new CommentDTO(comment.getCommentId(), comment.getBoard().getBoardId(), comment.getUser().getUserId(), comment.getCommentContent());
+			CommentDTO commentDto = new CommentDTO(comment);
 			cmts.add(commentDto);
 		}
         return cmts; 
