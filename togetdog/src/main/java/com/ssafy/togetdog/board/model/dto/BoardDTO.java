@@ -39,6 +39,23 @@ public class BoardDTO {
     			.build();
     	return board;
     }
+    
+    public Board toEntity(String inputImage) {
+    	User user = User.builder()
+    			.userId(userId).build();
+    	
+    	Dog dog = Dog.builder()
+    			.dogId(dogId).build();
+    	
+    	Board board = Board.builder()
+    			.boardId(boardId)
+    			.user(user)
+    			.dog(dog)
+    			.image(inputImage)
+    			.content(content)
+    			.build();
+    	return board;
+    }
     	
     @Builder
 	public BoardDTO(long boardId, long userId, long dogId, String image, String content) {
