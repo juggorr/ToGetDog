@@ -119,3 +119,18 @@ export const FriendListWrapper = styled.div`
     height: 0.8rem;
   }
 `;
+
+export const CheckBoxWrapper = styled.div`
+  display: flex;
+  margin: 0rem 1rem;
+  margin-bottom: 1rem;
+
+  .checkBox {
+    display: flex;
+    align-items: center;
+    font-family: "Inter", sans-serif;
+    font-size: 0.8rem;
+    margin: 0rem 0.3rem;
+    color: #717171;
+  }
+`;
