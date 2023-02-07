@@ -5,13 +5,24 @@ import { authAtom, userState } from '../recoil';
 import { MenuModalWrapper, MenuModalBody } from '../styles/ModalEmotion';
 
 // menuList에는 menu_id, text, link가 담겨있음
+// dog delete 모달 추가
 
-const MenuModal = ({ menuLists, menuBtnClick, setMenuBtnClick }) => {
+const MenuModal = ({ menuLists, menuBtnClick, setMenuBtnClick, feedDogData, setConfirmBtnClick, setNoDogBtnClick }) => {
   const setAuth = useSetRecoilState(authAtom);
   const [user, setUser] = useRecoilState(userState);
 
   const outSection = useRef();
   const navigate = useNavigate();
+
+  const handleDogDelete = () => {
+    setMenuBtnClick(false);
+    setConfirmBtnClick(true);
+  }
+
+  const handleNoDog = () => {
+    setMenuBtnClick(false);
+    setNoDogBtnClick(true);
+  }
 
   const handleLogout = () => {
     setUser(null);
@@ -38,9 +49,19 @@ const MenuModal = ({ menuLists, menuBtnClick, setMenuBtnClick }) => {
                 key={it.menu_id}
                 className='single-menu'
                 onClick={() => {
-                  it.link === '/logout' ? handleLogout() : navigate(it.link);
-                }}
-              >
+                  if (it.link === "/logout") {
+                    return handleLogout()
+                  } else if (it.link === "/dogdelete") {
+                    if (feedDogData.length > 0) {
+                      return handleDogDelete();
+                    } else {
+                      return handleNoDog();
+                    }
+                  } else {
+                    navigate(it.link)
+                  }
+                  // it.link === "/logout" ? handleLogout() : navigate(it.link);
+                }}>
                 {it.text}
               </div>
             ))}

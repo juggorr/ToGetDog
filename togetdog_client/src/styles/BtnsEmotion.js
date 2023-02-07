@@ -104,6 +104,51 @@ export const MainColorShortBtn = styled.button`
   font-family: "Lato", sans-serif;
 `;
 
+export const GreyColorShortBtn = styled.button`
+  width: 6rem;
+  height: 2.3rem;
+  border-radius: 2rem;
+  border: none;
+  margin-right: 1rem;
+  mrgin-left: 1rem;
+
+  background-color: #717171;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  // font-family: Noto Sans KR', sans-serif;
+`;
+
+export const SkyColorShortBtn = styled.button`
+  width: 6rem;
+  height: 2.3rem;
+  border-radius: 2rem;
+  border: none;
+  margin-right: 1rem;
+  mrgin-left: 1rem;
+
+  background-color: #699BF7;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  // font-family: Noto Sans KR', sans-serif;
+`;
+
+export const RedColorShortBtn = styled.button`
+  width: 6rem;
+  height: 2.3rem;
+  border-radius: 2rem;
+  border: none;
+  margin-right: 1rem;
+  mrgin-left: 1rem;
+
+  background-color: #FF6565;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  // font-family: Noto Sans KR', sans-serif;
+`;
+
 export const LightColorLongBtn = styled.button`
   width: 9rem;
   height: 2.7rem;

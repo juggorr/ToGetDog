@@ -1,13 +1,15 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import MenuModal from '../components/MenuModal';
-import OrangeCharacterBtn from '../components/OrangeCharacterBtn';
-import YellowCharacterBtn from '../components/YellowCharacterBtn';
-import { BACKEND_URL, DUMMY_URL } from '../config';
-import { authAtom, userState } from '../recoil';
-import { PlusBtn } from '../styles/BtnsEmotion';
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import ConfirmModal from "../components/ConfirmModal";
+import NoDogAlertModal from "../components/NoDogAlertModal";
+import MenuModal from "../components/MenuModal";
+import OrangeCharacterBtn from "../components/OrangeCharacterBtn";
+import YellowCharacterBtn from "../components/YellowCharacterBtn";
+import { BACKEND_URL, DUMMY_URL } from "../config";
+import { authAtom, dogState, userState } from "../recoil";
+import { PlusBtn } from "../styles/BtnsEmotion";
 import {
   FeedContainer,
   FeedPhoto,
@@ -27,6 +29,9 @@ const Feed = () => {
   const auth = useRecoilValue(authAtom);
   const setAuth = useSetRecoilState(authAtom);
   const [user, setUser] = useRecoilState(userState);
+  
+  
+  // const [nowDog, setNowDog] = useState(null);
 
   const navigate = useNavigate();
 
@@ -48,8 +53,8 @@ const Feed = () => {
     },
     {
       menu_id: 4,
-      text: '강아지 프로필 삭제',
-      link: '/',
+      text: "강아지 프로필 삭제",
+      link: "/dogdelete",
     },
     {
       menu_id: 5,
@@ -62,6 +67,11 @@ const Feed = () => {
       link: '/logout',
     },
   ];
+
+  // 강아지 정보 삭제 모달 띄우기
+  const [confirmBtnClick, setConfirmBtnClick] = useState(false);
+  // 등록된 강아지 없으면 등록된 강아지가 없다는 경고 모달 띄우기
+  const [noDogBtnClick, setNoDogBtnClick] = useState(false);
 
   const [menuBtnClick, setMenuBtnClick] = useState(false);
   const [feedData, setFeedData] = useState();
@@ -142,7 +152,25 @@ const Feed = () => {
   return (
     <>
       <FeedContainer>
-        <MenuModal menuLists={menuLists} menuBtnClick={menuBtnClick} setMenuBtnClick={setMenuBtnClick} />
+        {feedDogData.length > 0 ? (<ConfirmModal 
+          confirmBtnClick={confirmBtnClick}
+          setConfirmBtnClick={setConfirmBtnClick}
+          setMenuBtnClick={setMenuBtnClick}
+          dogId={currentDog.dogId}
+        />) : (<NoDogAlertModal 
+          noDogBtnClick={noDogBtnClick}
+          setNoDogBtnClick={setNoDogBtnClick}
+          setMenuBtnClick={setMenuBtnClick}
+        />)
+        }
+        <MenuModal
+          menuLists={menuLists}
+          menuBtnClick={menuBtnClick}
+          setMenuBtnClick={setMenuBtnClick}
+          setConfirmBtnClick={setConfirmBtnClick}
+          setNoDogBtnClick={setNoDogBtnClick}
+          feedDogData={feedDogData}
+        />
         <FeedProfileWrapper>
           {/* 프로필 상단 */}
           <FeedProfileTop>
