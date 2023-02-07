@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.togetdog.dog.model.service.DogService;
 import com.ssafy.togetdog.user.model.dto.EmailAuthParamDTO;
+import com.ssafy.togetdog.user.model.dto.UserIncludesDogsRespDTO;
 import com.ssafy.togetdog.user.model.dto.UserLoginParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserLoginRespDTO;
 import com.ssafy.togetdog.user.model.dto.UserPasswordParamDTO;
@@ -43,13 +45,13 @@ import lombok.RequiredArgsConstructor;
 @Api("USER API")
 public class UserRestController {
 	
-	/*ExceptionRestControllerAdvice에서 exception 처리를 하는 대상 controller입니다.*/
 	private static final String SUCCESS = "success";
 	private final Logger logger = LoggerFactory.getLogger(UserRestController.class);
 	
 	private final UserService userService;
 	private final JwtService jwtService;
 	private final MailSendService mailService;
+	private final DogService dogService;
 	
 	/***
 	 * Email sending for Registration
@@ -235,7 +237,7 @@ public class UserRestController {
 		
 		jwtService.validateToken(token);
 		long userId = jwtService.getUserId(token);
-		userService.deleteUser(userId);
+		userService.withdrawal(userId);
 		resultMap.put("result", SUCCESS);
 		SecurityContextHolder.clearContext();
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
@@ -263,29 +265,28 @@ public class UserRestController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 	
+
 	/***
-	 * @@@@@@@@@@@@@@@@@@@@@@@@@@
-	 * User information includes one's dog information
+	 * User information includes dogs lookup
 	 * @param token
-	 * @param userid
+	 * @param userId
 	 * @return
 	 */
-	@ApiOperation(value = "강아지 정보를 포함한 유저 정보 조회", notes = "해당 유저가 등록한 강아지 정보를 포함한 유저의 정보를 반환합니다.")
+	@ApiOperation(value = "강아지 정보 포함 회원", notes = "강아지 정보를 포함한 회원 정보를 조회합니다.")
 	@GetMapping("/includesDog/{userid}")
-	public ResponseEntity<?> getUserIncludesDogs (
+	public ResponseEntity<?> findPassword(
 			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@PathVariable long userid
+			@PathVariable("userid") String userId
 			) {
 		
-		logger.info("getUserIncludesDogs input parameter : {}", userid);
+		logger.info("findPassword in");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = null;
 		
 		jwtService.validateToken(token);
-		//long userId = jwtService.getUserId(token);
-		//User user = userService.findUserByUserId(userId);
-		// dog info searching logic
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		long userid = Long.parseLong(userId);
+		User user = userService.findUserByUserId(userid);
+		resultMap.put("result", SUCCESS);
+		resultMap.put("user", UserIncludesDogsRespDTO.of(user, dogService.findDogsByUserId(userid)));
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
-
 }

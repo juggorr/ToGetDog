@@ -1,6 +1,7 @@
 package com.ssafy.togetdog.user.model.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
@@ -9,9 +10,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.togetdog.dog.model.entity.Dog;
+import com.ssafy.togetdog.dog.model.service.DogService;
 import com.ssafy.togetdog.global.exception.DuplicatedInputException;
 import com.ssafy.togetdog.global.exception.InvalidInputException;
 import com.ssafy.togetdog.global.exception.InvalidLoginActingException;
+import com.ssafy.togetdog.global.exception.unAuthWaitUserException;
 import com.ssafy.togetdog.user.model.dto.EmailAuthParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
 import com.ssafy.togetdog.user.model.dto.UserLoginParamDTO;
@@ -34,6 +38,7 @@ public class UserServiceImpl implements UserService {
 	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
 	private final WaitUserRepository waitUserRepository;
+	private final DogService dogService;
 
 	/* 회원 가입을 위한 이메일 전송 */
 	@Override
@@ -42,7 +47,7 @@ public class UserServiceImpl implements UserService {
 		checkRegistrationValidation(userDTO);
 		WaitUser user = waitUserRepository.findByEmail(userDTO.getEmail()).orElse(null);
 		if (user != null) {
-			throw new DuplicatedInputException();
+			throw new DuplicatedInputException("이미 등록되어 있는 이메일입니다.");
 		}
 		userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		WaitUser newUser = userDTO.toUser(authKey);
@@ -67,7 +72,7 @@ public class UserServiceImpl implements UserService {
 		if (tmpUser != null && tmpUser.getAuthKey().equals(authDTO.getAuthKey())) {
 			registration(tmpUser);
 		} else {
-			throw new InvalidInputException();
+			throw new InvalidInputException("이메일이나 인증키가 유효하지 않습니다.");
 		}
 	}
 	
@@ -77,11 +82,11 @@ public class UserServiceImpl implements UserService {
 		//이메일 인증 대기 대상 판별하기
 		WaitUser waitUser = findWaitUserByEmail(loginDTO.getEmail()); 
 		if (waitUser != null) {
-			throw new InvalidLoginActingException();
+			throw new unAuthWaitUserException("가입 대기중인 유저입니다.");
 		}
 		User user = findUserByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
 		if (user == null) {
-			throw new DuplicatedInputException();
+			throw new InvalidLoginActingException("이메일과 비밀번호가 일치하지 않습니다.");
 		} else {
 			return user;
 		}
@@ -93,7 +98,7 @@ public class UserServiceImpl implements UserService {
 		WaitUser waitUser = findWaitUserByEmail(email);
 		User user = findUserByEmail(email);
 		if (user != null || waitUser != null) {
-			throw new DuplicatedInputException();
+			throw new DuplicatedInputException("중복된 이메일 입니다.");
 		}
 	}
 	
@@ -103,7 +108,7 @@ public class UserServiceImpl implements UserService {
 		WaitUser waitUser = findWaitUserByNickName(nickname);
 		User user = findUserByNickName(nickname);
 		if (user != null || waitUser != null) {
-			throw new DuplicatedInputException();
+			throw new DuplicatedInputException("중복된 닉네임입니다.");
 		}
 	}
 	
@@ -115,7 +120,7 @@ public class UserServiceImpl implements UserService {
 		if (user != null) {
 			return UserInfoRespDTO.of(user);
 		} else {
-			throw new InvalidInputException();
+			throw new InvalidInputException("입력된 값으로 회원 정보를 찾을 수 없습니다.");
 		}
 	}
 	
@@ -133,6 +138,23 @@ public class UserServiceImpl implements UserService {
 			userRepository.save(user);
 		}
 	}
+	
+	/* 회원 탈퇴 */
+	@Override
+	public void withdrawal(long userId) {
+		User user = findUserByUserId(userId);
+		if (user != null) {
+			// 회원 객체를 참조하는 걸 싹다 날리고 고아객체로 만들어줘야 함
+			List<Dog> dogs = dogService.findDogsByUser(user);
+			for (Dog dog : dogs) {
+				dog.setUser(null);
+			}
+			deleteUser(userId);
+		} else {
+			throw new InvalidInputException("회원 정보를 찾을 수 없습니다.");
+		}
+	}
+	
 	
 	//////////////////////////////////////////////
 	// 범용 method
@@ -182,12 +204,12 @@ public class UserServiceImpl implements UserService {
 			userRepository.save(user);
 		}
 	}
-
+	
 	@Override
 	public void deleteUser(long userId) {
 		userRepository.deleteById(userId);
 	}
-
+	
 	@Override
 	public WaitUser findWaitUserByEmail(String email) {
 		return waitUserRepository.findByEmail(email).orElse(null);
@@ -197,7 +219,7 @@ public class UserServiceImpl implements UserService {
 	public WaitUser findWaitUserByNickName(String nickname) {
 		return waitUserRepository.findByNickName(nickname).orElse(null);
 	}
-
+	
 	///////////////////////////////
 
 	/***
@@ -214,33 +236,33 @@ public class UserServiceImpl implements UserService {
 
 		// email regexp check
 		if (!Pattern.matches(emailRegexp, userDTO.getEmail())) {
-			throw new InvalidInputException();
+			throw new InvalidInputException("이메일 입력값이 올바르지 않습니다.");
 		}
 		// password regexp check
 		if (!Pattern.matches(passwordRegexp, userDTO.getPassword())) {
-			throw new InvalidInputException();
+			throw new InvalidInputException("비밀번호 입력값이 올바르지 않습니다.");
 		}
 		// nickname regexp check
 		if (!Pattern.matches(nicknameRegexp, userDTO.getNickname())) {
-			throw new InvalidInputException();
+			throw new InvalidInputException("닉네임 입력값이 올바르지 않습니다.");
 		}
 		// gender regexp check
 		if (!Pattern.matches(genderRegexp, userDTO.getGender())) {
-			throw new InvalidInputException();
+			throw new InvalidInputException("성별 입력값이 올바르지 않습니다.");
 		}
 		// regionCode regexp check
 		if (!Pattern.matches(regionCodeRegexp, userDTO.getRegionCode())) {
-			throw new InvalidInputException();
+			throw new InvalidInputException("지역번호 값이 올바르지 않습니다.");
 		}
 		// birth check
 		try {
 			int birth = Integer.parseInt(userDTO.getBirth());
 			LocalDate now = LocalDate.now();
 			if (birth > now.getYear() || birth < 1900) {
-				throw new InvalidInputException();
+				throw new InvalidInputException("생년월일 값이 올바르지 않습니다.");
 			}
 		} catch (NumberFormatException e) {
-			throw new InvalidInputException();
+			throw new InvalidInputException("생년월일 값이 숫자가 아닙니다.");
 		}
 	}
 
@@ -256,25 +278,25 @@ public class UserServiceImpl implements UserService {
 
 		// nickname regexp check
 		if (!Pattern.matches(nicknameRegexp, userDTO.getNickName())) {
-			throw new InvalidInputException();
+			throw new InvalidInputException("닉네임 입력값이 올바르지 않습니다.");
 		}
 		// gender regexp check
 		if (!Pattern.matches(genderRegexp, userDTO.getGender())) {
-			throw new InvalidInputException();
+			throw new InvalidInputException("성별 입력값이 올바르지 않습니다.");
 		}
 		// regionCode regexp check
 		if (!Pattern.matches(regionCodeRegexp, userDTO.getRegionCode())) {
-			throw new InvalidInputException();
+			throw new InvalidInputException("지역번호 값이 올바르지 않습니다.");
 		}
 		// birth check
 		try {
 			int birth = Integer.parseInt(userDTO.getBirth());
 			LocalDate now = LocalDate.now();
 			if (birth > now.getYear() || birth < 1900) {
-				throw new InvalidInputException();
+				throw new InvalidInputException("생년월일 값이 올바르지 않습니다.");
 			}
 		} catch (NumberFormatException e) {
-			throw new InvalidInputException();
+			throw new InvalidInputException("생년월일 값이 숫자가 아닙니다.");
 		}
 	}
 

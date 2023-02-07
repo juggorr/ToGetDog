@@ -81,4 +81,16 @@ public class FollowService {
 		return followRepository.countByUser(user);
 	}
 
+	public boolean isFollowing(long userId, long dogId) {
+		User user = new User();
+		user.setUserId(userId);
+		Dog dog = new Dog();
+		dog.setDogId(dogId);
+
+		if(followRepository.countByUserAndDog(user, dog) > 0)
+			return true;
+		else
+			return false;
+	}
+
 }

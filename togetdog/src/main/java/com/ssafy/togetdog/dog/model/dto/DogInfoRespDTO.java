@@ -41,6 +41,19 @@ public class DogInfoRespDTO {
 		int dogMonth = (Integer.parseInt(dog.getDogBirth().substring(0, 4)) * 12)
 				+ Integer.parseInt(dog.getDogBirth().substring(4, 6));
 		
+		String dogC1 = dog.getDogCharacter1();
+		String dogC2 = dog.getDogCharacter2();
+		if (dogC1.equals("d")) {
+			dogC1 = "disobedient";
+		} else {
+			dogC2 = "obedient";
+		}
+		if (dogC2.equals("a")) {
+			dogC2 = "active";
+		} else {
+			dogC2 = "inactive";
+		}
+		
 		return DogInfoRespDTO.builder()
 				.dogId(dog.getDogId())
 				.userId(dog.getUser().getUserId())
@@ -50,8 +63,8 @@ public class DogInfoRespDTO {
 				.dogAge(nowMonth - dogMonth)
 				.dogWeight(dogWeight)
 				.dogNeutered(dog.isDogNeutered())
-				.dogCharacter1(dog.getDogCharacter1())
-				.dogCharacter2(dog.getDogCharacter2())
+				.dogCharacter1(dogC1)
+				.dogCharacter2(dogC2)
 				.description(dog.getDescription())
 				.dogProfile(dog.getDogImage())
 				.build();
@@ -59,11 +72,36 @@ public class DogInfoRespDTO {
 
 
 	public static DogInfoRespDTO of(Dog dog) {
+		//birth 기준으로 개월 수 변환
+		LocalDateTime now = LocalDateTime.now();
+		int nowMonth = (now.getYear() * 12) + now.getMonthValue();
+		int dogMonth = (Integer.parseInt(dog.getDogBirth().substring(0, 4)) * 12)
+				+ Integer.parseInt(dog.getDogBirth().substring(4, 6));
+		
+		String dogC1 = dog.getDogCharacter1();
+		String dogC2 = dog.getDogCharacter2();
+		if (dogC1.equals("d")) {
+			dogC1 = "disobedient";
+		} else {
+			dogC2 = "obedient";
+		}
+		if (dogC2.equals("a")) {
+			dogC2 = "active";
+		} else {
+			dogC2 = "inactive";
+		}
+		
 		return DogInfoRespDTO.builder()
 				.dogId(dog.getDogId())
 				.userId(dog.getUser().getUserId())
 				.dogName(dog.getDogName())
 				.dogGender(dog.getDogGender())
+				.dogType(dog.getDogType())
+				.dogAge(nowMonth - dogMonth)
+				.dogNeutered(dog.isDogNeutered())
+				.dogCharacter1(dog.getDogCharacter1())
+				.dogCharacter2(dog.getDogCharacter2())
+				.description(dog.getDescription())
 				.dogProfile(dog.getDogImage())
 				.build();
 	}

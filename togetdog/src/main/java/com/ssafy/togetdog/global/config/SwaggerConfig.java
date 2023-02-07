@@ -53,7 +53,7 @@ public class SwaggerConfig {
 	
 	@Bean
 	public Docket board() {
-		return getDocket("Board", true, "board");
+		return getDocket("BOARD", true, "board");
 	}
 	
 	@Bean
@@ -64,5 +64,9 @@ public class SwaggerConfig {
 	@Bean
 	public Docket appointment() {
 		return getDocket("APPOINTMENT", true, "appointment");
+	
+	@Bean
+	public Docket notifyDocket() {
+		return getDocket("NOTIFY", true, "notify");
 	}
 }

@@ -20,11 +20,14 @@ public class CommentDTO {
 	private long commentId;
 	private long boardId;
 	private long userId;
+	private String nickName;
 	private String commentContent;
     
     public Comment toEntity() {
     	User user = User.builder()
-    			.userId(userId).build();
+    			.userId(userId)
+    			.nickName(nickName)
+    			.build();
     	
     	Board board = Board.builder()
     			.boardId(boardId)
@@ -41,10 +44,11 @@ public class CommentDTO {
     }
 
     @Builder
-	public CommentDTO(long commentId, long boardId, long userId, String commentContent) {
-		this.commentId = commentId;
-		this.boardId = boardId;
-		this.userId = userId;
-		this.commentContent = commentContent;
+	public CommentDTO(Comment comment) {
+    	this.commentId = comment.getCommentId();
+		this.boardId = comment.getCommentId();
+		this.userId = comment.getUser().getUserId();
+		this.nickName = comment.getUser().getNickName();
+		this.commentContent = comment.getCommentContent();
 	}	
 }

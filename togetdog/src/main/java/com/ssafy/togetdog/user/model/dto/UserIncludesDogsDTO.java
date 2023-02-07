@@ -22,7 +22,6 @@ public class UserIncludesDogsDTO {
 	String social;
 	double rating;
 	List<DogInfoForUserDTO> dogs;
-	boolean follow;
 	int followCnt;
 	
 	public UserIncludesDogsDTO(UserInfoRespDTO userInfo) {

@@ -90,7 +90,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
     
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @Builder.Default
     private List<Dog> dogList = new ArrayList<Dog>();
     
     @Override
