@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { userState } from "../recoil";
 import axios from "axios";
@@ -13,8 +14,10 @@ import Boy from "../assets/boy.png";
 import Girl from "../assets/girl.png";
 
 const FriendsList = ({ friends }) => {
+  const navigate = useNavigate();
+
   useEffect(() => {
-    console.log(friends);
+    // console.log(friends);
   }, []);
 
   const dogTown = (town) => {
@@ -26,7 +29,10 @@ const FriendsList = ({ friends }) => {
     <FriendListWrapper>
       {friends
         ? friends.map((item, idx) => (
-            <div className="singleDog">
+            <div
+              className="singleDog"
+              onClick={() => navigate(`/feed/${item.userId}`)}
+            >
               <DogImgWrapper>
                 <div className="dogProfileCircle">
                   <img
