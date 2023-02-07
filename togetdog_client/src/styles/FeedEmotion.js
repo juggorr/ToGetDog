@@ -13,11 +13,6 @@ export const FeedContainer = styled.div`
     justify-content: center;
     align-items: center;
   }
-
-  .photo-center {
-    display: flex;
-    justify-content: center;
-  }
 `;
 
 export const FeedProfileWrapper = styled.div`
@@ -38,8 +33,8 @@ export const FeedPhotoWrapper = styled.div`
 `;
 
 export const FeedPhoto = styled.img`
-  width: 33%;
-  margin-bottom: 0.15rem;
+  width: 33.333%;
+  margin-bottom: 0.1rem;
   object-fit: cover;
 
   @media (min-width: 650px) {
@@ -48,7 +43,7 @@ export const FeedPhoto = styled.img`
 
   @media (max-width: 650px) {
     /* 650px 이하일 때 */
-    height: 33vw;
+    height: 33.333vw;
   }
 `;
 
