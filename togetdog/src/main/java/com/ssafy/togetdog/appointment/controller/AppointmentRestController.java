@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.togetdog.appointment.model.dto.AppointmentAddDTO;
 import com.ssafy.togetdog.appointment.model.dto.AppointmentInfoRegistDTO;
 import com.ssafy.togetdog.appointment.model.dto.AppointmentInfoRespDTO;
+import com.ssafy.togetdog.appointment.model.dto.AppointmentListDTO;
 import com.ssafy.togetdog.appointment.model.service.AppointmentService;
 import com.ssafy.togetdog.board.model.dto.BoardDTO;
 import com.ssafy.togetdog.board.model.dto.BoardShowDTO;
@@ -74,15 +75,14 @@ public class AppointmentRestController {
 	 */
 	@ApiOperation(value = "산책 리스트 조회", notes = "산책 예정된 약속/대기중 요청/종료된 약속 리스트, status가 confirmed/wait/cancelled, done")
 	@GetMapping
-	public ResponseEntity<?> getFeed(){ // 추후 토큰으로 바꿔야함
+	public ResponseEntity<?> getAppointments(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
-		long userId = 1L;
-		List<AppointmentInfoRespDTO> appointemntInfo = appointmentService.findAllByUserId(userId);
-		
+		long userId = jwtService.getUserId(token);
+		List<AppointmentListDTO> appointemntInfo = appointmentService.findAllByUserId(userId);
 		
 		resultMap.put("result", SUCCESS);
-//		resultMap.put("user", userDTO);
+		resultMap.put("appointment", appointemntInfo);
 		resultMap.put("msg", "산책 리스트가 반환되었습니다.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
@@ -97,7 +97,7 @@ public class AppointmentRestController {
 	public ResponseEntity<?> requestAppointment(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
 			@RequestBody @ApiParam(required = true) AppointmentAddDTO registDTO) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-//		Long myId = 4L;
+//		Long myId = 1L;
 		Long myId = jwtService.getUserId(token);
 		
 		logger.info("=================== registDto : {}", registDTO);
@@ -197,15 +197,13 @@ public class AppointmentRestController {
 	}
 	
 //	/***
-//	 * recommend 
+//	 * recommend friends for a dog 
 //	 * @param token, roomId
 //	 * @return status 200, 401, 500
 //	 */
-//	@ApiOperation(value = "산책 별점", notes = "산책한 상대에게 산책 별점 부여")
-//	@PostMapping("/rating")
-//	public ResponseEntity<?> ratingUSer(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-//			@RequestParam(value="appointmentId") @ApiParam(required = true) long roomId,
-//			@RequestParam(value="rating") @ApiParam(required = true) int rating) {
+//	@ApiOperation(value = "산책 친구 찾기", notes = "같이 산책할만한 친구 추천")
+//	@PostMapping("/recommend")
+//	public ResponseEntity<?> ratingUSer(/*@RequestHeader(value = "Authorization") @ApiParam(required = true) String token*/) {
 //		Map<String, Object> resultMap = new HashMap<String, Object>();
 //		
 //		long userId = jwtService.getUserId(token);

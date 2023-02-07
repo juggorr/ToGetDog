@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.ssafy.togetdog.appointment.model.entity.Appointment;
+import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 
 import lombok.AllArgsConstructor;
@@ -21,29 +22,29 @@ import lombok.ToString;
 @ToString
 public class AppointmentListDTO {
 	private long roomId;
-	private long sentUserId;
-	private int sentUserRating; //유저 정보에서 가져와야함
-	private long receivedUserId;
-	private int receiveUserRating; //유저 정보에서 가져와야함
-	private List<Dog> sentDogs; // 개 정보 따로 불러와야함
-	private List<Dog> receivedDogs; // 개 정보 따로 불러와야함
+	private long userOneId;
+	private int userOneRating; //유저 정보에서 가져와야함
+	private long userTwoId;
+	private int userTwoRating; //유저 정보에서 가져와야함
+	private List<DogInfoRespDTO> userOneDogs; // 개 정보 따로 불러와야함
+	private List<DogInfoRespDTO> userTwoDogs; // 개 정보 따로 불러와야함
 	private String place;
 	private LocalDateTime dateTime;
 	private String status;
-	private boolean isSenderRate;
-	private boolean isReceiverRate;
+	private boolean isUserOneRated;
+	private boolean isUserTwoRated;
 	
 	public static AppointmentListDTO of(Appointment appointment) {
 		
 		return AppointmentListDTO.builder()
 				.roomId(appointment.getRoomId())
-				.sentUserId(appointment.getSentUser().getUserId())
-				.receivedUserId(appointment.getReceivedUser().getUserId())
+				.userOneId(appointment.getSentUser().getUserId())
+				.userTwoId(appointment.getReceivedUser().getUserId())
 				.place(appointment.getPlace())
 				.dateTime(appointment.getDateTime())
 				.status(appointment.getStatus())
-				.isSenderRate(appointment.isSenderRated())
-				.isReceiverRate(appointment.isReceiverRated())
+				.isUserOneRated(appointment.isSenderRated())
+				.isUserTwoRated(appointment.isReceiverRated())
 				.build();
 	}
 }

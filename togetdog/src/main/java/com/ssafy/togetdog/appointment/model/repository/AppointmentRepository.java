@@ -12,4 +12,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 	List<Appointment> findAllBySentUser(User user);
 
 	List<Appointment> findAllByReceivedUser(User user);
+
+	List<Appointment> findAllBySentUserOrReceivedUser(User userOne, User userTwo);
 }
