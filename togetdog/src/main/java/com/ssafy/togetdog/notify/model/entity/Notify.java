@@ -36,8 +36,12 @@ public class Notify {
 	private long notifyId;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "userId")
+	@JoinColumn(name = "receiverUserId")
 	private User receiver;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "senderUserId")
+	private User sender;
 	
 	@Column(name = "notify_type", length = 1)
 	@Size(min = 1, max = 1)
@@ -46,8 +50,11 @@ public class Notify {
 	@Column(name = "notify_date")
 	private LocalDateTime notifyDate;
 	
-	@Column(name = "type_id")
-	private long typeId;
+	@Column(name = "board_id")
+	private Long boardId;
+	
+	@Column(name = "dog_id")
+	private long dogId;
 	
 	@Column(name = "check")
 	private boolean check;

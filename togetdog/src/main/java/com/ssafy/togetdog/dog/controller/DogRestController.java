@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.togetdog.dog.model.dto.DogRegistParamDTO;
 import com.ssafy.togetdog.dog.model.dto.DogUpdateParamDTO;
 import com.ssafy.togetdog.dog.model.service.DogService;
-import com.ssafy.togetdog.user.controller.UserRestController;
 import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.service.JwtService;
 import com.ssafy.togetdog.user.model.service.UserService;
@@ -39,7 +38,7 @@ import lombok.RequiredArgsConstructor;
 public class DogRestController {
 
 	private static final String SUCCESS = "success";
-	private final Logger logger = LoggerFactory.getLogger(UserRestController.class);
+	private final Logger logger = LoggerFactory.getLogger(DogRestController.class);
 	
 	private final DogService dogService;
 	private final JwtService jwtService;
