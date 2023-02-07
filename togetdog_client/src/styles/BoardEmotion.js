@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const BoardContainer = styled.div`
   display: flex;
@@ -86,7 +86,7 @@ export const BoardContentBox = styled.div`
 `;
 
 export const BoardCommentBox = styled.div`
-  padding: 0 2rem;
+  padding: 1rem 2rem;
   display: flex;
   flex-direction: column;
 

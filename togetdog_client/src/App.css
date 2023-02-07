@@ -56,8 +56,12 @@ body {
   color: #b7147e;
 }
 
-.black-font {
+.white-font {
   color: #fff;
+}
+
+.red-font {
+  color: #ef5a5f;
 }
 
 .flex {
