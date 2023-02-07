@@ -190,12 +190,16 @@ const Feed = () => {
                 <img src={MenuIcon} className='menu-icon' onClick={() => setMenuBtnClick(true)} alt='menu' />
                 <div className='follow-info flex-column'>
                   {currentDog ? (
-                    <div onClick={() => navigate('/')}>
+                    <div
+                      onClick={() =>
+                        navigate(`/followerlist/${currentDog.dogId}`, { state: { dogId: currentDog.dogId } })
+                      }
+                    >
                       <span className='follow-text'>팔로워</span>
                       {currentDog.dogFollowerCnt}
                     </div>
                   ) : null}
-                  <div>
+                  <div onClick={() => navigate(`/followinglist/${user.userId}`, { state: { userId: user.userId } })}>
                     <span className='follow-text'>팔로잉</span>
                     {feedUserData.followCnt}
                   </div>
@@ -211,7 +215,7 @@ const Feed = () => {
               <div className='special-text'>{currentDog.description}</div>
               <div className='characters-box'>
                 <OrangeCharacterBtn text={`#${currentDog.dogNeutered ? '중성화' : '중성화 X'}`} />
-                <YellowCharacterBtn text={`#${currentDog.dogCharacter1 === 'obedient' ? '순종적' : '비순종적'}`} />
+                <YellowCharacterBtn text={`#${currentDog.dogCharacter1 === 'obedient' ? '온순함' : '공격적'}`} />
                 <YellowCharacterBtn text={`#${currentDog.dogCharacter2 === 'active' ? '활동적' : '비활동적'}`} />
               </div>
             </FeedProfileBottom>
@@ -225,6 +229,7 @@ const Feed = () => {
           <FeedPhotoWrapper>
             {filteredPhotoData.map((filteredPhoto) => (
               <FeedPhoto
+                key={filteredPhoto.boardId}
                 onClick={() => navigate(`/board/${filteredPhoto.boardId}`)}
                 src={`https://i8a807.p.ssafy.io/image/board/` + filteredPhoto.image}
               />
