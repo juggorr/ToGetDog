@@ -134,3 +134,9 @@ export const BoardCommentBox = styled.div`
     flex: 0.8;
   }
 `;
+
+export const ContentEditImg = styled.img`
+  width: 12rem;
+  height: 12rem;
+  object-fit: cover;
+`;

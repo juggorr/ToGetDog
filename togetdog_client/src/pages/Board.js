@@ -39,7 +39,7 @@ const Board = () => {
     }
 
     axios
-      .get(`https://togetdog.site/api/board/${boardId}`, {
+      .get(`${BACKEND_URL}/board/${boardId}`, {
         headers: {
           Authorization: auth,
         },
@@ -65,7 +65,7 @@ const Board = () => {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="loading">Loading...</div>;
   }
 
   return (

@@ -38,7 +38,7 @@ const BoardBox = ({ boardData, dogData, likeStatus, setLikeStatus }) => {
       .then((res) => {
         console.log(res.data);
         console.log("게시물 삭제가 완료되었습니다.");
-        window.location.replace(`/feed/${user.userId}`);
+        navigate(`/feed/${user.userId}`);
       })
       .catch((err) => {
         console.log(err);
@@ -56,7 +56,11 @@ const BoardBox = ({ boardData, dogData, likeStatus, setLikeStatus }) => {
             }
           }}>
           <MenuModalBody>
-            <div className="single-menu">게시물 수정</div>
+            <div
+              className="single-menu"
+              onClick={() => navigate(`/editBoard/${boardData.boardId}`)}>
+              게시물 수정
+            </div>
             <div className="single-menu red-font" onClick={() => deleteBoard()}>
               게시물 삭제
             </div>
