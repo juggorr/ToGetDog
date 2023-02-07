@@ -48,7 +48,7 @@ public class LikeService {
 		likeRepository.deleteByBoardAndUser(board, user);
 	}
 
-	public Long getLikes(long boardId) {
+	public int getLikes(long boardId) {
 		BoardDTO boardDto = new BoardDTO();
 		boardDto.setBoardId(boardId);
 		boardDto.setImage("");

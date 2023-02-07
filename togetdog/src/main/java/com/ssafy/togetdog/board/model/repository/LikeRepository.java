@@ -10,7 +10,7 @@ import com.ssafy.togetdog.user.model.entity.User;
 
 public interface LikeRepository extends JpaRepository<LikePost, Long> {
 
-	Long countByBoard(Board board);
+	int countByBoard(Board board);
 
 	Optional<LikePost> findByBoardAndUser(Board board, User user);
 
