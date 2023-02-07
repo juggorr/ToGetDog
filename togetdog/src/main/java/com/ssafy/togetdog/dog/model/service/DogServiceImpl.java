@@ -114,9 +114,8 @@ public class DogServiceImpl implements DogService {
 	@Override
 	public void checkInsertPossible(User user) {
 		List<Dog> dogs = findDogsByUser(user);
-		System.out.println(dogs.size());
-		if (dogs.size() > 3) {
-			throw new ExcessNumberOfDogsException(dogs.size() + "마리가 이미 등록되어 있어서 더 이상 등록이 불가합니다.");
+		if (dogs.size() >= 3) {
+			throw new ExcessNumberOfDogsException("해당 유저에게" + dogs.size() + "마리가 이미 등록되어 있어서 더 이상 등록이 불가합니다.");
 		}
 	}
 
