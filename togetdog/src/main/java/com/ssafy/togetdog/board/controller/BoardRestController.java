@@ -80,13 +80,17 @@ public class BoardRestController {
 			@RequestParam(value="pageNo") int pageNo){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
-//		List<DogInfoRespDTO> followList = followService.getFollowingList(myId);
-//		List<Long> dogIds = new ArrayList<Long>();
-//		for (DogInfoRespDTO follow : followList) {
-//			dogIds.add(follow.getDogId());
-//		}
-//		Page<BoardDTO> boardList = boardService.getAllByDogIds(dogIds, pageNo - 1);
-		Page<BoardDTO> boardList = boardService.findAll(pageNo - 1);
+		Long userId = jwtService.getUserId(token);
+//		Long userId = 4L;
+		
+		List<DogInfoRespDTO> followList = followService.getFollowingList(userId);
+		logger.info("return boardList : {}", followList);
+		List<Long> dogIds = new ArrayList<Long>();
+		for (DogInfoRespDTO follow : followList) {
+			dogIds.add(follow.getDogId());
+		}
+		Page<BoardDTO> boardList = boardService.getAllInDogIds(dogIds, pageNo - 1);
+//		Page<BoardDTO> boardList = boardService.findAll(pageNo - 1);
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("boardList", boardList.getContent());

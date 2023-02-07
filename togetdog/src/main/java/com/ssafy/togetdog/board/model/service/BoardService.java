@@ -1,6 +1,8 @@
 package com.ssafy.togetdog.board.model.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,30 +108,25 @@ public class BoardService {
         return boardList; 
 	}
 
-//	public Page<BoardDTO> getAllByDogIds(List<Long> dogIds, int page) {
-//		Pageable pageable = PageRequest.of(page, 96);
-//		List<Dog> dogs = new ArrayList<Dog>();
-//		for (long dogId : dogIds) {
-//			Dog dog = new Dog();
-//			dog.setDogId(dogId);
-//			dogs.add(dog);
-//		}
-//		Page<Board> bList = boardRepository.findAllByDog(dogs, pageable);
-//		logger.debug("return found bList : {}", bList);
-//
-//		Page<BoardDTO> boardList = bList.map(b -> new BoardDTO(b));
-////		List<BoardDTO> boardList = bList.stream().map(b -> new BoardDTO(b))
-////                .collect(Collectors.toList());
-//		
-//        return boardList; 
-//		
-//	}
-
 	public Page<BoardDTO> findAll(int page) {
 		Pageable pageable = PageRequest.of(page, 96);
 		Page<Board> bList = boardRepository.findAll(pageable);
 		Page<BoardDTO> boardList = bList.map(b -> new BoardDTO(b));
 		return boardList;
+	}
+
+	public Page<BoardDTO> getAllInDogIds(List<Long> dogIds, int page) {
+		Pageable pageable = PageRequest.of(page, 30);
+		List<Dog> dogList = new ArrayList<Dog>();
+		for (Long id : dogIds) {
+			Dog dog = new Dog();
+			dog.setDogId(id);
+			dogList.add(dog);
+		}
+		Page<BoardDTO> fbList = boardRepository.findAllByDogIn(dogList, pageable);
+		logger.debug("======= fbList : {}", fbList.getContent());
+		
+		return fbList;
 	}
 
 }
