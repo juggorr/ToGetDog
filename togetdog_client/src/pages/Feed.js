@@ -190,12 +190,16 @@ const Feed = () => {
                 <img src={MenuIcon} className='menu-icon' onClick={() => setMenuBtnClick(true)} alt='menu' />
                 <div className='follow-info flex-column'>
                   {currentDog ? (
-                    <div onClick={() => navigate('/')}>
+                    <div
+                      onClick={() =>
+                        navigate(`/followerlist/${currentDog.dogId}`, { state: { dogId: currentDog.dogId } })
+                      }
+                    >
                       <span className='follow-text'>팔로워</span>
                       {currentDog.dogFollowerCnt}
                     </div>
                   ) : null}
-                  <div>
+                  <div onClick={() => navigate(`/followinglist/${user.userId}`, { state: { userId: user.userId } })}>
                     <span className='follow-text'>팔로잉</span>
                     {feedUserData.followCnt}
                   </div>
