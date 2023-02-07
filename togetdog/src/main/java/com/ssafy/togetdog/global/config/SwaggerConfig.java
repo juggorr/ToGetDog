@@ -45,10 +45,15 @@ public class SwaggerConfig {
 	public Docket user() {
 		return getDocket("USER", true, "user");
 	}
-	
+
 	@Bean
 	public Docket dog() {
 		return getDocket("DOG", true, "dog");
+	}
+	
+	@Bean
+	public Docket search() {
+		return getDocket("SEARCH", true, "search");
 	}
 	
 	@Bean
