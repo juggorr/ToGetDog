@@ -29,7 +29,7 @@ const New = () => {
 
   useEffect(() => {
     axios
-      .get(`${DUMMY_URL}/user/includesDog/${user.userId}`, {
+      .get(`${BACKEND_URL}/user/includesDog/${user.userId}`, {
         headers: {
           Authorization: auth,
         },
@@ -93,7 +93,7 @@ const New = () => {
         new Blob([JSON.stringify(boardContent)], { type: "application/json" })
       );
       await axios
-        .post(`${DUMMY_URL}/board`, formData, {
+        .post(`${BACKEND_URL}/board`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
