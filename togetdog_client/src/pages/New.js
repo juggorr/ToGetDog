@@ -29,14 +29,14 @@ const New = () => {
 
   useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/user/includesDog/${user.userId}`, {
+      .get(`${DUMMY_URL}/user/includesDog/${user.userId}`, {
         headers: {
           Authorization: auth,
         },
       })
       .then((response) => {
-        setUserData(response.data);
-        setSelectedDog(response.data.dogs[0].dogId);
+        setUserData(response.data.user);
+        setSelectedDog(response.data.user.dogs[0].dogId);
       })
       .catch((error) => {
         console.log(error);
@@ -93,7 +93,7 @@ const New = () => {
         new Blob([JSON.stringify(boardContent)], { type: "application/json" })
       );
       await axios
-        .post(`${BACKEND_URL}/board`, formData, {
+        .post(`${DUMMY_URL}/board`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
