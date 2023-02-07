@@ -6,10 +6,21 @@ export const FeedContainer = styled.div`
   display: flex;
   flex-direction: column;
   font-family: "Noto Sans KR", sans-serif;
+
+  .no-photo {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 export const FeedProfileWrapper = styled.div`
   padding: 1rem 1rem 0 1rem;
+
+  .margin-bottom {
+    height: 2rem;
+  }
 `;
 
 export const FeedPhotoWrapper = styled.div`
@@ -41,7 +52,12 @@ export const FeedProfileTop = styled.div`
   background-color: #fff;
 
   .dog-info-box {
-    width: 40%;
+    width: 45%;
+    padding-left: 1rem;
+  }
+
+  .no-dog-info-box {
+    width: 50%;
     padding-left: 1rem;
   }
 
@@ -85,6 +101,10 @@ export const FeedProfileTop = styled.div`
     position: absolute;
     top: 8.5rem;
     padding-left: 4.5rem;
+  }
+
+  .no-dogs-txt {
+    font-size: 0.9rem;
   }
 `;
 
