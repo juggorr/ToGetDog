@@ -21,6 +21,7 @@ public interface UserService {
 	User loginService(UserLoginParamDTO loginDTO);
 	
 	/* about delete */
+	void withdrawal(long userId);
 	void deleteUser(long userId);
 	
 	/* about update */
