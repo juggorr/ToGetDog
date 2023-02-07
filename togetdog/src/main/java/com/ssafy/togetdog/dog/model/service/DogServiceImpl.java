@@ -1,6 +1,5 @@
 package com.ssafy.togetdog.dog.model.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,7 +21,7 @@ import com.ssafy.togetdog.dog.model.repository.DogRepository;
 import com.ssafy.togetdog.global.exception.ExcessNumberOfDogsException;
 import com.ssafy.togetdog.global.exception.InvalidInputException;
 import com.ssafy.togetdog.global.exception.UnAuthorizedException;
-import com.ssafy.togetdog.global.util.FileUploadUtil;
+import com.ssafy.togetdog.global.util.FileUtil;
 import com.ssafy.togetdog.user.model.entity.User;
 
 import lombok.RequiredArgsConstructor;
@@ -33,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class DogServiceImpl implements DogService {
 
 	private final DogRepository dogRepository;
-	private final FileUploadUtil fileUploadUtil;
+	private final FileUtil fileUtil;
 
 	@Value("${file.path.upload-images-dogs}")
 	private String dogImageFilePath;
@@ -59,20 +58,23 @@ public class DogServiceImpl implements DogService {
 	/* 강아지 정보 등록하기 */
 	@Override
 	public void registDog(User user, DogRegistParamDTO dogDTO, MultipartFile image)
-			throws IllegalStateException, IOException, InvalidInputException, ExcessNumberOfDogsException {
+			throws IllegalStateException, IOException, ExcessNumberOfDogsException {
 		if (dogDTO == null || image.isEmpty()) {
 			throw new InvalidInputException();
 		}
 		if (user == null) {
 			throw new UnAuthorizedException();
 		}
-		// InetAddress : 부팅시 한번만 static으로 사용하지 않으면 성능이슈가 있다고 합니다.
-		// String hostname = InetAddress.getLocalHost().getHostName();
-		checkInsertPossible(user);
-		checkRegistrationValidation(dogDTO);
-		
-		String savePath = fileUploadUtil.fileUpload(image, dogImageFilePath);
-		dogRepository.save(dogDTO.of(dogDTO, user, savePath));
+		try {
+			checkInsertPossible(user);
+			checkRegistrationValidation(dogDTO);
+			String savePath = fileUtil.fileUpload(image, dogImageFilePath);
+			dogRepository.save(dogDTO.of(dogDTO, user, savePath));
+		} catch(InvalidInputException e) {
+			throw new InvalidInputException();
+		} catch (ExcessNumberOfDogsException e) {
+			throw new ExcessNumberOfDogsException();
+		}
 	}
 	
 	/* 강아지 정보 삭제하기 */
@@ -86,15 +88,14 @@ public class DogServiceImpl implements DogService {
 		if (dog.getUser().getUserId() != userId) {
 			throw new UnAuthorizedException();
 		}
-		File file = new File(dog.getDogImage());
-		file.delete();
+		fileUtil.fileDelete(dog.getDogImage(), dogImageFilePath);
 		dogRepository.delete(dog);
 	}
 	
 	/* 강아지 정보 수정하기 */
 	@Override
 	public void updateDog(User user, DogUpdateParamDTO dogDTO, MultipartFile image)
-			throws IllegalStateException, IOException {
+			throws IllegalStateException, IOException, InvalidInputException {
 		if (dogDTO == null) {
 			throw new InvalidInputException();
 		}
@@ -104,12 +105,14 @@ public class DogServiceImpl implements DogService {
 		checkRegistrationValidation(dogDTO);
 		Dog dog = findDogByDogId(dogDTO.getDogId());
 		
-		// file 수정은 안해도 되는 경우
+		// file 변경이 없는 경우
 		if (image.isEmpty()) {
-			dogRepository.save(DogUpdateParamDTO.of(dogDTO));
+			dogRepository.save(dogDTO.of(dogDTO, dog, user));
 		} else {
-			String savePath = fileUploadUtil.fileUpload(image, dogImageFilePath);
-			dogRepository.save(dogDTO.of(dogDTO, user, savePath));
+			// file 변경이 있는 경우
+			fileUtil.fileDelete(dog.getDogImage(), dogImageFilePath);
+			String savePath = fileUtil.fileUpload(image, dogImageFilePath);
+			dogRepository.save(dogDTO.of(dogDTO, dog, user, savePath));
 		}
 	}
 	
@@ -170,7 +173,7 @@ public class DogServiceImpl implements DogService {
 		if (!dogDTO.getDogCharacter1().equals("obedient") && !dogDTO.getDogCharacter1().equals("disobedient")) {
 			throw new InvalidInputException();
 		}
-		if (!dogDTO.getDogCharacter2().equals("active") && !dogDTO.getDogCharacter2().equals("inacvice")) {
+		if (!dogDTO.getDogCharacter2().equals("active") && !dogDTO.getDogCharacter2().equals("inactive")) {
 			throw new InvalidInputException();
 		}
 		if (dogDTO.getDescription().length() > 40) {

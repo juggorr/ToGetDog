@@ -1,6 +1,7 @@
 package com.ssafy.togetdog.dog.model.dto;
 
 import com.ssafy.togetdog.dog.model.entity.Dog;
+import com.ssafy.togetdog.user.model.entity.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,40 +18,38 @@ public class DogUpdateParamDTO extends DogRegistParamDTO {
 	private long dogId;
 	private String dogImage;
 	
-	public static Dog of(DogUpdateParamDTO dogDTO, String image) {
+	public Dog of(DogUpdateParamDTO dogDTO, Dog dog, User user) {
 		String gender = dogDTO.getDogGender();
 		if (gender.equals("female")) gender = "f";
 		else gender = "m";
-		Dog dog = Dog.builder()
-				.dogName(dogDTO.getDogName())
-				.dogGender(gender)
-				.dogType(dogDTO.getDogType())
-				.dogBirth(dogDTO.getDogBirth())
-				.dogWeight(dogDTO.getDogWeight())
-				.dogNeutered(dogDTO.isDogNeutered())
-				.dogCharacter1(dogDTO.getDogCharacter1().charAt(0) + "")
-				.dogCharacter2(dogDTO.getDogCharacter2().charAt(0) + "")
-				.description(dogDTO.getDescription())
-				.dogImage(image)
-				.build();
+		dog.setUser(user);
+		dog.setDogName(dogDTO.getDogName());
+		dog.setDogGender(gender);
+		dog.setDogType(dogDTO.getDogType());
+		dog.setDogBirth(dogDTO.getDogBirth());
+		dog.setDogWeight(dogDTO.getDogWeight());
+		dog.setDogNeutered(dogDTO.isDogNeutered());
+		dog.setDogCharacter1(dogDTO.getDogCharacter1().charAt(0) + "");
+		dog.setDogCharacter2(dogDTO.getDogCharacter2().charAt(0) + "");
+		dog.setDescription(dogDTO.getDescription());
 		return dog;
 	}
 	
-	public static Dog of(DogUpdateParamDTO dogDTO) {
+	public Dog of(DogUpdateParamDTO dogDTO, Dog dog, User user, String image) {
 		String gender = dogDTO.getDogGender();
 		if (gender.equals("female")) gender = "f";
 		else gender = "m";
-		Dog dog = Dog.builder()
-				.dogName(dogDTO.getDogName())
-				.dogGender(gender)
-				.dogType(dogDTO.getDogType())
-				.dogBirth(dogDTO.getDogBirth())
-				.dogWeight(dogDTO.getDogWeight())
-				.dogNeutered(dogDTO.isDogNeutered())
-				.dogCharacter1(dogDTO.getDogCharacter1().charAt(0) + "")
-				.dogCharacter2(dogDTO.getDogCharacter2().charAt(0) + "")
-				.description(dogDTO.getDescription())
-				.build();
+		dog.setUser(user);
+		dog.setDogName(dogDTO.getDogName());
+		dog.setDogGender(gender);
+		dog.setDogType(dogDTO.getDogType());
+		dog.setDogBirth(dogDTO.getDogBirth());
+		dog.setDogWeight(dogDTO.getDogWeight());
+		dog.setDogNeutered(dogDTO.isDogNeutered());
+		dog.setDogCharacter1(dogDTO.getDogCharacter1().charAt(0) + "");
+		dog.setDogCharacter2(dogDTO.getDogCharacter2().charAt(0) + "");
+		dog.setDescription(dogDTO.getDescription());
+		dog.setDogImage(image);
 		return dog;
 	}
 }
