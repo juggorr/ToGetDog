@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.togetdog.board.model.dto.BoardDTO;
 import com.ssafy.togetdog.board.model.dto.CommentDTO;
@@ -33,6 +35,7 @@ import com.ssafy.togetdog.board.model.service.CommentService;
 import com.ssafy.togetdog.board.model.service.LikeService;
 import com.ssafy.togetdog.dog.model.dto.DogInfoForUserDTO;
 import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
+import com.ssafy.togetdog.dog.model.dto.DogRegistParamDTO;
 import com.ssafy.togetdog.dog.model.service.DogService;
 import com.ssafy.togetdog.follow.model.service.FollowService;
 import com.ssafy.togetdog.user.model.dto.UserIncludesDogsDTO;
@@ -185,12 +188,13 @@ public class BoardRestController {
 	@ApiOperation(value = "게시글 등록", notes = "게시글을 등록함")
 	@PostMapping("/board")
 	public ResponseEntity<?> addBoard(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@RequestBody BoardDTO boardDto) {
+			@RequestBody BoardDTO boardDTO, @RequestPart(value="dogProfile") @ApiParam(required = true) MultipartFile boardImage) {
+		logger.info("Dog registration parameter : {} {}", boardDTO, boardImage.getOriginalFilename());
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
 		
 		resultMap.put("result", SUCCESS);
-		resultMap.put("boardId", boardService.save(boardDto));
+		resultMap.put("boardId", boardService.save(boardDTO, boardImage));
 		resultMap.put("msg", "게시물이 등록되었습니다.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
