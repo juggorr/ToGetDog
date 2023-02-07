@@ -36,7 +36,7 @@ const New = () => {
       })
       .then((response) => {
         setUserData(response.data);
-        setSelectedDog(userData.dog[0].dogId);
+        setSelectedDog(response.data.dogs[0].dogId);
       })
       .catch((error) => {
         console.log(error);
@@ -46,20 +46,21 @@ const New = () => {
 
   const DogImages = (item) => {
     return (
-      <DogImgWrapper key={item.dog.dogId}>
+      <DogImgWrapper key={item.dogs.dogId}>
         <div
           className={
-            selectedDog === item.dog.dogId
+            selectedDog === item.dogs.dogId
               ? "dogProfileCircle"
               : "dogProfileCircle disabled"
           }
           onClick={() => {
-            setSelectedDog(item.dog.dogId);
-          }}>
+            setSelectedDog(item.dogs.dogId);
+          }}
+        >
           <img
             className="dogProfileImg"
-            src={`https://i8a807.p.ssafy.io/image/dog/` + item.dog.dogProfile}
-            alt={item.dog.dogName}
+            src={item.dogs.dogProfile}
+            alt={item.dogs.dogName}
           />
         </div>
       </DogImgWrapper>
@@ -115,9 +116,9 @@ const New = () => {
           {"  "}누구의 사진인가요?
         </p>
         <div className="dogImageWrapper">
-          {userData.dog &&
-            userData.dog.map((item, idx) => (
-              <DogImages dog={item} key={item.dogId} idx={idx}></DogImages>
+          {userData.dogs &&
+            userData.dogs.map((item, idx) => (
+              <DogImages dogs={item} key={item.dogId} idx={idx}></DogImages>
             ))}
         </div>
         {selectedDog ? null : (
@@ -164,7 +165,8 @@ const New = () => {
         <MainColorShortBtn
           onClick={() => {
             navigate(-1);
-          }}>
+          }}
+        >
           취소
         </MainColorShortBtn>
         <MainColorShortBtn onClick={checkValid}>작성</MainColorShortBtn>
