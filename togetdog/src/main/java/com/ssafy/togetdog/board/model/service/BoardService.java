@@ -1,13 +1,17 @@
 package com.ssafy.togetdog.board.model.service;
 
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.togetdog.board.model.dto.BoardDTO;
 import com.ssafy.togetdog.board.model.dto.BoardShowDTO;
@@ -18,6 +22,8 @@ import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.dog.model.repository.DogRepository;
 import com.ssafy.togetdog.global.exception.InvalidInputException;
+import com.ssafy.togetdog.global.exception.UnAuthorizedException;
+import com.ssafy.togetdog.global.util.FileUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,10 +37,18 @@ public class BoardService {
 	private final BoardRepository boardRepository;
 	private final DogRepository dogRepository;
 	private final LikeRepository likeRepository;
+	private final FileUtil fileUtil;
+	
+	@Value("${file.path.upload-images-boards}")
+	private String boardImageFilePath;
 	
 
-	public Long save(final BoardDTO boardDto) {
-		Board board = boardRepository.save(boardDto.toEntity());
+	public Long save(BoardDTO boardDTO, MultipartFile image ) throws IllegalStateException, IOException {
+		if (boardDTO == null || image.isEmpty()) {
+			throw new InvalidInputException("필요한 값이 들어오지 않았습니다.");
+		}
+		String savePath = fileUtil.fileUpload(image, boardImageFilePath);
+		Board board = boardRepository.save(boardDTO.toEntity(savePath));
 		return board.getBoardId();
 	}
 
