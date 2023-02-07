@@ -1,5 +1,6 @@
 package com.ssafy.togetdog.board.controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -184,11 +185,13 @@ public class BoardRestController {
 	 * write board
 	 * @param boardDTO
 	 * @return status 200, 401, 500
+	 * @throws IOException 
+	 * @throws IllegalStateException 
 	 */
 	@ApiOperation(value = "게시글 등록", notes = "게시글을 등록함")
 	@PostMapping("/board")
 	public ResponseEntity<?> addBoard(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@RequestBody BoardDTO boardDTO, @RequestPart(value="dogProfile") @ApiParam(required = true) MultipartFile boardImage) {
+			@RequestBody BoardDTO boardDTO, @RequestPart(value="dogProfile") @ApiParam(required = true) MultipartFile boardImage) throws IllegalStateException, IOException {
 		logger.info("Dog registration parameter : {} {}", boardDTO, boardImage.getOriginalFilename());
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
