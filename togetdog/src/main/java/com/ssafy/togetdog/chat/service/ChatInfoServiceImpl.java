@@ -85,7 +85,7 @@ public class ChatInfoServiceImpl implements ChatInfoService{
 		long roomId = chatRoomRepo.save(new ChatRoom()).getId();
 		ChatMsg firstChat = chatMsgRepo.save(ChatMsg.builder()
 				.idx(0)
-				.userId(0)
+				.userId(1)
 				.roomId(roomId)
 				.content("채팅방에 오신걸 환영합니다")
 				.date(LocalDateTime.now())
