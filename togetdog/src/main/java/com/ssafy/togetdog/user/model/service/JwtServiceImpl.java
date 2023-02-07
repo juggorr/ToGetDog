@@ -92,13 +92,13 @@ public class JwtServiceImpl implements JwtService {
 			logger.debug("claims: {}", claims);
 		} catch (SignatureException | MalformedJwtException e) {
 			logger.error("SignatureException : ", e.getMessage());
-			throw new TokenValidFailedException();
+			throw new TokenValidFailedException("사용할 수 없는 Signature입니다.");
 		} catch (ExpiredJwtException e) {
 			logger.error("Expired JWT token : ", e.getMessage());
-			throw new TokenValidFailedException();
+			throw new TokenValidFailedException("사용 기간이 만료된 토큰입니다.");
 		} catch (Exception e) {
 			logger.error("Unexpected error : ", e.getMessage());
-			throw new TokenValidFailedException();
+			throw new TokenValidFailedException("토큰 검증 중 예상치 못한 오류가 발생했습니다.");
 		}
 	}
 
@@ -109,7 +109,7 @@ public class JwtServiceImpl implements JwtService {
 			claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwtToken);
 		} catch (Exception e) {
 			logger.error("jwt parseClaims error : ", e.getMessage());
-			throw new TokenValidFailedException();
+			throw new TokenValidFailedException("토큰 해석 중 예상치 못한 오류가 발생했습니다.");
 		}
 		Map<String, Object> value = claims.getBody();
 		logger.info("value : {}", value);

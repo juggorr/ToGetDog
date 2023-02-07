@@ -43,7 +43,7 @@ public class DogServiceImpl implements DogService {
 		long dogId = Long.parseLong(dogid);
 		Dog dog = findDogByDogId(dogId);
 		if (dog == null) {
-			throw new InvalidInputException();
+			throw new InvalidInputException("강아지 정보를 찾을 수 없습니다.");
 		} else {
 			double dogWeight = Double.parseDouble(dog.getDogWeight());
 			return DogInfoRespDTO.of(dog, dogWeight);
@@ -60,10 +60,10 @@ public class DogServiceImpl implements DogService {
 	public void registDog(User user, DogRegistParamDTO dogDTO, MultipartFile image)
 			throws IllegalStateException, IOException, InvalidInputException, ExcessNumberOfDogsException {
 		if (dogDTO == null || image.isEmpty()) {
-			throw new InvalidInputException();
+			throw new InvalidInputException("필요한 값이 들어오지 않았습니다.");
 		}
 		if (user == null) {
-			throw new UnAuthorizedException();
+			throw new UnAuthorizedException("등록 권한이 없는 사용자의 접근입니다.");
 		}
 		checkInsertPossible(user);
 		checkRegistrationValidation(dogDTO);
@@ -77,10 +77,10 @@ public class DogServiceImpl implements DogService {
 		long dogId = Long.parseLong(dogid);
 		Dog dog = findDogByDogId(dogId);
 		if (dog == null) {
-			throw new InvalidInputException();
+			throw new InvalidInputException("강아지 정보를 찾을 수 없습니다.");
 		}
 		if (dog.getUser().getUserId() != userId) {
-			throw new UnAuthorizedException();
+			throw new UnAuthorizedException("삭제 권한이 없는 사용자의 접근입니다.");
 		}
 		fileUtil.fileDelete(dog.getDogImage(), dogImageFilePath);
 		dogRepository.delete(dog);
@@ -91,10 +91,10 @@ public class DogServiceImpl implements DogService {
 	public void updateDog(User user, DogUpdateParamDTO dogDTO, MultipartFile image)
 			throws IllegalStateException, IOException, InvalidInputException {
 		if (dogDTO == null) {
-			throw new InvalidInputException();
+			throw new InvalidInputException("파라미터 값이 비어있습니다.");
 		}
 		if (user == null) {
-			throw new UnAuthorizedException();
+			throw new UnAuthorizedException("찾을 수 없는 유저의 접근입니다.");
 		}
 		checkRegistrationValidation(dogDTO);
 		Dog dog = findDogByDogId(dogDTO.getDogId());
@@ -114,8 +114,9 @@ public class DogServiceImpl implements DogService {
 	@Override
 	public void checkInsertPossible(User user) {
 		List<Dog> dogs = findDogsByUser(user);
+		System.out.println(dogs.size());
 		if (dogs.size() > 3) {
-			throw new ExcessNumberOfDogsException();
+			throw new ExcessNumberOfDogsException(dogs.size() + "마리가 이미 등록되어 있어서 더 이상 등록이 불가합니다.");
 		}
 	}
 
@@ -143,14 +144,14 @@ public class DogServiceImpl implements DogService {
 	public void checkRegistrationValidation(DogRegistParamDTO dogDTO) {
 		String dogNameRegexp = "^[가-힇]{1,5}$";
 		if (!Pattern.matches(dogNameRegexp, dogDTO.getDogName())) {
-			throw new InvalidInputException();
+			throw new InvalidInputException("올바르지 않은 강아지 이름입니다.");
 		}
 		String dogGender = dogDTO.getDogGender();
 		if (!dogGender.equals("male") && !dogGender.equals("female")) {
-			throw new InvalidInputException();
+			throw new InvalidInputException("올바르지 않은 강아지 성별 값입니다.");
 		}
 		if (dogDTO.getDogBirth().length() != 6 || dogDTO.getDogWeight().length() > 4)  {
-			throw new InvalidInputException();
+			throw new InvalidInputException("올바르지 않은 강아지 생년월일입니다.");
 		}
 		try {
 			int birthYear = Integer.parseInt(dogDTO.getDogBirth().substring(0, 4));
@@ -158,20 +159,20 @@ public class DogServiceImpl implements DogService {
 			LocalDateTime now = LocalDateTime.now();
 			if (birthYear < 1990 || birthMonth < 1 || birthMonth > 12 || birthYear > now.getYear()
 					|| (birthYear == now.getYear() && birthMonth > now.getMonthValue())) {
-				throw new InvalidInputException();
+				throw new InvalidInputException("올바르지 않은 강아지 생년월일입니다.");
 			}
 			Double.parseDouble(dogDTO.getDogWeight());
 		} catch (NumberFormatException e) {
-			throw new InvalidInputException();
+			throw new InvalidInputException("깅아지 생년월일 값이 숫자가 아닙니다.");
 		}
 		if (!dogDTO.getDogCharacter1().equals("obedient") && !dogDTO.getDogCharacter1().equals("disobedient")) {
-			throw new InvalidInputException();
+			throw new InvalidInputException("강아지 성격1이 올바르지 않습니다.");
 		}
 		if (!dogDTO.getDogCharacter2().equals("active") && !dogDTO.getDogCharacter2().equals("inactive")) {
-			throw new InvalidInputException();
+			throw new InvalidInputException("강아지 성격2가 올바르지 않습니다.");
 		}
 		if (dogDTO.getDescription().length() > 40) {
-			throw new InvalidInputException();
+			throw new InvalidInputException("강아지 특성정보 길이가 너무 깁니다.");
 		}
 	}
 

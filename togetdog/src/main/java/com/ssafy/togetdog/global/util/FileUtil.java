@@ -49,7 +49,7 @@ public class FileUtil {
 			image.transferTo(new File(folder, saveFileName));
 			return today + File.separator + saveFileName;
 		} else {
-			throw new InvalidInputException();
+			throw new InvalidInputException("비어있는 파일입니다.");
 		}
 	}
 	
