@@ -14,8 +14,8 @@ import Girl from '../assets/girl.png';
 import MenuIcon from '../assets/menu_icon.png';
 import '../components/FontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useRecoilValue } from 'recoil';
-import { authAtom } from '../recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { authAtom, userState } from '../recoil';
 import { useLocation, useNavigate } from 'react-router';
 import { BACKEND_URL } from '../config';
 import axios from 'axios';
@@ -23,30 +23,11 @@ import axios from 'axios';
 const Board = () => {
   const auth = useRecoilValue(authAtom);
   const navigate = useNavigate();
+  const [user, setUser] = useRecoilState(userState);
 
   const location = useLocation();
   const boardId = location.pathname.split('/').reverse()[0];
 
-  // const board = {
-  //   likeStatus: true,
-  //   likeCnt: 123,
-  //   content: '콜라 오늘 미용하고 왔어요 ㅎㅎ',
-  //   comments: [
-  //     { commentUser: '요닝', commentContent: '콜라 미용한거 너무 귀엽당 ♥' },
-  //     {
-  //       commentUser: '해피맘',
-  //       commentContent: '내일 산책할 때 미용한 모습 볼 수 있겠네 ㅎㅎ',
-  //     },
-  //   ],
-  // };
-  // const currentDog = {
-  //   dogName: '콜라',
-  //   dogType: '믹스견',
-  //   dogAge: 25,
-  //   dogGender: 'male',
-  //   dogImg:
-  //     'https://yt3.googleusercontent.com/AexQl7InKoQKDSvVffy6OFcwTi4BFIcyTlzCjL8_CLuLRO9aDNtXRwq7t7bTPRcpk-hCEiv0q7E=s900-c-k-c0x00ffffff-no-rj',
-  // };
   const [boardData, setBoardData] = useState();
   const [dogData, setDogData] = useState();
   const [menuBtnClick, setMenuBtnClick] = useState(false);
@@ -60,7 +41,7 @@ const Board = () => {
     }
 
     axios
-      .get(`https://togetdog.site/api/${boardId}`, {
+      .get(`${BACKEND_URL}/${boardId}`, {
         headers: {
           Authorization: auth,
         },
@@ -70,11 +51,12 @@ const Board = () => {
         console.log(resp.data);
         setBoardData(resp.data.board);
         setDogData(resp.data.board.dog);
-        setLikeStatus(resp.data.board.likeStatus);
+        setLikeStatus(resp.data.board.liked);
         setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        if (err.response.status === 500) navigate('/*');
         console.log('게시물 불러오기 실패');
       });
   }, []);
@@ -87,8 +69,8 @@ const Board = () => {
     <>
       <BoardContainer>
         <BoardUserInfoBox>
-          <div className='board-info-box-left'>
-            <BoardUserPic src={dogData.dogImg}></BoardUserPic>
+          <div className='board-info-box-left' onClick={() => navigate(`/feed/${boardData.userId}`)}>
+            <BoardUserPic src={`https://i8a807.p.ssafy.io/image/dog/` + dogData.dogProfile}></BoardUserPic>
             <BoardUserInfo>
               <div className='dog-name'>
                 {dogData.dogName}
@@ -105,9 +87,11 @@ const Board = () => {
               </div>
             </BoardUserInfo>
           </div>
-          <div className='board-info-box-right'>
-            <img src={MenuIcon} className='menu-icon' onClick={() => setMenuBtnClick(true)} alt='menu' />
-          </div>
+          {user.userId === boardData.userId ? (
+            <div className='board-info-box-right'>
+              <img src={MenuIcon} className='menu-icon' onClick={() => setMenuBtnClick(true)} alt='menu' />
+            </div>
+          ) : null}
         </BoardUserInfoBox>
         <BoardPicBox>
           <img src={`https://i8a807.p.ssafy.io/image/board/` + boardData.image} className='board-pic' alt='board_img' />
@@ -139,7 +123,9 @@ const Board = () => {
           <div className='comment-list-box'>
             {boardData.comments.map((comment) => (
               <div className='comment-box' key={comment.commentId}>
-                <div className='comment-user'>{comment.userNickname}</div>
+                <div className='comment-user' onClick={() => navigate(`/feed/${comment.userId}`)}>
+                  {comment.nickName}
+                </div>
                 <div className='comment-content'>{comment.commentContent}</div>
               </div>
             ))}
