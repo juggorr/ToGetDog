@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { userState } from "../recoil";
@@ -70,106 +70,100 @@ const SingleFriend = ({ item }) => {
   );
 };
 
+const FilteredFriends = (props) => {
+  const [filter, setFilter] = useState([]);
+
+  useEffect(() => {
+    const tempFilter = [];
+    if (props.friends) {
+      for (let i = 0; i < props.friends.length; i++) {
+        if (props.checkedItems.size === 0) {
+          tempFilter.push(props.friends[i]);
+        } else if (
+          props.checkedItems.has(0) &&
+          props.friends[i].dogCharacter1 === "obedient"
+        ) {
+          tempFilter.push(props.friends[i]);
+        } else if (
+          props.checkedItems.has(1) &&
+          props.friends[i].dogCharacter1 === "disobedient"
+        ) {
+          tempFilter.push(props.friends[i]);
+        } else if (
+          props.checkedItems.has(2) &&
+          props.friends[i].dogCharacter2 === "active"
+        ) {
+          tempFilter.push(props.friends[i]);
+        } else if (
+          props.checkedItems.has(3) &&
+          props.friends[i].dogCharacter2 === "inactive"
+        ) {
+          tempFilter.push(props.friends[i]);
+        }
+      }
+    }
+    console.log(tempFilter);
+    setFilter(tempFilter);
+  }, [props.checkedItems]);
+
+  return (
+    <div>
+      {filter.map((item, idx) => (
+        <SingleFriend key={idx} item={item}></SingleFriend>
+      ))}
+    </div>
+  );
+};
+
 const FriendsList = ({ friends }) => {
   const [checkedItems, setCheckedItems] = useState(new Set());
 
-  // useState로 갈기
+  const issues = [...Array(4).keys()]; // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  const characters = ["순종적", "비순종적", "활동적", "비활동적"];
 
-  // const renderFriends = () => {
-  //   const tempFriendList = [];
-
-  //   if (friends) {
-  //     console.log(checkedItems);
-  //     for (let i = 0; i < friends.length; i++) {
-  //       const singleFriend = (
-  //         <SingleFriend key={i} item={friends[i]}></SingleFriend>
-  //       );
-  //       console.log(checkedItems);
-  //       console.log(tempFriendList);
-  //       if (checkedItems.size === 0) {
-  //         tempFriendList.push(singleFriend);
-  //       } else if (
-  //         checkedItems.has(0) &&
-  //         friends[i].dogCharacter1 === "obedient"
-  //       ) {
-  //         tempFriendList.push(singleFriend);
-  //         console.log("ok");
-  //       } else if (
-  //         checkedItems.has(1) &&
-  //         friends[i].dogCharacter1 === "disobedient"
-  //       ) {
-  //         tempFriendList.push(singleFriend);
-  //       } else if (
-  //         checkedItems.has(2) &&
-  //         friends[i].dogCharacter2 === "active"
-  //       ) {
-  //         tempFriendList.push(singleFriend);
-  //       } else if (
-  //         checkedItems.has(3) &&
-  //         friends[i].dogCharacter2 === "inactive"
-  //       ) {
-  //         tempFriendList.push(singleFriend);
-  //       }
-  //     }
-  //   }
-  //   // setFriendList(tempFriendList);
-  //   return tempFriendList;
-  // };
-
-  const IssueList = () => {
-    const issues = [...Array(4).keys()]; // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    const characters = ["순종적", "비순종적", "활동적", "비활동적"];
-
-    const Issue = ({ issue }) => {
-      const [bChecked, setChecked] = useState(false);
-      const checkHandler = ({ target }) => {
-        setChecked(!bChecked);
-        checkedItemHandler(issue, target.checked);
-      };
-
-      return (
-        <div>
-          <input
-            type="checkbox"
-            checked={bChecked}
-            onChange={(e) => checkHandler(e)}
-          />
-        </div>
-      );
-    };
-
-    const checkedItemHandler = (id, isChecked) => {
-      if (isChecked) {
-        checkedItems.add(id);
-        setCheckedItems(checkedItems);
-      } else if (!isChecked && checkedItems.has(id)) {
-        checkedItems.delete(id);
-        setCheckedItems(checkedItems);
-      }
-      // console.log(checkedItems);
+  const Issue = ({ issue }) => {
+    const [bChecked, setChecked] = useState(false);
+    const checkHandler = ({ target }) => {
+      setChecked(!bChecked);
+      checkedItemHandler(issue, target.checked);
     };
 
     return (
-      <>
-        <CheckBoxWrapper>
-          {issues.map((issue, idx) => (
-            <div className="checkBox" key={idx}>
-              <div>{characters[idx]}</div>
-              <Issue issue={issue}></Issue>
-            </div>
-          ))}
-        </CheckBoxWrapper>
-      </>
+      <div>
+        <input
+          type="checkbox"
+          checked={bChecked}
+          onChange={(e) => checkHandler(e)}
+        />
+      </div>
     );
+  };
+
+  const checkedItemHandler = (id, isChecked) => {
+    if (isChecked) {
+      checkedItems.add(id);
+      setCheckedItems(checkedItems);
+    } else if (!isChecked && checkedItems.has(id)) {
+      checkedItems.delete(id);
+      setCheckedItems(checkedItems);
+    }
+    console.log(checkedItems);
   };
 
   return (
     <FriendListWrapper>
-      <IssueList></IssueList>
-      {friends.map((item, idx) => (
-        <SingleFriend key={idx} item={item}></SingleFriend>
-      ))}
-      {/* {renderFriends()} */}
+      <CheckBoxWrapper>
+        {issues.map((issue, idx) => (
+          <div className="checkBox" key={idx}>
+            <div>{characters[idx]}</div>
+            <Issue issue={issue}></Issue>
+          </div>
+        ))}
+      </CheckBoxWrapper>
+      <FilteredFriends
+        friends={friends}
+        checkedItems={checkedItems}
+      ></FilteredFriends>
     </FriendListWrapper>
   );
 };
