@@ -160,15 +160,16 @@ public class BoardRestController {
 	 */
 	@ApiOperation(value = "게시글 단건 가져오기", notes = "boardId에 해당하는 게시글 반환")
 	@GetMapping("/{boardId}")
-	public ResponseEntity<?> getBoard(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+	public ResponseEntity<?> getBoard(/*@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,*/
 			@PathVariable(value="boardId") long boardId){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		jwtService.validateToken(token);
+//		jwtService.validateToken(token);
 		
+		logger.info("return found boardDTO =================== : {}", boardService.getOne(boardId));
 		BoardShowDTO boardDto = boardService.getOne(boardId);
-		logger.info("retrun found board : {}", boardDto);
+//		logger.info("return found boardDTO =================== : {}", boardDto.);
 		boardDto.setComments(commentService.findAllCommentsInBoard(boardId));
-		logger.info("retrun found board : {}", boardDto);
+//		logger.info("retrun found board : {}", boardDto);
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("board", boardDto);
