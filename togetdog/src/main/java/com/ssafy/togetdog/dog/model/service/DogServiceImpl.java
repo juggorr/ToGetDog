@@ -58,23 +58,17 @@ public class DogServiceImpl implements DogService {
 	/* 강아지 정보 등록하기 */
 	@Override
 	public void registDog(User user, DogRegistParamDTO dogDTO, MultipartFile image)
-			throws IllegalStateException, IOException, ExcessNumberOfDogsException {
+			throws IllegalStateException, IOException, InvalidInputException, ExcessNumberOfDogsException {
 		if (dogDTO == null || image.isEmpty()) {
 			throw new InvalidInputException();
 		}
 		if (user == null) {
 			throw new UnAuthorizedException();
 		}
-		try {
-			checkInsertPossible(user);
-			checkRegistrationValidation(dogDTO);
-			String savePath = fileUtil.fileUpload(image, dogImageFilePath);
-			dogRepository.save(dogDTO.of(dogDTO, user, savePath));
-		} catch(InvalidInputException e) {
-			throw new InvalidInputException();
-		} catch (ExcessNumberOfDogsException e) {
-			throw new ExcessNumberOfDogsException();
-		}
+		checkInsertPossible(user);
+		checkRegistrationValidation(dogDTO);
+		String savePath = fileUtil.fileUpload(image, dogImageFilePath);
+		dogRepository.save(dogDTO.of(dogDTO, user, savePath));
 	}
 	
 	/* 강아지 정보 삭제하기 */
