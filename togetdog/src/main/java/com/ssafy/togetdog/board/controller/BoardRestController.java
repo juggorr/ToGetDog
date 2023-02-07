@@ -196,6 +196,7 @@ public class BoardRestController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
 		
+		boardDTO.setUserId(jwtService.getUserId(token));
 		resultMap.put("result", SUCCESS);
 		resultMap.put("boardId", boardService.save(boardDTO, boardImage));
 		resultMap.put("msg", "게시물이 등록되었습니다.");
