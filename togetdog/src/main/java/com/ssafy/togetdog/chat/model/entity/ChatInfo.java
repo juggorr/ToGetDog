@@ -41,7 +41,7 @@ public class ChatInfo {
 	private long roomId;
 	
 	@Column(name = "activation")
-	private boolean activation;
+	private long activation;
 
 	@Column(name = "start_chat_num")
 	private long start;
@@ -60,13 +60,19 @@ public class ChatInfo {
 	public void updateCnt(long last) {
 		this.last = last;
 	}
-	
+
 	public void updateLast(ChatMsg cm) {
 		this.lastChat = cm;
 	}
 	
+	public void updateAct(long act) {
+		this.activation = act;
+		this.start = this.last;
+	}
+	
 	public ChatInfoDTO toChatInfoDTO() {
 		return ChatInfoDTO.builder()
+				.roomId(this.roomId)
 				.userId(this.other.getUserId())
 				.userBirth(this.other.getUserBirth())
 				.gender(this.other.getGender())
@@ -78,6 +84,7 @@ public class ChatInfo {
 	
 	public ChatInfoDTO toChatInnerDTO() {
 		return ChatInfoDTO.builder()
+				.roomId(this.roomId)
 				.userId(this.other.getUserId())
 				.nickName(this.other.getNickName())
 				.userBirth(this.other.getUserBirth())

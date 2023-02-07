@@ -20,6 +20,7 @@ import com.ssafy.togetdog.chat.model.ChatInfoDTO;
 import com.ssafy.togetdog.chat.service.ChatInfoService;
 import com.ssafy.togetdog.chat.service.ChatMsgService;
 import com.ssafy.togetdog.chat.util.ChatSaveList;
+import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.service.JwtService;
 import com.ssafy.togetdog.user.model.service.UserService;
 
@@ -40,6 +41,7 @@ public class ChatController {
 
 	private final ChatSaveList csl;
 	private final JwtService js;
+	private final UserService us;
 	private final ChatInfoService cis;
 	private final ChatMsgService cms;
 
@@ -75,36 +77,46 @@ public class ChatController {
 			@RequestHeader(value = "Authorization")
 			@ApiParam(required = true) 
 			String token , 
-			@RequestBody long roomId
+			@RequestBody long otherId
 			) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-
 		long userId = js.getUserId(token);
-		if(cis.credentUser(userId , roomId)) {
-			resultMap.put("result", FAIL);
-			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.BAD_REQUEST);			
+		User user = us.findUserByUserId(userId);
+		User other = us.findUserByUserId(otherId);
+		ChatInfoDTO opponent = cis.otherUserInfo(userId , other);
+		if(opponent == null) {
+			opponent = cis.createChatRoom(user, other);
 		}
-		
-		ChatInfoDTO other = cis.otherUserInfo(roomId , userId);
+		long roomId = opponent.getRoomId();
 		List<ChatDTO> list = cms.findMessage(roomId);
 		if(csl.getList(roomId) != null && csl.getList(roomId).size() > 0)
 			list.addAll(csl.getList(roomId));
-		list = list.subList((int)other.getStart(), list.size()-1);
+		if(list.size() > 1)
+			list = list.subList((int)opponent.getStart()+1, list.size()-1);
 		
 		resultMap.put("result", SUCCESS);
-		resultMap.put("other", other);
 		resultMap.put("chats", list);
+		resultMap.put("other", opponent);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
 	//	@ApiOperation(value = "채팅 방 삭제", notes = "사용자가 참여 중인 특정 채팅방을 삭제합니다.")
 	@PutMapping
 	public ResponseEntity<?> deleteChat(
-			@RequestParam String userId //채팅 상대방 id
+			@RequestHeader(value = "Authorization")
+			@ApiParam(required = true) 
+			String token , 
+			@RequestParam long roomId //채팅 상대방 id
 			) {
+		long userId = js.getUserId(token);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("result", SUCCESS);
-		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+		if(cis.chatInfoActi(roomId, userId)) {
+			resultMap.put("result", FAIL);
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.BAD_REQUEST);
+		}else {			
+			resultMap.put("result", SUCCESS);
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+		}
 	}
 
 }

@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SessionInfo {
-	private String sessionId;
+	private String SessionId;
 	private long userId;
 	private long roomId;
 

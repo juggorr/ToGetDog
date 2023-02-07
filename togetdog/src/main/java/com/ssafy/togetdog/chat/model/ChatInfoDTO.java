@@ -19,6 +19,8 @@ public class ChatInfoDTO {
 
 	// 상대 유저 아이디
 	private long userId;
+	
+	private long roomId;
 
 	private String userBirth;
 	

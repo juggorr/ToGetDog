@@ -62,21 +62,27 @@ public class ChatSaveList {
 		long roomId = info.getRoomId();
 		long userId = info.getUserId();
 		
-		if(chatList.get(roomId).size() > 0)
-			cis.updateChatInfo(roomId , roomCntMap.get(roomId));
+		this.saveJpaChat(roomId);
 		roomCntMap.get(roomId).remove(userId);
-		
 		
 		// 현재 방 인원 수 줄임
 		if(roomCntMap.get(roomId).size() == 0) { 	// 방 인원이 없으면
 			roomCntMap.remove(roomId);		// 인원과 채팅방 내용 삭제
-			chatIdx.remove(roomId);			
+			chatIdx.remove(roomId);
+			chatList.remove(roomId);
 		}
 	}	
 	
 	// 채팅 저장 메소드
-	public void saveJpaChat() {
-		for(long key : chatList.keySet()) {
+	public void saveJpaChat(long roomId) {
+		Set<Long> set = new HashSet<>();
+		if(roomId == 0) {
+			set.addAll(chatList.keySet());
+		}else {
+			set.add(roomId);
+		}
+			
+		for(long key : set) {
 			if(chatList.get(key).size() == 0) {
 				continue;
 			}
