@@ -7,11 +7,12 @@ export const BoardContainer = styled.div`
 
 export const BoardUserInfoBox = styled.div`
   display: flex;
-  padding: 0.7rem;
+  padding: 0.7rem 0.9rem 0.7rem 2rem;
   justify-content: space-between;
 
   .board-info-box-left {
     display: flex;
+    // padding-left: 1rem;
   }
 
   .menu-icon {
