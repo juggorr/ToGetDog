@@ -55,7 +55,6 @@ public class DogRestController {
 	public ResponseEntity<?> getDogInfo(
 			@PathVariable(value = "dogid") @ApiParam(required = true) String dogid
 			) {
-		
 		logger.info("GetDogInfo parameter : {}", dogid);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
@@ -101,13 +100,14 @@ public class DogRestController {
 			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
 			@PathVariable @ApiParam(required = true) String dogid
 			) {
-		
 		logger.info("Dog delete in");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		jwtService.validateToken(token);
 		long userId = jwtService.getUserId(token);
 		dogService.deleteDog(userId, dogid);
+		resultMap.put("result", SUCCESS);
+		resultMap.put("msg", "해당 강아지의 정보를 삭제했습니다.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
@@ -125,7 +125,6 @@ public class DogRestController {
 			@RequestPart(value="dog") @ApiParam(required = true) DogUpdateParamDTO dogDTO,
 			@RequestPart(value="dogProfile") @ApiParam(required = false) MultipartFile dogImage
 			) throws IllegalStateException, IOException {
-		
 		logger.info("Dog updateDTO parameter : {}", dogDTO);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
@@ -147,7 +146,6 @@ public class DogRestController {
 	public ResponseEntity<?> checkInsertPossible(
 			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token
 			) {
-		
 		logger.info("checkInsertPossible in");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
