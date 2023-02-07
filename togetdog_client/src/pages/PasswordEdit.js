@@ -4,7 +4,7 @@ import axios from "axios";
 import { BACKEND_URL, LOCAL_SERVER } from '../config';
 
 
-import { MainShortBtn, GreyColorShortBtn } from '../styles/BtnsEmotion';
+import { MainColorShortBtn, GreyColorShortBtn } from '../styles/BtnsEmotion';
 import { SignupContainer, SignupWrapper, InputWrapper } from '../styles/SignupEmotion';
 
 const passwordRegexp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^+=-])(?=.*[0-9]).{8,16}$/;
@@ -159,7 +159,7 @@ function PasswordEdit() {
           <div className={inputError ? null : 'input-error'}>{inputErrorMsg}</div>
           <div className='two-btns-wrapper'>
               <GreyColorShortBtn onClick={checkOthers}>돌아가기</GreyColorShortBtn>
-              <MainShortBtn onClick={checkOthers}>변경하기</MainShortBtn>
+              <MainColorShortBtn onClick={checkOthers}>변경하기</MainColorShortBtn>
           </div>
       </SignupWrapper>
     </SignupContainer>

@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 
 import { BACKEND_URL, DUMMY_URL } from '../config';
 
-
-import { BlackBtn, MainShortBtn, GreyColorShortBtn } from '../styles/BtnsEmotion';
+import SignoutConfirmModal from "../components/SignoutConfirmModal";
+import { BlackBtn, MainColorShortBtn, GreyColorShortBtn } from '../styles/BtnsEmotion';
 import OptionBtn from '../components/OptionBtn';
 import { SignupContainer, SignupWrapper, InputWrapper } from '../styles/SignupEmotion';
 import DaumKakaoAddress from '../components/DaumKakaoAddress';
+import { authAtom, userState } from "../recoil";
 
 const genderBtnList = [
   {
@@ -29,22 +32,30 @@ const nicknameEngRegexp = /^[a-zA-Z]{2,16}$/; // 영문 2~16자
 
 function UserEdit() {
 
-  const userId = 10
-  const [userData, setUserData] = useState();
+  const navigate = useNavigate();
+
+  const [signoutBtnClick, setSignoutBtnClick] = useState(false);
+
+  const auth = useRecoilValue(authAtom);
+  const setAuth = useSetRecoilState(authAtom);
+  const [user, setUser] = useRecoilState(userState);
   const thisYear = new Date().getFullYear();
 
-
-
   useEffect(() => {
-    axios
-    .get(`https://togetdog.site/dummy/user/${userId}`)
-    .then((res) => {
-      setUserData(res.data)
-    })
-    .catch((err) => {
-      console.log(err)
-    });
-  }, [])
+    if (!auth || !localStorage.getItem('recoil-persist')) {
+      navigate('/login');
+      return;
+    }
+    console.log(user);
+  })
+
+  const userData = {
+    nickName: '하이',
+    userGender: 'female',
+    userAge: 24,
+    address: '1',
+    regionCode: 23,
+  }
 
   const [inputs, setInputs] = useState({
     nickname: userData.nickName,
@@ -160,9 +171,17 @@ function UserEdit() {
     }
   };
 
+  const handleSignout = () => {
+    setSignoutBtnClick(true);
+  }
+
   return (
     <>
     <SignupContainer>
+      <SignoutConfirmModal
+        signoutBtnClick={signoutBtnClick}
+        setSignoutBtnClick={setSignoutBtnClick}
+      />
       <SignupWrapper>
         {/* 닉네임 선택 wrapper */}
         <InputWrapper>
@@ -245,10 +264,14 @@ function UserEdit() {
         <div className='signup-desc'>* 표시는 필수 입력 값입니다.</div>
         <div className='two-btns-wrapper'>
             <GreyColorShortBtn onClick={checkOthers}>돌아가기</GreyColorShortBtn>
-            <MainShortBtn onClick={checkOthers}>변경하기</MainShortBtn>
+            <MainColorShortBtn onClick={checkOthers}>변경하기</MainColorShortBtn>
         </div>
         <div className='edit-bottom-wrapper'>
-          <div className='edit-bottom-text'>회원탈퇴</div>
+          <div 
+            className='edit-bottom-text' 
+            onClick={handleSignout}
+          >
+            회원탈퇴</div>
         </div>
       </SignupWrapper>
     </SignupContainer>
