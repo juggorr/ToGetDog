@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { authAtom, userState } from "../recoil";
@@ -26,6 +26,7 @@ const EditBoard = () => {
   const [content, setContent] = useState();
   const [contentErrorMsg, setContentErrorMsg] = useState("");
   const [isLoading, setLoading] = useState(true);
+  const contentRef = useRef();
 
   const location = useLocation();
   const boardId = location.pathname.split("/").reverse()[0];
@@ -70,6 +71,7 @@ const EditBoard = () => {
   const onClickEdit = () => {
     if (!content) {
       setContentErrorMsg("* 내용 본문은 반드시 1글자 이상이어야 합니다.");
+      contentRef.current.focus();
       return;
     }
     console.log(content);
@@ -132,6 +134,7 @@ const EditBoard = () => {
             className="textInput"
             onChange={onChangeContent}
             defaultValue={content}
+            ref={contentRef}
           />
         </div>
         <div className="error-msg">{contentErrorMsg}</div>

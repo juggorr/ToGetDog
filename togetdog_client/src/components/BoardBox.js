@@ -45,6 +45,44 @@ const BoardBox = ({ boardData, dogData, likeStatus, setLikeStatus }) => {
       });
   };
 
+  const handleLike = () => {
+    if (likeStatus) {
+      // 기존에 좋아요 였다면
+      axios
+        .delete(`${BACKEND_URL}/board/like?boardId=${boardData.boardId}`, {
+          headers: {
+            Authorization: auth,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          console.log("좋아요 취소가 완료되었습니다.");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (!likeStatus) {
+      axios
+        .post(
+          `${BACKEND_URL}/board/like?boardId=${boardData.boardId}`,
+          { boardId: boardData.boardId },
+          {
+            headers: {
+              Authorization: auth,
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res.data);
+          console.log("좋아요가 완료되었습니다.");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    setLikeStatus(!likeStatus);
+  };
+
   return (
     <>
       {menuBtnClick === true ? (
@@ -117,13 +155,13 @@ const BoardBox = ({ boardData, dogData, likeStatus, setLikeStatus }) => {
             <FontAwesomeIcon
               icon="fa-solid fa-heart"
               className="like-icon"
-              onClick={() => setLikeStatus(!likeStatus)}
+              onClick={handleLike}
             />
           ) : (
             <FontAwesomeIcon
               icon="fa-regular fa-heart"
               className="like-icon"
-              onClick={() => setLikeStatus(!likeStatus)}
+              onClick={handleLike}
             />
           )}
           <span className="like-txt">
