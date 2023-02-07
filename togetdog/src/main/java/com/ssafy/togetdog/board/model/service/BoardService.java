@@ -49,7 +49,7 @@ public class BoardService {
 			throw new InvalidInputException("필요한 값이 들어오지 않았습니다.");
 		}
 		String savePath = fileUtil.fileUpload(image, boardImageFilePath);
-		Board board = boardRepository.save(boardDTO.toEntity(savePath));
+		Board board = boardRepository.save(boardDTO.toEntity(boardDTO.getUserId(), boardDTO.getBoardId(), savePath));
 		return board.getBoardId();
 	}
 
