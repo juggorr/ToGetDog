@@ -21,6 +21,7 @@ import com.ssafy.togetdog.appointment.model.repository.AppointmentRepository;
 import com.ssafy.togetdog.appointment.model.repository.ReceivedAppointmentRepository;
 import com.ssafy.togetdog.appointment.model.repository.SentAppointmentRepository;
 import com.ssafy.togetdog.board.model.service.BoardService;
+import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.user.model.entity.User;
 
@@ -36,44 +37,57 @@ public class AppointmentService {
 	private final SentAppointmentRepository sentAppointmentRepository;
 	private final ReceivedAppointmentRepository receivedAppointmentRepository;
 
-	public List<AppointmentInfoRespDTO> findAllByUserId(long userId) {
+	public List<AppointmentListDTO> findAllByUserId(long userId) {
 		User user = new User();
 		user.setUserId(userId);
 		List<Appointment> sentlist = appointmentRepository.findAllBySentUser(user);
 		List<Appointment> recvlist = appointmentRepository.findAllByReceivedUser(user);
-		logger.info("============== : {}", sentlist.size());
-		logger.info("-------------- : {}", recvlist.size());
 
+		
 		List<AppointmentListDTO> sentList = sentlist.stream()
 				.map(a->AppointmentListDTO.of(a)).collect(Collectors.toList());
 		List<AppointmentListDTO> recvList = recvlist.stream()
 				.map(a->AppointmentListDTO.of(a)).collect(Collectors.toList());
+		logger.info("============== : {}", sentList);
+		logger.info("-------------- : {}", recvList);
 		
+		// 내가 보낸 약속
 		for (int i = 0; i < sentList.size(); i++) {
 			List<SentAppointment> sentApps = sentAppointmentRepository.findAllByAppointment(sentlist.get(i));
-			logger.info("=============== sentApps ========== : {}", sentApps);
-			List<Dog> sentDogs = new ArrayList<>(); 
+			List<DogInfoRespDTO> sentDogs = new ArrayList<>(); 
 			for (SentAppointment sent : sentApps) {
-				sentDogs.add(sent.getDog());
+				sentDogs.add(DogInfoRespDTO.of(sent.getDog()));
 			}
 			sentList.get(i).setSentDogs(sentDogs);
+			List<SentAppointment> recvApps = sentAppointmentRepository.findAllByAppointment(sentlist.get(i));
+			List<DogInfoRespDTO> recvDogs = new ArrayList<>(); 
+			for (SentAppointment recv : recvApps) {
+				recvDogs.add(DogInfoRespDTO.of(recv.getDog()));
+			}
+			sentList.get(i).setReceivedDogs(recvDogs);
 		}
+		logger.info("return appointment sentList : {}", sentList.size());
 		logger.info("return appointment sentList : {}", sentList);
 		
-		for (int i = 0; i < recvList.size(); i++) {
-			List<ReceivedAppointment> recvApps = receivedAppointmentRepository.findAllByAppointment(recvlist.get(i));
-			logger.info("=============== recvApps ========== : {}", recvApps);
-			List<Dog> recvDogs = new ArrayList<>(); 
-			for (ReceivedAppointment recv : recvApps) {
-//				recvDogs.add(recv.getDog());
-				logger.info("=============== recv.getDog() ========== : {}", recv);
+		// 내가 받은 약속
+		for (int i = 0; i < recvlist.size(); i++) {
+			List<ReceivedAppointment> sentApps = receivedAppointmentRepository.findAllByAppointment(recvlist.get(i));
+			List<DogInfoRespDTO> sentDogs = new ArrayList<>(); 
+			for (ReceivedAppointment sent : sentApps) {
+				sentDogs.add(DogInfoRespDTO.of(sent.getDog()));
 			}
-			logger.info("=============== recvDogs ========== : {}", recvDogs);
+			recvList.get(i).setSentDogs(sentDogs);
+			List<ReceivedAppointment> recvApps = receivedAppointmentRepository.findAllByAppointment(recvlist.get(i));
+			List<DogInfoRespDTO> recvDogs = new ArrayList<>(); 
+			for (ReceivedAppointment recv : recvApps) {
+				recvDogs.add(DogInfoRespDTO.of(recv.getDog()));
+			}
 			recvList.get(i).setReceivedDogs(recvDogs);
 		}
+		logger.info("return appointment recvList : {}", recvList.size());
 		logger.info("return appointment recvList : {}", recvList);
 		
-		return null;
+		return recvList;
 	}
 
 	public void addAppointment(long myId, long userId, List<Dog> myDogs, List<Dog> partnerDogs, LocalDateTime date,
