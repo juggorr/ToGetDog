@@ -1,16 +1,24 @@
-import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router';
-import { MenuModalWrapper, MenuModalBody } from '../styles/ModalEmotion';
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { authAtom, userState } from "../recoil";
+import { MenuModalWrapper, MenuModalBody } from "../styles/ModalEmotion";
 
 // menuList에는 menu_id, text, link가 담겨있음
 
 const MenuModal = ({ menuLists, menuBtnClick, setMenuBtnClick }) => {
-  const navigate = useNavigate();
+  const setAuth = useSetRecoilState(authAtom);
+  const [user, setUser] = useRecoilState(userState);
 
   const outSection = useRef();
+  const navigate = useNavigate();
 
-  const navigateMenu = (link) => {
-    navigate(link);
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+    setAuth(null);
+    console.log("로그아웃이 정상적으로 처리되었습니다.");
+    navigate("/login");
   };
 
   return (
@@ -22,11 +30,15 @@ const MenuModal = ({ menuLists, menuBtnClick, setMenuBtnClick }) => {
             if (outSection.current === e.target) {
               setMenuBtnClick(false);
             }
-          }}
-        >
+          }}>
           <MenuModalBody>
             {menuLists.map((it) => (
-              <div key={it.menu_id} className='single-menu' onClick={() => navigate(it.link)}>
+              <div
+                key={it.menu_id}
+                className="single-menu"
+                onClick={() => {
+                  it.link === "/logout" ? handleLogout() : navigate(it.link);
+                }}>
                 {it.text}
               </div>
             ))}

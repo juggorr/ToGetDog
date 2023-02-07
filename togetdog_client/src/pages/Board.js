@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   BoardCommentBox,
   BoardContainer,
@@ -14,8 +14,14 @@ import Girl from "../assets/girl.png";
 import MenuIcon from "../assets/menu_icon.png";
 import "../components/FontAwesome";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRecoilValue } from "recoil";
+import { authAtom } from "../recoil";
+import { useNavigate } from "react-router";
 
 const Board = () => {
+  const auth = useRecoilValue(authAtom);
+  const navigate = useNavigate();
+
   const board = {
     likeStatus: true,
     likeCnt: 123,
@@ -40,6 +46,13 @@ const Board = () => {
   const [menuBtnClick, setMenuBtnClick] = useState(false);
   const [likeStatus, setLikeStatus] = useState(board.likeStatus);
 
+  useEffect(() => {
+    if (!auth || !localStorage.getItem("recoil-persist")) {
+      navigate("/login");
+      return;
+    }
+  }, []);
+
   return (
     <>
       <BoardContainer>
@@ -47,18 +60,20 @@ const Board = () => {
           <div className="board-info-box-left">
             <BoardUserPic src={currentDog.dogImg}></BoardUserPic>
             <BoardUserInfo>
-              <div className="dog-name">{currentDog.dogName}</div>
+              <div className="dog-name">
+                {currentDog.dogName}
+                {currentDog.dogGender === "male" ? (
+                  <img src={Boy} className="dog-gender" alt="boy" />
+                ) : (
+                  <img src={Girl} className="dog-gender" alt="girl" />
+                )}
+              </div>
               <div className="dog-info">
                 {`${currentDog.dogType} / ${
                   currentDog.dogAge >= 12
                     ? `${Math.floor(currentDog.dogAge / 12)}살`
                     : `${currentDog.dogAge}개월`
                 }`}
-                {currentDog.dogGender === "male" ? (
-                  <img src={Boy} className="dog-gender" alt="boy" />
-                ) : (
-                  <img src={Girl} className="dog-gender" alt="girl" />
-                )}
               </div>
             </BoardUserInfo>
           </div>

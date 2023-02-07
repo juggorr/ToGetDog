@@ -24,9 +24,12 @@ import CreateAppointment from "./pages/CreateAppointment";
 import DogRegister from "./pages/DogRegister";
 import SubLayout from "./components/SubLayout";
 import Search from "./pages/Search";
+import FollowerList from "./pages/FollowerList";
+import FollowingList from "./pages/FollowingList";
 
 // import DogEdit from "./pages/DogEdit";
 import Notifications from "./pages/Notifications";
+import Recommend from "./pages/Recommend";
 
 function App() {
   return (
@@ -40,6 +43,7 @@ function App() {
             <Route path="/walk" element={<Walk />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/feed/:userId" element={<Feed />} />
+            <Route path="/recommend" element={<Recommend />} />
           </Route>
           {/* BackHeader, Footer 필요한 컴포넌트 */}
           <Route element={<SubLayout />}>
@@ -57,6 +61,8 @@ function App() {
           <Route path="/*" element={<NotFound />} />
           <Route path="/createAppointment" element={<CreateAppointment />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/followerlist/:dogId" element={<FollowerList />} />
+          <Route path="/followinglist/:userId" element={<FollowingList />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -64,6 +64,24 @@ export const MeetingWrapper = styled.div`
     justify-content: center;
     font-size: 1.6rem;
   }
+
+  .noMeeting {
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: "Lato", sans-serif;
+    color: #575757;
+  }
+
+  .noMeetingTextWrapper {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .noMeetingText {
+    margin: 0.8rem;
+  }
 `;
 
 export const SingleMeetingWrapper = styled.div`
