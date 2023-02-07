@@ -40,7 +40,7 @@ public class BoardDTO {
     	return board;
     }
     
-    public Board toEntity(String inputImage) {
+    public Board toEntity(long userId, long dogId, String inputImage) {
     	User user = User.builder()
     			.userId(userId).build();
     	
