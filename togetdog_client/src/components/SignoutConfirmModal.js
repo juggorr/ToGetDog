@@ -1,9 +1,9 @@
 import { useRef } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import axios from 'axios';
 
 
-import { authAtom } from '../recoil';
+import { authAtom, userState } from '../recoil';
 import Emotion5 from '../assets/emotion5.png'
 import { BACKEND_URL } from '../config';
 import { ConfirmModalWrapper, ConfirmModalBody, ConfirmModalImage } from '../styles/ModalEmotion';
@@ -11,7 +11,8 @@ import { SkyColorShortBtn, RedColorShortBtn } from '../styles/BtnsEmotion';
 
 function SignoutConfirmModal({ signoutBtnClick, setSignoutBtnClick }) {
 
-  // const setAuth = useSetRecoilState(authAtom);
+  const setAuth = useSetRecoilState(authAtom);
+  const setUser = useSetRecoilState(userState);
   // const user = useRecoilValue(userState);
   const auth = useRecoilValue(authAtom);
   const outSection = useRef();
@@ -20,16 +21,24 @@ function SignoutConfirmModal({ signoutBtnClick, setSignoutBtnClick }) {
     setSignoutBtnClick(false);
   }
 
-  const signout = async () => {
-    // console.log('xx')
-    try {
-      await axios.delete(`${BACKEND_URL}/user`, {
+  const signout = () => {
+    axios
+      .delete(`${BACKEND_URL}/user`, {
           headers: {
             Authorization: auth,
           }
-    })} catch(err) {
+    })
+    .then((res) => {
+      console.log(res)
+      window.location.replace('/login')
+      setUser(null);
+      localStorage.removeItem('user');
+      setAuth(null);
+      console.log('회원탈퇴가 정상적으로 처리되었습니다.')
+    })
+    .catch((err) => {
         console.log(err)
-    };
+    });
   };
 
 

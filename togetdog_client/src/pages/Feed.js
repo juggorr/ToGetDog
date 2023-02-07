@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import ConfirmModal from "../components/ConfirmModal";
-import NoDogAlertModal from "../components/NoDogAlertModal";
+import NoDogAlertModal from "../components/AlertModal/NoDogAlertModal";
 import MenuModal from "../components/MenuModal";
 import OrangeCharacterBtn from "../components/OrangeCharacterBtn";
 import YellowCharacterBtn from "../components/YellowCharacterBtn";

@@ -6,11 +6,14 @@ import { BACKEND_URL, LOCAL_SERVER } from '../config';
 
 import { MainColorShortBtn, GreyColorShortBtn } from '../styles/BtnsEmotion';
 import { SignupContainer, SignupWrapper, InputWrapper } from '../styles/SignupEmotion';
+import NoEssentialsModal from '../components/AlertModal/NoEssentialsModal'
 
 const passwordRegexp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^+=-])(?=.*[0-9]).{8,16}$/;
 
 
 function PasswordEdit() {
+
+  const [noEssentialsModal, setNoEssentialsModal] = useState(false);
 
   const [inputs, setInputs] = useState({
     passwordOld: '',
@@ -91,8 +94,7 @@ function PasswordEdit() {
 
   const checkOthers = () => {
     if (!oldPassword || !password || !passwordCheck) {
-      setInputError(true);
-      setInputErrorMsg('필수 값이 입력되지 않았습니다');
+      setNoEssentialsModal(true);
     }
     return;
   };
@@ -100,6 +102,10 @@ function PasswordEdit() {
   return (
     <>
     <SignupContainer>
+      <NoEssentialsModal 
+        noEssentialsModal={noEssentialsModal}
+        setNoEssentialsModal={setNoEssentialsModal}
+      />
       <SignupWrapper>
           {/* 기존 비밀번호 wrapper */}
           <InputWrapper>

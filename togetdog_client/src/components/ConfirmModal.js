@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import axios from 'axios';
 
@@ -11,7 +11,7 @@ import { ConfirmModalWrapper, ConfirmModalBody, ConfirmModalImage } from '../sty
 import { SkyColorShortBtn, RedColorShortBtn } from '../styles/BtnsEmotion';
 
 function ConfirmModal({ confirmBtnClick, setMenuBtnClick, setConfirmBtnClick, dogId }) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // const setAuth = useSetRecoilState(authAtom);
   const user = useRecoilValue(userState);
   const auth = useRecoilValue(authAtom);
