@@ -13,6 +13,7 @@ import com.ssafy.togetdog.board.model.dto.BoardDTO;
 import com.ssafy.togetdog.board.model.dto.BoardShowDTO;
 import com.ssafy.togetdog.board.model.entity.Board;
 import com.ssafy.togetdog.board.model.repository.BoardRepository;
+import com.ssafy.togetdog.board.model.repository.LikeRepository;
 import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.dog.model.repository.DogRepository;
@@ -29,6 +30,7 @@ public class BoardService {
 	@Autowired
 	private final BoardRepository boardRepository;
 	private final DogRepository dogRepository;
+	private final LikeRepository likeRepository;
 	
 
 	public Long save(final BoardDTO boardDto) {
@@ -63,11 +65,15 @@ public class BoardService {
 	public BoardShowDTO getOne(long boardId) {
 		Board board = boardRepository.getByBoardId(boardId);
 		logger.info("return found board Content : {}", board.getContent());
-//		logger.info("return found dogId : {}", dogRepository.findByDogId(board.getDog().getDogId()).getDogName());
 		BoardShowDTO boardDTO = new BoardShowDTO(board);
 		Dog dog = dogRepository.findByDogId(board.getDog().getDogId());
-		logger.info("ccccccccccccccccccccccccccc : {}", DogInfoRespDTO.of(dog));
 		boardDTO.setDog(DogInfoRespDTO.of(dog));
+		if(likeRepository.findByBoardAndUser(board, board.getUser()) != null) {
+			boardDTO.setLiked(true);
+		} else {
+			boardDTO.setLiked(false);
+		}
+		boardDTO.setLikeCnt(likeRepository.countByBoard(board));
 		return boardDTO;
 	}
 
