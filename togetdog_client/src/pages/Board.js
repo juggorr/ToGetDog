@@ -1,27 +1,17 @@
 import { useEffect, useState } from 'react';
-import {
-  BoardCommentBox,
-  BoardContainer,
-  BoardContentBox,
-  BoardPicBox,
-  BoardUserInfo,
-  BoardUserInfoBox,
-  BoardUserPic,
-} from '../styles/BoardEmotion';
-import DogImg from '../assets/dog2.jpg';
-import Boy from '../assets/boy.png';
-import Girl from '../assets/girl.png';
-import MenuIcon from '../assets/menu_icon.png';
-import '../components/FontAwesome';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { BoardCommentBox, BoardContainer } from '../styles/BoardEmotion';
+
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { authAtom, userState } from '../recoil';
 import { useLocation, useNavigate } from 'react-router';
 import { BACKEND_URL } from '../config';
 import axios from 'axios';
+import BoardBox from '../components/BoardBox';
+import CommentBox from '../components/CommentBox';
 
 const Board = () => {
   const auth = useRecoilValue(authAtom);
+  const setAuth = useSetRecoilState(authAtom);
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
 
@@ -30,9 +20,17 @@ const Board = () => {
 
   const [boardData, setBoardData] = useState();
   const [dogData, setDogData] = useState();
-  const [menuBtnClick, setMenuBtnClick] = useState(false);
+
   const [likeStatus, setLikeStatus] = useState(false);
   const [isLoading, setLoading] = useState(true);
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('user');
+    setAuth(null);
+    console.log('로그아웃이 정상적으로 처리되었습니다.');
+    navigate('/login');
+  };
 
   useEffect(() => {
     if (!auth || !localStorage.getItem('recoil-persist')) {
@@ -41,7 +39,7 @@ const Board = () => {
     }
 
     axios
-      .get(`${BACKEND_URL}/${boardId}`, {
+      .get(`${BACKEND_URL}/board/${boardId}`, {
         headers: {
           Authorization: auth,
         },
@@ -56,8 +54,13 @@ const Board = () => {
       })
       .catch((err) => {
         console.log(err);
-        if (err.response.status === 500) navigate('/*');
-        console.log('게시물 불러오기 실패');
+        if (err.response.status === 500) {
+          navigate('/*');
+          console.log('존재하지 않는 게시물입니다.');
+        } else if (err.response.status === 401) {
+          alert('토큰이 만료되어 자동 로그아웃되었습니다.');
+          handleLogout();
+        }
       });
   }, []);
 
@@ -68,69 +71,8 @@ const Board = () => {
   return (
     <>
       <BoardContainer>
-        <BoardUserInfoBox>
-          <div className='board-info-box-left' onClick={() => navigate(`/feed/${boardData.userId}`)}>
-            <BoardUserPic src={`https://i8a807.p.ssafy.io/image/dog/` + dogData.dogProfile}></BoardUserPic>
-            <BoardUserInfo>
-              <div className='dog-name'>
-                {dogData.dogName}
-                {dogData.dogGender === 'male' ? (
-                  <img src={Boy} className='dog-gender' alt='boy' />
-                ) : (
-                  <img src={Girl} className='dog-gender' alt='girl' />
-                )}
-              </div>
-              <div className='dog-info'>
-                {`${dogData.dogType} / ${
-                  dogData.dogAge >= 12 ? `${Math.floor(dogData.dogAge / 12)}살` : `${dogData.dogAge}개월`
-                }`}
-              </div>
-            </BoardUserInfo>
-          </div>
-          {user.userId === boardData.userId ? (
-            <div className='board-info-box-right'>
-              <img src={MenuIcon} className='menu-icon' onClick={() => setMenuBtnClick(true)} alt='menu' />
-            </div>
-          ) : null}
-        </BoardUserInfoBox>
-        <BoardPicBox>
-          <img src={`https://i8a807.p.ssafy.io/image/board/` + boardData.image} className='board-pic' alt='board_img' />
-        </BoardPicBox>
-        <BoardContentBox>
-          <div className='like-box'>
-            {likeStatus ? (
-              <FontAwesomeIcon
-                icon='fa-solid fa-heart'
-                className='like-icon'
-                onClick={() => setLikeStatus(!likeStatus)}
-              />
-            ) : (
-              <FontAwesomeIcon
-                icon='fa-regular fa-heart'
-                className='like-icon'
-                onClick={() => setLikeStatus(!likeStatus)}
-              />
-            )}
-            <span className='like-txt'>{boardData.likeCnt}명이 이 게시물을 좋아합니다.</span>
-          </div>
-          <div className='board-content'>{boardData.content}</div>
-        </BoardContentBox>
-        <BoardCommentBox>
-          <div className='comment-input-box'>
-            <input className='comment-input' placeholder='댓글을 작성해 주세요.' />
-            <button className='comment-btn'>등록</button>
-          </div>
-          <div className='comment-list-box'>
-            {boardData.comments.map((comment) => (
-              <div className='comment-box' key={comment.commentId}>
-                <div className='comment-user' onClick={() => navigate(`/feed/${comment.userId}`)}>
-                  {comment.nickName}
-                </div>
-                <div className='comment-content'>{comment.commentContent}</div>
-              </div>
-            ))}
-          </div>
-        </BoardCommentBox>
+        <BoardBox boardData={boardData} dogData={dogData} likeStatus={likeStatus} setLikeStatus={setLikeStatus} />
+        <CommentBox boardData={boardData} />
       </BoardContainer>
     </>
   );

@@ -76,6 +76,7 @@ const New = () => {
 
   const checkValid = async () => {
     if (selectedDog && imgRef.current.files[0]) {
+      console.log(selectedDog);
       const formData = new FormData();
       const boardContent = { dogId: selectedDog, content: contentText.current };
       formData.append('file', imgRef.current.files[0]);
@@ -84,10 +85,11 @@ const New = () => {
         .post(`${BACKEND_URL}/board`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
+            Authorization: auth,
           },
         })
         .then((response) => {
-          navigate('/');
+          navigate(`/feed/`);
         })
         .catch((err) => {
           console.log(err);
