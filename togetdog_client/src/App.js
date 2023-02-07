@@ -25,7 +25,7 @@ import DogRegister from "./pages/DogRegister";
 import SubLayout from "./components/SubLayout";
 import FollowerList from './pages/FollowerList';
 import FollowingList from "./pages/FollowingList";
-import DeleteModal from "./components/DeleteModal";
+import ConfirmModal from "./components/ConfirmModal";
 
 // import DogEdit from "./pages/DogEdit";
 import Notifications from "./pages/Notifications";
@@ -56,7 +56,8 @@ function App() {
           <Route path="/emailAuth" element={<EmailAuth />} />
           <Route path="/dogregister" element={<DogRegister />} />
           {/* <Route path='/dogedit' element={<DogEdit />} /> */}
-          <Route path="/dogdelete" element={<DeleteModal />} />
+          {/* 임시로 링크 */}
+          <Route path="/dogdelete" element={<ConfirmModal />} />
           <Route path='/followerlist/:dogId' element={<FollowerList />} />
           <Route path='/followinglist/:userId' element={<FollowingList />} />
           <Route path="/notifications" element={<Notifications />} />

@@ -2,11 +2,11 @@ import { useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import axios from 'axios';
 
-
-import { MenuModalWrapper, MenuModalBody } from '../styles/ModalEmotion';
+import WalkIcon from '../assets/walking_with_dog.png'
+import { ConfirmModalWrapper, ConfirmModalBody, ConfirmModalImage } from '../styles/ModalEmotion';
 import { SkyColorShortBtn, RedColorShortBtn } from '../styles/BtnsEmotion';
 
-function DeleteModal() {
+function ConfirmModal() {
 
   const navigate = useNavigate();
 
@@ -14,8 +14,10 @@ function DeleteModal() {
     navigate('/');
   }
   
-  const location = useLocation();
-  const dogId = location.state.dogId;
+  // const location = useLocation();
+  // const dogId = location.state.dogId;
+
+  const dogId = 2
 
   const deleteDog = async () => {
     
@@ -30,11 +32,12 @@ function DeleteModal() {
 
 
   return (
-    <MenuModalWrapper>
-      <MenuModalBody>
-        <h1>알림</h1>
-        <p>삭제한 프로필은 복구할 수 없어요.</p>
-        <p>그래도 삭제하시겠어요?</p>
+    <ConfirmModalWrapper>
+      <ConfirmModalBody>
+        <ConfirmModalImage src={WalkIcon} />
+        <h3>알림</h3>
+        <span>삭제한 프로필은 복구할 수 없어요.</span>
+        <span>그래도 삭제하시겠어요?</span>
         <div className="two-btns-wrapper">
           <RedColorShortBtn
             onClick={notDeleteDog}
@@ -47,9 +50,9 @@ function DeleteModal() {
             예
           </SkyColorShortBtn>
         </div>
-      </MenuModalBody>
-    </MenuModalWrapper>
+      </ConfirmModalBody>
+    </ConfirmModalWrapper>
   )
 }
 
-export default DeleteModal;
+export default ConfirmModal;

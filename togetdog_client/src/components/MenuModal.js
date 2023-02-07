@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { MenuModalWrapper, MenuModalBody } from '../styles/ModalEmotion';
 
 // menuList에는 menu_id, text, link가 담겨있음
+// dog delete 모달 추가
 
 const MenuModal = ({ menuLists, menuBtnClick, setMenuBtnClick }) => {
   const navigate = useNavigate();

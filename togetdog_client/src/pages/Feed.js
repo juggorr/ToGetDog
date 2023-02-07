@@ -6,7 +6,7 @@ import MenuModal from '../components/MenuModal';
 import OrangeCharacterBtn from '../components/OrangeCharacterBtn';
 import YellowCharacterBtn from '../components/YellowCharacterBtn';
 import { BACKEND_URL, DUMMY_URL } from '../config';
-import { authAtom, userState } from '../recoil';
+import { authAtom, userState, dogAtom } from '../recoil';
 import { PlusBtn } from '../styles/BtnsEmotion';
 import {
   FeedContainer,
@@ -125,7 +125,12 @@ const Feed = () => {
   return (
     <>
       <FeedContainer>
-        <MenuModal menuLists={menuLists} menuBtnClick={menuBtnClick} setMenuBtnClick={setMenuBtnClick} />
+        <MenuModal 
+          menuLists={menuLists} 
+          menuBtnClick={menuBtnClick} 
+          dogId = {currentDog.dogId}
+          setMenuBtnClick={setMenuBtnClick} 
+        />
         <FeedProfileWrapper>
           {/* 프로필 상단 */}
           <FeedProfileTop>
