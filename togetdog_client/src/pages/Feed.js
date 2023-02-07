@@ -109,7 +109,7 @@ const Feed = () => {
     }
 
     axios
-      .get(`https://togetdog.site/api/feed/${feedUserId}?pageNo=${pageNo}`, {
+      .get(`${BACKEND_URL}/feed/${feedUserId}?pageNo=${pageNo}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: auth,
