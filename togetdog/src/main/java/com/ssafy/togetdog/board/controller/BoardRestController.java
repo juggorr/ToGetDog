@@ -160,7 +160,7 @@ public class BoardRestController {
 	 */
 	@ApiOperation(value = "게시글 단건 가져오기", notes = "boardId에 해당하는 게시글 반환")
 	@GetMapping("/{boardId}")
-	public ResponseEntity<?> getBoard(/*@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,*/
+	public ResponseEntity<?> getBoard(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
 			@PathVariable(value="boardId") long boardId){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 //		jwtService.validateToken(token);
