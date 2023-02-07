@@ -39,6 +39,8 @@ function UserEdit() {
   const auth = useRecoilValue(authAtom);
   const setAuth = useSetRecoilState(authAtom);
   const [user, setUser] = useRecoilState(userState);
+
+  const [userInfos, setUserInfos] =useState({});
   const thisYear = new Date().getFullYear();
 
   useEffect(() => {
@@ -46,31 +48,43 @@ function UserEdit() {
       navigate('/login');
       return;
     }
-    console.log(user);
-  })
+    
+    axios
+      .get(`${DUMMY_URL}/user/${user.userId}`, {
+        headers: {
+          Authorization: auth,
+        },
+      })
+      .then((res) => {
+        setUserInfos(res.data);
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
 
-  const userData = {
-    nickName: '하이',
-    userGender: 'female',
-    userAge: 24,
-    address: '1',
-    regionCode: 23,
-  }
+  // useEffect로 동기처리해버리기~
+  useEffect(() => {
+    setInputs({
+      ...inputs,
+      gender: userInfos.userGender
+    })
+  }, [userInfos]);
 
   const [inputs, setInputs] = useState({
-    nickname: userData.nickName,
-    gender: userData.userGender, // 성별 default 값 '남자'로 설정
-    birth: thisYear - userData.userAge,
-    address: userData.address,
-    sigunguCode: userData.regionCode,
+    nickname: userInfos.nickName,
+    gender: userInfos.userGender, // 성별 default 값 '남자'로 설정
+    birth: thisYear - userInfos.userAge,
+    address: userInfos.address,
+    sigunguCode: userInfos.regionCode,
   });
 
   const {
-    nickname,
+    // nickname,
     gender,
-    birth,
+    // birth,
     address,
-    sigunguCode,
+    // sigunguCode,
   } = inputs;
 
   const [nicknameError, setNicknameError] = useState(false);
@@ -123,10 +137,11 @@ function UserEdit() {
   const handleClickGender = (gender) => {
     setInputs({
       ...inputs,
-      gender: gender, // 1: 남자, 2: 여자, 3: 기타
+      gender: gender,
     });
   };
 
+  // 출생년도 메소드
   const handleBirth = (e) => {
     const birthYear = e.target.value;
     if (birthYear >= 1900 && birthYear <= new Date().getFullYear()) {
@@ -193,7 +208,7 @@ function UserEdit() {
             <input
               name='nickname'
               className='email-input'
-              placeholder={userData?.nickName}
+              placeholder={userInfos?.nickName}
               onChange={(e) => handleNickname(e)}
             />
           </div>
@@ -208,7 +223,12 @@ function UserEdit() {
           </div>
           <div className='horizontal-flex btn-list'>
             {genderBtnList.map((it) => (
-              <OptionBtn key={it.btn_id} {...it} onClick={handleClickGender} isSelected={it.btn_id === gender} />
+              <OptionBtn 
+                key={it.btn_id} 
+                {...it} 
+                onClick={handleClickGender} 
+                isSelected={it.btn_id === gender}
+              />
             ))}
           </div>
         </InputWrapper>
@@ -224,7 +244,7 @@ function UserEdit() {
                 className='number-input' 
                 name='birth' 
                 onChange={(e) => handleBirth(e)} 
-                placeholder={userData? thisYear - userData.userAge : thisYear} 
+                placeholder={userInfos? thisYear - userInfos.userAge : thisYear} 
               />
             </div>
             <div className='year'>년</div>
@@ -241,7 +261,7 @@ function UserEdit() {
               <input 
                 className='email-input' 
                 value={address} name='address' 
-                placeholder={userData?.address} 
+                placeholder={userInfos?.address} 
                 disabled 
               />
             </div>
