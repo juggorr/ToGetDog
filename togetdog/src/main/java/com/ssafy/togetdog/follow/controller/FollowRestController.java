@@ -12,16 +12,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
+import com.ssafy.togetdog.dog.model.service.DogService;
 import com.ssafy.togetdog.follow.model.dto.FollowDTO;
 import com.ssafy.togetdog.follow.model.service.FollowService;
+import com.ssafy.togetdog.notify.model.service.NotifyService;
 import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
+import com.ssafy.togetdog.user.model.entity.User;
+import com.ssafy.togetdog.user.model.service.JwtService;
+import com.ssafy.togetdog.user.model.service.UserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
 
@@ -37,6 +44,10 @@ public class FollowRestController {
 
 	@Autowired
 	private final FollowService followService;
+	private final NotifyService notifyService;
+	private final UserService userService;
+	private final JwtService jwtService;
+	private final DogService dogService;
 
 	/***
 	 * get following list
@@ -84,10 +95,17 @@ public class FollowRestController {
 	 */
 	@ApiOperation(value = "팔로우", notes = "강아지를 팔로우함")
 	@PostMapping("/")
-	public ResponseEntity<?> addFollow(@RequestBody FollowDTO followDTO) {
+	public ResponseEntity<?> addFollow(
+			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@RequestBody FollowDTO followDTO) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
 		followService.save(followDTO);
+		
+		// notify 전송
+		User sender = userService.findUserByUserId(jwtService.getUserId(token));
+		User receiver = dogService.findDogByDogId(followDTO.getDogId()).getUser();
+		notifyService.insertNotify(receiver, sender, "f", followDTO.getDogId());
 
 		resultMap.put("result", SUCCESS);
 		resultMap.put("msg", "강아지 팔로우!");
