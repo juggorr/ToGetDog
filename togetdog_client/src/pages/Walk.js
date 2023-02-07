@@ -174,7 +174,7 @@ const MeetingListWrapper = () => {
       <MeetingWrapper>
         <div className="walkList">
           {renderMeetings()}
-          {originalMeetings.length === 0 && active === 1 ? (
+          {renderMeetings().length === 0 && active === 1 ? (
             <div className="noMeeting">
               <div className="noMeetingTextWrapper">
                 <p className="noMeetingText">예정된 산책 약속이 없어요.</p>
