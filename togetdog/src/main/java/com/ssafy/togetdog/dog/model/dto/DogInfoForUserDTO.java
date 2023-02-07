@@ -23,6 +23,20 @@ public class DogInfoForUserDTO extends DogInfoRespDTO {
 		int nowMonth = (now.getYear() * 12) + now.getMonthValue();
 		int dogMonth = (Integer.parseInt(dog.getDogBirth().substring(0, 4)) * 12)
 				+ Integer.parseInt(dog.getDogBirth().substring(4, 6));
+
+		String dogC1 = dog.getDogCharacter1();
+		String dogC2 = dog.getDogCharacter2();
+		if (dogC1.equals("d")) {
+			dogC1 = "disobedient";
+		} else {
+			dogC2 = "obedient";
+		}
+		if (dogC2.equals("a")) {
+			dogC2 = "active";
+		} else {
+			dogC2 = "inactive";
+		}
+
 		
 		return DogInfoForUserDTO.builder()
 				.dogId(dog.getDogId())

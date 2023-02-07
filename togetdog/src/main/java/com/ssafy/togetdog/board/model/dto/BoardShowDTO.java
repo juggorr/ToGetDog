@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.ssafy.togetdog.board.model.entity.Board;
 import com.ssafy.togetdog.board.model.entity.Comment;
+import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
+import com.ssafy.togetdog.dog.model.entity.Dog;
 
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@Builder
 @Getter
 @Setter
 @ToString
@@ -21,28 +24,29 @@ import lombok.ToString;
 public class BoardShowDTO {
 	private long boardId;
 	private long userId;
-	private long dogId;
+	private DogInfoRespDTO dog;
 	private String image;
 	private String content;
 	private List<CommentDTO> comments = new ArrayList<CommentDTO>();
 
 	@Builder
-	public BoardShowDTO(long boardId, long userId, long dogId, String image, String content, List<Comment> comments) {
-		super();
+	public BoardShowDTO(long boardId, long userId, DogInfoRespDTO dog, String image, String content, List<CommentDTO> comments) {
 		this.boardId = boardId;
 		this.userId = userId;
-		this.dogId = dogId;
+		this.dog = dog;
 		this.image = image;
 		this.content = content;
+		this.comments = comments;
 	}
-	
+
 	public BoardShowDTO(Board entity) {
 		this.boardId = entity.getBoardId();
 		this.userId = entity.getUser().getUserId();
-		this.dogId = entity.getDog().getDogId();
+//		this.dog = entity.getDog();
 		this.image = entity.getImage();
 		this.content = entity.getContent();
 	}
+
 
 
 }

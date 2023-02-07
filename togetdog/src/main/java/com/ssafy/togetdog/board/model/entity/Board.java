@@ -1,6 +1,5 @@
 package com.ssafy.togetdog.board.model.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,9 +15,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.togetdog.board.model.dto.CommentDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.user.model.entity.User;
 import com.sun.istack.NotNull;
