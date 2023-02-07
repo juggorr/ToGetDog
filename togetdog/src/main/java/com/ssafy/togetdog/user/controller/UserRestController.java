@@ -237,7 +237,7 @@ public class UserRestController {
 		
 		jwtService.validateToken(token);
 		long userId = jwtService.getUserId(token);
-		userService.deleteUser(userId);
+		userService.withdrawal(userId);
 		resultMap.put("result", SUCCESS);
 		SecurityContextHolder.clearContext();
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
