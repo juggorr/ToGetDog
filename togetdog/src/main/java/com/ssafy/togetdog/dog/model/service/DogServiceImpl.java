@@ -74,9 +74,7 @@ public class DogServiceImpl implements DogService {
 	/* 강아지 정보 삭제하기 */
 	@Override
 	public void deleteDog(long userId, String dogid) {
-		System.out.println(dogid);
 		Dog dog = findDogByDogId(Long.parseLong(dogid));
-		System.out.println(dog);
 		if (dog == null) {
 			throw new InvalidInputException("강아지 정보를 찾을 수 없습니다.");
 		}
