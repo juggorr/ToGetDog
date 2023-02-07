@@ -43,6 +43,7 @@ public class BoardService {
 	private String boardImageFilePath;
 	
 
+	@Transactional
 	public Long save(BoardDTO boardDTO, MultipartFile image ) throws IllegalStateException, IOException {
 		if (boardDTO == null || image.isEmpty()) {
 			throw new InvalidInputException("필요한 값이 들어오지 않았습니다.");
