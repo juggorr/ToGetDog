@@ -43,7 +43,7 @@ const char1BtnList = [
   },
   {
     btn_id: 'disobedient',
-    text: '난폭함',
+    text: '공격적',
   },
 ];
 // 강아지 성격2 선택 옵션들

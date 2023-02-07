@@ -215,7 +215,7 @@ const Feed = () => {
               <div className='special-text'>{currentDog.description}</div>
               <div className='characters-box'>
                 <OrangeCharacterBtn text={`#${currentDog.dogNeutered ? '중성화' : '중성화 X'}`} />
-                <YellowCharacterBtn text={`#${currentDog.dogCharacter1 === 'obedient' ? '온순함' : '난폭함'}`} />
+                <YellowCharacterBtn text={`#${currentDog.dogCharacter1 === 'obedient' ? '온순함' : '공격적'}`} />
                 <YellowCharacterBtn text={`#${currentDog.dogCharacter2 === 'active' ? '활동적' : '비활동적'}`} />
               </div>
             </FeedProfileBottom>
