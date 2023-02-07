@@ -19,6 +19,7 @@ import com.ssafy.togetdog.global.exception.InvalidInputException;
 import com.ssafy.togetdog.global.exception.InvalidLoginActingException;
 import com.ssafy.togetdog.global.exception.TokenValidFailedException;
 import com.ssafy.togetdog.global.exception.UnAuthorizedException;
+import com.ssafy.togetdog.global.exception.unAuthWaitUserException;
 
 import io.jsonwebtoken.io.IOException;
 
@@ -99,12 +100,21 @@ public class ExceptionRestControllerAdvice extends ResponseEntityExceptionHandle
 		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.CONFLICT);
 	}
 	
+	@ExceptionHandler(unAuthWaitUserException.class)
+	public ResponseEntity<?> unAuthWaitLogin409(unAuthWaitUserException e) {
+		logger.error("409 : unAuth Login acting : " + e.getMessage());
+		Map<String, String> resultMap = new HashMap<String, String>();
+		resultMap.put("result", FAIL);
+		resultMap.put("msg", "가입대기중");
+		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.CONFLICT);
+	}
+	
 	@ExceptionHandler(InvalidLoginActingException.class)
 	public ResponseEntity<?> unAuthLogin409(InvalidLoginActingException e) {
 		logger.error("409 : unAuth Login acting : " + e.getMessage());
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("result", FAIL);
-		resultMap.put("msg", "가입대기중");
+		resultMap.put("msg", "이메일과 비밀번호가 일치하지 않습니다.");
 		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.CONFLICT);
 	}
 	
