@@ -1,11 +1,11 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const FeedContainer = styled.div`
   width: 100%;
   height: calc(100vh - 115px);
   display: flex;
   flex-direction: column;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
 
   .no-photo {
     height: 100%;
@@ -26,7 +26,7 @@ export const FeedProfileWrapper = styled.div`
 export const FeedPhotoWrapper = styled.div`
   display: flex;
   height: 100%;
-  justify-content: space-around;
+  // justify-content: space-around;
   align-content: flex-start;
   flex-wrap: wrap;
   overflow-y: scroll;
