@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import ConfirmModal from "../components/ConfirmModal";
+import NoDogAlertModal from "../components/NoDogAlertModal";
 import MenuModal from "../components/MenuModal";
 import OrangeCharacterBtn from "../components/OrangeCharacterBtn";
 import YellowCharacterBtn from "../components/YellowCharacterBtn";
@@ -69,6 +70,9 @@ const Feed = () => {
 
   // 강아지 정보 삭제 모달 띄우기
   const [confirmBtnClick, setConfirmBtnClick] = useState(false);
+  // 등록된 강아지 없으면 등록된 강아지가 없다는 경고 모달 띄우기
+  const [noDogBtnClick, setNoDogBtnClick] = useState(false);
+
   const [menuBtnClick, setMenuBtnClick] = useState(false);
   const [feedData, setFeedData] = useState();
 
@@ -137,11 +141,6 @@ const Feed = () => {
         setFilteredPhotoData(filteredPhotos);
         setLoading(false);
       })
-      // .then(() => {
-      //   console.log(user.userId);
-      //   setNowDog(currentDog);
-      //   console.log(nowDog)
-      // })
       .catch((err) => {
         console.log(err);
         console.log("피드 데이터 불러오기 실패");
@@ -155,18 +154,24 @@ const Feed = () => {
   return (
     <>
       <FeedContainer>
-        <ConfirmModal 
+        {feedDogData.length > 0 ? (<ConfirmModal 
           confirmBtnClick={confirmBtnClick}
-          setMenuBtnClick={setMenuBtnClick}
           setConfirmBtnClick={setConfirmBtnClick}
+          setMenuBtnClick={setMenuBtnClick}
           dogId={currentDog.dogId}
-        />
+        />) : (<NoDogAlertModal 
+          noDogBtnClick={noDogBtnClick}
+          setNoDogBtnClick={setNoDogBtnClick}
+          setMenuBtnClick={setMenuBtnClick}
+        />)
+        }
         <MenuModal
           menuLists={menuLists}
           menuBtnClick={menuBtnClick}
           setMenuBtnClick={setMenuBtnClick}
           setConfirmBtnClick={setConfirmBtnClick}
-          dogId={currentDog.dogId}
+          setNoDogBtnClick={setNoDogBtnClick}
+          feedDogData={feedDogData}
         />
         <FeedProfileWrapper>
           {/* 프로필 상단 */}

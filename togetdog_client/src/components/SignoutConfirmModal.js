@@ -1,19 +1,18 @@
 import { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import axios from 'axios';
 
 
-import { authAtom, userState } from '../recoil';
+import { authAtom } from '../recoil';
 import WalkIcon from '../assets/walking_with_dog.png'
 import { BACKEND_URL } from '../config';
 import { ConfirmModalWrapper, ConfirmModalBody, ConfirmModalImage } from '../styles/ModalEmotion';
 import { SkyColorShortBtn, RedColorShortBtn } from '../styles/BtnsEmotion';
 
-function ConfirmModal({ confirmBtnClick, setMenuBtnClick, setConfirmBtnClick, dogId }) {
-  const navigate = useNavigate();
+function SignoutConfirmModal({ confirmBtnClick, setMenuBtnClick, setConfirmBtnClick, dogId }) {
+
   // const setAuth = useSetRecoilState(authAtom);
-  const user = useRecoilValue(userState);
+  // const user = useRecoilValue(userState);
   const auth = useRecoilValue(authAtom);
   const outSection = useRef();
 
@@ -22,20 +21,15 @@ function ConfirmModal({ confirmBtnClick, setMenuBtnClick, setConfirmBtnClick, do
     setMenuBtnClick(true);
   }
 
-  const deleteDog = () => {
-    axios
-      .delete(`${BACKEND_URL}/dog/${dogId}`, {
+  const deleteDog = async () => {
+    try {
+      await axios.delete(`${BACKEND_URL}/dog/${dogId}`, {
           headers: {
             Authorization: auth,
           }
-      })
-      .then((res) => {
-        console.log(res.data)
-        window.location.replace(`/feed/${user.userId}`)
-      }) 
-      .catch((err) => {
+    })} catch(err) {
         console.log(err)
-      });
+    };
   };
 
 
@@ -47,7 +41,7 @@ function ConfirmModal({ confirmBtnClick, setMenuBtnClick, setConfirmBtnClick, do
           onClick={(e) => {
             if (outSection.current === e.target) {
               setConfirmBtnClick(false);
-            }
+            } 
           }}
         >
           <ConfirmModalBody>
@@ -74,4 +68,4 @@ function ConfirmModal({ confirmBtnClick, setMenuBtnClick, setConfirmBtnClick, do
   )
 }
 
-export default ConfirmModal;
+export default SignoutConfirmModal;
