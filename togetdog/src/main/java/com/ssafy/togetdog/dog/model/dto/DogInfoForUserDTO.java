@@ -37,20 +37,6 @@ public class DogInfoForUserDTO extends DogInfoRespDTO {
 			dogC2 = "inactive";
 		}
 
-		
-		String dogC1 = dog.getDogCharacter1();
-		String dogC2 = dog.getDogCharacter2();
-		if (dogC1.equals("d")) {
-			dogC1 = "disobedient";
-		} else {
-			dogC2 = "obedient";
-		}
-		if (dogC2.equals("a")) {
-			dogC2 = "active";
-		} else {
-			dogC2 = "inactive";
-		}
-		
 		return DogInfoForUserDTO.builder()
 				.dogId(dog.getDogId())
 				.userId(dog.getUser().getUserId())
