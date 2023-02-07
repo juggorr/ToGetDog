@@ -84,6 +84,7 @@ const New = () => {
         .post(`${BACKEND_URL}/board`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
+            Authorization: auth,
           },
         })
         .then((response) => {
