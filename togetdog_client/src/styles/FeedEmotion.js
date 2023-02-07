@@ -13,6 +13,11 @@ export const FeedContainer = styled.div`
     justify-content: center;
     align-items: center;
   }
+
+  .photo-center {
+    display: flex;
+    justify-content: center;
+  }
 `;
 
 export const FeedProfileWrapper = styled.div`

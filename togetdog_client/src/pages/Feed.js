@@ -1,15 +1,15 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import ConfirmModal from "../components/ConfirmModal";
-import NoDogAlertModal from "../components/NoDogAlertModal";
-import MenuModal from "../components/MenuModal";
-import OrangeCharacterBtn from "../components/OrangeCharacterBtn";
-import YellowCharacterBtn from "../components/YellowCharacterBtn";
-import { BACKEND_URL, DUMMY_URL } from "../config";
-import { authAtom, dogState, userState } from "../recoil";
-import { PlusBtn } from "../styles/BtnsEmotion";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import ConfirmModal from '../components/ConfirmModal';
+import NoDogAlertModal from '../components/NoDogAlertModal';
+import MenuModal from '../components/MenuModal';
+import OrangeCharacterBtn from '../components/OrangeCharacterBtn';
+import YellowCharacterBtn from '../components/YellowCharacterBtn';
+import { BACKEND_URL, DUMMY_URL } from '../config';
+import { authAtom, dogState, userState } from '../recoil';
+import { PlusBtn } from '../styles/BtnsEmotion';
 import {
   FeedContainer,
   FeedPhoto,
@@ -29,8 +29,7 @@ const Feed = () => {
   const auth = useRecoilValue(authAtom);
   const setAuth = useSetRecoilState(authAtom);
   const [user, setUser] = useRecoilState(userState);
-  
-  
+
   // const [nowDog, setNowDog] = useState(null);
 
   const navigate = useNavigate();
@@ -53,8 +52,8 @@ const Feed = () => {
     },
     {
       menu_id: 4,
-      text: "강아지 프로필 삭제",
-      link: "/dogdelete",
+      text: '강아지 프로필 삭제',
+      link: '/dogdelete',
     },
     {
       menu_id: 5,
@@ -152,17 +151,20 @@ const Feed = () => {
   return (
     <>
       <FeedContainer>
-        {feedDogData.length > 0 ? (<ConfirmModal 
-          confirmBtnClick={confirmBtnClick}
-          setConfirmBtnClick={setConfirmBtnClick}
-          setMenuBtnClick={setMenuBtnClick}
-          dogId={currentDog.dogId}
-        />) : (<NoDogAlertModal 
-          noDogBtnClick={noDogBtnClick}
-          setNoDogBtnClick={setNoDogBtnClick}
-          setMenuBtnClick={setMenuBtnClick}
-        />)
-        }
+        {feedDogData.length > 0 ? (
+          <ConfirmModal
+            confirmBtnClick={confirmBtnClick}
+            setConfirmBtnClick={setConfirmBtnClick}
+            setMenuBtnClick={setMenuBtnClick}
+            dogId={currentDog.dogId}
+          />
+        ) : (
+          <NoDogAlertModal
+            noDogBtnClick={noDogBtnClick}
+            setNoDogBtnClick={setNoDogBtnClick}
+            setMenuBtnClick={setMenuBtnClick}
+          />
+        )}
         <MenuModal
           menuLists={menuLists}
           menuBtnClick={menuBtnClick}
@@ -254,15 +256,17 @@ const Feed = () => {
         {filteredPhotoData.length === 0 ? (
           <div className='no-photo'>등록된 사진이 없습니다.</div>
         ) : (
-          <FeedPhotoWrapper>
-            {filteredPhotoData.map((filteredPhoto) => (
-              <FeedPhoto
-                key={filteredPhoto.boardId}
-                onClick={() => navigate(`/board/${filteredPhoto.boardId}`)}
-                src={`https://i8a807.p.ssafy.io/image/board/` + filteredPhoto.image}
-              />
-            ))}
-          </FeedPhotoWrapper>
+          <div className='photo-center'>
+            <FeedPhotoWrapper>
+              {filteredPhotoData.map((filteredPhoto) => (
+                <FeedPhoto
+                  key={filteredPhoto.boardId}
+                  onClick={() => navigate(`/board/${filteredPhoto.boardId}`)}
+                  src={`https://i8a807.p.ssafy.io/image/board/` + filteredPhoto.image}
+                />
+              ))}
+            </FeedPhotoWrapper>
+          </div>
         )}
       </FeedContainer>
     </>
