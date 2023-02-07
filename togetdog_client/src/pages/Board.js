@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   BoardCommentBox,
   BoardContainer,
@@ -7,122 +7,126 @@ import {
   BoardUserInfo,
   BoardUserInfoBox,
   BoardUserPic,
-} from "../styles/BoardEmotion";
-import DogImg from "../assets/dog2.jpg";
-import Boy from "../assets/boy.png";
-import Girl from "../assets/girl.png";
-import MenuIcon from "../assets/menu_icon.png";
-import "../components/FontAwesome";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRecoilValue } from "recoil";
-import { authAtom } from "../recoil";
-import { useNavigate } from "react-router";
+} from '../styles/BoardEmotion';
+import DogImg from '../assets/dog2.jpg';
+import Boy from '../assets/boy.png';
+import Girl from '../assets/girl.png';
+import MenuIcon from '../assets/menu_icon.png';
+import '../components/FontAwesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { authAtom, userState } from '../recoil';
+import { useLocation, useNavigate } from 'react-router';
+import { BACKEND_URL } from '../config';
+import axios from 'axios';
 
 const Board = () => {
   const auth = useRecoilValue(authAtom);
   const navigate = useNavigate();
+  const [user, setUser] = useRecoilState(userState);
 
-  const board = {
-    likeStatus: true,
-    likeCnt: 123,
-    content: "콜라 오늘 미용하고 왔어요 ㅎㅎ",
-    comments: [
-      { commentUser: "요닝", commentContent: "콜라 미용한거 너무 귀엽당 ♥" },
-      {
-        commentUser: "해피맘",
-        commentContent: "내일 산책할 때 미용한 모습 볼 수 있겠네 ㅎㅎ",
-      },
-    ],
-  };
-  const currentDog = {
-    dogName: "콜라",
-    dogType: "믹스견",
-    dogAge: 25,
-    dogGender: "male",
-    dogImg:
-      "https://yt3.googleusercontent.com/AexQl7InKoQKDSvVffy6OFcwTi4BFIcyTlzCjL8_CLuLRO9aDNtXRwq7t7bTPRcpk-hCEiv0q7E=s900-c-k-c0x00ffffff-no-rj",
-  };
+  const location = useLocation();
+  const boardId = location.pathname.split('/').reverse()[0];
 
+  const [boardData, setBoardData] = useState();
+  const [dogData, setDogData] = useState();
   const [menuBtnClick, setMenuBtnClick] = useState(false);
-  const [likeStatus, setLikeStatus] = useState(board.likeStatus);
+  const [likeStatus, setLikeStatus] = useState(false);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!auth || !localStorage.getItem("recoil-persist")) {
-      navigate("/login");
+    if (!auth || !localStorage.getItem('recoil-persist')) {
+      navigate('/login');
       return;
     }
+
+    axios
+      .get(`${BACKEND_URL}/${boardId}`, {
+        headers: {
+          Authorization: auth,
+        },
+      })
+      .then((resp) => {
+        console.log(resp);
+        console.log(resp.data);
+        setBoardData(resp.data.board);
+        setDogData(resp.data.board.dog);
+        setLikeStatus(resp.data.board.liked);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response.status === 500) navigate('/*');
+        console.log('게시물 불러오기 실패');
+      });
   }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
       <BoardContainer>
         <BoardUserInfoBox>
-          <div className="board-info-box-left">
-            <BoardUserPic src={currentDog.dogImg}></BoardUserPic>
+          <div className='board-info-box-left' onClick={() => navigate(`/feed/${boardData.userId}`)}>
+            <BoardUserPic src={`https://i8a807.p.ssafy.io/image/dog/` + dogData.dogProfile}></BoardUserPic>
             <BoardUserInfo>
-              <div className="dog-name">
-                {currentDog.dogName}
-                {currentDog.dogGender === "male" ? (
-                  <img src={Boy} className="dog-gender" alt="boy" />
+              <div className='dog-name'>
+                {dogData.dogName}
+                {dogData.dogGender === 'male' ? (
+                  <img src={Boy} className='dog-gender' alt='boy' />
                 ) : (
-                  <img src={Girl} className="dog-gender" alt="girl" />
+                  <img src={Girl} className='dog-gender' alt='girl' />
                 )}
               </div>
-              <div className="dog-info">
-                {`${currentDog.dogType} / ${
-                  currentDog.dogAge >= 12
-                    ? `${Math.floor(currentDog.dogAge / 12)}살`
-                    : `${currentDog.dogAge}개월`
+              <div className='dog-info'>
+                {`${dogData.dogType} / ${
+                  dogData.dogAge >= 12 ? `${Math.floor(dogData.dogAge / 12)}살` : `${dogData.dogAge}개월`
                 }`}
               </div>
             </BoardUserInfo>
           </div>
-          <div className="board-info-box-right">
-            <img
-              src={MenuIcon}
-              className="menu-icon"
-              onClick={() => setMenuBtnClick(true)}
-              alt="menu"
-            />
-          </div>
+          {user.userId === boardData.userId ? (
+            <div className='board-info-box-right'>
+              <img src={MenuIcon} className='menu-icon' onClick={() => setMenuBtnClick(true)} alt='menu' />
+            </div>
+          ) : null}
         </BoardUserInfoBox>
         <BoardPicBox>
-          <img src={currentDog.dogImg} className="board-pic" alt="board_img" />
+          <img src={`https://i8a807.p.ssafy.io/image/board/` + boardData.image} className='board-pic' alt='board_img' />
         </BoardPicBox>
         <BoardContentBox>
-          <div className="like-box">
+          <div className='like-box'>
             {likeStatus ? (
               <FontAwesomeIcon
-                icon="fa-solid fa-heart"
-                className="like-icon"
+                icon='fa-solid fa-heart'
+                className='like-icon'
                 onClick={() => setLikeStatus(!likeStatus)}
               />
             ) : (
               <FontAwesomeIcon
-                icon="fa-regular fa-heart"
-                className="like-icon"
+                icon='fa-regular fa-heart'
+                className='like-icon'
                 onClick={() => setLikeStatus(!likeStatus)}
               />
             )}
-            <span className="like-txt">
-              x {board.likeCnt}명이 이 게시물을 좋아합니다.
-            </span>
+            <span className='like-txt'>{boardData.likeCnt}명이 이 게시물을 좋아합니다.</span>
           </div>
-          <div className="board-content">{board.content}</div>
+          <div className='board-content'>{boardData.content}</div>
         </BoardContentBox>
         <BoardCommentBox>
-          <div className="comment-input-box">
-            <input
-              className="comment-input"
-              placeholder="댓글을 작성해 주세요."
-            />
-            <button className="comment-btn">등록</button>
+          <div className='comment-input-box'>
+            <input className='comment-input' placeholder='댓글을 작성해 주세요.' />
+            <button className='comment-btn'>등록</button>
           </div>
-          <div className="comment-list-box">
-            {board.comments.map((comment) => (
-              <div className="comment-box">
-                <div className="comment-user">{comment.commentUser}</div>
-                <div className="comment-content">{comment.commentContent}</div>
+          <div className='comment-list-box'>
+            {boardData.comments.map((comment) => (
+              <div className='comment-box' key={comment.commentId}>
+                <div className='comment-user' onClick={() => navigate(`/feed/${comment.userId}`)}>
+                  {comment.nickName}
+                </div>
+                <div className='comment-content'>{comment.commentContent}</div>
               </div>
             ))}
           </div>

@@ -8,6 +8,7 @@ export const FooterWrapper = styled.footer`
   display: flex;
   width: inherit;
   height: 55px;
+  background-color: #fff;
 
   .icon-box {
     width: 20%;
@@ -22,6 +23,6 @@ export const FooterWrapper = styled.footer`
   }
 
   .active {
-    color: #bb2649;
+    color: #7fb77e;
   }
 `;
