@@ -27,9 +27,8 @@ public class BoardShowDTO {
 	private DogInfoRespDTO dog;
 	private String image;
 	private String content;
-	private List<CommentDTO> comments = new ArrayList<CommentDTO>();
+	private List<CommentDTO> comments;
 
-	@Builder
 	public BoardShowDTO(long boardId, long userId, DogInfoRespDTO dog, String image, String content, List<CommentDTO> comments) {
 		this.boardId = boardId;
 		this.userId = userId;
