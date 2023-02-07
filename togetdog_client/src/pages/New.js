@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { userState } from "../recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { authAtom, userState } from "../recoil";
 import axios from "axios";
 import {
   CreateBoardWrapper,
@@ -16,6 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const New = () => {
   const navigate = useNavigate();
+  const auth = useRecoilValue(authAtom);
 
   const [user, setUser] = useRecoilState(userState);
 
@@ -28,33 +29,38 @@ const New = () => {
 
   useEffect(() => {
     axios
-      .get(`${DUMMY_URL}/user/includesDog/${user.userId}`, {})
+      .get(`${BACKEND_URL}/user/includesDog/${user.userId}`, {
+        headers: {
+          Authorization: auth,
+        },
+      })
       .then((response) => {
         setUserData(response.data);
-        setSelectedDog(userData.dog[0].dogId);
+        setSelectedDog(response.data.dogs[0].dogId);
       })
       .catch((error) => {
+        console.log(error);
         // 오류발생시 실행
       });
   }, []);
 
   const DogImages = (item) => {
     return (
-      <DogImgWrapper key={item.dog.dogId}>
+      <DogImgWrapper key={item.dogs.dogId}>
         <div
           className={
-            selectedDog === item.dog.dogId
+            selectedDog === item.dogs.dogId
               ? "dogProfileCircle"
               : "dogProfileCircle disabled"
           }
           onClick={() => {
-            setSelectedDog(item.dog.dogId);
+            setSelectedDog(item.dogs.dogId);
           }}
         >
           <img
             className="dogProfileImg"
-            src={item.dog.dogProfile}
-            alt={item.dog.dogName}
+            src={item.dogs.dogProfile}
+            alt={item.dogs.dogName}
           />
         </div>
       </DogImgWrapper>
@@ -87,7 +93,7 @@ const New = () => {
         new Blob([JSON.stringify(boardContent)], { type: "application/json" })
       );
       await axios
-        .post(`${DUMMY_URL}/board`, formData, {
+        .post(`${BACKEND_URL}/board`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -110,9 +116,9 @@ const New = () => {
           {"  "}누구의 사진인가요?
         </p>
         <div className="dogImageWrapper">
-          {userData.dog &&
-            userData.dog.map((item, idx) => (
-              <DogImages dog={item} key={item.dogId} idx={idx}></DogImages>
+          {userData.dogs &&
+            userData.dogs.map((item, idx) => (
+              <DogImages dogs={item} key={item.dogId} idx={idx}></DogImages>
             ))}
         </div>
         {selectedDog ? null : (

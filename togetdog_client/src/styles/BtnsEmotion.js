@@ -1,4 +1,6 @@
 import styled from "@emotion/styled";
+import dog_profile from "../assets/dog2.jpg";
+
 
 // 홈으로 이동 텍스트 버튼
 export const HomeTextBtn = styled.div`
@@ -196,5 +198,11 @@ export const UserIconCircle = styled.div`
 
   .five {
     background-color: #81b4be;
+  }
+
+  .image {
+    background-image: ${(props) =>
+      props.image ? `url(${props.image})` : `url(${dog_profile})`};
+    background-size: cover;
   }
 `;
