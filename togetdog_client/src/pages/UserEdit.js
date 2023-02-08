@@ -67,14 +67,15 @@ function UserEdit() {
   useEffect(() => {
     setInputs({
       ...inputs,
-      gender: userInfos.userGender
+      gender: userInfos.userGender,
+      birth: thisYear - userInfos.userAge,
     })
   }, [userInfos]);
 
   const [inputs, setInputs] = useState({
     nickname: userInfos.nickName,
     gender: userInfos.userGender, // 성별 default 값 '남자'로 설정
-    birth: thisYear - userInfos.userAge,
+    birth: '',
     address: userInfos.address,
     sigunguCode: userInfos.regionCode,
   });
@@ -82,7 +83,7 @@ function UserEdit() {
   const {
     // nickname,
     gender,
-    // birth,
+    birth,
     address,
     // sigunguCode,
   } = inputs;
@@ -159,6 +160,11 @@ function UserEdit() {
   const handlePopup = () => {
     setPopup(!popup);
   };
+
+  // 돌아가기 클릭 시
+  const handleNotEdit = () => {
+    navigate(`/feed/${user.userId}`)
+  }
 
   const handleEdit = () => {
     console.log('회원정보 변경!')
@@ -244,7 +250,7 @@ function UserEdit() {
                 className='number-input' 
                 name='birth' 
                 onChange={(e) => handleBirth(e)} 
-                placeholder={userInfos? thisYear - userInfos.userAge : thisYear} 
+                placeholder={userInfos? birth : thisYear} 
               />
             </div>
             <div className='year'>년</div>
@@ -283,7 +289,7 @@ function UserEdit() {
         </InputWrapper>
         <div className='signup-desc'>* 표시는 필수 입력 값입니다.</div>
         <div className='two-btns-wrapper'>
-            <GreyColorShortBtn onClick={checkOthers}>돌아가기</GreyColorShortBtn>
+            <GreyColorShortBtn onClick={handleNotEdit}>돌아가기</GreyColorShortBtn>
             <MainColorShortBtn onClick={checkOthers}>변경하기</MainColorShortBtn>
         </div>
         <div className='edit-bottom-wrapper'>

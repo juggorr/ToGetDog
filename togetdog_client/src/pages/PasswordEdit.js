@@ -1,5 +1,7 @@
-import { useState } from "react";
 import axios from "axios";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 
 import { BACKEND_URL, LOCAL_SERVER } from '../config';
 
@@ -7,13 +9,20 @@ import { BACKEND_URL, LOCAL_SERVER } from '../config';
 import { MainColorShortBtn, GreyColorShortBtn } from '../styles/BtnsEmotion';
 import { SignupContainer, SignupWrapper, InputWrapper } from '../styles/SignupEmotion';
 import NoEssentialsModal from '../components/AlertModal/NoEssentialsModal'
+import { authAtom, userState } from "../recoil";
 
 const passwordRegexp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^+=-])(?=.*[0-9]).{8,16}$/;
 
 
 function PasswordEdit() {
 
+  const navigate = useNavigate();
+
   const [noEssentialsModal, setNoEssentialsModal] = useState(false);
+
+  const auth = useRecoilValue(authAtom);
+  const setAuth = useSetRecoilState(authAtom);
+  const [user, setUser] = useRecoilState(userState);
 
   const [inputs, setInputs] = useState({
     passwordOld: '',
@@ -32,10 +41,6 @@ function PasswordEdit() {
   // 받아서 해당작업 진행
   const oldPassword = 'aaaaaa!1';
 
-  const [inputError, setInputError] = useState(false);
-  const [inputErrorMsg, setInputErrorMsg] = useState('');
-  const [oldPasswordError, setOldPasswordError] = useState(true);
-  const [oldPasswordErrorMsg, setOldPasswordErrorMsg] = useState('본인 확인을 위해 기존 비밀번호를 입력해 주세요');
   const [passwordError, setPasswordError] = useState(false);
   const [passwordErrorMsg, setPasswordErrorMsg] = useState('');
   const [passwordCheckError, setPasswordCheckError] = useState(false);
@@ -51,13 +56,6 @@ function PasswordEdit() {
 
   // 기존 비밀번호 핸들러 메소드
   const handleOldPassword = (e) => {
-    if (oldPassword === (e.target.value)) {
-      setOldPasswordError(false);
-      setOldPasswordErrorMsg('기존 비밀번호와 일치합니다')
-    } else {
-      setOldPasswordError(true);
-      setOldPasswordErrorMsg('기존 비밀번호와 일치하지 않습니다')
-    }
     onChange(e);
   }
 
@@ -90,7 +88,13 @@ function PasswordEdit() {
     onChange(e);
   };
 
-  // 비밀번호 바뀌었는지 확인 메소드 추가해야함
+  // 비밀번호 바뀌었는지 확인 메소드 추가해야함? => 심화로..
+
+
+  const handleNotEdit = () => {
+    navigate(`/feed/${user.userId}`)
+  }
+
 
   const checkOthers = () => {
     if (!oldPassword || !password || !passwordCheck) {
@@ -118,12 +122,12 @@ function PasswordEdit() {
                   name='passwordOld'
                   className='email-input'
                   type='password'
-                  placeholder='기존 비밀번호를 입력해주세요.'
+                  placeholder='기존 비밀번호를 입력해 주세요.'
                   onChange={(e) => handleOldPassword(e)}
                 />
               </div>
             </div>
-            <div className={oldPasswordError ? 'error' : 'success'}>{oldPasswordErrorMsg}</div>
+            <div className="error">본인확인을 위해 기존 비밀번호를 입력해 주세요.</div>
           </InputWrapper>
           {/* 비밀번호 wrapper */}
           <InputWrapper>
@@ -136,7 +140,7 @@ function PasswordEdit() {
                   name='password'
                   className='email-input'
                   type='password'
-                  placeholder='변경할 비밀번호를 입력해주세요.'
+                  placeholder='변경할 비밀번호를 입력해 주세요.'
                   onChange={(e) => handlePassword(e)}
                 />
               </div>
@@ -162,9 +166,8 @@ function PasswordEdit() {
             <div className={passwordCheckError ? 'success' : 'error'}>{passwordCheckErrorMsg}</div>
           </InputWrapper>
           <div className='signup-desc'>* 표시는 필수 입력 값입니다.</div>
-          <div className={inputError ? null : 'input-error'}>{inputErrorMsg}</div>
           <div className='two-btns-wrapper'>
-              <GreyColorShortBtn onClick={checkOthers}>돌아가기</GreyColorShortBtn>
+              <GreyColorShortBtn onClick={handleNotEdit}>돌아가기</GreyColorShortBtn>
               <MainColorShortBtn onClick={checkOthers}>변경하기</MainColorShortBtn>
           </div>
       </SignupWrapper>

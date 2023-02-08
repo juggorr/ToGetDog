@@ -8,7 +8,7 @@ import MenuModal from "../components/MenuModal";
 import OrangeCharacterBtn from "../components/OrangeCharacterBtn";
 import YellowCharacterBtn from "../components/YellowCharacterBtn";
 import { BACKEND_URL, DUMMY_URL } from "../config";
-import { authAtom, dogState, userState } from "../recoil";
+import { authAtom, userState } from "../recoil";
 import { PlusBtn } from "../styles/BtnsEmotion";
 import {
   FeedContainer,
@@ -44,7 +44,7 @@ const Feed = () => {
     {
       menu_id: 2,
       text: '프로필 수정',
-      link: '/',
+      link: '/useredit',
     },
     {
       menu_id: 3,
@@ -59,7 +59,7 @@ const Feed = () => {
     {
       menu_id: 5,
       text: '계정 비밀번호 변경',
-      link: '/',
+      link: '/passwordedit',
     },
     {
       menu_id: 6,
