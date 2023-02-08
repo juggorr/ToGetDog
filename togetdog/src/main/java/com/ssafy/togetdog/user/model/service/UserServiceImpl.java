@@ -190,8 +190,10 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findById(userId).orElse(null);
 		if (user != null) {
 			if (passwordEncoder.matches(password, user.getPassword())) {
-				user.setPassword(newPassword);
+				user.setPassword(passwordEncoder.encode(newPassword));
 				userRepository.save(user);
+			} else {
+				throw new InvalidInputException();
 			}
 		}
 	}
