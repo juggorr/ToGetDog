@@ -14,7 +14,6 @@ const Modal = ({ setModalOpen }) => {
 
   const onChange = (e) => {
     inputText.current = e.target.value;
-    console.log(inputText.current);
   };
 
   return (
