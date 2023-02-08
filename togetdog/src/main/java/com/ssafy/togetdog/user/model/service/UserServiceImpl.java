@@ -193,7 +193,7 @@ public class UserServiceImpl implements UserService {
 				user.setPassword(passwordEncoder.encode(newPassword));
 				userRepository.save(user);
 			} else {
-				throw new InvalidInputException();
+				throw new InvalidInputException("기존 비밀번호가 입력한 비밀번호와 일치하지 않습니다.");
 			}
 		}
 	}
@@ -235,7 +235,27 @@ public class UserServiceImpl implements UserService {
 		String nicknameRegexp = "^[a-zA-Z가-힇0-9]{2,16}$";
 		String genderRegexp = "^female$|^male$|^none$";
 		String regionCodeRegexp = "(^[0-9]{5}$)";
-
+		
+		// null check
+		if (userDTO.getEmail() == null) {
+			throw new InvalidInputException("이메일이 null입니다.");
+		}
+		if (userDTO.getNickname() == null) {
+			throw new InvalidInputException("닉네임이 null입니다.");
+		}
+		if (userDTO.getGender() == null) {
+			throw new InvalidInputException("성별이 null입니다.");
+		}
+		if (userDTO.getAddress() == null) {
+			throw new InvalidInputException("주소 값이 null입니다.");
+		}
+		if (userDTO.getRegionCode() == null) {
+			throw new InvalidInputException("지역코드 값이 null입니다.");
+		}
+		if (userDTO.getBirth() == null) {
+			throw new InvalidInputException("생년월일 값이 null입니다.");
+		}
+		
 		// email regexp check
 		if (!Pattern.matches(emailRegexp, userDTO.getEmail())) {
 			throw new InvalidInputException("이메일 입력값이 올바르지 않습니다.");
@@ -277,7 +297,24 @@ public class UserServiceImpl implements UserService {
 		String nicknameRegexp = "^[a-zA-Z가-힇0-9]{2,16}$";
 		String genderRegexp = "^female$|^male$|^none$";
 		String regionCodeRegexp = "(^[0-9]{5}$)";
-
+		
+		// null check
+		if (userDTO.getNickName() == null) {
+			throw new InvalidInputException("닉네임이 null입니다.");
+		}
+		if (userDTO.getGender() == null) {
+			throw new InvalidInputException("성별이 null입니다.");
+		}
+		if (userDTO.getAddress() == null) {
+			throw new InvalidInputException("주소 값이 null입니다.");
+		}
+		if (userDTO.getRegionCode() == null) {
+			throw new InvalidInputException("지역코드 값이 null입니다.");
+		}
+		if (userDTO.getBirth() == null) {
+			throw new InvalidInputException("생년월일 값이 null입니다.");
+		}
+		
 		// nickname regexp check
 		if (!Pattern.matches(nicknameRegexp, userDTO.getNickName())) {
 			throw new InvalidInputException("닉네임 입력값이 올바르지 않습니다.");
