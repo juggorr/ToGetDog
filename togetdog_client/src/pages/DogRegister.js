@@ -7,6 +7,7 @@ import axios from 'axios';
 
 import { DUMMY_URL, BACKEND_URL } from '../config';
 
+import NoEssentialsModal from '../components/AlertModal/NoEssentialsModal'
 import { MainColorLongBtn } from '../styles/BtnsEmotion';
 import DoubleOptionBtn from '../components/DoubleOptionBtn';
 import { RegisterContainer, RegisterWrapper, ProfileImage, AddImage, InputWrapper } from '../styles/DogRegisterEmotion';
@@ -80,8 +81,11 @@ function DogRegister() {
     fetchData();
   }, []);
 
-  const [inputError, setInputError] = useState(false);
-  const [inputErrorMsg, setInputErrorMsg] = useState('');
+
+  const [noEssentialsModal, setNoEssentialsModal] = useState(false);
+
+  // const [inputError, setInputError] = useState(false);
+  // const [inputErrorMsg, setInputErrorMsg] = useState('');
   const [nameError, setNameError] = useState(false);
   const [nameErrorMsg, setNameErrorMsg] = useState('');
   const [yearError, setYearError] = useState(false);
@@ -176,8 +180,9 @@ function DogRegister() {
   const checkValidation = () => {
     // 필수 입력 값들이 입력되었는지 확인
     if (!image || !name || !sex || !breed || !year || !month || !weight || !isNeuterd || !isObedient || !isActive) {
-      setInputError(true);
-      setInputErrorMsg('필수 값이 입력되지 않았습니다');
+      setNoEssentialsModal(true);
+      // setInputError(true);
+      // setInputErrorMsg('필수 값이 입력되지 않았습니다');
       return false;
     }
     // 이름 유효성 검사
@@ -285,6 +290,10 @@ function DogRegister() {
   return (
     <RegisterContainer>
       <BackHeader />
+      <NoEssentialsModal
+        noEssentialsModal={noEssentialsModal}
+        setNoEssentialsModal={setNoEssentialsModal}
+      />
       <RegisterWrapper>
         <ProfileImage image={imgURL}>
           {/* 사진 등록 */}
@@ -457,7 +466,6 @@ function DogRegister() {
           <p className='small-font'>특이사항은 20자 이내로 입력해주세요.</p>
         </InputWrapper>
         <div className='signup-desc'>*표시는 필수 입력 값입니다.</div>
-        <div className={inputError ? null : 'error'}>{inputErrorMsg}</div>
         <div className='btn-wrapper'>
           <MainColorLongBtn onClick={handleRegister}>등록하기</MainColorLongBtn>
         </div>
