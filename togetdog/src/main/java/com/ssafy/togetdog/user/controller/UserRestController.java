@@ -192,7 +192,7 @@ public class UserRestController {
 		
 		jwtService.validateToken(token);
 		long userId = jwtService.getUserId(token);
-		userService.updateUserInfo(userId, UserUpdateParamDTO.of(userDTO));
+		userService.updateUserInfo(userId, userDTO);
 		resultMap.put("result", SUCCESS);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
