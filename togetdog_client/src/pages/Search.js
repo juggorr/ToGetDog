@@ -93,6 +93,19 @@ const SingleUser = ({ item }) => {
     return Math.floor((currentYear - birthyear + 1) / 10) * 10;
   };
 
+  const userDogs = (dogs) => {
+    let dogStr = "";
+    if (dogs) {
+      for (let i = 0; i < dogs.length; i++) {
+        dogStr = dogStr + dogs[i];
+        if (i + 1 !== dogs.length) {
+          dogStr = dogStr + " / ";
+        }
+      }
+    }
+    return dogStr;
+  };
+
   return (
     <FriendListWrapper>
       <div
@@ -104,7 +117,7 @@ const SingleUser = ({ item }) => {
           <div className="dogNameWrapper">
             <p className="dogName">{item.nickName}</p>
           </div>
-          <div className="dogType">키우는 강아지 종</div>
+          <div className="dogType">{userDogs(item.userDogs)}</div>
           <div className="characters-box">
             <YellowCharacterBtn text={`#${userAge(item.birth)}대`} />
             <YellowCharacterBtn text={`#${userTown(item.address)}`} />
