@@ -97,6 +97,7 @@ const Feed = () => {
         setCurrentDog(dog);
         let filteredPhotos = feedData.filter((feedPhoto) => feedPhoto.dogId === targetDogId);
         setFilteredPhotoData(filteredPhotos);
+        setSubDogs(tmpSubDogs);
       } else {
         tmpSubDogs.push(dog);
       }
@@ -121,7 +122,7 @@ const Feed = () => {
       .then((resp) => {
         console.log(resp);
         console.log(resp.data);
-        setFeedData(resp.data);
+        setFeedData(resp.data.feed);
         setFeedUserData(resp.data.user);
         setFeedDogData(resp.data.user.dogs);
         setCurrentDog(resp.data.user.dogs[0]);
