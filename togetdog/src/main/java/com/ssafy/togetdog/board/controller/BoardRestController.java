@@ -80,13 +80,17 @@ public class BoardRestController {
 			@RequestParam(value="pageNo") int pageNo){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
-//		List<DogInfoRespDTO> followList = followService.getFollowingList(myId);
-//		List<Long> dogIds = new ArrayList<Long>();
-//		for (DogInfoRespDTO follow : followList) {
-//			dogIds.add(follow.getDogId());
-//		}
-//		Page<BoardDTO> boardList = boardService.getAllByDogIds(dogIds, pageNo - 1);
-		Page<BoardDTO> boardList = boardService.findAll(pageNo - 1);
+		Long userId = jwtService.getUserId(token);
+//		Long userId = 4L;
+		
+		List<DogInfoRespDTO> followList = followService.getFollowingList(userId);
+		logger.info("return boardList : {}", followList);
+		List<Long> dogIds = new ArrayList<Long>();
+		for (DogInfoRespDTO follow : followList) {
+			dogIds.add(follow.getDogId());
+		}
+		Page<BoardDTO> boardList = boardService.getAllInDogIds(dogIds, pageNo - 1);
+//		Page<BoardDTO> boardList = boardService.findAll(pageNo - 1);
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("boardList", boardList.getContent());
@@ -191,7 +195,7 @@ public class BoardRestController {
 	@ApiOperation(value = "게시글 등록", notes = "게시글을 등록함")
 	@PostMapping("/board")
 	public ResponseEntity<?> addBoard(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@RequestBody BoardDTO boardDTO, @RequestPart(value="file") @ApiParam(required = true) MultipartFile boardImage) throws IllegalStateException, IOException {
+			@RequestPart(value="boardContent") BoardDTO boardDTO, @RequestPart(value="file") @ApiParam(required = true) MultipartFile boardImage) throws IllegalStateException, IOException {
 		logger.info("Board registration parameter : {} {}", boardDTO, boardImage.getOriginalFilename());
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
