@@ -1,6 +1,8 @@
 package com.ssafy.togetdog.appointment.model.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,8 +23,10 @@ import com.ssafy.togetdog.appointment.model.repository.AppointmentRepository;
 import com.ssafy.togetdog.appointment.model.repository.ReceivedAppointmentRepository;
 import com.ssafy.togetdog.appointment.model.repository.SentAppointmentRepository;
 import com.ssafy.togetdog.board.model.service.BoardService;
+import com.ssafy.togetdog.dog.model.dto.DogInfoForUserDTO;
 import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
+import com.ssafy.togetdog.dog.model.repository.DogRepository;
 import com.ssafy.togetdog.user.model.entity.User;
 
 import lombok.RequiredArgsConstructor;
@@ -36,10 +40,12 @@ public class AppointmentService {
 	private final AppointmentRepository appointmentRepository;
 	private final SentAppointmentRepository sentAppointmentRepository;
 	private final ReceivedAppointmentRepository receivedAppointmentRepository;
+	private final DogRepository dogRepository;
 
 	public List<AppointmentListDTO> findAllByUserId(long userId) {
 		User user = new User();
 		user.setUserId(userId);
+		
 		
 		List<Appointment> reqlist = appointmentRepository.findAllBySentUserOrReceivedUser(user, user);
 		
@@ -52,68 +58,59 @@ public class AppointmentService {
 			List<SentAppointment> sentApps = sentAppointmentRepository.findAllByAppointment(reqlist.get(i));
 			List<DogInfoRespDTO> sentDogs = new ArrayList<>(); 
 			for (SentAppointment sent : sentApps) {
-				sentDogs.add(DogInfoRespDTO.of(sent.getDog()));
+				sentDogs.add(DogInfoRespDTO.of(sent.getDog(), Double.parseDouble(sent.getDog().getDogWeight())));
 			}
 			requestList.get(i).setUserOneDogs(sentDogs);
 			List<SentAppointment> recvApps = sentAppointmentRepository.findAllByAppointment(reqlist.get(i));
 			List<DogInfoRespDTO> recvDogs = new ArrayList<>(); 
 			for (SentAppointment recv : recvApps) {
-				recvDogs.add(DogInfoRespDTO.of(recv.getDog()));
+				recvDogs.add(DogInfoRespDTO.of(recv.getDog(), Double.parseDouble(recv.getDog().getDogWeight())));
 			}
 			requestList.get(i).setUserTwoDogs(recvDogs);
 		}
 		logger.info("return appointment sentList : {}", requestList.size());
 		logger.info("return appointment sentList : {}", requestList);
 		
-//		User user = new User();
-//		user.setUserId(userId);
-//		List<Appointment> sentlist = appointmentRepository.findAllBySentUser(user);
-//		List<Appointment> recvlist = appointmentRepository.findAllByReceivedUser(user);
-//
-//		
-//		List<AppointmentListDTO> sentList = sentlist.stream()
-//				.map(a->AppointmentListDTO.of(a)).collect(Collectors.toList());
-//		List<AppointmentListDTO> recvList = recvlist.stream()
-//				.map(a->AppointmentListDTO.of(a)).collect(Collectors.toList());
-//		logger.info("============== : {}", sentList);
-//		logger.info("-------------- : {}", recvList);
-//		
-//		// 내가 보낸 약속
-//		for (int i = 0; i < sentList.size(); i++) {
-//			List<SentAppointment> sentApps = sentAppointmentRepository.findAllByAppointment(sentlist.get(i));
-//			List<DogInfoRespDTO> sentDogs = new ArrayList<>(); 
-//			for (SentAppointment sent : sentApps) {
-//				sentDogs.add(DogInfoRespDTO.of(sent.getDog()));
-//			}
-//			sentList.get(i).setSentDogs(sentDogs);
-//			List<SentAppointment> recvApps = sentAppointmentRepository.findAllByAppointment(sentlist.get(i));
-//			List<DogInfoRespDTO> recvDogs = new ArrayList<>(); 
-//			for (SentAppointment recv : recvApps) {
-//				recvDogs.add(DogInfoRespDTO.of(recv.getDog()));
-//			}
-//			sentList.get(i).setReceivedDogs(recvDogs);
-//		}
-//		logger.info("return appointment sentList : {}", sentList.size());
-//		logger.info("return appointment sentList : {}", sentList);
-//		
-//		// 내가 받은 약속
-//		for (int i = 0; i < recvlist.size(); i++) {
-//			List<ReceivedAppointment> sentApps = receivedAppointmentRepository.findAllByAppointment(recvlist.get(i));
-//			List<DogInfoRespDTO> sentDogs = new ArrayList<>(); 
-//			for (ReceivedAppointment sent : sentApps) {
-//				sentDogs.add(DogInfoRespDTO.of(sent.getDog()));
-//			}
-//			recvList.get(i).setSentDogs(sentDogs);
-//			List<ReceivedAppointment> recvApps = receivedAppointmentRepository.findAllByAppointment(recvlist.get(i));
-//			List<DogInfoRespDTO> recvDogs = new ArrayList<>(); 
-//			for (ReceivedAppointment recv : recvApps) {
-//				recvDogs.add(DogInfoRespDTO.of(recv.getDog()));
-//			}
-//			recvList.get(i).setReceivedDogs(recvDogs);
-//		}
-//		logger.info("return appointment recvList : {}", recvList.size());
-//		logger.info("return appointment recvList : {}", recvList);
-		
+		/*
+		 * //recv, sent 분리된 리스트 
+		 * User user = new User(); user.setUserId(userId);
+		 * List<Appointment> sentlist = appointmentRepository.findAllBySentUser(user);
+		 * List<Appointment> recvlist =
+		 * appointmentRepository.findAllByReceivedUser(user);
+		 * 
+		 * 
+		 * List<AppointmentListDTO> sentList = sentlist.stream()
+		 * .map(a->AppointmentListDTO.of(a)).collect(Collectors.toList());
+		 * List<AppointmentListDTO> recvList = recvlist.stream()
+		 * .map(a->AppointmentListDTO.of(a)).collect(Collectors.toList());
+		 * logger.info("============== : {}", sentList);
+		 * logger.info("-------------- : {}", recvList);
+		 * 
+		 * // 내가 보낸 약속 for (int i = 0; i < sentList.size(); i++) { List<SentAppointment>
+		 * sentApps = sentAppointmentRepository.findAllByAppointment(sentlist.get(i));
+		 * List<DogInfoRespDTO> sentDogs = new ArrayList<>(); for (SentAppointment sent
+		 * : sentApps) { sentDogs.add(DogInfoRespDTO.of(sent.getDog())); }
+		 * sentList.get(i).setSentDogs(sentDogs); List<SentAppointment> recvApps =
+		 * sentAppointmentRepository.findAllByAppointment(sentlist.get(i));
+		 * List<DogInfoRespDTO> recvDogs = new ArrayList<>(); for (SentAppointment recv
+		 * : recvApps) { recvDogs.add(DogInfoRespDTO.of(recv.getDog())); }
+		 * sentList.get(i).setReceivedDogs(recvDogs); }
+		 * logger.info("return appointment sentList : {}", sentList.size());
+		 * logger.info("return appointment sentList : {}", sentList);
+		 * 
+		 * // 내가 받은 약속 for (int i = 0; i < recvlist.size(); i++) {
+		 * List<ReceivedAppointment> sentApps =
+		 * receivedAppointmentRepository.findAllByAppointment(recvlist.get(i));
+		 * List<DogInfoRespDTO> sentDogs = new ArrayList<>(); for (ReceivedAppointment
+		 * sent : sentApps) { sentDogs.add(DogInfoRespDTO.of(sent.getDog())); }
+		 * recvList.get(i).setSentDogs(sentDogs); List<ReceivedAppointment> recvApps =
+		 * receivedAppointmentRepository.findAllByAppointment(recvlist.get(i));
+		 * List<DogInfoRespDTO> recvDogs = new ArrayList<>(); for (ReceivedAppointment
+		 * recv : recvApps) { recvDogs.add(DogInfoRespDTO.of(recv.getDog())); }
+		 * recvList.get(i).setReceivedDogs(recvDogs); }
+		 * logger.info("return appointment recvList : {}", recvList.size());
+		 * logger.info("return appointment recvList : {}", recvList);
+		 */		
 		return requestList;
 	}
 
@@ -181,6 +178,47 @@ public class AppointmentService {
 			appointment.setReceiverRated(true);
 			appointmentRepository.save(appointment);
 		}
+	}
+
+	public List<DogInfoForUserDTO> recommendFriendsForDog(long userId, long dogId) {
+		Dog dog = dogRepository.findByDogId(dogId);
+		DogInfoRespDTO myDog = DogInfoRespDTO.of(dog, Double.parseDouble(dog.getDogWeight()));
+		logger.info("myDog ============== : {}", myDog);
+		String weight = String.valueOf(myDog.getDogWeight());
+		boolean neutured = myDog.isDogNeutered();
+		int age = myDog.getDogAge() % 12;
+		LocalDateTime now = LocalDateTime.now();
+		String tenYearBefore = String.valueOf(now.minusYears(10)).substring(0, 4);
+		String fiveYearBefore = String.valueOf(now.minusYears(5)).substring(0, 4);
+		String oneYearBefore = String.valueOf(now.minusYears(1)).substring(0, 4);
+		logger.info("age ============== : {}", age);
+		
+		/*
+		 * 중성화 했으면 중성화 한 강아지 대상으로
+		 * 중성화 안했으면 같은 성별끼리만 ,
+		 *  
+		 * 소형    중형       대형
+		 *  <6kg <10kg
+		 * 소형은 중형까지, 중형은 다되는걸로 하고 대형은 중형까지
+		 * 
+		 * 나이는
+		 * 1살 미만, 1살 ~ 5살, 5살 ~ 10살, 10살 이상
+		 */
+		if(neutured) { // 중성화 한 강아지 true = 1, false = 0
+			if(age < 1) { // 1살 미만
+				
+			} else if(age < 5) { // 5살 미만
+				
+			} else if(age < 10) { // 10살 미만
+				
+			} else {
+				
+			}
+		} else { // 중성화 안한 강아지, 쿼리 문 뒤에 dogGender 붙여야함
+			
+		}
+		
+		return null;
 	}
 
 }

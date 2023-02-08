@@ -78,7 +78,9 @@ public class AppointmentRestController {
 	public ResponseEntity<?> getAppointments(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
+		jwtService.validateToken(token);
 		long userId = jwtService.getUserId(token);
+//		long userId = 1L;
 		List<AppointmentListDTO> appointemntInfo = appointmentService.findAllByUserId(userId);
 		
 		resultMap.put("result", SUCCESS);
@@ -97,8 +99,10 @@ public class AppointmentRestController {
 	public ResponseEntity<?> requestAppointment(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
 			@RequestBody @ApiParam(required = true) AppointmentAddDTO registDTO) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-//		Long myId = 1L;
+		
+		jwtService.validateToken(token);
 		Long myId = jwtService.getUserId(token);
+//		Long myId = 1L; 
 		
 		logger.info("=================== registDto : {}", registDTO);
 		
@@ -133,6 +137,7 @@ public class AppointmentRestController {
 			@RequestParam(value="appointmentId") @ApiParam(required = true) long roomId) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
+		jwtService.validateToken(token);
 		appointmentService.updateAppointment(roomId, "cancelled");
 		
 		resultMap.put("result", SUCCESS);
@@ -151,6 +156,7 @@ public class AppointmentRestController {
 			@RequestParam(value="appointmentId") @ApiParam(required = true) long roomId) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
+		jwtService.validateToken(token);
 		appointmentService.updateAppointment(roomId, "confirmed");
 		
 		resultMap.put("result", SUCCESS);
@@ -169,6 +175,7 @@ public class AppointmentRestController {
 			@RequestParam(value="appointmentId") @ApiParam(required = true) long roomId) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
+		jwtService.validateToken(token);
 		appointmentService.deleteAppointment(roomId);
 		
 		resultMap.put("result", SUCCESS);
@@ -188,7 +195,9 @@ public class AppointmentRestController {
 			@RequestParam(value="rating") @ApiParam(required = true) int rating) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
+		jwtService.validateToken(token);
 		long userId = jwtService.getUserId(token);
+//		long userId = 1L;
 		appointmentService.rateAppointment(userId, roomId, rating);
 		
 		resultMap.put("result", SUCCESS);
@@ -202,12 +211,34 @@ public class AppointmentRestController {
 //	 * @return status 200, 401, 500
 //	 */
 //	@ApiOperation(value = "산책 친구 찾기", notes = "같이 산책할만한 친구 추천")
-//	@PostMapping("/recommend")
-//	public ResponseEntity<?> ratingUSer(/*@RequestHeader(value = "Authorization") @ApiParam(required = true) String token*/) {
+//	@PostMapping("/{dogId}")
+//	public ResponseEntity<?> ratingUSer(/*@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,*/
+//			@PathVariable(value = "dogId") long dogId) {
 //		Map<String, Object> resultMap = new HashMap<String, Object>();
 //		
-//		long userId = jwtService.getUserId(token);
-//		appointmentService.rateAppointment(userId, roomId, rating);
+////		long userId = jwtService.getUserId(token);
+//		long userId = 18L;
+//		List<DogInfoForUserDTO> dogList = appointmentService.recommendFriendsForDog(userId, dogId);
+//		
+//		resultMap.put("result", SUCCESS);
+//		resultMap.put("msg", "산책친구 리스트가 반환되었습니다.");
+//		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+//	}
+	
+//	/***
+//	 * recommend friends
+//	 * @param token, roomId
+//	 * @return status 200, 401, 500
+//	 */
+//	@ApiOperation(value = "전체 친구 찾기", notes = "전체 강아지 중에서 같이 산책할만한 친구 추천")
+//	@PostMapping("/{dogId}")
+//	public ResponseEntity<?> ratingUSer(/*@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,*/
+//			@PathVariable(value = "dogId") long dogId) {
+//		Map<String, Object> resultMap = new HashMap<String, Object>();
+//		
+////		long userId = jwtService.getUserId(token);
+//		long userId = 18L;
+//		appointmentService.recommendFriendsForDog(userId, dogId);
 //		
 //		resultMap.put("result", SUCCESS);
 //		resultMap.put("msg", "별점이 부여되었습니다.");
