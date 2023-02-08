@@ -94,7 +94,7 @@ public class ChatRestController {
 		if(csl.getList(roomId) != null && csl.getList(roomId).size() > 0)
 			list.addAll(csl.getList(roomId));
 		if(list.size() > 1)
-			list = list.subList((int)opponent.getStart()+1, list.size()-1);
+			list = list.subList((int)opponent.getStart()+1, list.size());
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("chats", list);
