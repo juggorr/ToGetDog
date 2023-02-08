@@ -41,6 +41,7 @@ public class DogInfoRespDTO {
 		int dogMonth = (Integer.parseInt(dog.getDogBirth().substring(0, 4)) * 12)
 				+ Integer.parseInt(dog.getDogBirth().substring(4, 6));
 		
+		// character full word로 변환
 		String dogC1 = dog.getDogCharacter1();
 		String dogC2 = dog.getDogCharacter2();
 		if (dogC1.equals("d")) {
@@ -54,11 +55,19 @@ public class DogInfoRespDTO {
 			dogC2 = "inactive";
 		}
 		
+		// gender full word로 변환
+		String gender = dog.getDogGender();
+		if (gender.equals("f")) {
+			gender = "female";
+		} else {
+			gender = "male";
+		}
+		
 		return DogInfoRespDTO.builder()
 				.dogId(dog.getDogId())
 				.userId(dog.getUser().getUserId())
 				.dogName(dog.getDogName())
-				.dogGender(dog.getDogGender())
+				.dogGender(gender)
 				.dogType(dog.getDogType())
 				.dogAge(nowMonth - dogMonth)
 				.dogWeight(dogWeight)
@@ -78,6 +87,7 @@ public class DogInfoRespDTO {
 		int dogMonth = (Integer.parseInt(dog.getDogBirth().substring(0, 4)) * 12)
 				+ Integer.parseInt(dog.getDogBirth().substring(4, 6));
 		
+		// character full word로 변환
 		String dogC1 = dog.getDogCharacter1();
 		String dogC2 = dog.getDogCharacter2();
 		if (dogC1.equals("d")) {
@@ -91,11 +101,19 @@ public class DogInfoRespDTO {
 			dogC2 = "inactive";
 		}
 		
+		// gender full word로 변환
+		String gender = dog.getDogGender();
+		if (gender.equals("f")) {
+			gender = "female";
+		} else {
+			gender = "male";
+		}
+		
 		return DogInfoRespDTO.builder()
 				.dogId(dog.getDogId())
 				.userId(dog.getUser().getUserId())
 				.dogName(dog.getDogName())
-				.dogGender(dog.getDogGender())
+				.dogGender(gender)
 				.dogType(dog.getDogType())
 				.dogAge(nowMonth - dogMonth)
 				.dogNeutered(dog.isDogNeutered())
