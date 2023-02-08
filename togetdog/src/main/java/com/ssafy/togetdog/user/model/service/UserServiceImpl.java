@@ -124,6 +124,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updateUserInfo(long userId, UserUpdateParamDTO userDTO) {
 		checkUpdateValidation(userDTO);
+		userDTO = UserUpdateParamDTO.of(userDTO);
 		User user = findUserByUserId(userId);
 		if (user != null) {
 			user.setNickName(userDTO.getNickName());
