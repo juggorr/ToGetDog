@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.togetdog.user.model.dto.UserLoginRespDTO;
 import com.ssafy.togetdog.user.model.dto.UserSocialLoginRespDTO;
 import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.service.JwtService;
@@ -47,6 +48,7 @@ public class Oauth2RestController {
 			String accessToken = jwtService.createAccessToken(user.getUserId());
 			resultMap.put("result", "LOGIN");
 			resultMap.put("msg", "소셜 회원의 로그인시도 입니다.");
+			resultMap.put("user", UserLoginRespDTO.of(user));
 			resultMap.put("access-token", accessToken);
 			status = HttpStatus.OK;
 		} else {
