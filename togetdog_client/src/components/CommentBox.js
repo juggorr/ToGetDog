@@ -35,7 +35,7 @@ const CommentBox = ({ boardData }) => {
     console.log(commentInput);
     await axios
       .post(
-        `https://togetdog.site/api/board/comment`,
+        `${BACKEND_URL}/board/comment`,
         {
           boardId: boardData.boardId,
           commentContent: commentInput,

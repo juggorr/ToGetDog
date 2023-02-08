@@ -39,7 +39,7 @@ const Board = () => {
     }
 
     axios
-      .get(`https://togetdog.site/api/board/${boardId}`, {
+      .get(`${BACKEND_URL}/board/${boardId}`, {
         headers: {
           Authorization: auth,
         },
