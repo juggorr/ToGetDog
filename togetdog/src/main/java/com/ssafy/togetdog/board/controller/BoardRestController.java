@@ -106,7 +106,7 @@ public class BoardRestController {
 	public ResponseEntity<?> getFeed(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
 			@PathVariable long userId,@RequestParam(value="pageNo") int pageNo){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-//		jwtService.validateToken(token);
+		jwtService.validateToken(token);
 		
 		UserInfoRespDTO userInfo = userService.getUserInfo(Long.toString(userId));
 		UserIncludesDogsDTO userDTO = new UserIncludesDogsDTO(userInfo);
@@ -166,16 +166,17 @@ public class BoardRestController {
 	 */
 	@ApiOperation(value = "게시글 단건 가져오기", notes = "boardId에 해당하는 게시글 반환")
 	@GetMapping("/board/{boardId}")
-	public ResponseEntity<?> getBoard(/*@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,*/
+	public ResponseEntity<?> getBoard(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
 			@PathVariable(value="boardId") long boardId){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-//		jwtService.validateToken(token);
+		jwtService.validateToken(token);
+		long userId = jwtService.getUserId(token);
+//		long userId = 1L;
 		
-		logger.info("return found boardDTO =================== : {}", boardService.getOne(boardId));
-		BoardShowDTO boardDto = boardService.getOne(boardId);
+		BoardShowDTO boardDto = boardService.getOne(userId, boardId);
 //		logger.info("return found boardDTO =================== : {}", boardDto.);
 		boardDto.setComments(commentService.findAllCommentsInBoard(boardId));
-//		logger.info("retrun found board : {}", boardDto);
+		logger.info("return found board : {}", boardDto);
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("board", boardDto);
@@ -212,12 +213,13 @@ public class BoardRestController {
 	 */
 	@ApiOperation(value = "게시물 수정", notes = "선택된 단건 게시글을 수정")
 	@PutMapping("/board")
-	public ResponseEntity<?> modifyBoard(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@RequestBody BoardDTO boardDto) {
+	public ResponseEntity<?> modifyBoard(/*@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,*/
+			@RequestBody BoardDTO boardDTO) {
+		logger.info("Board update parameter : {} {}", boardDTO);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		jwtService.validateToken(token);
+//		jwtService.validateToken(token);
 		
-		BoardDTO newBoardDto = boardService.update(boardDto);
+		BoardDTO newBoardDto = boardService.update(boardDTO);
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("board", newBoardDto);
@@ -255,6 +257,7 @@ public class BoardRestController {
 			@RequestBody CommentDTO commentDto) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
+		logger.info("comment comment comment parameter : {} {}", commentDto);
 		commentService.save(commentDto);
 		List<CommentDTO> comments = commentService.findAllCommentsInBoard(commentDto.getBoardId());
 		
