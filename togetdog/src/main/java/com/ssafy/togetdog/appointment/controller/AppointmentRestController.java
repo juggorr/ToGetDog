@@ -80,7 +80,7 @@ public class AppointmentRestController {
 		
 		jwtService.validateToken(token);
 		long userId = jwtService.getUserId(token);
-//		long userId = 1L;
+//		long userId = 4L;
 		List<AppointmentListDTO> appointemntInfo = appointmentService.findAllByUserId(userId);
 		
 		resultMap.put("result", SUCCESS);

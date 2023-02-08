@@ -55,17 +55,24 @@ public class AppointmentService {
 		
 		// 약속 리스트
 		for (int i = 0; i < requestList.size(); i++) {
-			List<SentAppointment> sentApps = sentAppointmentRepository.findAllByAppointment(reqlist.get(i));
 			List<DogInfoRespDTO> sentDogs = new ArrayList<>(); 
+			List<DogInfoRespDTO> recvDogs = new ArrayList<>(); 
+			List<SentAppointment> sentApps = sentAppointmentRepository.findAllByAppointment(reqlist.get(i));
+			logger.info("=====sentApps========= : {}", sentApps.size());
 			for (SentAppointment sent : sentApps) {
 				sentDogs.add(DogInfoRespDTO.of(sent.getDog(), Double.parseDouble(sent.getDog().getDogWeight())));
+				logger.info("============== : {}", sentDogs);
 			}
+			logger.info("!============== : {}", sentDogs);
 			requestList.get(i).setUserOneDogs(sentDogs);
-			List<SentAppointment> recvApps = sentAppointmentRepository.findAllByAppointment(reqlist.get(i));
-			List<DogInfoRespDTO> recvDogs = new ArrayList<>(); 
-			for (SentAppointment recv : recvApps) {
+			
+			List<ReceivedAppointment> recvApps = receivedAppointmentRepository.findAllByAppointment(reqlist.get(i));
+			logger.info("=====recvApps========= : {}", recvApps.size());
+			for (ReceivedAppointment recv : recvApps) {
 				recvDogs.add(DogInfoRespDTO.of(recv.getDog(), Double.parseDouble(recv.getDog().getDogWeight())));
+				logger.info("============== : {}", recvDogs);
 			}
+			logger.info("!============== : {}", recvDogs);
 			requestList.get(i).setUserTwoDogs(recvDogs);
 		}
 		logger.info("return appointment sentList : {}", requestList.size());
