@@ -102,7 +102,6 @@ const Feed = () => {
         tmpSubDogs.push(dog);
       }
     }
-    console.log(tmpSubDogs);
     setSubDogs(tmpSubDogs);
   };
 

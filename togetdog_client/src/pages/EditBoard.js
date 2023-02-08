@@ -20,7 +20,6 @@ const EditBoard = () => {
   const [boardData, setBoardData] = useState();
   const [dogId, setDogId] = useState();
   const [content, setContent] = useState();
-  const [contentErrorMsg, setContentErrorMsg] = useState('');
   const [isLoading, setLoading] = useState(true);
   const contentRef = useRef();
 
@@ -70,22 +69,16 @@ const EditBoard = () => {
   }, []);
 
   const onClickEdit = () => {
-    if (!content) {
-      setContentErrorMsg('* 내용 본문은 반드시 1글자 이상이어야 합니다.');
-      contentRef.current.focus();
-      return;
-    }
-    console.log(content);
     axios
-      .put(
-        `${BACKEND_URL}/board`,
-        { boardId: boardId, content: content },
-        {
-          headers: {
-            Authorization: auth,
-          },
+      .put(`https://i8a807.p.ssafy.io/api/board`, null, {
+        params: {
+          boardId: boardId,
+          content: content,
         },
-      )
+        headers: {
+          Authorization: auth,
+        },
+      })
       .then((resp) => {
         console.log(resp);
         console.log(resp.data);
@@ -100,7 +93,6 @@ const EditBoard = () => {
 
   const onChangeContent = (e) => {
     setContent(e.target.value);
-    if (e.target.value) setContentErrorMsg('');
   };
 
   if (isLoading) {
@@ -131,7 +123,6 @@ const EditBoard = () => {
         <div className='textInputWrapper'>
           <textarea className='textInput' onChange={onChangeContent} defaultValue={content} ref={contentRef} />
         </div>
-        <div className='error-msg'>{contentErrorMsg}</div>
       </BoardContentWrapper>
       <div className='btnWrapper'>
         <MainColorShortBtn
