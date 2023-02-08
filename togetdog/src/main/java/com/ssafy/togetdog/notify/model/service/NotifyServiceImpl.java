@@ -1,5 +1,6 @@
 package com.ssafy.togetdog.notify.model.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +39,7 @@ public class NotifyServiceImpl implements NotifyService {
 				.sender(sender)
 				.notifyType(notiType)
 				.dogId(dogId)
+				.notifyDate(LocalDateTime.now())
 				.check(false)
 				.build();
 		notifyRepository.save(newNoti);
@@ -52,6 +54,7 @@ public class NotifyServiceImpl implements NotifyService {
 				.notifyType(notiType)
 				.boardId(boardId)
 				.dogId(dogId)
+				.notifyDate(LocalDateTime.now())
 				.check(false)
 				.build();
 		notifyRepository.save(newNoti);
