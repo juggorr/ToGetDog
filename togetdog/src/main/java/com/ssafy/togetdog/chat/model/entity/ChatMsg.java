@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.ssafy.togetdog.chat.model.ChatDTO;
+import com.ssafy.togetdog.chat.model.dto.ChatDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

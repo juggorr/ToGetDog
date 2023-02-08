@@ -8,8 +8,8 @@ import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
-import com.ssafy.togetdog.chat.model.ChatDTO;
-import com.ssafy.togetdog.chat.model.SessionInfo;
+import com.ssafy.togetdog.chat.model.dto.ChatDTO;
+import com.ssafy.togetdog.chat.model.dto.SessionInfo;
 import com.ssafy.togetdog.chat.service.ChatInfoService;
 import com.ssafy.togetdog.chat.service.ChatMsgService;
 
@@ -42,22 +42,27 @@ public class ChatSaveList {
 		return chatList.get(rooms);
 	}
 
-	// 채팅 저장 메소드
-	public boolean saveChat(ChatDTO chatDto) {
-		long roomId = chatDto.getRoomId();
-		if(sessionIdMap.get(chatDto.getSessionId()).getRoomId() == roomId) {
-			long idx = chatIdx.get(roomId);
-			chatDto.setIdx(idx);
-			chatList.get(roomId).add(chatDto);	// 채팅 내역 저장
-			chatIdx.put(roomId , idx + 1);
+	// 채팅 권한 확인
+	public boolean chatCondent(String sessionId , long roomId) {
+		if(sessionIdMap.containsKey(sessionId) && sessionIdMap.get(sessionId).getRoomId() == roomId)
 			return true;
-		}
 		else
 			return false;
+	}
+	
+	// 채팅 저장 메소드
+	public void saveChat(ChatDTO chatDto) {
+		long roomId = chatDto.getRoomId();
+		long idx = chatIdx.get(roomId);
+		chatDto.setIdx(idx);
+		chatList.get(roomId).add(chatDto);	// 채팅 내역 저장
+		chatIdx.put(roomId , idx + 1);
 	}
 
 	// 세션 정보 삭제
 	public void deleteSessionId(String sessionId) {
+		if(!sessionIdMap.containsKey(sessionId))
+			return;
 		SessionInfo info = sessionIdMap.remove(sessionId);
 		long roomId = info.getRoomId();
 		long userId = info.getUserId();
@@ -104,17 +109,11 @@ public class ChatSaveList {
 			return;
 		}		
 		saveSessionId.remove(session.getSessionId());
-
-
-		// jpa를 통해 해당 방번호 - 유저 의 권한이 있는지 확인해야함
-		// jpa를 통해 해당 방번호 - 유저 의 권한이 있는지 확인해야함
-		// jpa를 통해 해당 방번호 - 유저 의 권한이 있는지 확인해야함
-		// jpa를 통해 해당 방번호 - 유저 의 권한이 있는지 확인해야함
 		
-//		if(cis.credentUser(session.getUserId(), session.getRoomId())) {
-//			return;
-//		}
-
+		if(cis.credentUser(session.getUserId(), session.getRoomId())) {
+			System.out.println("권한없음");
+			return;
+		}
 
 		Long rooms = session.getRoomId();
 

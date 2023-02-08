@@ -2,20 +2,20 @@ package com.ssafy.togetdog.chat.controller;
 
 import java.time.LocalDateTime;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 
-import com.ssafy.togetdog.chat.model.ChatDTO;
-import com.ssafy.togetdog.chat.model.SessionInfo;
+import com.ssafy.togetdog.chat.model.dto.ChatDTO;
+import com.ssafy.togetdog.chat.model.dto.SessionInfo;
 import com.ssafy.togetdog.chat.util.ChatSaveList;
 
-@RestController
+import lombok.RequiredArgsConstructor;
+@RequiredArgsConstructor
+@Controller
 public class ChatSendController {
 
-	@Autowired
-	ChatSaveList csl;
+	private final ChatSaveList csl;
 	
     @MessageMapping("/messages/sessionNum")
     public void setSesstionId(SessionInfo sessionInfo) {
@@ -25,13 +25,12 @@ public class ChatSendController {
     @MessageMapping("/messages/{roomId}")
     @SendTo("/subscribe/roomId/{roomId}")
     public ChatDTO chat(ChatDTO chatDto) {
-    	chatDto.setIdx(2);	// 바꿔야함
-    	chatDto.setDate(LocalDateTime.now());
-    	
-		if(csl.saveChat(chatDto)) {
-			return chatDto;			
-		}else {
-			return null;
-		}
+    	if(csl.chatCondent(chatDto.getSessionId(), chatDto.getRoomId())) {
+    		chatDto.setDate(LocalDateTime.now());
+    		csl.saveChat(chatDto);
+    		return chatDto;
+    	}else {
+    		return null;
+    	}
     }
 }

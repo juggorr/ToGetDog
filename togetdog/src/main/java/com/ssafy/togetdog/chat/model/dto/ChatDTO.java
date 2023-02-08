@@ -1,4 +1,4 @@
-package com.ssafy.togetdog.chat.model;
+package com.ssafy.togetdog.chat.model.dto;
 
 import java.time.LocalDateTime;
 

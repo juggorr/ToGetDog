@@ -3,7 +3,7 @@ package com.ssafy.togetdog.chat.service;
 import java.util.List;
 import java.util.Set;
 
-import com.ssafy.togetdog.chat.model.ChatInfoDTO;
+import com.ssafy.togetdog.chat.model.dto.ChatInfoDTO;
 import com.ssafy.togetdog.user.model.entity.User;
 
 public interface ChatInfoService {

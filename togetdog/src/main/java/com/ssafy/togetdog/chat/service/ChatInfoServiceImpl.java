@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.togetdog.chat.model.ChatInfoDTO;
+import com.ssafy.togetdog.chat.model.dto.ChatInfoDTO;
 import com.ssafy.togetdog.chat.model.entity.ChatInfo;
 import com.ssafy.togetdog.chat.model.entity.ChatInfo.ChatInfoBuilder;
 import com.ssafy.togetdog.chat.model.entity.ChatMsg;
@@ -26,17 +26,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ChatInfoServiceImpl implements ChatInfoService{
 
-	@Autowired
-	ChatInfoRepository chatInfoRepo;
+	private final ChatInfoRepository chatInfoRepo;
 	
-	@Autowired
-	ChatMsgRepository chatMsgRepo;
+	private final ChatMsgRepository chatMsgRepo;
 
-	@Autowired
-	ChatRoomRepository chatRoomRepo;
+	private final ChatRoomRepository chatRoomRepo;
 
 	@Transactional
-	public void updateChatInfo(long roomId, Set<Long> nowUser ) {
+	public void updateChatInfo(long roomId, Set<Long> nowUser) {
 		ChatMsg cm = chatMsgRepo.findFirstByRoomIdOrderByIdDesc(roomId);
 		List<ChatInfo> list = chatInfoRepo.findByRoomId(roomId).orElse(null);
 		if(list == null)

@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.togetdog.chat.model.ChatDTO;
-import com.ssafy.togetdog.chat.model.ChatInfoDTO;
+import com.ssafy.togetdog.chat.model.dto.ChatDTO;
+import com.ssafy.togetdog.chat.model.dto.ChatInfoDTO;
 import com.ssafy.togetdog.chat.service.ChatInfoService;
 import com.ssafy.togetdog.chat.service.ChatMsgService;
 import com.ssafy.togetdog.chat.util.ChatSaveList;
@@ -31,10 +31,10 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/chat")
+@RequestMapping("/api/chat")
 @Api("CHAT API")
 @RequiredArgsConstructor
-public class ChatController {
+public class ChatRestController {
 
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
@@ -74,13 +74,14 @@ public class ChatController {
 	@ApiOperation(value = "채팅 방 조회", notes = "사용자가 참여 중인 특정 채팅을 조회합니다.")
 	@GetMapping("/chatting")
 	public ResponseEntity<?> getChat(
-			@RequestHeader(value = "Authorization")
-			@ApiParam(required = true) 
-			String token , 
+//			@RequestHeader(value = "Authorization")
+//			@ApiParam(required = true) 
+//			String token , 
+			long userId,
 			@RequestBody long otherId
 			) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		long userId = js.getUserId(token);
+//		long userId = js.getUserId(token);
 		User user = us.findUserByUserId(userId);
 		User other = us.findUserByUserId(otherId);
 		ChatInfoDTO opponent = cis.otherUserInfo(userId , other);

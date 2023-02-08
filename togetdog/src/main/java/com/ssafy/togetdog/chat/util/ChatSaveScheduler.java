@@ -1,6 +1,5 @@
 package com.ssafy.togetdog.chat.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -10,8 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ChatSaveScheduler {
 	
-	@Autowired
-	ChatSaveList csl;
+	private final ChatSaveList csl;
 	
 	@Scheduled(fixedDelay = 5000)
 	public void saveChat() {

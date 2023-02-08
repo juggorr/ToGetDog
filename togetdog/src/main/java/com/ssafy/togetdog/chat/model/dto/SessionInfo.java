@@ -1,4 +1,4 @@
-package com.ssafy.togetdog.chat.model;
+package com.ssafy.togetdog.chat.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

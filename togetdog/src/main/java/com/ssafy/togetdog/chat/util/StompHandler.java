@@ -1,17 +1,18 @@
 package com.ssafy.togetdog.chat.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptorAdapter;
 import org.springframework.stereotype.Component;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class StompHandler extends ChannelInterceptorAdapter {
 
-	@Autowired
-	ChatSaveList csl;
+	private final ChatSaveList csl;
     @Override
     public void postSend(Message message, MessageChannel channel, boolean sent) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);

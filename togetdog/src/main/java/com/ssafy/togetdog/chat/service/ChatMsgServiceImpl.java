@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.togetdog.chat.model.ChatDTO;
+import com.ssafy.togetdog.chat.model.dto.ChatDTO;
 import com.ssafy.togetdog.chat.model.entity.ChatMsg;
 import com.ssafy.togetdog.chat.repository.ChatMsgRepository;
 
