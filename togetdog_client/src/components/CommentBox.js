@@ -1,15 +1,77 @@
+import axios from 'axios';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { BACKEND_URL } from '../config';
+import { authAtom, userState } from '../recoil';
 import { BoardCommentBox } from '../styles/BoardEmotion';
 
 const CommentBox = ({ boardData }) => {
+  const [user, setUser] = useRecoilState(userState);
+  const auth = useRecoilValue(authAtom);
+
   const navigate = useNavigate();
+
+  const [comments, setComments] = useState(boardData.comments);
+  const [commentInput, setCommentInput] = useState();
+  const commentRef = useRef();
+
+  const onChangeComment = (e) => {
+    setCommentInput(e.target.value);
+  };
+
+  const onKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      onClickComment();
+    }
+  };
+
+  const onClickComment = async () => {
+    if (!commentInput) {
+      alert('댓글은 반드시 1자 이상 입력해야 합니다.');
+      commentRef.current.focus();
+      return;
+    }
+    await axios
+      .post(
+        `${BACKEND_URL}/board/comment`,
+        {
+          boardId: boardData.boardId,
+          commentContent: commentInput,
+          userId: user.userId,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: auth,
+          },
+        },
+      )
+      .then((resp) => {
+        console.log(resp);
+      })
+      .catch((err) => {
+        console.log('댓글 등록 실패');
+      });
+  };
+
+  useEffect(() => {
+    setComments(boardData.comments);
+  }, [boardData]);
 
   return (
     <>
       <BoardCommentBox>
         <div className='comment-input-box'>
-          <input className='comment-input' placeholder='댓글을 작성해 주세요.' />
-          <button className='comment-btn'>등록</button>
+          <input
+            className='comment-input'
+            onChange={onChangeComment}
+            onKeyPress={onKeyPress}
+            placeholder='댓글을 작성해 주세요.'
+          />
+          <button className='comment-btn' onClick={onClickComment}>
+            등록
+          </button>
         </div>
         <div className='comment-list-box'>
           {boardData.comments.map((comment) => (

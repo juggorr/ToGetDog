@@ -55,6 +55,27 @@ export const BoardContentWrapper = styled.div`
     padding: 1rem;
     font-family: "Noto Sans KR", sans-serif;
   }
+
+  .photo-desc {
+    padding-bottom: 1rem;
+  }
+
+  .edit-info {
+    font-size: 0.7rem;
+    color: #777;
+  }
+
+  .red-dot {
+    color: red;
+    margin-right: 3px;
+    font-weight: 700;
+  }
+
+  .error-msg {
+    color: red;
+    font-size: 0.75rem;
+    padding-left: 0.3rem;
+  }
 `;
 
 export const DogImgWrapper = styled.div`
