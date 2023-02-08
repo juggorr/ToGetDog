@@ -63,7 +63,7 @@ const SingleFriend = ({ item }) => {
             />
             <YellowCharacterBtn
               text={`#${
-                item.dogCharacter1 === "obedient" ? "순종적" : "비순종적"
+                item.dogCharacter1 === "obedient" ? "온순함" : "공격적"
               }`}
             />
             <YellowCharacterBtn
