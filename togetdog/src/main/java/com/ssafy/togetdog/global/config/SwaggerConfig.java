@@ -69,6 +69,10 @@ public class SwaggerConfig {
 	public Docket dummyUserApi() {
 		return getDocket("DUMMY", true, "dummy");
 	}
+	@Bean
+	public Docket facility() {
+		return getDocket("FACILITY", true, "facility");
+	}
 	//////////////////////////////////////////////////////////
 	// DEVELOPTING
 	@Bean
