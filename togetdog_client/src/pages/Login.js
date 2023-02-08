@@ -98,6 +98,7 @@ const Login = () => {
       })
       .catch((err) => {
         console.log('로그인 실패');
+        console.log(err)
       });
   };
 
@@ -147,7 +148,7 @@ const Login = () => {
             <div onClick={() => navigate('/signup')} className='login-bottom-text'>
               회원가입
             </div>
-            <div className='login-bottom-text'>비밀번호 찾기</div>
+            <div onClick={() => navigate('/passwordsearch')}className='login-bottom-text'>비밀번호 찾기</div>
           </div>
         </LoginWrapper>
       </LoginContainer>

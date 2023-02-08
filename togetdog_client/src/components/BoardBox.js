@@ -20,11 +20,15 @@ const BoardBox = ({ boardData, dogData, likeStatus, setLikeStatus }) => {
   const navigate = useNavigate();
 
   const [menuBtnClick, setMenuBtnClick] = useState(false);
+  const [likeCnt, setLikeCnt] = useState(boardData.likeCnt);
   const outSection = useRef();
 
   const deleteBoard = async () => {
     await axios
-      .delete(`${BACKEND_URL}/board?boardId=${boardData.boardId}`, {
+      .delete(`https://i8a807.p.ssafy.io/api/board`, {
+        params: {
+          boardId: boardData.boardId,
+        },
         headers: {
           Authorization: auth,
         },
@@ -43,13 +47,19 @@ const BoardBox = ({ boardData, dogData, likeStatus, setLikeStatus }) => {
     if (likeStatus) {
       // 기존에 좋아요 였다면
       axios
-        .delete(`${BACKEND_URL}/board/like?boardId=${boardData.boardId}`, {
+        .delete(`${BACKEND_URL}/board/like`, {
+          params: {
+            boardId: boardData.boardId,
+            userId: user.userId,
+          },
           headers: {
             Authorization: auth,
           },
         })
         .then((res) => {
+          console.log(res);
           console.log(res.data);
+          setLikeCnt(res.data.likeCnt);
           console.log('좋아요 취소가 완료되었습니다.');
         })
         .catch((err) => {
@@ -57,17 +67,16 @@ const BoardBox = ({ boardData, dogData, likeStatus, setLikeStatus }) => {
         });
     } else if (!likeStatus) {
       axios
-        .post(
-          `${BACKEND_URL}/board/like?boardId=${boardData.boardId}`,
-          { boardId: boardData.boardId },
-          {
-            headers: {
-              Authorization: auth,
-            },
+        .post(`${BACKEND_URL}/board/like`, null, {
+          params: { boardId: boardData.boardId, userId: user.userId },
+          headers: {
+            Authorization: auth,
           },
-        )
+        })
         .then((res) => {
+          console.log(res);
           console.log(res.data);
+          setLikeCnt(res.data.likeCnt);
           console.log('좋아요가 완료되었습니다.');
         })
         .catch((err) => {
@@ -133,7 +142,7 @@ const BoardBox = ({ boardData, dogData, likeStatus, setLikeStatus }) => {
           ) : (
             <FontAwesomeIcon icon='fa-regular fa-heart' className='like-icon' onClick={handleLike} />
           )}
-          <span className='like-txt'>{boardData.likeCnt}명이 이 게시물을 좋아합니다.</span>
+          <span className='like-txt'>{likeCnt}명이 이 게시물을 좋아합니다.</span>
         </div>
         <div className='board-content'>{boardData.content}</div>
       </BoardContentBox>

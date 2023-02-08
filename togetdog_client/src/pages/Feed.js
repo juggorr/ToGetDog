@@ -95,6 +95,7 @@ const Feed = () => {
     for (let dog of feedDogData) {
       if (dog.dogId === targetDogId) {
         setCurrentDog(dog);
+        setFollowStatus(dog.following);
         let filteredPhotos = feedData.filter((feedPhoto) => feedPhoto.dogId === targetDogId);
         setFilteredPhotoData(filteredPhotos);
         setSubDogs(tmpSubDogs);
@@ -133,7 +134,7 @@ const Feed = () => {
         setFeedUserData(resp.data.user);
         setFeedDogData(resp.data.user.dogs);
         setCurrentDog(resp.data.user.dogs[0]);
-        setFollowStatus(resp.data.user.dogs);
+        setFollowStatus(resp.data.user.dogs[0].following);
         let tmpSubDogs = [];
 
         if (resp.data.user.dogs.length > 1) {
@@ -261,7 +262,7 @@ const Feed = () => {
                 </div>
               </div>
             ) : currentDog ? (
-              <FollowBtn followStatus={followStatus} setFollowStatus={setFollowStatus} />
+              <FollowBtn dogId={currentDog.dogId} followStatus={followStatus} setFollowStatus={setFollowStatus} />
             ) : null}
           </FeedProfileTop>
           {/* 특이사항, 성격 들어가는 부분 */}
@@ -270,7 +271,7 @@ const Feed = () => {
               <div className='special-text'>{currentDog.description}</div>
               <div className='characters-box'>
                 <OrangeCharacterBtn text={`#${currentDog.dogNeutered ? '중성화' : '중성화 X'}`} />
-                <YellowCharacterBtn text={`#${currentDog.dogCharacter1 === 'obedient' ? '온순함' : '공격적'}`} />
+                <YellowCharacterBtn text={`#${currentDog.dogCharacter1 === 'obedient' ? '온순함' : '사나움'}`} />
                 <YellowCharacterBtn text={`#${currentDog.dogCharacter2 === 'active' ? '활동적' : '비활동적'}`} />
               </div>
             </FeedProfileBottom>

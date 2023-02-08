@@ -3,9 +3,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 
-import { BACKEND_URL, LOCAL_SERVER } from '../config';
+import { BACKEND_URL } from '../config';
 
-
+import NotMatchModal from "../components/AlertModal/NotMatchModal";
 import { MainColorShortBtn, GreyColorShortBtn } from '../styles/BtnsEmotion';
 import { SignupContainer, SignupWrapper, InputWrapper } from '../styles/SignupEmotion';
 import NoEssentialsModal from '../components/AlertModal/NoEssentialsModal'
@@ -25,26 +25,24 @@ function PasswordEdit() {
   const [user, setUser] = useRecoilState(userState);
 
   const [inputs, setInputs] = useState({
-    passwordOld: '',
+    oldPassword: '',
     password: '',
     passwordCheck: '',
   });
 
   const {
-    passwordOld,
+    oldPassword,
     password,
     passwordCheck,
   } = inputs;
-
-  // 추후에 
-  // 현재 접속한 유저 비밀번호
-  // 받아서 해당작업 진행
-  const oldPassword = 'aaaaaa!1';
 
   const [passwordError, setPasswordError] = useState(false);
   const [passwordErrorMsg, setPasswordErrorMsg] = useState('');
   const [passwordCheckError, setPasswordCheckError] = useState(false);
   const [passwordCheckErrorMsg, setPasswordCheckErrorMsg] = useState('');
+
+  // 기존 비밀번호와 일치하지 않을 시 모달
+  const [notMatchModal, setNotMatchModal] = useState(false);
 
   const onChange = (e) => {
     const { name, value } = e.target; // e.target 에서 name 과 value 를 추출
@@ -90,6 +88,35 @@ function PasswordEdit() {
 
   // 비밀번호 바뀌었는지 확인 메소드 추가해야함? => 심화로..
 
+  // 1. 기존 비밀번호가 틀렸을 경우 => 에러 메시지 확인
+  // 2. 기존 비밀번호가 일치할 경우 => 정상적으로 비밀번호 변경
+  const sendPut = async () => {
+    await axios
+      .put(`${BACKEND_URL}/user/password`,
+      {
+        password: oldPassword,
+        newPassword: password,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: auth,
+        }
+      })
+      .then((res) => {
+        console.log(res)
+        navigate(`/feed/${user.userId}`)
+      })
+      .catch((err) => {
+        if (err.response.status === 400) {
+          console.log('기존 비밀번호와 일치하지 않습니다.')
+          setNotMatchModal(true);
+        } else {
+          console.log(err)
+        }
+      });
+  }
+
 
   const handleNotEdit = () => {
     navigate(`/feed/${user.userId}`)
@@ -97,15 +124,25 @@ function PasswordEdit() {
 
 
   const checkOthers = () => {
+    console.log(oldPassword);
+    console.log(password);
+    console.log(passwordCheck);
+
     if (!oldPassword || !password || !passwordCheck) {
       setNoEssentialsModal(true);
+      return;
     }
-    return;
+
+    sendPut();
   };
 
   return (
     <>
     <SignupContainer>
+      <NotMatchModal 
+        notMatchModal={notMatchModal}
+        setNotMatchModal={setNotMatchModal}
+      />
       <NoEssentialsModal 
         noEssentialsModal={noEssentialsModal}
         setNoEssentialsModal={setNoEssentialsModal}
@@ -119,7 +156,7 @@ function PasswordEdit() {
             <div className='horizontal-flex'>
               <div className='input-box general-input-box'>
                 <input
-                  name='passwordOld'
+                  name='oldPassword'
                   className='email-input'
                   type='password'
                   placeholder='기존 비밀번호를 입력해 주세요.'
