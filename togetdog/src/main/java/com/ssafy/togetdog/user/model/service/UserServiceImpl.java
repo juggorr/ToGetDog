@@ -1,7 +1,6 @@
 package com.ssafy.togetdog.user.model.service;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
@@ -10,8 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.togetdog.dog.model.entity.Dog;
-import com.ssafy.togetdog.dog.model.service.DogService;
 import com.ssafy.togetdog.global.exception.DuplicatedInputException;
 import com.ssafy.togetdog.global.exception.InvalidInputException;
 import com.ssafy.togetdog.global.exception.InvalidLoginActingException;
@@ -38,7 +35,6 @@ public class UserServiceImpl implements UserService {
 	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
 	private final WaitUserRepository waitUserRepository;
-	private final DogService dogService;
 
 	/* 회원 가입을 위한 이메일 전송 */
 	@Override
@@ -144,12 +140,15 @@ public class UserServiceImpl implements UserService {
 	public void withdrawal(long userId) {
 		User user = findUserByUserId(userId);
 		if (user != null) {
-			// 회원 객체를 참조하는 걸 싹다 날리고 고아객체로 만들어줘야 함
-			List<Dog> dogs = dogService.findDogsByUser(user);
-			for (Dog dog : dogs) {
-				dog.setUser(null);
-			}
-			deleteUser(userId);
+			user.setEmail("deletedUser" + userId);
+			user.setNickName("deletedUser" + userId);
+			user.setPassword("deletedUser" + userId);
+			user.setUserBirth(null);
+			user.setGender(null);
+			user.setAddress(null);
+			user.setRegionCode(null);
+			user.setSocial(null);
+			userRepository.save(user);
 		} else {
 			throw new InvalidInputException("회원 정보를 찾을 수 없습니다.");
 		}
