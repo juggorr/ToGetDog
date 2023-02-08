@@ -42,7 +42,7 @@ const EditBoard = () => {
     }
 
     axios
-      .get(`${BACKEND_URL}/board/${boardId}`, {
+      .get(`https://i8a807.p.ssafy.io/api/board/${boardId}`, {
         headers: {
           Authorization: auth,
         },
@@ -51,6 +51,11 @@ const EditBoard = () => {
         console.log(resp);
         console.log(resp.data);
         setBoardData(resp.data.board);
+        // 본인의 게시물이 아닌 경우
+        if (user.userId !== resp.data.board.userId) {
+          alert('게시물 수정 권한이 없습니다.');
+          navigate(`/feed/${user.userId}`);
+        }
         setContent(resp.data.board.content);
         setDogId(resp.data.board.dog.dogId);
         setLoading(false);
