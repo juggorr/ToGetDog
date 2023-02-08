@@ -35,9 +35,7 @@ public class SearchRestController {
 	public ResponseEntity<?> methodName(
 			@RequestParam String content 
 			) {
-
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		
 		List<DogInfoRespDTO> dogList = searchService.getDogInfoList(content);
 		resultMap.put("dog", dogList);
 		List<UserInfoRespDTO> userList = searchService.getUserInfoList(content);
