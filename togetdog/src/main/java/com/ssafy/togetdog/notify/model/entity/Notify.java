@@ -51,7 +51,7 @@ public class Notify {
 	private LocalDateTime notifyDate;
 	
 	@Column(name = "board_id")
-	private Long boardId;
+	private long boardId;
 	
 	@Column(name = "dog_id")
 	private long dogId;

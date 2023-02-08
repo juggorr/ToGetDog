@@ -43,7 +43,7 @@ public class SecurityConfig {
         		.userInfoEndpoint() //OAuth2 로그인 후 사용자 정보를 가져올 때의 설정 담당
         		.userService(userOauth2Service)
         		.and()
-        		.defaultSuccessUrl("/api/auth/login");
+        		.defaultSuccessUrl("/api/auth");
 //              .failureHandler(oAuth2AuthenticationFailureHandler());
         return http.build(); 
     }
