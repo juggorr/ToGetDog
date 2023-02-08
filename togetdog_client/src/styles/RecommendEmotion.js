@@ -81,19 +81,19 @@ export const FriendListWrapper = styled.div`
   .dogName {
     font-weight: 800;
     font-size: 1rem;
-    margin: 0;
+    margin: 0rem 0.5rem;
     margin-left: 0.3rem;
   }
 
   .dogTown {
     font-size: 0.5rem;
-    margin: 0rem 0.5rem;
+    margin: 0rem;
     color: #ababab;
   }
 
   .ownerName {
     font-size: 0.5rem;
-    margin: 0rem 0rem;
+    margin: 0rem 0.5rem;
     color: #717171;
   }
 
