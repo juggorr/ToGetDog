@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.togetdog.appointment.model.service.AppointmentService;
 import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.service.DogService;
 import com.ssafy.togetdog.follow.model.dto.FollowDTO;
@@ -94,13 +95,14 @@ public class FollowRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "팔로우", notes = "강아지를 팔로우함")
-	@PostMapping("/")
+	@PostMapping
 	public ResponseEntity<?> addFollow(
 			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
 			@RequestBody FollowDTO followDTO) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
 		followService.save(followDTO);
+		logger.info("==============addFollow : {}", followDTO);
 		
 		// notify 전송
 		User sender = userService.findUserByUserId(jwtService.getUserId(token));
@@ -119,11 +121,12 @@ public class FollowRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "팔로우 취소", notes = "강아지를 팔로우 취소함")
-	@DeleteMapping("/")
+	@DeleteMapping
 	public ResponseEntity<?> deleteFollow(@RequestBody FollowDTO followDTO) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
 		followService.delete(followDTO);
+		logger.info("==============deleteFollow : {}", followDTO);
 
 		resultMap.put("result", SUCCESS);
 		resultMap.put("msg", "강아지 팔로우 취소!");
