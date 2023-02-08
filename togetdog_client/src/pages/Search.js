@@ -33,7 +33,7 @@ const SingleFriend = ({ item }) => {
         <DogImgWrapper>
           <div className="dogProfileCircle">
             <img
-              src={item.dogProfile}
+              src={"https://i8a807.p.ssafy.io/image/board/" + item.dogProfile}
               alt="dog_img"
               className="dogProfileImg"
             />
