@@ -1,11 +1,11 @@
 package com.ssafy.togetdog.user.model.vo;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,9 +16,11 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import com.ssafy.togetdog.user.model.entity.User;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Builder
 @Getter
@@ -27,10 +29,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
 
-    private final String email;
+	private static final long serialVersionUID = -4838329238955305240L;
+	private final String email;
     private final String password;
-    private final ProviderType social;
-    private final RoleType roleType;
     private final Collection<GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
@@ -90,18 +91,31 @@ public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
     }
     
     public static UserPrincipal disable() {
+    	Map<String, Object> attributes = new HashMap<String, Object>();
+    	attributes.put("login", false);
     	return UserPrincipal.builder()
     			.email("disable")
+    			.attributes(attributes)
     			.build();
     }
 
     public static UserPrincipal create(User user) {
+    	Map<String, Object> attributes = new HashMap<String, Object>();
+    	attributes.put("login", false);
     	return UserPrincipal.builder()
     			.email(user.getEmail())
+    			.attributes(attributes)
     			.password(user.getPassword())
-    			.social(user.getSocial())
-    			.roleType(user.getRoleType())
     			.authorities(Collections.singletonList(new SimpleGrantedAuthority(RoleType.USER.getCode())))
+    			.build();
+    }
+    
+    public static UserPrincipal login(User user) {
+    	Map<String, Object> attributes = new HashMap<String, Object>();
+    	attributes.put("login", true);
+    	return UserPrincipal.builder()
+    			.email(user.getEmail())
+    			.attributes(attributes)
     			.build();
     }
 

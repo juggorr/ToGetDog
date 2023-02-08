@@ -49,13 +49,15 @@ public class UserOAuth2Service extends DefaultOAuth2UserService {
         			.roleType(RoleType.USER)
         			.build();
         	userRepository.save(user);
+        	 return UserPrincipal.create(user);
         } else {
         	// already regist
         	if (user.getSocial() != attributes.getSocial()) {
         		return UserPrincipal.disable();
         	}
+        	// 이미 가입 처리 되어 있고 로그인만 시켜주면 된다는 의미를 보내야 함.
+        	return UserPrincipal.login(user);
         }
-        return UserPrincipal.create(user);
 	}
 
 }
