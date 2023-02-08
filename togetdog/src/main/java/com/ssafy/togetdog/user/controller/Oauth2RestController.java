@@ -32,7 +32,7 @@ public class Oauth2RestController {
 	private static final String FAIL = "fail";
 	private final Logger logger = LoggerFactory.getLogger(Oauth2RestController.class);
 
-	@GetMapping("/api/auth/login")
+	@GetMapping("/api/auth")
 	public ResponseEntity<?> socialLogin(OAuth2AuthenticationToken authentication) {
 		
 		logger.info("Social login input parameter : {}", authentication.getName());
@@ -52,12 +52,14 @@ public class Oauth2RestController {
 			resultMap.put("access-token", accessToken);
 			status = HttpStatus.OK;
 		} else {
-			User user = userService.findUserByEmail(authentication.getName());
-			String accessToken = jwtService.createAccessToken(user.getUserId());
+			User user = User.builder()
+					.email(authentication.getName())
+					.nickName(authentication.getPrincipal().getAttribute("nickname"))
+					.social(authentication.getPrincipal().getAttribute("social"))
+					.build();
 			resultMap.put("result", SUCCESS);
-			resultMap.put("msg", "새로운 소셜 가입이 이루어졌습니다.");
+			resultMap.put("msg", "새로운 소셜 가입 시도 입니다.");
 			resultMap.put("user", UserSocialLoginRespDTO.of(user));
-			resultMap.put("access-token", accessToken);
 			status = HttpStatus.OK;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);

@@ -28,6 +28,7 @@ import com.ssafy.togetdog.user.model.dto.UserLoginParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserLoginRespDTO;
 import com.ssafy.togetdog.user.model.dto.UserPasswordParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserRegistParamDTO;
+import com.ssafy.togetdog.user.model.dto.UserSocialRegistParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserUpdateParamDTO;
 import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.service.JwtService;
@@ -89,6 +90,25 @@ public class UserRestController {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		
 		userService.registEmailAuth(authDTO);
+		resultMap.put("result", SUCCESS);
+		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.OK);
+	}
+	
+	/***
+	 * Social User Registration
+	 * @param UserSocialRegistParamDTO
+	 * @return status 200, 400, 409
+	 */
+	@ApiOperation(value = "소셜 회원가입", notes = "소셜 회원의 회원가입을 진행합니다.")
+	@PostMapping("/social")
+	public ResponseEntity<?> socialRegistration(
+			@RequestBody @ApiParam(required = true) UserSocialRegistParamDTO userDTO
+			) {
+		
+		logger.info("Social Regist Info : {}", userDTO);
+		Map<String, String> resultMap = new HashMap<String, String>();
+		
+		userService.socialRegist(userDTO);
 		resultMap.put("result", SUCCESS);
 		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.OK);
 	}
@@ -251,19 +271,21 @@ public class UserRestController {
 	@ApiOperation(value = "비밀번호 찾기", notes = "해당 유저의 비밀번호를 재설정하여 이메일로 송부합니다.")
 	@GetMapping("/password")
 	public ResponseEntity<?> findPassword(
-			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token
+			@RequestParam @ApiParam(required = true) String email
 			) {
 		
 		logger.info("findPassword in");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
-		jwtService.validateToken(token);
-		long userId = jwtService.getUserId(token);
-		User user = userService.findUserByUserId(userId);
+		User user = userService.findUserByEmail(email);
 		
-		
-		logger.info(user.getEmail() + "로 새로운 이메일을 송부합니다.");
-		mailService.sendTmpPassword(userId, user.getEmail());
+		if (user == null) {
+			resultMap.put("result", "FAIL");
+			resultMap.put("msg", "가입된 이메일이 아닙니다.");
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.BAD_REQUEST);
+		}
+		logger.info(email + "로 새로운 이메일을 송부합니다.");
+		mailService.sendTmpPassword(user.getUserId(), user.getEmail());
 		resultMap.put("result", SUCCESS);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}

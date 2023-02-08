@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.repository.UserRepository;
 import com.ssafy.togetdog.user.model.vo.OAuthAttributes;
-import com.ssafy.togetdog.user.model.vo.RoleType;
 import com.ssafy.togetdog.user.model.vo.UserPrincipal;
 
 import lombok.RequiredArgsConstructor;
@@ -44,12 +43,9 @@ public class UserOAuth2Service extends DefaultOAuth2UserService {
         	user = User.builder()
         			.email(attributes.getEmail())
         			.nickName(attributes.getName())
-        			.password("---")
         			.social(attributes.getSocial())
-        			.roleType(RoleType.USER)
         			.build();
-        	userRepository.save(user);
-        	 return UserPrincipal.create(user);
+        	return UserPrincipal.create(user);
         } else {
         	// already regist
         	if (user.getSocial() != attributes.getSocial()) {
