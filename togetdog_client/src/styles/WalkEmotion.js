@@ -176,3 +176,20 @@ export const SingleMeetingWrapper = styled.div`
     color: #575757;
   }
 `;
+
+export const InfoModal = styled.div`
+  position: fixed;
+  top: 30%;
+  left: 20%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+
+  .modalInside {
+    background-color: #ffffff;
+    padding: 2rem;
+  }
+
+  .infoText {
+    font-size: 0.7rem;
+  }
+`;

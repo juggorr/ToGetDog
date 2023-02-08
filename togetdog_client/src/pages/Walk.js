@@ -1,19 +1,22 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useRecoilState } from "recoil";
-import { userState } from "../recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { authAtom, userState } from "../recoil";
 import { BACKEND_URL, DUMMY_URL } from "../config";
 import {
   WalkListWrapper,
   TabList,
   MeetingWrapper,
   SingleMeetingWrapper,
+  InfoModal,
 } from "../styles/WalkEmotion";
 import { LightColorLongBtn } from "../styles/BtnsEmotion.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const SingleMeeting = ({ meeting }) => {
+  const [modalOpen, setModalOpen] = useState(false);
+
   const dogNameList = () => {
     const nameList = [];
     for (let i = 0; i < meeting.partnerDogs.length; i++) {
@@ -40,7 +43,9 @@ const SingleMeeting = ({ meeting }) => {
 
   const dayOfWeek = () => {
     const week = ["일", "월", "화", "수", "목", "금", "토"];
+    console.log(meeting);
     const weekStr = meeting.date.split("T");
+
     const dayOfTheWeek = week[new Date(weekStr[0]).getDay()];
     weekStr[0] = weekStr[0].replaceAll("-", "/");
 
@@ -54,9 +59,68 @@ const SingleMeeting = ({ meeting }) => {
     return dateResult;
   };
 
+  const renderDogImg = (dogs) => {
+    let result = null;
+
+    if (dogs) {
+      if (meeting.partnerDogs.length === 1) {
+        result = (
+          <div className="dogProfileImgWrapper">
+            <img
+              className="dogProfileImg"
+              src={"https://i8a807.p.ssafy.io/image/dog/" + dogs[0].dogProfile}
+              alt="dogProfile"
+            />
+          </div>
+        );
+      } else {
+        result = (
+          <div className="manyDog">
+            <div className="manyDogProfileImgWrapper">
+              <img
+                className="manyDogProfileImg"
+                src={
+                  "https://i8a807.p.ssafy.io/image/dog/" + dogs[0].dogProfile
+                }
+                alt="dogProfile"
+              />
+            </div>
+            <div className="tinyCircle"></div>
+            <div className="tinyCircle"></div>
+            <div className="manyDogProfileImgWrapper">
+              <img
+                className="manyDogProfileImg"
+                src={
+                  "https://i8a807.p.ssafy.io/image/dog/" + dogs[1].dogProfile
+                }
+                alt="dogProfile"
+              />
+            </div>
+          </div>
+        );
+      }
+    }
+    return result;
+  };
+
+  const InformationModal = () => {
+    return (
+      <InfoModal>
+        <div className="modalInside">
+          <p className="appointmentDate">• {dayOfWeek()}</p>
+          <p>상대방의 강아지</p>
+          {renderDogImg(meeting.partnerDogs)}
+        </div>
+      </InfoModal>
+    );
+  };
+
   return (
     <SingleMeetingWrapper>
-      <div className="singleWrapper">
+      {modalOpen && (
+        <InformationModal setModalOpen={setModalOpen} meeting={meeting} />
+      )}
+      <div className="singleWrapper" onClick={() => setModalOpen(true)}>
         <div className="appointmentLine"></div>
         <p className="appointmentDate">• {dayOfWeek()}</p>
         <div className="appointmentWrapper">
@@ -70,53 +134,70 @@ const SingleMeeting = ({ meeting }) => {
           <p className="appointmentDate">장소 : {meeting.place}</p>
         </div>
       </div>
-      {meeting.partnerDogs.length === 1 ? (
-        <div className="dogProfileImgWrapper">
-          <img
-            className="dogProfileImg"
-            src={meeting.partnerDogs[0].image}
-            alt="dogProfile"
-          />
-        </div>
-      ) : (
-        <div className="manyDog">
-          <div className="manyDogProfileImgWrapper">
-            <img
-              className="manyDogProfileImg"
-              src={meeting.partnerDogs[0].image}
-              alt="dogProfile"
-            />
-          </div>
-          <div className="tinyCircle"></div>
-          <div className="tinyCircle"></div>
-          <div className="manyDogProfileImgWrapper">
-            <img
-              className="manyDogProfileImg"
-              src={meeting.partnerDogs[1].image}
-              alt="dogProfile"
-            />
-          </div>
-        </div>
-      )}
+      {renderDogImg(meeting.partnerDogs)}
     </SingleMeetingWrapper>
   );
 };
 
-const MeetingListWrapper = () => {
+const Walk = () => {
   const [user, setUser] = useRecoilState(userState);
   const [active, setActive] = useState(1);
   const [originalMeetings, setOriginalMeetings] = useState([]);
+  const [myInfo, setMyInfo] = useState();
+  const [partnerInfo, setPartnerInfo] = useState();
   const navigate = useNavigate();
+  const auth = useRecoilValue(authAtom);
+  const setAuth = useSetRecoilState(authAtom);
 
   useEffect(() => {
-    const url = `${DUMMY_URL}/meeting?userId=${user.userId}`;
     axios
-      .get(url)
+      .get(`${BACKEND_URL}/meeting`, {
+        headers: {
+          Authorization: auth,
+        },
+      })
       .then(function (response) {
         // 데이터 들어오는 형태 확인 필요함
-        setOriginalMeetings(response.data.meetingList);
+
+        const appointments = [];
+        if (response.data.appointment) {
+          for (let i = 0; i < response.data.appointment.length; i++) {
+            console.log(response.data.appointment[i]);
+            const singleAppointment = {
+              status: response.data.appointment[i].status,
+              roomId: response.data.appointment[i].roomId,
+              place: response.data.appointment[i].place,
+              date: response.data.appointment[i].dateTime,
+            };
+            if (response.data.appointment[i].userOneId === user.userId) {
+              singleAppointment.myDogs =
+                response.data.appointment[i].userOneDogs;
+              singleAppointment.partnerDogs =
+                response.data.appointment[i].userTwoDogs;
+              singleAppointment.partnerName =
+                response.data.appointment[i].userTwoName;
+              singleAppointment.rated =
+                response.data.appointment[i].userOneRated;
+            } else {
+              singleAppointment.partnerDogs =
+                response.data.appointment[i].userOneDogs;
+              singleAppointment.myDogs =
+                response.data.appointment[i].userTwoDogs;
+              singleAppointment.partnerName =
+                response.data.appointment[i].userOneName;
+              singleAppointment.rated =
+                response.data.appointment[i].userTwoRated;
+            }
+            appointments.push(singleAppointment);
+          }
+
+          console.log(appointments);
+        }
+        setOriginalMeetings(appointments);
       })
-      .catch(function (error) {});
+      .catch(function (error) {
+        console.log(error);
+      });
   }, [active]);
 
   const renderMeetings = () => {
@@ -126,7 +207,7 @@ const MeetingListWrapper = () => {
       // 약속별로 구분하는 조건문 추가
       const singleMeet = (
         <SingleMeeting
-          key={originalMeetings[i].appointmentId}
+          key={originalMeetings[i].roomId}
           meeting={originalMeetings[i]}
         ></SingleMeeting>
       );
@@ -197,10 +278,6 @@ const MeetingListWrapper = () => {
       </MeetingWrapper>
     </WalkListWrapper>
   );
-};
-
-const Walk = () => {
-  return <MeetingListWrapper />;
 };
 
 export default Walk;
