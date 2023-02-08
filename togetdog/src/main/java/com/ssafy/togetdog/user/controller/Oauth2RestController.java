@@ -29,7 +29,7 @@ public class Oauth2RestController {
 
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
-	private final Logger logger = LoggerFactory.getLogger(UserRestController.class);
+	private final Logger logger = LoggerFactory.getLogger(Oauth2RestController.class);
 
 	@GetMapping("/api/auth/login")
 	public ResponseEntity<?> socialLogin(OAuth2AuthenticationToken authentication) {
