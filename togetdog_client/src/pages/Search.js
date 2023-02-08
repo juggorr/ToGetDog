@@ -7,6 +7,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { authAtom, userState } from "../recoil";
 import { BACKEND_URL } from "../config";
 
+import UserIcon from "../components/UserIcon";
 import {
   SearchbarWrapper,
   SearchTabWrapper,
@@ -24,7 +25,7 @@ const SingleFriend = ({ item }) => {
   const navigate = useNavigate();
 
   return (
-    <FriendListWrapper>
+    <FriendListWrapper style={{ marginTop: "1rem" }}>
       <div
         className="singleDog"
         onClick={() => navigate(`/feed/${item.userId}`)}
@@ -78,6 +79,42 @@ const SingleFriend = ({ item }) => {
   );
 };
 
+const SingleUser = ({ item }) => {
+  const navigate = useNavigate();
+
+  const userTown = (town) => {
+    const townData = town.split(" ");
+    return townData[townData.length - 1];
+  };
+
+  const userAge = (birthyear) => {
+    const currentYear = new Date().getFullYear();
+
+    return Math.floor((currentYear - birthyear + 1) / 10) * 10;
+  };
+
+  return (
+    <FriendListWrapper style={{ marginTop: "1rem" }}>
+      <div
+        className="singleDog"
+        onClick={() => navigate(`/feed/${item.userId}`)}
+      >
+        <UserIcon text={item.nickName} idx={item.birth}></UserIcon>
+        <div className="dogInfo">
+          <div className="dogNameWrapper">
+            <p className="dogName">{item.nickName}</p>
+          </div>
+          <div className="dogType">키우는 강아지 종</div>
+          <div className="characters-box">
+            <YellowCharacterBtn text={`#${userAge(item.birth)}대`} />
+            <YellowCharacterBtn text={`#${userTown(item.address)}`} />
+          </div>
+        </div>
+      </div>
+    </FriendListWrapper>
+  );
+};
+
 const ResultList = ({ tab, dogResult, userResult }) => {
   const dogRender = () => {
     const dogList = [];
@@ -97,7 +134,20 @@ const ResultList = ({ tab, dogResult, userResult }) => {
   };
 
   const userRender = () => {
-    return <div>저거영</div>;
+    const userList = [];
+
+    if (userResult.length > 0) {
+      for (let i = 0; i < userResult.length; i++) {
+        console.log(userResult[i]);
+        const singleUser = (
+          <SingleUser item={userResult[i]} key={i}></SingleUser>
+        );
+        userList.push(singleUser);
+      }
+    } else {
+      userList.push(<p key={1}>검색 결과가 없습니다.</p>);
+    }
+    return userList;
   };
 
   return (
