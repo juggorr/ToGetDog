@@ -117,8 +117,8 @@ public class DogInfoRespDTO {
 				.dogType(dog.getDogType())
 				.dogAge(nowMonth - dogMonth)
 				.dogNeutered(dog.isDogNeutered())
-				.dogCharacter1(dog.getDogCharacter1())
-				.dogCharacter2(dog.getDogCharacter2())
+				.dogCharacter1(dogC1)
+				.dogCharacter2(dogC2)
 				.description(dog.getDescription())
 				.dogProfile(dog.getDogImage())
 				.build();
