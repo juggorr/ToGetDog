@@ -27,6 +27,7 @@ import com.ssafy.togetdog.board.model.dto.BoardDTO;
 import com.ssafy.togetdog.board.model.dto.BoardShowDTO;
 import com.ssafy.togetdog.board.model.dto.CommentDTO;
 import com.ssafy.togetdog.board.model.dto.LikeDTO;
+import com.ssafy.togetdog.board.model.entity.Board;
 import com.ssafy.togetdog.board.model.service.BoardService;
 import com.ssafy.togetdog.board.model.service.CommentService;
 import com.ssafy.togetdog.board.model.service.LikeService;
@@ -305,9 +306,8 @@ public class BoardRestController {
 		// notify 전송
 		User sender = userService.findUserByUserId(jwtService.getUserId(token));
 		User receiver = boardService.findBoardByBoardId(likeDTO.getBoardId()).getUser();
-		notifyService.insertNotify(receiver, sender, "l", 
-				boardService.findBoardByBoardId(likeDTO.getBoardId()).getDog().getDogId(),
-				likeDTO.getBoardId());
+		Board board = boardService.findBoardByBoardId(likeDTO.getBoardId());
+		notifyService.insertNotify(receiver, sender, "l", board.getDog().getDogId(), likeDTO.getBoardId());
 
 		resultMap.put("result", SUCCESS);
 		resultMap.put("likeCnt", likeService.getLikes(likeDTO.getBoardId()));
