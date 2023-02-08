@@ -13,17 +13,20 @@ import {
 } from "../styles/WalkEmotion";
 import { SmallCharacterBtn } from "../styles/BtnsEmotion.js";
 import { LightColorLongBtn } from "../styles/BtnsEmotion.js";
+import { RedColorShortBtn, MainColorShortBtn } from "../styles/BtnsEmotion.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const SingleMeeting = ({ meeting }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
-  const dogNameList = () => {
+  const dogNameList = (dogs) => {
     const nameList = [];
-    for (let i = 0; i < meeting.partnerDogs.length; i++) {
-      nameList.push(meeting.partnerDogs[i].dogName);
-      if (i + 1 !== meeting.partnerDogs.length) {
-        nameList.push(", ");
+    if (dogs) {
+      for (let i = 0; i < dogs.length; i++) {
+        nameList.push(dogs[i].dogName);
+        if (i + 1 !== dogs.length) {
+          nameList.push(", ");
+        }
       }
     }
     return nameList;
@@ -107,14 +110,13 @@ const SingleMeeting = ({ meeting }) => {
     const characterList = [];
     if (dogs) {
       for (let i = 0; i < dogs.length; i++) {
-        console.log(dogs[i].dogNeutered);
         const singleCharacter = (
-          <SmallCharacterBtn className="characters-box">
+          <SmallCharacterBtn className="characters-box" key={i}>
             <button className="btn orange">{`#${
               dogs[i].dogNeutered ? "중성화" : "중성화 X"
             }`}</button>
             <button className="btn yellow">{`#${
-              dogs[i].dogCharacter1 === "obedient" ? "순종적" : "비순종적"
+              dogs[i].dogCharacter1 === "obedient" ? "온순함" : "사나움"
             }`}</button>
             <button className="btn yellow">{`#${
               dogs[i].dogCharacter2 === "active" ? "활동적" : "비활동적"
@@ -128,33 +130,79 @@ const SingleMeeting = ({ meeting }) => {
     return characterList;
   };
 
-  const outClick = (e) => {
-    console.log("꺼져!");
-    setModalOpen(false);
-  };
-
   const InformationModal = () => {
+    const renderBtns = () => {
+      const Btns = [];
+
+      if (meeting.status === "confirmed") {
+        Btns.push(<RedColorShortBtn>약속 취소</RedColorShortBtn>);
+        Btns.push(
+          <MainColorShortBtn onClick={setModalOpen(false)}>
+            확인
+          </MainColorShortBtn>
+        );
+      } else if (meeting.status === "wait") {
+        if (meeting.received) {
+          Btns.push(<RedColorShortBtn>반려</RedColorShortBtn>);
+          Btns.push(<MainColorShortBtn>수락</MainColorShortBtn>);
+        } else {
+          Btns.push(<RedColorShortBtn>요청 취소</RedColorShortBtn>);
+          Btns.push(
+            <MainColorShortBtn onClick={setModalOpen(false)}>
+              확인
+            </MainColorShortBtn>
+          );
+        }
+      } else if (meeting.status === "done") {
+        Btns.push(
+          <MainColorShortBtn onClick={setModalOpen(false)}>
+            확인
+          </MainColorShortBtn>
+        );
+      } else if (meeting.status === "cancelled") {
+        Btns.push(
+          <MainColorShortBtn onClick={setModalOpen(false)}>
+            확인
+          </MainColorShortBtn>
+        );
+      }
+
+      return <div className="btnContainer">{Btns}</div>;
+    };
+
     return (
       <InfoModal>
-        <div className="modalOutside" onClick={() => outClick()}></div>
+        <div className="modalOutside" onClick={() => setModalOpen(false)}></div>
         <div className="modalInside">
           <p className="appointmentDate">• {dayOfWeek()}</p>
           <p className="infoText">상대방의 강아지</p>
           <div className="dogWrapper">
             {renderDogImg(meeting.partnerDogs)}
             <div className="dogInfo">
-              <span className="dogNames">{dogNameList()}</span>
-              <span className="partnerName">
-                <FontAwesomeIcon icon="user"></FontAwesomeIcon>{" "}
-                {meeting.partnerName}
-              </span>
+              <div>
+                <span className="dogNames">
+                  {dogNameList(meeting.partnerDogs)}
+                </span>
+                <span className="partnerName">
+                  <FontAwesomeIcon icon="user"></FontAwesomeIcon>{" "}
+                  {meeting.partnerName}
+                </span>
+              </div>
               <div className="characterWrapper">
                 {renderCharacter(meeting.partnerDogs)}
               </div>
             </div>
           </div>
+          <p className="infoText">나의 강아지</p>
+          <div className="dogWrapper">
+            {renderDogImg(meeting.myDogs)}
+            <div className="dogInfo">
+              <span className="dogNames">{dogNameList(meeting.myDogs)}</span>
+            </div>
+          </div>
+          {renderBtns()}
         </div>
-        <div className="modalOutside" onClick={() => outClick()}></div>
+        <div className="modalOutside" onClick={() => setModalOpen(false)}></div>
       </InfoModal>
     );
   };
@@ -170,7 +218,9 @@ const SingleMeeting = ({ meeting }) => {
           <p className="appointmentDate">• {dayOfWeek()}</p>
           <div className="appointmentWrapper">
             <div className="nameWrapper">
-              <span className="dogNames">{dogNameList()}</span>
+              <span className="dogNames">
+                {dogNameList(meeting.partnerDogs)}
+              </span>
               <span className="partnerName">
                 <FontAwesomeIcon icon="user"></FontAwesomeIcon>{" "}
                 {meeting.partnerName}
@@ -204,6 +254,8 @@ const Walk = () => {
       })
       .then(function (response) {
         // 데이터 들어오는 형태 확인 필요함
+        // userOne이 보낸 사람, userTwo가 받은 사람
+        console.log(response.data.appointment);
         const appointments = [];
         if (response.data.appointment) {
           for (let i = 0; i < response.data.appointment.length; i++) {
@@ -212,6 +264,7 @@ const Walk = () => {
               roomId: response.data.appointment[i].roomId,
               place: response.data.appointment[i].place,
               date: response.data.appointment[i].dateTime,
+              received: false,
             };
             if (response.data.appointment[i].userOneId === user.userId) {
               singleAppointment.myDogs =
@@ -231,6 +284,7 @@ const Walk = () => {
                 response.data.appointment[i].userOneNickname;
               singleAppointment.rated =
                 response.data.appointment[i].userTwoRated;
+              singleAppointment.received = true;
             }
             appointments.push(singleAppointment);
           }

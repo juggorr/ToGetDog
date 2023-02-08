@@ -201,9 +201,9 @@ export const InfoModal = styled.div`
   height: 100vh;
 
   .modalInside {
-    width: 70%;
+    width: 19rem;
     background-color: #ffffff;
-    padding: 2rem;
+    padding: 2rem 1.2rem;
     border-radius: 2rem;
   }
 
@@ -219,6 +219,9 @@ export const InfoModal = styled.div`
 
   .dogInfo {
     margin: 0rem 1rem;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
   }
 
   .infoText {
@@ -227,5 +230,16 @@ export const InfoModal = styled.div`
   }
 
   .characterWrapper {
+    display: flex;
+    height: 3rem;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .btnContainer {
+    padding: 1rem 1rem;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-around;
   }
 `;

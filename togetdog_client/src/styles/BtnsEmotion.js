@@ -94,7 +94,6 @@ export const MainColorShortBtn = styled.button`
   height: 2.3rem;
   border-radius: 2rem;
   border: none;
-  margin: 0.2rem;
 
   background-color: #559968;
   color: #fff;
@@ -108,9 +107,6 @@ export const GreyColorShortBtn = styled.button`
   height: 2.3rem;
   border-radius: 2rem;
   border: none;
-  margin-right: 1rem;
-  mrgin-left: 1rem;
-
   background-color: #717171;
   color: #fff;
   font-weight: 700;
@@ -123,8 +119,6 @@ export const SkyColorShortBtn = styled.button`
   height: 2.3rem;
   border-radius: 2rem;
   border: none;
-  margin-right: 1rem;
-  mrgin-left: 1rem;
 
   background-color: #699bf7;
   color: #fff;
@@ -138,8 +132,6 @@ export const RedColorShortBtn = styled.button`
   height: 2.3rem;
   border-radius: 2rem;
   border: none;
-  margin-right: 1rem;
-  mrgin-left: 1rem;
 
   background-color: #ff6565;
   color: #fff;
