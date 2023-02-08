@@ -47,7 +47,7 @@ public class DogInfoRespDTO {
 		if (dogC1.equals("d")) {
 			dogC1 = "disobedient";
 		} else {
-			dogC2 = "obedient";
+			dogC1 = "obedient";
 		}
 		if (dogC2.equals("a")) {
 			dogC2 = "active";
@@ -93,7 +93,7 @@ public class DogInfoRespDTO {
 		if (dogC1.equals("d")) {
 			dogC1 = "disobedient";
 		} else {
-			dogC2 = "obedient";
+			dogC1 = "obedient";
 		}
 		if (dogC2.equals("a")) {
 			dogC2 = "active";
