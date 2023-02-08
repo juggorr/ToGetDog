@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.togetdog.notify.model.dto.NotifyRespDTO;
@@ -41,7 +42,8 @@ public class NotifyRestController {
 	@ApiOperation(value = "알림 리스트 조회", notes = "알림 탭 들어왔을 때 가져올 알림 정보 전체를 조회합니다.")
 	@GetMapping
 	public ResponseEntity<?> getNotify(
-			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token
+			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@RequestParam(value = "pageNo") int pageNo
 			) {
 		logger.info("getNotify in");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -50,7 +52,7 @@ public class NotifyRestController {
 		long userId = jwtService.getUserId(token);
 		User user = userService.findUserByUserId(userId);
 		
-		NotifyRespDTO notifyDTO = notifyService.getNotiList(user);
+		NotifyRespDTO notifyDTO = notifyService.getNotiList(user, pageNo);
 		resultMap.put("result", SUCCESS);
 		resultMap.put("notice", notifyDTO);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);

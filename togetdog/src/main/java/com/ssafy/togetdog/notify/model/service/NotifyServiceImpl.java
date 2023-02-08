@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.togetdog.dog.model.service.DogService;
@@ -62,7 +65,8 @@ public class NotifyServiceImpl implements NotifyService {
 				.build();
 		notifyRepository.save(newNoti);
 	}
-
+	
+	/* 산책 취소 알림 확인 처리*/
 	@Override
 	public void updateNotify(User user) {
 		List<Notify> cancelList = notifyRepository.findAllByReceiverAndNotifyTypeAndCheck(user, "c", false).orElse(null);
@@ -70,14 +74,27 @@ public class NotifyServiceImpl implements NotifyService {
 			notifyRepository.delete(notify);
 		}
 	}
+ 
+	/* 알림을 받은 사람 기준으로 알림 리스트 조회*/
+	@Override
+	public List<Notify> findNotifyListByUser(User user) {
+		return notifyRepository.findAllByReceiver(user).orElse(null);
+	}
 	
 	@Override
-	public NotifyRespDTO getNotiList(User user) {
+	public void deleteNotify(Notify notify) {
+		notifyRepository.delete(notify);
+		                                                
+	}
+	
+	@Override
+	public NotifyRespDTO getNotiList(User user, int pageNo) throws NumberFormatException {
+		// 해당 유저의 좋아요, 팔로우 알림만 알림이 생성된 순서의 내림차순으로 조회합니다.
         List<String> notifyTypes = new ArrayList<String>();
         notifyTypes.add("l");
         notifyTypes.add("f");
-        // 해당 유저의 좋아요, 팔로우 알림만 알림이 생성된 순서의 내림차순으로 조회합니다.
-        List<Notify> notifications = notifyRepository.findAllByReceiverAndNotifyTypeInOrderByNotifyDateDesc(user, notifyTypes).orElse(null);
+        Pageable pageable = PageRequest.of(pageNo, 20);
+        Page<Notify> notifications = notifyRepository.findAllByReceiverAndNotifyTypeInOrderByNotifyDateDesc(user, notifyTypes, pageable);
 		
 		// appointmentRepository에 Long countByReceivedUserId 해서 가져옵니다.
 		long meetingCnt = 0;
