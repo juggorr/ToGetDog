@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .authorizationEndpoint()
                 .baseUri("/oauth2/authorization")
                 .and()
-                .redirectionEndpoint().baseUri("/*/oauth2/code/*")
+                .redirectionEndpoint().baseUri("/oauth2/code/**")
                 .and()
         		.userInfoEndpoint() //OAuth2 로그인 후 사용자 정보를 가져올 때의 설정 담당
         		.userService(userOauth2Service)
