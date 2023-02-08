@@ -9,9 +9,9 @@ import { authAtom, userState } from '../recoil';
 import { InputWrapper, LoginContainer, LoginWrapper, LogoWrapper, SocialLoginLogo } from '../styles/LoginEmotion';
 import { BlackLongBtn } from '../styles/BtnsEmotion';
 
-// import naverLogo from "../assets/naver.png";
-// import googleLogo from "../assets/google.jpg";
-// import kakaoLogo from "../assets/kakao.png";
+import naverLogo from '../assets/naver.png';
+import googleLogo from '../assets/google.jpg';
+import kakaoLogo from '../assets/kakao.png';
 import ToGetDog from '../assets/togetdog.png';
 
 const Login = () => {
@@ -133,9 +133,15 @@ const Login = () => {
           </InputWrapper>
           <BlackLongBtn onClick={checkInput}>로그인</BlackLongBtn>
           <div className='social-login-wrapper'>
-            <SocialLoginLogo src={'https://i8a807.p.ssafy.io/oauth2/authorization/naver'}></SocialLoginLogo>
-            <SocialLoginLogo src={'https://i8a807.p.ssafy.io/oauth2/authorization/google'}></SocialLoginLogo>
-            <SocialLoginLogo src={'https://i8a807.p.ssafy.io/oauth2/authorization/kakao'}></SocialLoginLogo>
+            <a href='https://i8a807.p.ssafy.io/oauth2/authorization/naver'>
+              <SocialLoginLogo src={naverLogo}></SocialLoginLogo>
+            </a>
+            <a href='https://i8a807.p.ssafy.io/oauth2/authorization/google'>
+              <SocialLoginLogo src={googleLogo}></SocialLoginLogo>
+            </a>
+            <a href='https://i8a807.p.ssafy.io/oauth2/authorization/kakao'>
+              <SocialLoginLogo src={kakaoLogo}></SocialLoginLogo>
+            </a>
           </div>
           <div className='login-bottom-wrapper'>
             <div onClick={() => navigate('/signup')} className='login-bottom-text'>
