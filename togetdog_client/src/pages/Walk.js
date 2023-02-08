@@ -181,7 +181,7 @@ const Walk = () => {
               singleAppointment.partnerDogs =
                 response.data.appointment[i].userTwoDogs;
               singleAppointment.partnerName =
-                response.data.appointment[i].userTwoName;
+                response.data.appointment[i].userTwoNickname;
               singleAppointment.rated =
                 response.data.appointment[i].userOneRated;
             } else {
@@ -190,7 +190,7 @@ const Walk = () => {
               singleAppointment.myDogs =
                 response.data.appointment[i].userTwoDogs;
               singleAppointment.partnerName =
-                response.data.appointment[i].userOneName;
+                response.data.appointment[i].userOneNickname;
               singleAppointment.rated =
                 response.data.appointment[i].userTwoRated;
             }
