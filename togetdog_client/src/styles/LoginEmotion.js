@@ -67,6 +67,16 @@ export const InputWrapper = styled.div`
     padding: 10px 5px;
   }
 
+  .search-input {
+    width: 80%;
+    font-size: 0.7rem;
+    color: #000;
+    border: none;
+    background: none;
+    outline: none;
+    padding: 10px 5px;
+  }
+
   .error-msg {
     padding-bottom: 10px;
     color: #ff1b6d;
