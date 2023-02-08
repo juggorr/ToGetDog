@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
@@ -20,8 +21,9 @@ public class FacilityServiceImpl implements FacilityService{
 
 	private final FacilityRepository fr;
 
-	private List<FacilityDTO> list;
+	private static List<FacilityDTO> list;
 	
+	@PostConstruct
 	private void callList() {
 		this.list = fr.findAll().stream()
 				.map(f ->FacilityDTO.of(f))
@@ -30,9 +32,6 @@ public class FacilityServiceImpl implements FacilityService{
 
 	@Transactional
 	public List<FacilityDTO> findList(double lo, double la) {
-		if(list == null) {
-			this.callList();
-		}
 		List<FacilityDTO> result = new ArrayList<>();
 		double dist;
 		for (FacilityDTO dto : list) {
