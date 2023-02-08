@@ -162,7 +162,6 @@ const Walk = () => {
         const appointments = [];
         if (response.data.appointment) {
           for (let i = 0; i < response.data.appointment.length; i++) {
-            console.log(response.data.appointment[i]);
             const singleAppointment = {
               status: response.data.appointment[i].status,
               roomId: response.data.appointment[i].roomId,
@@ -190,8 +189,6 @@ const Walk = () => {
             }
             appointments.push(singleAppointment);
           }
-
-          console.log(appointments);
         }
         setOriginalMeetings(appointments);
       })
