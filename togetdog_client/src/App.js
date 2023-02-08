@@ -59,7 +59,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/emailAuth" element={<EmailAuth />} />
-          <Route path="/dogregister" element={<DogRegister />} />
+          <Route path="/useredit" element={<UserEdit />} />
           <Route path='/passwordedit' element={<PasswordEdit />} />
           {/* <Route path='/dogedit' element={<DogEdit />} /> */}
           {/* 임시로 링크 */}
