@@ -28,6 +28,7 @@ import com.ssafy.togetdog.user.model.dto.UserLoginParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserLoginRespDTO;
 import com.ssafy.togetdog.user.model.dto.UserPasswordParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserRegistParamDTO;
+import com.ssafy.togetdog.user.model.dto.UserSocialRegistParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserUpdateParamDTO;
 import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.service.JwtService;
@@ -89,6 +90,25 @@ public class UserRestController {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		
 		userService.registEmailAuth(authDTO);
+		resultMap.put("result", SUCCESS);
+		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.OK);
+	}
+	
+	/***
+	 * Social User Registration
+	 * @param UserSocialRegistParamDTO
+	 * @return status 200, 400, 409
+	 */
+	@ApiOperation(value = "소셜 회원가입", notes = "소셜 회원의 회원가입을 진행합니다.")
+	@PostMapping("/social")
+	public ResponseEntity<?> socialRegistration(
+			@RequestBody @ApiParam(required = true) UserSocialRegistParamDTO userDTO
+			) {
+		
+		logger.info("Social Regist Info : {}", userDTO);
+		Map<String, String> resultMap = new HashMap<String, String>();
+		
+		userService.socialRegist(userDTO);
 		resultMap.put("result", SUCCESS);
 		return new ResponseEntity<Map<String, String>>(resultMap, HttpStatus.OK);
 	}

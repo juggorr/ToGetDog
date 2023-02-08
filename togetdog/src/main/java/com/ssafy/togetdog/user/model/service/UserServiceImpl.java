@@ -17,6 +17,7 @@ import com.ssafy.togetdog.user.model.dto.EmailAuthParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
 import com.ssafy.togetdog.user.model.dto.UserLoginParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserRegistParamDTO;
+import com.ssafy.togetdog.user.model.dto.UserSocialRegistParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserUpdateParamDTO;
 import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.entity.WaitUser;
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
 			throw new DuplicatedInputException("이미 등록되어 있는 이메일입니다.");
 		}
 		userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-		WaitUser newUser = userDTO.toUser(authKey);
+		WaitUser newUser = userDTO.of(authKey);
 		waitUserRepository.save(newUser);
 	}
 	
@@ -155,6 +156,10 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 	
+	@Override
+	public void socialRegist(UserSocialRegistParamDTO userDTO) {
+		
+	}
 	
 	//////////////////////////////////////////////
 	// 범용 method
