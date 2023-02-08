@@ -1,32 +1,31 @@
 import { useRef } from "react";
 
-import Emotion4 from '../assets/emotion4.png'
-import { ConfirmModalWrapper, ConfirmModalBody, ConfirmModalImage } from "../styles/ModalEmotion";
-import { MainColorShortBtn } from "../styles/BtnsEmotion";
+import Emotion4 from '../../assets/emotion4.png'
+import { ConfirmModalWrapper, ConfirmModalBody, ConfirmModalImage } from "../../styles/ModalEmotion";
+import { MainColorShortBtn } from "../../styles/BtnsEmotion";
 
-function NoDogAlertModal({ noDogBtnClick, setNoDogBtnClick, setMenuBtnClick }) {
+function NoEssentialsModal({ noEssentialsModal, setNoEssentialsModal }) {
 
   const outSection = useRef();
 
   const onClick = () => {
-    setNoDogBtnClick(false);
-    setMenuBtnClick(true);
+    setNoEssentialsModal(false);
   }
 
   return (
     <>
-      {noDogBtnClick === true? (
+      {noEssentialsModal === true? (
       <ConfirmModalWrapper
         ref={outSection}
         onClick={(e) => {
           if (outSection.current === e.target) {
-            setNoDogBtnClick(false);
+            setNoEssentialsModal(false);
           }
         }}
       >
         <ConfirmModalBody>
           <ConfirmModalImage src={Emotion4} />
-          <span>등록된 강아지가 없어요.</span>
+          <span>필수 값을 입력하지 않았어요.</span>
           <MainColorShortBtn 
             onClick={onClick}
           >
@@ -39,4 +38,4 @@ function NoDogAlertModal({ noDogBtnClick, setNoDogBtnClick, setMenuBtnClick }) {
   )
 }
 
-export default NoDogAlertModal;
+export default NoEssentialsModal;
