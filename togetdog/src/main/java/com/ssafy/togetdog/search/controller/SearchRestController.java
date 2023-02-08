@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.search.service.SearchService;
-import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
+import com.ssafy.togetdog.user.model.dto.UserIncludesDogsRespDTO;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,7 +38,7 @@ public class SearchRestController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		List<DogInfoRespDTO> dogList = searchService.getDogInfoList(content);
 		resultMap.put("dog", dogList);
-		List<UserInfoRespDTO> userList = searchService.getUserInfoList(content);
+		List<UserIncludesDogsRespDTO> userList = searchService.getUserInfoList(content);
 		resultMap.put("user", userList);
 		resultMap.put("result", SUCCESS);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
