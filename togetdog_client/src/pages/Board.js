@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BoardCommentBox, BoardContainer } from '../styles/BoardEmotion';
+import { BoardContainer } from '../styles/BoardEmotion';
 
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { authAtom, userState } from '../recoil';
@@ -39,7 +39,7 @@ const Board = () => {
     }
 
     axios
-      .get(`${BACKEND_URL}/board/${boardId}`, {
+      .get(`https://togetdog.site/api/board/${boardId}`, {
         headers: {
           Authorization: auth,
         },

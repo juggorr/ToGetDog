@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const BoardContainer = styled.div`
   display: flex;
@@ -26,6 +26,7 @@ export const BoardUserPic = styled.img`
   width: 3.3rem;
   height: 3.3rem;
   border-radius: 50%;
+  object-fit: cover;
 `;
 
 export const BoardUserInfo = styled.div`

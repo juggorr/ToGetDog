@@ -41,7 +41,7 @@ const EditBoard = () => {
     }
 
     axios
-      .get(`https://i8a807.p.ssafy.io/api/board/${boardId}`, {
+      .get(`${BACKEND_URL}/board/${boardId}`, {
         headers: {
           Authorization: auth,
         },
@@ -70,7 +70,7 @@ const EditBoard = () => {
 
   const onClickEdit = () => {
     axios
-      .put(`https://i8a807.p.ssafy.io/api/board`, null, {
+      .put(`${BACKEND_URL}/board`, null, {
         params: {
           boardId: boardId,
           content: content,

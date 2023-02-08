@@ -32,17 +32,18 @@ const CommentBox = ({ boardData }) => {
       commentRef.current.focus();
       return;
     }
+    console.log(commentInput);
     await axios
       .post(
-        `${BACKEND_URL}/board/comment`,
+        `https://togetdog.site/api/board/comment`,
         {
           boardId: boardData.boardId,
           commentContent: commentInput,
+          nickName: user.nickName,
           userId: user.userId,
         },
         {
           headers: {
-            'Content-Type': 'application/json',
             Authorization: auth,
           },
         },

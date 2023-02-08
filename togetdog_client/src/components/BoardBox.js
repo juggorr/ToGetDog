@@ -1,24 +1,18 @@
-import {
-  BoardContentBox,
-  BoardPicBox,
-  BoardUserInfo,
-  BoardUserInfoBox,
-  BoardUserPic,
-} from "../styles/BoardEmotion";
+import { BoardContentBox, BoardPicBox, BoardUserInfo, BoardUserInfoBox, BoardUserPic } from '../styles/BoardEmotion';
 
-import MenuIcon from "../assets/menu_icon.png";
-import Boy from "../assets/boy.png";
-import Girl from "../assets/girl.png";
-import { useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { authAtom, userState } from "../recoil";
-import { useRef, useState } from "react";
+import MenuIcon from '../assets/menu_icon.png';
+import Boy from '../assets/boy.png';
+import Girl from '../assets/girl.png';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { authAtom, userState } from '../recoil';
+import { useRef, useState } from 'react';
 
-import "../components/FontAwesome";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { MenuModalBody, MenuModalWrapper } from "../styles/ModalEmotion";
-import axios from "axios";
-import { BACKEND_URL } from "../config";
+import '../components/FontAwesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { MenuModalBody, MenuModalWrapper } from '../styles/ModalEmotion';
+import axios from 'axios';
+import { BACKEND_URL } from '../config';
 
 const BoardBox = ({ boardData, dogData, likeStatus, setLikeStatus }) => {
   const auth = useRecoilValue(authAtom);
@@ -37,7 +31,7 @@ const BoardBox = ({ boardData, dogData, likeStatus, setLikeStatus }) => {
       })
       .then((res) => {
         console.log(res.data);
-        console.log("게시물 삭제가 완료되었습니다.");
+        console.log('게시물 삭제가 완료되었습니다.');
         navigate(`/feed/${user.userId}`);
       })
       .catch((err) => {
@@ -56,7 +50,7 @@ const BoardBox = ({ boardData, dogData, likeStatus, setLikeStatus }) => {
         })
         .then((res) => {
           console.log(res.data);
-          console.log("좋아요 취소가 완료되었습니다.");
+          console.log('좋아요 취소가 완료되었습니다.');
         })
         .catch((err) => {
           console.log(err);
@@ -70,11 +64,11 @@ const BoardBox = ({ boardData, dogData, likeStatus, setLikeStatus }) => {
             headers: {
               Authorization: auth,
             },
-          }
+          },
         )
         .then((res) => {
           console.log(res.data);
-          console.log("좋아요가 완료되었습니다.");
+          console.log('좋아요가 완료되었습니다.');
         })
         .catch((err) => {
           console.log(err);
@@ -92,83 +86,56 @@ const BoardBox = ({ boardData, dogData, likeStatus, setLikeStatus }) => {
             if (outSection.current === e.target) {
               setMenuBtnClick(false);
             }
-          }}>
+          }}
+        >
           <MenuModalBody>
-            <div
-              className="single-menu"
-              onClick={() => navigate(`/editBoard/${boardData.boardId}`)}>
+            <div className='single-menu' onClick={() => navigate(`/editBoard/${boardData.boardId}`)}>
               게시물 수정
             </div>
-            <div className="single-menu red-font" onClick={() => deleteBoard()}>
+            <div className='single-menu red-font' onClick={() => deleteBoard()}>
               게시물 삭제
             </div>
           </MenuModalBody>
         </MenuModalWrapper>
       ) : null}
       <BoardUserInfoBox>
-        <div
-          className="board-info-box-left"
-          onClick={() => navigate(`/feed/${boardData.userId}`)}>
-          <BoardUserPic
-            src={
-              `https://i8a807.p.ssafy.io/image/dog/` + dogData.dogProfile
-            }></BoardUserPic>
+        <div className='board-info-box-left' onClick={() => navigate(`/feed/${boardData.userId}`)}>
+          <BoardUserPic src={`https://i8a807.p.ssafy.io/image/dog/` + dogData.dogProfile}></BoardUserPic>
           <BoardUserInfo>
-            <div className="dog-name">
+            <div className='dog-name'>
               {dogData.dogName}
-              {dogData.dogGender === "male" ? (
-                <img src={Boy} className="dog-gender" alt="boy" />
+              {dogData.dogGender === 'male' ? (
+                <img src={Boy} className='dog-gender' alt='boy' />
               ) : (
-                <img src={Girl} className="dog-gender" alt="girl" />
+                <img src={Girl} className='dog-gender' alt='girl' />
               )}
             </div>
-            <div className="dog-info">
+            <div className='dog-info'>
               {`${dogData.dogType} / ${
-                dogData.dogAge >= 12
-                  ? `${Math.floor(dogData.dogAge / 12)}살`
-                  : `${dogData.dogAge}개월`
+                dogData.dogAge >= 12 ? `${Math.floor(dogData.dogAge / 12)}살` : `${dogData.dogAge}개월`
               }`}
             </div>
           </BoardUserInfo>
         </div>
         {user.userId === boardData.userId ? (
-          <div className="board-info-box-right">
-            <img
-              src={MenuIcon}
-              className="menu-icon"
-              onClick={() => setMenuBtnClick(true)}
-              alt="menu"
-            />
+          <div className='board-info-box-right'>
+            <img src={MenuIcon} className='menu-icon' onClick={() => setMenuBtnClick(true)} alt='menu' />
           </div>
         ) : null}
       </BoardUserInfoBox>
       <BoardPicBox>
-        <img
-          src={`https://i8a807.p.ssafy.io/image/board/` + boardData.image}
-          className="board-pic"
-          alt="board_img"
-        />
+        <img src={`https://i8a807.p.ssafy.io/image/board/` + boardData.image} className='board-pic' alt='board_img' />
       </BoardPicBox>
       <BoardContentBox>
-        <div className="like-box">
+        <div className='like-box'>
           {likeStatus ? (
-            <FontAwesomeIcon
-              icon="fa-solid fa-heart"
-              className="like-icon"
-              onClick={handleLike}
-            />
+            <FontAwesomeIcon icon='fa-solid fa-heart' className='like-icon' onClick={handleLike} />
           ) : (
-            <FontAwesomeIcon
-              icon="fa-regular fa-heart"
-              className="like-icon"
-              onClick={handleLike}
-            />
+            <FontAwesomeIcon icon='fa-regular fa-heart' className='like-icon' onClick={handleLike} />
           )}
-          <span className="like-txt">
-            {boardData.likeCnt}명이 이 게시물을 좋아합니다.
-          </span>
+          <span className='like-txt'>{boardData.likeCnt}명이 이 게시물을 좋아합니다.</span>
         </div>
-        <div className="board-content">{boardData.content}</div>
+        <div className='board-content'>{boardData.content}</div>
       </BoardContentBox>
     </>
   );
