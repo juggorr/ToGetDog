@@ -23,7 +23,7 @@ import lombok.Setter;
 
 @Builder
 @Entity
-@Table(name = "NOTIFY")
+@Table(name = "`NOTIFY`")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -56,6 +56,6 @@ public class Notify {
 	@Column(name = "dog_id")
 	private long dogId;
 	
-	@Column(name = "check")
+	@Column(name = "`check`")
 	private boolean check;
 }
