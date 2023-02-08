@@ -74,14 +74,15 @@ public class ChatRestController {
 	@ApiOperation(value = "채팅 방 조회", notes = "사용자가 참여 중인 특정 채팅을 조회합니다.")
 	@GetMapping("/chatting")
 	public ResponseEntity<?> getChat(
-//			@RequestHeader(value = "Authorization")
-//			@ApiParam(required = true) 
-//			String token , 
-			long userId,
+			@RequestHeader(value = "Authorization")
+			@ApiParam(required = true) 
+			String token , 
 			@RequestBody long otherId
 			) {
+
+		js.validateToken(token);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-//		long userId = js.getUserId(token);
+		long userId = js.getUserId(token);
 		User user = us.findUserByUserId(userId);
 		User other = us.findUserByUserId(otherId);
 		ChatInfoDTO opponent = cis.otherUserInfo(userId , other);
@@ -101,14 +102,15 @@ public class ChatRestController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 
-	//	@ApiOperation(value = "채팅 방 삭제", notes = "사용자가 참여 중인 특정 채팅방을 삭제합니다.")
+	@ApiOperation(value = "채팅 방 삭제", notes = "사용자가 참여 중인 특정 채팅방을 삭제합니다.")
 	@PutMapping
 	public ResponseEntity<?> deleteChat(
 			@RequestHeader(value = "Authorization")
 			@ApiParam(required = true) 
 			String token , 
-			@RequestParam long roomId //채팅 상대방 id
+			@RequestParam long roomId
 			) {
+		js.validateToken(token);
 		long userId = js.getUserId(token);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		if(cis.chatInfoActi(roomId, userId)) {
