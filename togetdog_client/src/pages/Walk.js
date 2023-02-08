@@ -43,7 +43,6 @@ const SingleMeeting = ({ meeting }) => {
 
   const dayOfWeek = () => {
     const week = ["일", "월", "화", "수", "목", "금", "토"];
-    console.log(meeting);
     const weekStr = meeting.date.split("T");
 
     const dayOfTheWeek = week[new Date(weekStr[0]).getDay()];
@@ -103,14 +102,21 @@ const SingleMeeting = ({ meeting }) => {
     return result;
   };
 
+  const outClick = (e) => {
+    console.log("뭐햠");
+    setModalOpen(false);
+  };
+
   const InformationModal = () => {
     return (
       <InfoModal>
+        <div className="modalOutside" onClick={() => outClick()}></div>
         <div className="modalInside">
           <p className="appointmentDate">• {dayOfWeek()}</p>
           <p>상대방의 강아지</p>
           {renderDogImg(meeting.partnerDogs)}
         </div>
+        <div className="modalOutside" onClick={() => outClick()}></div>
       </InfoModal>
     );
   };
@@ -120,21 +126,23 @@ const SingleMeeting = ({ meeting }) => {
       {modalOpen && (
         <InformationModal setModalOpen={setModalOpen} meeting={meeting} />
       )}
-      <div className="singleWrapper" onClick={() => setModalOpen(true)}>
-        <div className="appointmentLine"></div>
-        <p className="appointmentDate">• {dayOfWeek()}</p>
-        <div className="appointmentWrapper">
-          <div className="nameWrapper">
-            <span className="dogNames">{dogNameList()}</span>
-            <span className="partnerName">
-              <FontAwesomeIcon icon="user"></FontAwesomeIcon>{" "}
-              {meeting.partnerName}
-            </span>
+      <div className="appointmentContainer" onClick={() => setModalOpen(true)}>
+        <div className="singleWrapper">
+          <div className="appointmentLine"></div>
+          <p className="appointmentDate">• {dayOfWeek()}</p>
+          <div className="appointmentWrapper">
+            <div className="nameWrapper">
+              <span className="dogNames">{dogNameList()}</span>
+              <span className="partnerName">
+                <FontAwesomeIcon icon="user"></FontAwesomeIcon>{" "}
+                {meeting.partnerName}
+              </span>
+            </div>
+            <p className="appointmentDate">장소 : {meeting.place}</p>
           </div>
-          <p className="appointmentDate">장소 : {meeting.place}</p>
         </div>
+        {renderDogImg(meeting.partnerDogs)}
       </div>
-      {renderDogImg(meeting.partnerDogs)}
     </SingleMeetingWrapper>
   );
 };
@@ -158,7 +166,6 @@ const Walk = () => {
       })
       .then(function (response) {
         // 데이터 들어오는 형태 확인 필요함
-
         const appointments = [];
         if (response.data.appointment) {
           for (let i = 0; i < response.data.appointment.length; i++) {

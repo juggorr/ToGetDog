@@ -91,6 +91,15 @@ export const SingleMeetingWrapper = styled.div`
   padding: 0rem 1.5rem;
   font-family: "Lato", sans-serif;
 
+  .appointmentContainer {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0rem;
+    font-family: "Lato", sans-serif;
+  }
+
   .singleWrapper {
     position: relative;
   }
@@ -179,14 +188,23 @@ export const SingleMeetingWrapper = styled.div`
 
 export const InfoModal = styled.div`
   position: fixed;
-  top: 30%;
-  left: 20%;
+
+  top: 0;
+  left: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 999;
+  width: 100vw;
+  height: 100vh;
 
   .modalInside {
     background-color: #ffffff;
     padding: 2rem;
+    border-radius: 2rem;
+  }
+
+  .modalOutside {
+    width: 100%;
+    height: 10rem;
   }
 
   .infoText {
