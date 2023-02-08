@@ -57,7 +57,7 @@ const MenuModal = ({ menuLists, menuBtnClick, setMenuBtnClick, feedDogData, setC
                     } else {
                       return handleNoDog();
                     }
-                  } else {
+                  } else  {
                     navigate(it.link)
                   }
                   // it.link === "/logout" ? handleLogout() : navigate(it.link);

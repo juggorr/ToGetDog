@@ -71,7 +71,7 @@ export const ConfirmModalBody = styled.div`
   .two-btns-wrapper {
     padding-top: 1.5rem;
     justify-content: space-around;
-}
+  }
 `;
 
 export const ConfirmModalImage = styled.img`
