@@ -1,15 +1,15 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import ConfirmModal from "../components/ConfirmModal";
-import NoDogAlertModal from "../components/AlertModal/NoDogAlertModal";
-import MenuModal from "../components/MenuModal";
-import OrangeCharacterBtn from "../components/OrangeCharacterBtn";
-import YellowCharacterBtn from "../components/YellowCharacterBtn";
-import { BACKEND_URL, DUMMY_URL } from "../config";
-import { authAtom, userState } from "../recoil";
-import { PlusBtn } from "../styles/BtnsEmotion";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import ConfirmModal from '../components/ConfirmModal';
+import NoDogAlertModal from '../components/AlertModal/NoDogAlertModal';
+import MenuModal from '../components/MenuModal';
+import OrangeCharacterBtn from '../components/OrangeCharacterBtn';
+import YellowCharacterBtn from '../components/YellowCharacterBtn';
+import { BACKEND_URL, DUMMY_URL } from '../config';
+import { authAtom, userState } from '../recoil';
+import { PlusBtn } from '../styles/BtnsEmotion';
 import {
   FeedContainer,
   FeedPhoto,
@@ -95,6 +95,7 @@ const Feed = () => {
     for (let dog of feedDogData) {
       if (dog.dogId === targetDogId) {
         setCurrentDog(dog);
+        setFollowStatus(dog.following);
         let filteredPhotos = feedData.filter((feedPhoto) => feedPhoto.dogId === targetDogId);
         setFilteredPhotoData(filteredPhotos);
         setSubDogs(tmpSubDogs);
@@ -103,6 +104,14 @@ const Feed = () => {
       }
     }
     setSubDogs(tmpSubDogs);
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('user');
+    setAuth(null);
+    console.log('로그아웃이 정상적으로 처리되었습니다.');
+    navigate('/login');
   };
 
   useEffect(() => {
@@ -125,7 +134,7 @@ const Feed = () => {
         setFeedUserData(resp.data.user);
         setFeedDogData(resp.data.user.dogs);
         setCurrentDog(resp.data.user.dogs[0]);
-        setFollowStatus(resp.data.user.dogs);
+        setFollowStatus(resp.data.user.dogs[0].following);
         let tmpSubDogs = [];
 
         if (resp.data.user.dogs.length > 1) {
@@ -145,6 +154,9 @@ const Feed = () => {
         console.log(err);
         if (err.response.status === 404) {
           navigate('/*');
+        } else if (err.response.status === 401) {
+          alert('토큰이 만료되어 자동 로그아웃되었습니다.');
+          handleLogout();
         }
         console.log('피드 데이터 불러오기 실패');
       });
@@ -250,7 +262,7 @@ const Feed = () => {
                 </div>
               </div>
             ) : currentDog ? (
-              <FollowBtn followStatus={followStatus} setFollowStatus={setFollowStatus} />
+              <FollowBtn dogId={currentDog.dogId} followStatus={followStatus} setFollowStatus={setFollowStatus} />
             ) : null}
           </FeedProfileTop>
           {/* 특이사항, 성격 들어가는 부분 */}

@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 // #BB2649 올해의 팬톤 컬러
 
-export const FooterWrapper = styled.footer`
+export const FooterWrapper = styled.div`
   position: fixed;
   bottom: 0;
   display: flex;
