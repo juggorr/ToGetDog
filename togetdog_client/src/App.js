@@ -12,6 +12,7 @@ import New from "./pages/New";
 import Board from "./pages/Board";
 import UserEdit from './pages/UserEdit';
 import PasswordEdit from './pages/PasswordEdit';
+import PasswordSearch from "./pages/PasswordSearch";
 
 /*global kakao*/
 import React, { useEffect } from "react";
@@ -61,6 +62,7 @@ function App() {
           <Route path="/emailAuth" element={<EmailAuth />} />
           <Route path="/useredit" element={<UserEdit />} />
           <Route path='/passwordedit' element={<PasswordEdit />} />
+          <Route path='/passwordsearch' element={<PasswordSearch />} />
           <Route path="/dogregister" element={<DogRegister />} />
           {/* <Route path='/dogedit' element={<DogEdit />} /> */}
           {/* 임시로 링크 */}
