@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
+import com.ssafy.togetdog.search.model.dto.SearchDogDTO;
+import com.ssafy.togetdog.search.model.dto.SearchUserDTO;
 import com.ssafy.togetdog.search.service.SearchService;
-import com.ssafy.togetdog.user.model.dto.UserIncludesDogsRespDTO;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,9 +36,9 @@ public class SearchRestController {
 			@RequestParam String content 
 			) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		List<DogInfoRespDTO> dogList = searchService.getDogInfoList(content);
+		List<SearchDogDTO> dogList = searchService.getDogInfoList(content);
 		resultMap.put("dog", dogList);
-		List<UserIncludesDogsRespDTO> userList = searchService.getUserInfoList(content);
+		List<SearchUserDTO> userList = searchService.getUserInfoList(content);
 		resultMap.put("user", userList);
 		resultMap.put("result", SUCCESS);
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);

@@ -7,12 +7,11 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.dog.model.repository.DogRepository;
 import com.ssafy.togetdog.dog.model.service.DogService;
-import com.ssafy.togetdog.user.model.dto.UserIncludesDogsRespDTO;
-import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
+import com.ssafy.togetdog.search.model.dto.SearchDogDTO;
+import com.ssafy.togetdog.search.model.dto.SearchUserDTO;
 import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.repository.UserRepository;
 
@@ -28,21 +27,21 @@ public class SearchServiceImpl implements SearchService{
 	private final UserRepository userRepository;
 	private final DogService dogService;
 	
-	public List<DogInfoRespDTO> getDogInfoList(String dogName){
+	public List<SearchDogDTO> getDogInfoList(String dogName){
 		List<Dog> dogs = dogRepository.findByDogNameContains(dogName).orElse(null);
 		if(dogs == null)
 			return null;
 		
-		List<DogInfoRespDTO> dogList = dogs.stream().map(d ->DogInfoRespDTO.of(d))
+		List<SearchDogDTO> dogList = dogs.stream().map(d ->SearchDogDTO.of(d))
 				 .collect(Collectors.toList());
 		return dogList;
 	}
 	
-	public List<UserIncludesDogsRespDTO> getUserInfoList(String userName){
+	public List<SearchUserDTO> getUserInfoList(String userName){
 		List<User> users = userRepository.findByNickNameContains(userName).orElse(null);
 		if(users == null)
 			return null;
-		List<UserIncludesDogsRespDTO> userList = users.stream().map(u ->UserIncludesDogsRespDTO.of(u, dogService.findDogsByUserId(u.getUserId())))
+		List<SearchUserDTO> userList = users.stream().map(u ->SearchUserDTO.of(u, dogService.findDogsByUserId(u.getUserId())))
 				 .collect(Collectors.toList());
 		return userList;
 	}
