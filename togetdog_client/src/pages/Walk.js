@@ -107,22 +107,19 @@ const SingleMeeting = ({ meeting }) => {
     const characterList = [];
     if (dogs) {
       for (let i = 0; i < dogs.length; i++) {
+        console.log(dogs[i].dogNeutered);
         const singleCharacter = (
-          <div className="characters-box">
-            <OrangeCharacterBtn
-              text={`#${dogs[i].dogNeutered ? "중성화" : "중성화 X"}`}
-            />
-            <YellowCharacterBtn
-              text={`#${
-                dogs[i].dogCharacter1 === "obedient" ? "순종적" : "비순종적"
-              }`}
-            />
-            <YellowCharacterBtn
-              text={`#${
-                dogs[i].dogCharacter2 === "active" ? "활동적" : "비활동적"
-              }`}
-            />
-          </div>
+          <SmallCharacterBtn className="characters-box">
+            <button className="btn orange">{`#${
+              dogs[i].dogNeutered ? "중성화" : "중성화 X"
+            }`}</button>
+            <button className="btn yellow">{`#${
+              dogs[i].dogCharacter1 === "obedient" ? "순종적" : "비순종적"
+            }`}</button>
+            <button className="btn yellow">{`#${
+              dogs[i].dogCharacter2 === "active" ? "활동적" : "비활동적"
+            }`}</button>
+          </SmallCharacterBtn>
         );
         characterList.push(singleCharacter);
       }
