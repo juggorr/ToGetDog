@@ -25,6 +25,6 @@ public interface NotifyRepository extends JpaRepository<Notify, Long> {
 	Optional<List<Notify>> findAllByReceiverAndNotifyTypeAndCheck(User user, String notifyType, boolean check);
 	
 	@Modifying
-	@Query(value = "delete from notify n where n.receiver_user_id=:userId and n.notify_type='c'")
+	@Query(value = "delete from notify n where n.receiver_user_id=:userId and n.notify_type='c'", nativeQuery = true)
 	void deleteAppointmentCancelNotifyByUserId(@Param("userId") long userId);
 }
