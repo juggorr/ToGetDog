@@ -86,6 +86,11 @@ public class SwaggerConfig {
 	}
 	
 	@Bean
+	public Docket chat() {
+		return getDocket("CHAT", true, "chat");
+	}
+	
+	@Bean
 	public Docket search() {
 		return getDocket("SEARCH", true, "search");
 	}
