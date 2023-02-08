@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import dog_profile from "../assets/dog2.jpg";
 
-
 // 홈으로 이동 텍스트 버튼
 export const HomeTextBtn = styled.div`
   width: 127px;
@@ -127,7 +126,7 @@ export const SkyColorShortBtn = styled.button`
   margin-right: 1rem;
   mrgin-left: 1rem;
 
-  background-color: #699BF7;
+  background-color: #699bf7;
   color: #fff;
   font-weight: 700;
   font-size: 0.9rem;
@@ -142,7 +141,7 @@ export const RedColorShortBtn = styled.button`
   margin-right: 1rem;
   mrgin-left: 1rem;
 
-  background-color: #FF6565;
+  background-color: #ff6565;
   color: #fff;
   font-weight: 700;
   font-size: 0.9rem;
@@ -166,7 +165,9 @@ export const OrangeBtn = styled.button`
   border: none;
   padding: 0.3rem 0.5rem;
   border-radius: 0.6rem;
+  margin: 0.1rem 0rem;
   margin-right: 0.5rem;
+  font-size: 0.78rem;
 `;
 
 export const YellowBtn = styled.button`
@@ -174,7 +175,9 @@ export const YellowBtn = styled.button`
   border: none;
   padding: 0.3rem 0.5rem;
   border-radius: 0.6rem;
+  margin: 0.1rem 0rem;
   margin-right: 0.5rem;
+  font-size: 0.78rem;
 `;
 
 export const PlusBtn = styled.button`

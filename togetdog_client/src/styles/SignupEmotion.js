@@ -28,11 +28,35 @@ export const SignupWrapper = styled.div`
     padding-top: 1.5rem;
   }
 
+  .two-btns-wrapper {
+    padding-top: 1.5rem;
+    justify-content: space-around;
+  }
+
   .signup-desc {
     width: 270px;
     text-align: left;
     font-size: 0.7rem;
     color: red;
+  }
+
+  .input-error {
+    color: red;
+    font-size: 0.8rem;
+  }
+
+  .edit-bottom-wrapper {
+    border-top: 0.125rem solid #e2e2e2;
+    margin-top: 2rem;
+    width: 90%;
+  }
+
+  .edit-bottom-text {
+    color: #aaa;
+    text-decoration: underline;
+    font-size: 13px;
+    float: right;
+    margin-top: 0.25rem;
   }
 `;
 

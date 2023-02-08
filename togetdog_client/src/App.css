@@ -56,8 +56,12 @@ body {
   color: #b7147e;
 }
 
-.black-font {
+.white-font {
   color: #fff;
+}
+
+.red-font {
+  color: #ef5a5f;
 }
 
 .flex {
@@ -67,4 +71,14 @@ body {
 .flex-column {
   display: flex;
   flex-direction: column;
+}
+
+.loading {
+  height: 100vh;
+  line-height: 100vh;
+  text-align: center;
+}
+
+.space-around {
+  justify-content: space-between;
 }

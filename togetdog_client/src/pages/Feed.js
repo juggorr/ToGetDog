@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import ConfirmModal from "../components/ConfirmModal";
-import NoDogAlertModal from "../components/NoDogAlertModal";
+import NoDogAlertModal from "../components/AlertModal/NoDogAlertModal";
 import MenuModal from "../components/MenuModal";
 import OrangeCharacterBtn from "../components/OrangeCharacterBtn";
 import YellowCharacterBtn from "../components/YellowCharacterBtn";
 import { BACKEND_URL, DUMMY_URL } from "../config";
-import { authAtom, dogState, userState } from "../recoil";
+import { authAtom, userState } from "../recoil";
 import { PlusBtn } from "../styles/BtnsEmotion";
 import {
   FeedContainer,
@@ -29,8 +29,7 @@ const Feed = () => {
   const auth = useRecoilValue(authAtom);
   const setAuth = useSetRecoilState(authAtom);
   const [user, setUser] = useRecoilState(userState);
-  
-  
+
   // const [nowDog, setNowDog] = useState(null);
 
   const navigate = useNavigate();
@@ -44,7 +43,7 @@ const Feed = () => {
     {
       menu_id: 2,
       text: '프로필 수정',
-      link: '/',
+      link: '/useredit',
     },
     {
       menu_id: 3,
@@ -53,13 +52,13 @@ const Feed = () => {
     },
     {
       menu_id: 4,
-      text: "강아지 프로필 삭제",
-      link: "/dogdelete",
+      text: '강아지 프로필 삭제',
+      link: '/dogdelete',
     },
     {
       menu_id: 5,
       text: '계정 비밀번호 변경',
-      link: '/',
+      link: '/passwordedit',
     },
     {
       menu_id: 6,
@@ -96,6 +95,9 @@ const Feed = () => {
     for (let dog of feedDogData) {
       if (dog.dogId === targetDogId) {
         setCurrentDog(dog);
+        let filteredPhotos = feedData.filter((feedPhoto) => feedPhoto.dogId === targetDogId);
+        setFilteredPhotoData(filteredPhotos);
+        setSubDogs(tmpSubDogs);
       } else {
         tmpSubDogs.push(dog);
       }
@@ -110,7 +112,7 @@ const Feed = () => {
     }
 
     axios
-      .get(`https://togetdog.site/api/feed/${feedUserId}?pageNo=${pageNo}`, {
+      .get(`${BACKEND_URL}/feed/${feedUserId}?pageNo=${pageNo}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: auth,
@@ -119,7 +121,7 @@ const Feed = () => {
       .then((resp) => {
         console.log(resp);
         console.log(resp.data);
-        setFeedData(resp.data);
+        setFeedData(resp.data.feed);
         setFeedUserData(resp.data.user);
         setFeedDogData(resp.data.user.dogs);
         setCurrentDog(resp.data.user.dogs[0]);
@@ -141,28 +143,34 @@ const Feed = () => {
       })
       .catch((err) => {
         console.log(err);
+        if (err.response.status === 404) {
+          navigate('/*');
+        }
         console.log('피드 데이터 불러오기 실패');
       });
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className='loading'>Loading...</div>;
   }
 
   return (
     <>
       <FeedContainer>
-        {feedDogData.length > 0 ? (<ConfirmModal 
-          confirmBtnClick={confirmBtnClick}
-          setConfirmBtnClick={setConfirmBtnClick}
-          setMenuBtnClick={setMenuBtnClick}
-          dogId={currentDog.dogId}
-        />) : (<NoDogAlertModal 
-          noDogBtnClick={noDogBtnClick}
-          setNoDogBtnClick={setNoDogBtnClick}
-          setMenuBtnClick={setMenuBtnClick}
-        />)
-        }
+        {feedDogData.length > 0 ? (
+          <ConfirmModal
+            confirmBtnClick={confirmBtnClick}
+            setConfirmBtnClick={setConfirmBtnClick}
+            setMenuBtnClick={setMenuBtnClick}
+            dogId={currentDog.dogId}
+          />
+        ) : (
+          <NoDogAlertModal
+            noDogBtnClick={noDogBtnClick}
+            setNoDogBtnClick={setNoDogBtnClick}
+            setMenuBtnClick={setMenuBtnClick}
+          />
+        )}
         <MenuModal
           menuLists={menuLists}
           menuBtnClick={menuBtnClick}
@@ -220,14 +228,22 @@ const Feed = () => {
                   {currentDog ? (
                     <div
                       onClick={() =>
-                        navigate(`/followerlist/${currentDog.dogId}`, { state: { dogId: currentDog.dogId } })
+                        navigate(`/followerlist/${currentDog.dogId}`, {
+                          state: { dogId: currentDog.dogId },
+                        })
                       }
                     >
                       <span className='follow-text'>팔로워</span>
                       {currentDog.dogFollowerCnt}
                     </div>
                   ) : null}
-                  <div onClick={() => navigate(`/followinglist/${user.userId}`, { state: { userId: user.userId } })}>
+                  <div
+                    onClick={() =>
+                      navigate(`/followinglist/${user.userId}`, {
+                        state: { userId: user.userId },
+                      })
+                    }
+                  >
                     <span className='follow-text'>팔로잉</span>
                     {feedUserData.followCnt}
                   </div>
