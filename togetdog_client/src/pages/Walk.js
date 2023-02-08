@@ -11,6 +11,8 @@ import {
   SingleMeetingWrapper,
   InfoModal,
 } from "../styles/WalkEmotion";
+import OrangeCharacterBtn from "../components/OrangeCharacterBtn";
+import YellowCharacterBtn from "../components/YellowCharacterBtn";
 import { LightColorLongBtn } from "../styles/BtnsEmotion.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -102,8 +104,36 @@ const SingleMeeting = ({ meeting }) => {
     return result;
   };
 
+  const renderCharacter = (dogs) => {
+    const characterList = [];
+    if (dogs) {
+      for (let i = 0; i < dogs.length; i++) {
+        const singleCharacter = (
+          <div className="characters-box">
+            <OrangeCharacterBtn
+              text={`#${dogs[i].dogNeutered ? "중성화" : "중성화 X"}`}
+            />
+            <YellowCharacterBtn
+              text={`#${
+                dogs[i].dogCharacter1 === "obedient" ? "순종적" : "비순종적"
+              }`}
+            />
+            <YellowCharacterBtn
+              text={`#${
+                dogs[i].dogCharacter2 === "active" ? "활동적" : "비활동적"
+              }`}
+            />
+          </div>
+        );
+        characterList.push(singleCharacter);
+      }
+    }
+
+    return characterList;
+  };
+
   const outClick = (e) => {
-    console.log("뭐햠");
+    console.log("꺼져!");
     setModalOpen(false);
   };
 
@@ -113,8 +143,20 @@ const SingleMeeting = ({ meeting }) => {
         <div className="modalOutside" onClick={() => outClick()}></div>
         <div className="modalInside">
           <p className="appointmentDate">• {dayOfWeek()}</p>
-          <p>상대방의 강아지</p>
-          {renderDogImg(meeting.partnerDogs)}
+          <p className="infoText">상대방의 강아지</p>
+          <div className="dogWrapper">
+            {renderDogImg(meeting.partnerDogs)}
+            <div className="dogInfo">
+              <span className="dogNames">{dogNameList()}</span>
+              <span className="partnerName">
+                <FontAwesomeIcon icon="user"></FontAwesomeIcon>{" "}
+                {meeting.partnerName}
+              </span>
+              <div className="characterWrapper">
+                {renderCharacter(meeting.partnerDogs)}
+              </div>
+            </div>
+          </div>
         </div>
         <div className="modalOutside" onClick={() => outClick()}></div>
       </InfoModal>

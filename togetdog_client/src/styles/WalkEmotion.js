@@ -188,6 +188,10 @@ export const SingleMeetingWrapper = styled.div`
 
 export const InfoModal = styled.div`
   position: fixed;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
 
   top: 0;
   left: 0;
@@ -197,6 +201,7 @@ export const InfoModal = styled.div`
   height: 100vh;
 
   .modalInside {
+    width: 70%;
     background-color: #ffffff;
     padding: 2rem;
     border-radius: 2rem;
@@ -207,7 +212,20 @@ export const InfoModal = styled.div`
     height: 10rem;
   }
 
+  .dogWrapper {
+    margin: 0rem;
+    display: flex;
+  }
+
+  .dogInfo {
+    margin: 0rem 1rem;
+  }
+
   .infoText {
     font-size: 0.7rem;
+    margin-top: 1.5rem;
+  }
+
+  .characterWrapper {
   }
 `;
