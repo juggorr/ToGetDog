@@ -26,10 +26,12 @@ import SubLayout from "./components/SubLayout";
 import Search from "./pages/Search";
 import FollowerList from "./pages/FollowerList";
 import FollowingList from "./pages/FollowingList";
+import ConfirmModal from "./components/ConfirmModal";
 
 // import DogEdit from "./pages/DogEdit";
 import Notifications from "./pages/Notifications";
 import Recommend from "./pages/Recommend";
+import EditBoard from "./pages/EditBoard";
 
 function App() {
   return (
@@ -51,18 +53,21 @@ function App() {
           </Route>
           {/* 그 이외 필요없는 컴포넌트 */}
           <Route path="/new" element={<New />} />
+          <Route path="/editBoard/:boardId" element={<EditBoard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/emailAuth" element={<EmailAuth />} />
           <Route path="/dogregister" element={<DogRegister />} />
           {/* <Route path='/dogedit' element={<DogEdit />} /> */}
+          {/* 임시로 링크 */}
+          <Route path="/dogdelete" element={<ConfirmModal />} />
+          <Route path="/followerlist/:dogId" element={<FollowerList />} />
+          <Route path="/followinglist/:userId" element={<FollowingList />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/500" element={<InternalServer />} />
           <Route path="/*" element={<NotFound />} />
           <Route path="/createAppointment" element={<CreateAppointment />} />
           <Route path="/search" element={<Search />} />
-          <Route path="/followerlist/:dogId" element={<FollowerList />} />
-          <Route path="/followinglist/:userId" element={<FollowingList />} />
         </Routes>
       </div>
     </BrowserRouter>

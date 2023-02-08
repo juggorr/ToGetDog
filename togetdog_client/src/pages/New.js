@@ -55,11 +55,10 @@ const New = () => {
           }
           onClick={() => {
             setSelectedDog(item.dogs.dogId);
-          }}
-        >
+          }}>
           <img
             className="dogProfileImg"
-            src={item.dogs.dogProfile}
+            src={`https://i8a807.p.ssafy.io/image/dog/` + item.dogs.dogProfile}
             alt={item.dogs.dogName}
           />
         </div>
@@ -85,6 +84,7 @@ const New = () => {
 
   const checkValid = async () => {
     if (selectedDog && imgRef.current.files[0]) {
+      console.log(selectedDog);
       const formData = new FormData();
       const boardContent = { dogId: selectedDog, content: contentText.current };
       formData.append("file", imgRef.current.files[0]);
@@ -96,10 +96,11 @@ const New = () => {
         .post(`${BACKEND_URL}/board`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: auth,
           },
         })
         .then((response) => {
-          navigate("/");
+          navigate(`/feed/${user.userId}`);
         })
         .catch((err) => {
           console.log(err);
@@ -165,8 +166,7 @@ const New = () => {
         <MainColorShortBtn
           onClick={() => {
             navigate(-1);
-          }}
-        >
+          }}>
           취소
         </MainColorShortBtn>
         <MainColorShortBtn onClick={checkValid}>작성</MainColorShortBtn>
