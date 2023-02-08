@@ -1,6 +1,7 @@
 package com.ssafy.togetdog.user.model.dto;
 
 import com.ssafy.togetdog.user.model.entity.User;
+import com.ssafy.togetdog.user.model.vo.ProviderType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,14 +18,14 @@ import lombok.ToString;
 @ToString
 public class UserSocialLoginRespDTO {
 	private String email;
-	private long userId;
 	private String nickName;
+	private ProviderType social;
 	
     public static UserSocialLoginRespDTO of(User user) {
     	return UserSocialLoginRespDTO.builder()
-    			.userId(user.getUserId())
-    			.nickName(user.getNickName())
     			.email(user.getEmail())
+    			.nickName(user.getNickName())
+    			.social(user.getSocial())
     			.build();
     }
 }

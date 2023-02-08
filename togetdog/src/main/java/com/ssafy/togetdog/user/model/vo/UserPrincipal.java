@@ -102,6 +102,8 @@ public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
     public static UserPrincipal create(User user) {
     	Map<String, Object> attributes = new HashMap<String, Object>();
     	attributes.put("login", false);
+    	attributes.put("nickname", user.getNickName());
+    	attributes.put("social", user.getSocial());
     	return UserPrincipal.builder()
     			.email(user.getEmail())
     			.attributes(attributes)
