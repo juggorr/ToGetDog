@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BoardContainer } from '../styles/BoardEmotion';
+import { BoardContainer, CommentContainer } from '../styles/BoardEmotion';
 
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { authAtom, userState } from '../recoil';
@@ -72,8 +72,10 @@ const Board = () => {
     <>
       <BoardContainer>
         <BoardBox boardData={boardData} dogData={dogData} likeStatus={likeStatus} setLikeStatus={setLikeStatus} />
-        <CommentBox boardData={boardData} />
       </BoardContainer>
+      <CommentContainer>
+        <CommentBox boardData={boardData} setBoardData={setBoardData} />
+      </CommentContainer>
     </>
   );
 };
