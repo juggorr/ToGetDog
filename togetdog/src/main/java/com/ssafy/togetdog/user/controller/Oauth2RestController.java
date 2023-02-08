@@ -40,11 +40,20 @@ public class Oauth2RestController {
 		
 		if (authentication.getName().equals("disable")) {
 			resultMap.put("result", FAIL);
+			resultMap.put("msg", "이미 이 이메일의 다른 소셜로 가입한 유저입니다.");
 			status = HttpStatus.CONFLICT;
+		} else if ((boolean) authentication.getPrincipal().getAttribute("login")) {
+			User user = userService.findUserByEmail(authentication.getName());
+			String accessToken = jwtService.createAccessToken(user.getUserId());
+			resultMap.put("result", "LOGIN");
+			resultMap.put("msg", "소셜 회원의 로그인시도 입니다.");
+			resultMap.put("access-token", accessToken);
+			status = HttpStatus.OK;
 		} else {
 			User user = userService.findUserByEmail(authentication.getName());
 			String accessToken = jwtService.createAccessToken(user.getUserId());
 			resultMap.put("result", SUCCESS);
+			resultMap.put("msg", "새로운 소셜 가입이 이루어졌습니다.");
 			resultMap.put("user", UserSocialLoginRespDTO.of(user));
 			resultMap.put("access-token", accessToken);
 			status = HttpStatus.OK;
