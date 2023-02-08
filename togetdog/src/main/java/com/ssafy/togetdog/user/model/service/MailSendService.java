@@ -130,7 +130,6 @@ public class MailSendService {
         			.toString());
         	mail.setFrom(new InternetAddress("togetdog@gmail.com"));
         	mail.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(email));
-        	
         	mailSender.send(mail);
             userService.updateTmpPassword(userId, tmpPassword);
         } catch (MessagingException e) {

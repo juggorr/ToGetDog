@@ -200,7 +200,7 @@ public class UserServiceImpl implements UserService {
 	public void updateTmpPassword(long userId, String tmpPassword) {
 		User user = userRepository.findById(userId).orElse(null);
 		if (user != null) {
-			user.setPassword(tmpPassword);
+			user.setPassword(passwordEncoder.encode(tmpPassword));
 			userRepository.save(user);
 		}
 	}
