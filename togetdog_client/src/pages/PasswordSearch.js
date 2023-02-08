@@ -1,44 +1,122 @@
-import { useState } from 'react';
+import axios from 'axios';
+import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 
 import { BACKEND_URL } from '../config';
 import { InputWrapper, LoginContainer, LoginWrapper, LogoWrapper } from '../styles/LoginEmotion';
 import { BlackLongBtn } from '../styles/BtnsEmotion';
+import ReissueModal from '../components/AlertModal/ReissueAlertModal';
 import ToGetDog from '../assets/togetdog.png';
+import { authAtom } from '../recoil';
 
 const emailRegexp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
 
 
 function PasswordSearch() {
-  // const [email, setEmail] = useState('');
-  // const [emailCheck, setEmailCheck] = useState(false);
-
-
-  // const [emailStatus]
   
-  // const onChange = (e) => {
-  //   setEmail(e.target.value);
-  // }
+  // 로그인 상태 유저는 접근하지 못하도록
+  const auth = useRecoilValue(authAtom);
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if (auth) {
+      navigate('/')
+    }
+  }, [])
 
-  // handleEmailCheck = async (e) => {
-  //   if (!emailRegexp.t)
-  // }
+
+  const [email, setEmail] = useState('');
+  // const [emailError, setEmailError] = useState(false);
+  const emailError = useRef(false);
+  const [emailErrorMsg, setEmailErrorMsg] = useState('');
+
+  // 비밀번호 발급 성공 모달
+  const [reissueModal, setReissueModal] = useState(false);
+  
+  const onChange = (e) => {
+    setEmail(e.target.value);
+  }
+
+  const handleEmail = async (e) => {
+    if (!emailRegexp.test(email)) {
+      console.log('이메일 형식에 맞지 않음');
+      // setEmailError(false);
+      emailError.current = false;
+      setEmailErrorMsg('이메일 형식에 맞지 않습니다.');
+      return;
+    }
+    await axios
+      .get(`${BACKEND_URL}/user/email`, { params: { email }})
+      .then((res) => {
+        if (res.status === 200) {
+          console.log('가입되지 않은 이메일 입니다.');
+          // setEmailError(false);
+          emailError.current = false;
+          setEmailErrorMsg('가입되지 않은 이메일입니다.');
+        }
+      })
+      .catch((err) => {
+        // setEmailError(true);
+        emailError.current = true;
+        setEmailErrorMsg('잠시만 기다려 주세요...!');
+        // console.log('get요청 보내기')
+      });
+
+    await sendEmail();
+  }
+  
+  
+  
+  const sendEmail = async () => {
+    
+    // await console.log(!emailError.current)
+    if (!emailError.current) {
+      console.log('임시 비밀번호 발급 실패!')
+      return;
+    }
+
+    await axios
+      .get(`${BACKEND_URL}/user/password`, { params : { email } }, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+      .then((res) => {
+        console.log(res)
+        setReissueModal(true);
+      })
+      .catch((err) => {
+        // console.log(err)
+      })
+  }
 
   
   return(
     <LoginContainer>
+      <ReissueModal 
+        reissueModal={reissueModal}
+        setReissueModal={setReissueModal}
+      />
       <LoginWrapper>
         <LogoWrapper>
           <img src={ToGetDog} alt="togetdog" className='logo-img' />
         </LogoWrapper>
         <InputWrapper>
+          <div className='input-title'>
+            이메일<span className='red-dot'>*</span>
+          </div>
           <div className='input-wrapper'>
             <input
               className='search-input'
               placeholder='가입 시 입력한 이메일을 입력해 주세요'
+              onChange={onChange}
             />
           </div>
+          <div className={emailError.current? 'success' : 'error'}>{emailErrorMsg}</div>
         </InputWrapper>
+        <BlackLongBtn onClick={handleEmail}>임시 비밀번호 발급</BlackLongBtn>
       </LoginWrapper>
     </LoginContainer>
   )
