@@ -91,14 +91,20 @@ public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
     }
     
     public static UserPrincipal disable() {
+    	Map<String, Object> attributes = new HashMap<String, Object>();
+    	attributes.put("login", false);
     	return UserPrincipal.builder()
     			.email("disable")
+    			.attributes(attributes)
     			.build();
     }
 
     public static UserPrincipal create(User user) {
+    	Map<String, Object> attributes = new HashMap<String, Object>();
+    	attributes.put("login", false);
     	return UserPrincipal.builder()
     			.email(user.getEmail())
+    			.attributes(attributes)
     			.password(user.getPassword())
     			.authorities(Collections.singletonList(new SimpleGrantedAuthority(RoleType.USER.getCode())))
     			.build();
