@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.togetdog.dog.model.entity.Dog;
+import com.ssafy.togetdog.notify.model.entity.Notify;
 import com.ssafy.togetdog.user.model.vo.ProviderType;
 import com.ssafy.togetdog.user.model.vo.RoleType;
 
@@ -90,9 +92,24 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
     
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @OneToMany(
+    		mappedBy = "user",
+    		fetch = FetchType.LAZY,
+    		cascade = CascadeType.ALL,
+    		orphanRemoval = true)
     @Builder.Default
     private List<Dog> dogList = new ArrayList<Dog>();
+    
+    @OneToMany(
+    		mappedBy = "receiver",
+    		fetch = FetchType.LAZY,
+    		cascade = CascadeType.ALL,
+    		orphanRemoval = true)
+    @Builder.Default
+    private List<Notify> receiverNotifyList = new ArrayList<Notify>();
+
+    
+    /////////// OVERRIDE METHOD
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
