@@ -52,10 +52,14 @@ public class Oauth2RestController {
 			resultMap.put("access-token", accessToken);
 			status = HttpStatus.OK;
 		} else {
-			User user = userService.findUserByEmail(authentication.getName());
+			User user = User.builder()
+					.email(authentication.getName())
+					.nickName(authentication.getPrincipal().getAttribute("nickname"))
+					.social(authentication.getPrincipal().getAttribute("social"))
+					.build();
 			String accessToken = jwtService.createAccessToken(user.getUserId());
 			resultMap.put("result", SUCCESS);
-			resultMap.put("msg", "새로운 소셜 가입이 이루어졌습니다.");
+			resultMap.put("msg", "새로운 소셜 가입 시도 입니다.");
 			resultMap.put("user", UserSocialLoginRespDTO.of(user));
 			resultMap.put("access-token", accessToken);
 			status = HttpStatus.OK;
