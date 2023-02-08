@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.togetdog.appointment.model.repository.AppointmentRepository;
 import com.ssafy.togetdog.dog.model.service.DogService;
 import com.ssafy.togetdog.notify.model.dto.NoticeDTO;
 import com.ssafy.togetdog.notify.model.dto.NotifyRespDTO;
@@ -26,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class NotifyServiceImpl implements NotifyService {
 	
 	private final NotifyRepository notifyRepository;
+	private final AppointmentRepository appointmentRepository;
 	private final DogService dogService;
 	
 	/* 팔로우insert */
@@ -94,7 +96,7 @@ public class NotifyServiceImpl implements NotifyService {
         Page<Notify> notifications = notifyRepository.findAllByReceiverAndNotifyTypeInOrderByNotifyDateDesc(user, notifyTypes, pageable);
 		
 		// appointmentRepository에 Long countByReceivedUserId 해서 가져옵니다.
-		long meetingCnt = 0;
+		long meetingCnt = appointmentRepository.countByReceivedUserAndStatus(user, "wait");
 		
 		// 해당 유저의 약속 취소 알림 중 확인안한 알림만 가져옵니다.
 		long cancelCnt = notifyRepository.countByReceiverAndNotifyTypeAndCheck(user, "c", false);
