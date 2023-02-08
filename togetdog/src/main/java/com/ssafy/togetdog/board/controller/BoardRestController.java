@@ -1,13 +1,10 @@
 package com.ssafy.togetdog.board.controller;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.crypto.dsig.keyinfo.PGPData;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,27 +17,27 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.togetdog.board.model.dto.BoardDTO;
+import com.ssafy.togetdog.board.model.dto.BoardShowDTO;
 import com.ssafy.togetdog.board.model.dto.CommentDTO;
 import com.ssafy.togetdog.board.model.dto.LikeDTO;
-import com.ssafy.togetdog.board.model.dto.BoardShowDTO;
 import com.ssafy.togetdog.board.model.service.BoardService;
 import com.ssafy.togetdog.board.model.service.CommentService;
 import com.ssafy.togetdog.board.model.service.LikeService;
 import com.ssafy.togetdog.dog.model.dto.DogInfoForUserDTO;
 import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
-import com.ssafy.togetdog.dog.model.dto.DogRegistParamDTO;
 import com.ssafy.togetdog.dog.model.service.DogService;
 import com.ssafy.togetdog.follow.model.service.FollowService;
+import com.ssafy.togetdog.notify.model.service.NotifyService;
 import com.ssafy.togetdog.user.model.dto.UserIncludesDogsDTO;
 import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
+import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.service.JwtService;
 import com.ssafy.togetdog.user.model.service.UserService;
 
@@ -60,13 +57,14 @@ public class BoardRestController {
 	private static final String SUCCESS = "success";
 	private final Logger logger = LoggerFactory.getLogger(BoardRestController.class);
 	
+	private final JwtService jwtService;
 	private final UserService userService;
 	private final DogService dogService;
 	private final BoardService boardService;
 	private final CommentService commentService;
 	private final LikeService likeService;
 	private final FollowService followService;
-	private final JwtService jwtService;
+	private final NotifyService notifyService;
 	
 	/***
 	 * get home
@@ -301,6 +299,13 @@ public class BoardRestController {
 		
 		likeService.save(likeDTO);
 		
+		// notify 전송
+		User sender = userService.findUserByUserId(jwtService.getUserId(token));
+		User receiver = boardService.findBoardByBoardId(likeDTO.getBoardId()).getUser();
+		notifyService.insertNotify(receiver, sender, "l", 
+				boardService.findBoardByBoardId(likeDTO.getBoardId()).getDog().getDogId(),
+				likeDTO.getBoardId());
+
 		resultMap.put("result", SUCCESS);
 		resultMap.put("likeCnt", likeService.getLikes(likeDTO.getBoardId()));
 		resultMap.put("msg", "게시글 좋아요!");

@@ -1,17 +1,13 @@
 package com.ssafy.togetdog.board.model.service;
 
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.togetdog.board.model.dto.BoardDTO;
-import com.ssafy.togetdog.board.model.dto.CommentDTO;
 import com.ssafy.togetdog.board.model.dto.LikeDTO;
 import com.ssafy.togetdog.board.model.entity.Board;
-import com.ssafy.togetdog.board.model.entity.Comment;
 import com.ssafy.togetdog.board.model.entity.LikePost;
 import com.ssafy.togetdog.board.model.repository.LikeRepository;
 import com.ssafy.togetdog.user.model.entity.User;

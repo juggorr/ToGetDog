@@ -24,7 +24,6 @@ import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.dog.model.repository.DogRepository;
 import com.ssafy.togetdog.global.exception.InvalidInputException;
-import com.ssafy.togetdog.global.exception.UnAuthorizedException;
 import com.ssafy.togetdog.global.util.FileUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -127,6 +126,10 @@ public class BoardService {
 		logger.debug("======= fbList : {}", fbList.getContent());
 		
 		return fbList;
+	}
+	
+	public Board findBoardByBoardId(long boardId) {
+		return boardRepository.findById(boardId).orElse(null);
 	}
 
 }
