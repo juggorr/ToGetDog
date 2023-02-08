@@ -34,7 +34,7 @@ const CommentBox = ({ boardData, setBoardData }) => {
     }
     console.log(commentInput);
     await axios
-      .post(`https://i8a807.p.ssafy.io/api/board/comment`, null, {
+      .post(`${BACKEND_URL}/board/comment`, null, {
         params: {
           boardId: boardData.boardId,
           commentContent: commentInput,
