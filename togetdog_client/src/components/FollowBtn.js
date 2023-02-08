@@ -1,22 +1,58 @@
-import { FollowBtnOff, FollowBtnOn } from "../styles/BtnsEmotion";
+import axios from 'axios';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { BACKEND_URL } from '../config';
+import { authAtom, userState } from '../recoil';
+import { FollowBtnOff, FollowBtnOn } from '../styles/BtnsEmotion';
 
-const FollowBtn = ({ followStatus, setFollowStatus }) => {
+const FollowBtn = ({ dogId, followStatus, setFollowStatus }) => {
+  const auth = useRecoilValue(authAtom);
+  const [user, setUser] = useRecoilState(userState);
+
+  const handleFollow = async () => {
+    await axios
+      .post(`https://i8a807.p.ssafy.io/api/follow`, null, {
+        params: { dogId: dogId, userId: user.userId },
+        headers: {
+          Authorization: auth,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setFollowStatus(!followStatus);
+        console.log('팔로우 완료');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleUnfollow = async () => {
+    await axios
+      .delete(`${BACKEND_URL}/follow`, {
+        params: {
+          dogId: dogId,
+          userId: user.userId,
+        },
+        headers: {
+          Authorization: auth,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setFollowStatus(!followStatus);
+        console.log('언팔로우가 완료되었습니다.');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div>
       {followStatus ? (
-        <FollowBtnOff
-          onClick={() => {
-            setFollowStatus(!followStatus);
-          }}>
-          팔로잉
-        </FollowBtnOff>
+        <FollowBtnOff onClick={handleUnfollow}>팔로잉</FollowBtnOff>
       ) : (
-        <FollowBtnOn
-          onClick={() => {
-            setFollowStatus(!followStatus);
-          }}>
-          팔로우
-        </FollowBtnOn>
+        <FollowBtnOn onClick={handleFollow}>팔로우</FollowBtnOn>
       )}
     </div>
   );
