@@ -69,10 +69,7 @@ public class NotifyServiceImpl implements NotifyService {
 	/* 산책 취소 알림 확인 처리*/
 	@Override
 	public void updateNotify(User user) {
-		List<Notify> cancelList = notifyRepository.findAllByReceiverAndNotifyTypeAndCheck(user, "c", false).orElse(null);
-		for (Notify notify : cancelList) {
-			notifyRepository.delete(notify);
-		}
+		notifyRepository.deleteAppointmentCancelNotifyByUserId(user.getUserId());
 	}
  
 	/* 알림을 받은 사람 기준으로 알림 리스트 조회*/
