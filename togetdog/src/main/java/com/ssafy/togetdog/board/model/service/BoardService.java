@@ -25,6 +25,7 @@ import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.dog.model.repository.DogRepository;
 import com.ssafy.togetdog.global.exception.InvalidInputException;
 import com.ssafy.togetdog.global.util.FileUtil;
+import com.ssafy.togetdog.user.model.entity.User;
 
 import lombok.RequiredArgsConstructor;
 
@@ -78,13 +79,16 @@ public class BoardService {
 	}
 
 	@Transactional
-	public BoardShowDTO getOne(long boardId) {
+	public BoardShowDTO getOne(long userId, long boardId) {
+		User user = new User();
+		user.setUserId(userId);
 		Board board = boardRepository.getByBoardId(boardId);
 		logger.info("return found board Content : {}", board.getContent());
 		BoardShowDTO boardDTO = new BoardShowDTO(board);
 		Dog dog = dogRepository.findByDogId(board.getDog().getDogId());
 		boardDTO.setDog(DogInfoRespDTO.of(dog));
-		if(likeRepository.findByBoardAndUser(board, board.getUser()) != null) {
+		logger.info("is board Liked : {}", likeRepository.findByBoardAndUser(board, user));
+		if(likeRepository.findByBoardAndUser(board, user).orElse(null) != null) {
 			boardDTO.setLiked(true);
 		} else {
 			boardDTO.setLiked(false);
