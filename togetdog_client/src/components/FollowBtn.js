@@ -10,7 +10,7 @@ const FollowBtn = ({ dogId, followStatus, setFollowStatus }) => {
 
   const handleFollow = async () => {
     await axios
-      .post(`https://i8a807.p.ssafy.io/api/follow`, null, {
+      .post(`${BACKEND_URL}/follow`, null, {
         params: { dogId: dogId, userId: user.userId },
         headers: {
           Authorization: auth,
