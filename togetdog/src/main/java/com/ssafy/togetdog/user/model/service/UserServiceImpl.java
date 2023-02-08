@@ -62,6 +62,12 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 	
+	/* 소셜회원 가입처리*/
+	@Override
+	public void socialRegist(UserSocialRegistParamDTO userDTO) {
+		userRepository.save(UserSocialRegistParamDTO.of(userDTO));
+	}
+	
 	/*회원가입 인증 메일 처리*/
 	@Override
 	public void registEmailAuth(EmailAuthParamDTO authDTO) {
@@ -154,11 +160,6 @@ public class UserServiceImpl implements UserService {
 		} else {
 			throw new InvalidInputException("회원 정보를 찾을 수 없습니다.");
 		}
-	}
-	
-	@Override
-	public void socialRegist(UserSocialRegistParamDTO userDTO) {
-		
 	}
 	
 	//////////////////////////////////////////////
