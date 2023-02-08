@@ -2,6 +2,8 @@ package com.ssafy.togetdog.user.model.service;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -22,11 +24,13 @@ import lombok.RequiredArgsConstructor;
 public class UserOAuth2Service extends DefaultOAuth2UserService {
 
 	private final UserRepository userRepository;
+	private final Logger logger = LoggerFactory.getLogger(UserOAuth2Service.class);
 	
 	@Override
 	public OAuth2User loadUser(
 			OAuth2UserRequest userRequest
 			) throws OAuth2AuthenticationException {
+		logger.info("outh service in");
 		
 		OAuth2User oAuth2User = super.loadUser(userRequest);
 		
