@@ -63,8 +63,8 @@ export const DogImgWrapper = styled.div`
   margin: 0rem 0.3rem;
 
   .dogProfileCircle {
-    width: 4.2rem;
-    height: 4.2rem;
+    width: 5rem;
+    height: 5rem;
     border-radius: 70%;
     overflow: hidden;
     margin: 0.3rem 0rem;

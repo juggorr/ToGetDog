@@ -28,8 +28,7 @@ const SingleFriend = ({ item }) => {
     <FriendListWrapper>
       <div
         className="singleDog"
-        onClick={() => navigate(`/feed/${item.userId}`)}
-      >
+        onClick={() => navigate(`/feed/${item.userId}`)}>
         <DogImgWrapper>
           <div className="dogProfileCircle">
             <img
@@ -64,7 +63,7 @@ const SingleFriend = ({ item }) => {
             />
             <YellowCharacterBtn
               text={`#${
-                item.dogCharacter1 === "obedient" ? "온순함" : "공격적"
+                item.dogCharacter1 === "obedient" ? "온순함" : "사나움"
               }`}
             />
             <YellowCharacterBtn
@@ -110,8 +109,7 @@ const SingleUser = ({ item }) => {
     <FriendListWrapper>
       <div
         className="singleDog"
-        onClick={() => navigate(`/feed/${item.userId}`)}
-      >
+        onClick={() => navigate(`/feed/${item.userId}`)}>
         <UserIcon text={item.nickName} idx={item.birth}></UserIcon>
         <div className="dogInfo">
           <div className="dogNameWrapper">
@@ -221,14 +219,12 @@ const Search = () => {
       <SearchTabWrapper>
         <div
           className={"singleTab " + (activeTab === 1 ? "active" : "disabled")}
-          onClick={() => setActiveTab(1)}
-        >
+          onClick={() => setActiveTab(1)}>
           <FontAwesomeIcon icon="dog"></FontAwesomeIcon>
         </div>
         <div
           className={"singleTab " + (activeTab === 2 ? "active" : "disabled")}
-          onClick={() => setActiveTab(2)}
-        >
+          onClick={() => setActiveTab(2)}>
           <FontAwesomeIcon icon="user"></FontAwesomeIcon>
         </div>
       </SearchTabWrapper>
@@ -264,8 +260,7 @@ const Search = () => {
       <ResultList
         tab={activeTab}
         dogResult={dogResult}
-        userResult={userResult}
-      ></ResultList>
+        userResult={userResult}></ResultList>
     </div>
   );
 };

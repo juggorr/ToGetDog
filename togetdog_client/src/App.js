@@ -10,8 +10,9 @@ import Chat from "./pages/Chat";
 import Feed from "./pages/Feed";
 import New from "./pages/New";
 import Board from "./pages/Board";
-import UserEdit from './pages/UserEdit';
-import PasswordEdit from './pages/PasswordEdit';
+import UserEdit from "./pages/UserEdit";
+import PasswordEdit from "./pages/PasswordEdit";
+import PasswordSearch from "./pages/PasswordSearch";
 
 /*global kakao*/
 import React, { useEffect } from "react";
@@ -34,6 +35,7 @@ import DogEdit from "./pages/DogEdit";
 import Notifications from "./pages/Notifications";
 import Recommend from "./pages/Recommend";
 import EditBoard from "./pages/EditBoard";
+import ChatMsg from "./pages/ChatMsg";
 
 function App() {
   return (
@@ -49,9 +51,10 @@ function App() {
             <Route path="/feed/:userId" element={<Feed />} />
             <Route path="/recommend" element={<Recommend />} />
           </Route>
-          {/* BackHeader, Footer 필요한 컴포넌트 */}
+          {/* BackHeader만 필요한 컴포넌트 */}
           <Route element={<SubLayout />}>
             <Route path="/board/:boardId" element={<Board />} />
+            <Route path="/chat/:chatId" element={<ChatMsg />} />
           </Route>
           {/* 그 이외 필요없는 컴포넌트 */}
           <Route path="/new" element={<New />} />
@@ -60,7 +63,8 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/emailAuth" element={<EmailAuth />} />
           <Route path="/useredit" element={<UserEdit />} />
-          <Route path='/passwordedit' element={<PasswordEdit />} />
+          <Route path="/passwordedit" element={<PasswordEdit />} />
+          <Route path="/passwordsearch" element={<PasswordSearch />} />
           <Route path="/dogregister" element={<DogRegister />} />
           <Route path='/dogedit' element={<DogEdit />} />
           {/* 임시로 링크 */}

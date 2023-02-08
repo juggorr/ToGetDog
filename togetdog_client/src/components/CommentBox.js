@@ -6,7 +6,7 @@ import { BACKEND_URL } from '../config';
 import { authAtom, userState } from '../recoil';
 import { BoardCommentBox } from '../styles/BoardEmotion';
 
-const CommentBox = ({ boardData }) => {
+const CommentBox = ({ boardData, setBoardData }) => {
   const [user, setUser] = useRecoilState(userState);
   const auth = useRecoilValue(authAtom);
 
@@ -32,32 +32,33 @@ const CommentBox = ({ boardData }) => {
       commentRef.current.focus();
       return;
     }
+    console.log(commentInput);
     await axios
-      .post(
-        `${BACKEND_URL}/board/comment`,
-        {
+      .post(`${BACKEND_URL}/board/comment`, null, {
+        params: {
           boardId: boardData.boardId,
           commentContent: commentInput,
+          nickName: user.nickName,
           userId: user.userId,
         },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: auth,
-          },
+        headers: {
+          Authorization: auth,
         },
-      )
+      })
       .then((resp) => {
         console.log(resp);
+        console.log(resp.data.comments);
+        setComments(resp.data.comments);
+        window.location.reload();
       })
       .catch((err) => {
         console.log('댓글 등록 실패');
       });
   };
 
-  useEffect(() => {
-    setComments(boardData.comments);
-  }, [boardData]);
+  // useEffect(() => {
+  //   // setComments(boardData.comments);
+  // }, [comments]);
 
   return (
     <>

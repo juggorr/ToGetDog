@@ -18,6 +18,7 @@ import {
   faClock,
   faLocationDot,
   faArrowLeft,
+  faPaperPlane,
 } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as fasHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
@@ -36,5 +37,5 @@ library.add(faPlus);
 library.add(faUserGroup, faClock, faLocationDot);
 library.add(faCalendar, faChevronLeft, faChevronRight);
 library.add(faImage, faPen);
-library.add(faArrowLeft, fasHeart, farHeart);
+library.add(faArrowLeft, fasHeart, farHeart, faPaperPlane);
 library.add(faCaretDown, faCaretUp);
