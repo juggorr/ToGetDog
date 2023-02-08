@@ -25,7 +25,6 @@ public class UserRegistParamDTO {
 	private String birth;
 	private String address;
 	private String regionCode;
-	private String social;
 	
 	public WaitUser toUser(String authKey) {
 		String gender = this.gender;

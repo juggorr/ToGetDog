@@ -1,46 +1,88 @@
 package com.ssafy.togetdog.user.model.vo;
-
 import java.util.Map;
+import java.util.Optional;
+
+import com.ssafy.togetdog.user.model.entity.User;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-@Builder
 @Getter
-@RequiredArgsConstructor
 public class OAuthAttributes {
+	private Map<String, Object> attributes;
+	private String nameAttributeKey;
+    private String name;
+    private String email;
+    private ProviderType social;
     
-	private final Map<String, Object> attributes;
-    private final String nameAttributeKey;
-    private final String name;
-    private final String email;
-    private final String picture;
-    private final String gender;
-    private final String age;
-
-    public static OAuthAttributes of(String registrationId, Map<String, Object> attributes) {
-        if("naver".equals(registrationId)) {
-            return ofNaver("id", attributes);
-        }
-        else {
-            //return ofKakao("id", attributes);
-        }
-		return null;
+    @Builder
+    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email, ProviderType social) {
+        this.attributes = attributes;
+        this.nameAttributeKey = nameAttributeKey;
+        this.name = name;
+        this.email = email;
+        this.social = social;
     }
-
-
+    
+    public static OAuthAttributes of(String socialName, String userNameAttributeName, Map<String, Object> attributes){        
+        if("kakao".equals(socialName)){
+            return ofKakao(userNameAttributeName, attributes);
+        } else if("naver".equals(socialName)) {
+        	return ofNaver(userNameAttributeName, attributes);
+        } else if ("google".equals(socialName)) {
+        	return ofGoogle(userNameAttributeName, attributes);
+        }
+        return null;
+    }
+    
     private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
-        Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+        Map<String, Object> response = (Map<String, Object>)attributes.get("response");
         return OAuthAttributes.builder()
                 .name((String) response.get("nickname"))
                 .email((String) response.get("email"))
-                .picture((String) response.get("profile_image"))
-                .gender((String) response.get("gender"))
-                .age((String) response.get("age"))
+                .social(ProviderType.N)
                 .attributes(response)
                 .nameAttributeKey(userNameAttributeName)
                 .build();
     }
-
+    
+    private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
+    	Map<String, Object> response = (Map<String, Object>)attributes.get("kakao_account");
+    	Map<String, Object> profile = (Map<String, Object>) response.get("profile");
+        
+    	Optional<String> email = Optional.ofNullable(((String) response.get("email")));
+    	String emailStr;
+    	if (email == null) {
+    		emailStr = "none";
+    	} else {
+    		emailStr = email.orElse(null);
+    	}
+        return OAuthAttributes.builder()
+                .name((String) profile.get("nickname"))
+                .email(emailStr)
+                .social(ProviderType.K)
+                .nameAttributeKey(userNameAttributeName)
+                .attributes(attributes)
+                .build();
+    }
+    
+    private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
+    	
+        return OAuthAttributes.builder()
+                .name((String) attributes.get("name"))
+                .email((String) attributes.get("email"))
+                .social(ProviderType.G)
+                .nameAttributeKey(userNameAttributeName)
+                .attributes(attributes)
+                .build();
+    }
+    
+    public User toEntity(){
+        return User.builder()
+                .nickName(name)
+                .email(email)
+                .social(social)
+                .roleType(RoleType.USER)
+                .build();
+    }
 }

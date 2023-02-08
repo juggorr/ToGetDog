@@ -1,5 +1,6 @@
 package com.ssafy.togetdog.user.model.vo;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -87,13 +88,19 @@ public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
     public OidcIdToken getIdToken() {
         return null;
     }
+    
+    public static UserPrincipal disable() {
+    	return UserPrincipal.builder()
+    			.email("disable")
+    			.build();
+    }
 
     public static UserPrincipal create(User user) {
     	return UserPrincipal.builder()
     			.email(user.getEmail())
     			.password(user.getPassword())
     			.social(user.getSocial())
-    			.roleType(RoleType.USER)
+    			.roleType(user.getRoleType())
     			.authorities(Collections.singletonList(new SimpleGrantedAuthority(RoleType.USER.getCode())))
     			.build();
     }

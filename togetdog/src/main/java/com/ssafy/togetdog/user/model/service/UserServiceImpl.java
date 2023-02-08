@@ -11,7 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.togetdog.global.exception.DuplicatedInputException;
 import com.ssafy.togetdog.global.exception.InvalidInputException;
-import com.ssafy.togetdog.global.util.ErrorCode;
+import com.ssafy.togetdog.global.exception.InvalidLoginActingException;
+import com.ssafy.togetdog.global.exception.unAuthWaitUserException;
+import com.ssafy.togetdog.user.model.dto.EmailAuthParamDTO;
+import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
+import com.ssafy.togetdog.user.model.dto.UserLoginParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserRegistParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserUpdateParamDTO;
 import com.ssafy.togetdog.user.model.entity.User;
@@ -30,95 +34,94 @@ public class UserServiceImpl implements UserService {
 
 	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
-	private final WaitUserRepository WaitUserRepository;
-	
+	private final WaitUserRepository waitUserRepository;
+
+	/* 회원 가입을 위한 이메일 전송 */
 	@Override
-	@Transactional
-	public boolean tmpRegistration(UserRegistParamDTO userDTO, String authKey) {
-		try {
-			checkRegistrationValidation(userDTO);
-			userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-			WaitUser user = userDTO.toUser(authKey);
-			WaitUserRepository.save(user);
-			return true;
-		} catch (InvalidInputException | DuplicatedInputException e) {
-			logger.error("Input error! : " + e.getMessage());
-			return false;
-		} catch (Exception e) {
-			logger.error("Unexpected error! : " + e.getMessage());
-			return false;
+	public void tmpRegistration(UserRegistParamDTO userDTO, String authKey)
+			throws InvalidInputException, DuplicatedInputException {
+		checkRegistrationValidation(userDTO);
+		WaitUser user = waitUserRepository.findByEmail(userDTO.getEmail()).orElse(null);
+		if (user != null) {
+			throw new DuplicatedInputException("이미 등록되어 있는 이메일입니다.");
 		}
+		userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+		WaitUser newUser = userDTO.toUser(authKey);
+		waitUserRepository.save(newUser);
 	}
 	
+	/*회원 가입처리*/
 	@Override
-	@Transactional
-	public boolean registration(WaitUser user) {
+	public void registration(WaitUser user) {
 		try {
 			userRepository.save(user.toUser());
-			WaitUserRepository.delete(user);
-			return true;
-		} catch (InvalidInputException | DuplicatedInputException e) {
-			logger.error("Input error! : " + e.getMessage());
-			return false;
+			waitUserRepository.delete(user);
 		} catch (Exception e) {
 			logger.error("Unexpected error! : " + e.getMessage());
-			return false;
 		}
 	}
 	
+	/*회원가입 인증 메일 처리*/
 	@Override
-	@Transactional
-	public User findUserByEmailAndPassword(String email, String password) {
-		User user = userRepository.findByEmail(email).orElse(null);
-		if (user != null) {
-			if (passwordEncoder.matches(password, user.getPassword())) {
-				return user;
-			}
+	public void registEmailAuth(EmailAuthParamDTO authDTO) {
+		WaitUser tmpUser = findWaitUserByEmail(authDTO.getEmail());
+		if (tmpUser != null && tmpUser.getAuthKey().equals(authDTO.getAuthKey())) {
+			registration(tmpUser);
+		} else {
+			throw new InvalidInputException("이메일이나 인증키가 유효하지 않습니다.");
 		}
-		return null;
 	}
 	
+	/*로그인 처리*/
 	@Override
-	@Transactional
-	public void saveRefreshToken(long userId, String refreshToken) {
+	public User loginService(UserLoginParamDTO loginDTO) {
+		//이메일 인증 대기 대상 판별하기
+		WaitUser waitUser = findWaitUserByEmail(loginDTO.getEmail()); 
+		if (waitUser != null) {
+			throw new unAuthWaitUserException("가입 대기중인 유저입니다.");
+		}
+		User user = findUserByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
+		if (user == null) {
+			throw new InvalidLoginActingException("이메일과 비밀번호가 일치하지 않습니다.");
+		} else {
+			return user;
+		}
+	}
+	
+	/*이메일 중복 체크*/
+	@Override
+	public void emailDuplicateCheck(String email) {
+		WaitUser waitUser = findWaitUserByEmail(email);
+		User user = findUserByEmail(email);
+		if (user != null || waitUser != null) {
+			throw new DuplicatedInputException("중복된 이메일 입니다.");
+		}
+	}
+	
+	/*닉네임 중복 체크*/
+	@Override
+	public void nickNameDuplicateCheck(String nickname) {
+		WaitUser waitUser = findWaitUserByNickName(nickname);
+		User user = findUserByNickName(nickname);
+		if (user != null || waitUser != null) {
+			throw new DuplicatedInputException("중복된 닉네임입니다.");
+		}
+	}
+	
+	/*회원 정보 조회*/
+	@Override
+	public UserInfoRespDTO getUserInfo(String userid) throws NumberFormatException {
+		long userId = Long.parseLong(userid);
 		User user = findUserByUserId(userId);
 		if (user != null) {
-			user.setToken(refreshToken);
-			userRepository.save(user);
+			return UserInfoRespDTO.of(user);
+		} else {
+			throw new InvalidInputException("입력된 값으로 회원 정보를 찾을 수 없습니다.");
 		}
 	}
 	
+	/*회원 정보 수정*/
 	@Override
-	@Transactional
-	public void deleteRefreshToken(long userId) {
-		User user = findUserByUserId(userId);
-		if (user != null) {
-			user.setToken(null);
-			userRepository.save(user);
-		}
-	}
-	
-	@Override
-	@Transactional
-	public User findUserByEmail(String email) {
-		return userRepository.findByEmail(email).orElse(null);
-	}
-
-
-	@Override
-	@Transactional
-	public User findUserByNickName(String nickName) {
-		return userRepository.findByNickName(nickName).orElse(null);
-	}
-
-	@Override
-	@Transactional
-	public User findUserByUserId(long userId) {
-		return userRepository.findById(userId).orElse(null);
-	}
-	
-	@Override
-	@Transactional
 	public void updateUserInfo(long userId, UserUpdateParamDTO userDTO) {
 		checkUpdateValidation(userDTO);
 		User user = findUserByUserId(userId);
@@ -131,51 +134,96 @@ public class UserServiceImpl implements UserService {
 			userRepository.save(user);
 		}
 	}
+	
+	/* 회원 탈퇴 */
+	@Override
+	public void withdrawal(long userId) {
+		User user = findUserByUserId(userId);
+		if (user != null) {
+			user.setEmail("deletedUser" + userId);
+			user.setNickName("deletedUser" + userId);
+			user.setPassword("deletedUser" + userId);
+			user.setUserBirth(null);
+			user.setGender(null);
+			user.setAddress(null);
+			user.setRegionCode(null);
+			user.setSocial(null);
+			userRepository.save(user);
+		} else {
+			throw new InvalidInputException("회원 정보를 찾을 수 없습니다.");
+		}
+	}
+	
+	
+	//////////////////////////////////////////////
+	// 범용 method
 
 	@Override
-	@Transactional
+	public User findUserByEmailAndPassword(String email, String password) {
+		User user = userRepository.findByEmail(email).orElse(null);
+		if (user != null) {
+			if (passwordEncoder.matches(password, user.getPassword())) {
+				return user;
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public User findUserByEmail(String email) {
+		return userRepository.findByEmail(email).orElse(null);
+	}
+
+	@Override
+	public User findUserByNickName(String nickName) {
+		return userRepository.findByNickName(nickName).orElse(null);
+	}
+	
+	@Override
+	public User findUserByUserId(long userId) {
+		return userRepository.findById(userId).orElse(null);
+	}
+
+	@Override
 	public void updatePassword(long userId, String password, String newPassword) {
 		User user = userRepository.findById(userId).orElse(null);
-		if (user != null ) {
+		if (user != null) {
 			if (passwordEncoder.matches(password, user.getPassword())) {
 				user.setPassword(newPassword);
 				userRepository.save(user);
 			}
 		}
 	}
-	
+
 	@Override
-	@Transactional
 	public void updateTmpPassword(long userId, String tmpPassword) {
 		User user = userRepository.findById(userId).orElse(null);
-		if (user != null ) {
+		if (user != null) {
 			user.setPassword(tmpPassword);
 			userRepository.save(user);
 		}
 	}
 	
 	@Override
-	@Transactional
 	public void deleteUser(long userId) {
 		userRepository.deleteById(userId);
 	}
 	
 	@Override
-	@Transactional
 	public WaitUser findWaitUserByEmail(String email) {
-		return WaitUserRepository.findByEmail(email).orElse(null);
+		return waitUserRepository.findByEmail(email).orElse(null);
 	}
-	
+
 	@Override
-	@Transactional
 	public WaitUser findWaitUserByNickName(String nickname) {
-		return WaitUserRepository.findByNickName(nickname).orElse(null);
+		return waitUserRepository.findByNickName(nickname).orElse(null);
 	}
 	
 	///////////////////////////////
-	
+
 	/***
 	 * Validation for User Registration
+	 * 
 	 * @param userRegistParamDTO
 	 */
 	public void checkRegistrationValidation(UserRegistParamDTO userDTO) {
@@ -184,69 +232,70 @@ public class UserServiceImpl implements UserService {
 		String nicknameRegexp = "^[a-zA-Z가-힇0-9]{2,16}$";
 		String genderRegexp = "^female$|^male$|^none$";
 		String regionCodeRegexp = "(^[0-9]{5}$)";
-		
+
 		// email regexp check
 		if (!Pattern.matches(emailRegexp, userDTO.getEmail())) {
-			throw new InvalidInputException(ErrorCode.INVALID_PARAMETER);
+			throw new InvalidInputException("이메일 입력값이 올바르지 않습니다.");
 		}
 		// password regexp check
 		if (!Pattern.matches(passwordRegexp, userDTO.getPassword())) {
-			throw new InvalidInputException(ErrorCode.INVALID_PARAMETER);
+			throw new InvalidInputException("비밀번호 입력값이 올바르지 않습니다.");
 		}
 		// nickname regexp check
 		if (!Pattern.matches(nicknameRegexp, userDTO.getNickname())) {
-			throw new InvalidInputException(ErrorCode.INVALID_PARAMETER);
+			throw new InvalidInputException("닉네임 입력값이 올바르지 않습니다.");
 		}
 		// gender regexp check
 		if (!Pattern.matches(genderRegexp, userDTO.getGender())) {
-			throw new InvalidInputException(ErrorCode.INVALID_PARAMETER);
+			throw new InvalidInputException("성별 입력값이 올바르지 않습니다.");
 		}
 		// regionCode regexp check
 		if (!Pattern.matches(regionCodeRegexp, userDTO.getRegionCode())) {
-			throw new InvalidInputException(ErrorCode.INVALID_PARAMETER);
+			throw new InvalidInputException("지역번호 값이 올바르지 않습니다.");
 		}
 		// birth check
 		try {
 			int birth = Integer.parseInt(userDTO.getBirth());
 			LocalDate now = LocalDate.now();
 			if (birth > now.getYear() || birth < 1900) {
-				throw new InvalidInputException(ErrorCode.INVALID_PARAMETER);
+				throw new InvalidInputException("생년월일 값이 올바르지 않습니다.");
 			}
 		} catch (NumberFormatException e) {
-			throw new InvalidInputException(ErrorCode.INVALID_PARAMETER);
+			throw new InvalidInputException("생년월일 값이 숫자가 아닙니다.");
 		}
 	}
-	
+
 	/***
 	 * Validation for User UpdateInfo
+	 * 
 	 * @param UserUpdateParamDTO
 	 */
 	public void checkUpdateValidation(UserUpdateParamDTO userDTO) {
 		String nicknameRegexp = "^[a-zA-Z가-힇0-9]{2,16}$";
 		String genderRegexp = "^female$|^male$|^none$";
 		String regionCodeRegexp = "(^[0-9]{5}$)";
-		
+
 		// nickname regexp check
 		if (!Pattern.matches(nicknameRegexp, userDTO.getNickName())) {
-			throw new InvalidInputException(ErrorCode.INVALID_PARAMETER);
+			throw new InvalidInputException("닉네임 입력값이 올바르지 않습니다.");
 		}
 		// gender regexp check
 		if (!Pattern.matches(genderRegexp, userDTO.getGender())) {
-			throw new InvalidInputException(ErrorCode.INVALID_PARAMETER);
+			throw new InvalidInputException("성별 입력값이 올바르지 않습니다.");
 		}
 		// regionCode regexp check
 		if (!Pattern.matches(regionCodeRegexp, userDTO.getRegionCode())) {
-			throw new InvalidInputException(ErrorCode.INVALID_PARAMETER);
+			throw new InvalidInputException("지역번호 값이 올바르지 않습니다.");
 		}
 		// birth check
 		try {
 			int birth = Integer.parseInt(userDTO.getBirth());
 			LocalDate now = LocalDate.now();
 			if (birth > now.getYear() || birth < 1900) {
-				throw new InvalidInputException(ErrorCode.INVALID_PARAMETER);
+				throw new InvalidInputException("생년월일 값이 올바르지 않습니다.");
 			}
 		} catch (NumberFormatException e) {
-			throw new InvalidInputException(ErrorCode.INVALID_PARAMETER);
+			throw new InvalidInputException("생년월일 값이 숫자가 아닙니다.");
 		}
 	}
 
