@@ -23,6 +23,7 @@ import EmailAuth from "./pages/EmailAuth";
 import CreateAppointment from "./pages/CreateAppointment";
 import DogRegister from "./pages/DogRegister";
 import SubLayout from "./components/SubLayout";
+import Search from "./pages/Search";
 import FollowerList from "./pages/FollowerList";
 import FollowingList from "./pages/FollowingList";
 import ConfirmModal from "./components/ConfirmModal";
@@ -66,6 +67,7 @@ function App() {
           <Route path="/500" element={<InternalServer />} />
           <Route path="/*" element={<NotFound />} />
           <Route path="/createAppointment" element={<CreateAppointment />} />
+          <Route path="/search" element={<Search />} />
         </Routes>
       </div>
     </BrowserRouter>
