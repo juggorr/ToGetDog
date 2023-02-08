@@ -23,9 +23,11 @@ import lombok.ToString;
 public class AppointmentListDTO {
 	private long roomId;
 	private long userOneId;
-	private int userOneRating; //유저 정보에서 가져와야함
+	private String userOneNickname;
+	private double userOneRating; //유저 정보에서 가져와야함
 	private long userTwoId;
-	private int userTwoRating; //유저 정보에서 가져와야함
+	private String userTwoNickname;
+	private double userTwoRating; //유저 정보에서 가져와야함
 	private List<DogInfoRespDTO> userOneDogs; // 개 정보 따로 불러와야함
 	private List<DogInfoRespDTO> userTwoDogs; // 개 정보 따로 불러와야함
 	private String place;
@@ -39,7 +41,11 @@ public class AppointmentListDTO {
 		return AppointmentListDTO.builder()
 				.roomId(appointment.getRoomId())
 				.userOneId(appointment.getSentUser().getUserId())
+				.userOneNickname(appointment.getSentUser().getNickName())
+				.userOneRating((double) appointment.getSentUser().getRatingSum() / (double) appointment.getSentUser().getRatingCount())
 				.userTwoId(appointment.getReceivedUser().getUserId())
+				.userTwoNickname(appointment.getReceivedUser().getNickName())
+				.userTwoRating((double) appointment.getReceivedUser().getRatingSum() / (double) appointment.getReceivedUser().getRatingCount())
 				.place(appointment.getPlace())
 				.dateTime(appointment.getDateTime())
 				.status(appointment.getStatus())
