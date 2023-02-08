@@ -61,7 +61,6 @@ export const BackHeaderWrapper = styled.div`
 `;
 
 export const SearchModal = styled.div`
-  width: 100%;
   position: absolute;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 999;
