@@ -260,6 +260,8 @@ public class UserRestController {
 		jwtService.validateToken(token);
 		long userId = jwtService.getUserId(token);
 		User user = userService.findUserByUserId(userId);
+		
+		
 		logger.info(user.getEmail() + "로 새로운 이메일을 송부합니다.");
 		mailService.sendTmpPassword(userId, user.getEmail());
 		resultMap.put("result", SUCCESS);
