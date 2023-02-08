@@ -7,7 +7,7 @@ import { MenuModalWrapper, MenuModalBody } from '../styles/ModalEmotion';
 // menuList에는 menu_id, text, link가 담겨있음
 // dog delete 모달 추가
 
-const MenuModal = ({ menuLists, menuBtnClick, setMenuBtnClick, feedDogData, setConfirmBtnClick, setNoDogBtnClick }) => {
+const MenuModal = ({ menuLists, menuBtnClick, setMenuBtnClick, feedDogData, setConfirmBtnClick, setNoDogBtnClick, dogId }) => {
   const setAuth = useSetRecoilState(authAtom);
   const [user, setUser] = useRecoilState(userState);
 
@@ -57,6 +57,10 @@ const MenuModal = ({ menuLists, menuBtnClick, setMenuBtnClick, feedDogData, setC
                     } else {
                       return handleNoDog();
                     }
+                  } else if (it.link === "/dogedit" && feedDogData.length > 0) {
+                    navigate(it.link, {state: dogId})
+                  } else if (it.link === "/dogedit" && feedDogData.length === 0) {
+                    return handleNoDog();
                   } else  {
                     navigate(it.link)
                   }
