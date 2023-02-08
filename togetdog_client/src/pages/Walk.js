@@ -11,8 +11,7 @@ import {
   SingleMeetingWrapper,
   InfoModal,
 } from "../styles/WalkEmotion";
-import OrangeCharacterBtn from "../components/OrangeCharacterBtn";
-import YellowCharacterBtn from "../components/YellowCharacterBtn";
+import { SmallCharacterBtn } from "../styles/BtnsEmotion.js";
 import { LightColorLongBtn } from "../styles/BtnsEmotion.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

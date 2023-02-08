@@ -254,3 +254,22 @@ export const UserIconCircle = styled.div`
     background-size: cover;
   }
 `;
+
+export const SmallCharacterBtn = styled.div`
+  .btn {
+    border: none;
+    padding: 0.3rem 0.5rem;
+    border-radius: 0.6rem;
+    margin: 0.1rem 0rem;
+    margin-right: 0.5rem;
+    font-size: 0.5rem;
+  }
+
+  .orange {
+    background-color: #ffd89d;
+  }
+
+  .yellow {
+    background-color: #fff0cb;
+  }
+`;
