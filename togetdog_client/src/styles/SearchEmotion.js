@@ -63,4 +63,13 @@ export const SearchTabWrapper = styled.div`
   }
 `;
 
-export const ResultListWrapper = styled.div``;
+export const ResultListWrapper = styled.div`
+  margin-top: -2rem;
+
+  .noResult {
+    margin: 4rem 2rem;
+    font-family: "Noto Sans KR", sans-serif;
+    color: #717171;
+    text-align: center;
+  }
+`;

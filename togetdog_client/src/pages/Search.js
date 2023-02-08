@@ -25,7 +25,7 @@ const SingleFriend = ({ item }) => {
   const navigate = useNavigate();
 
   return (
-    <FriendListWrapper style={{ marginTop: "1rem" }}>
+    <FriendListWrapper>
       <div
         className="singleDog"
         onClick={() => navigate(`/feed/${item.userId}`)}
@@ -94,7 +94,7 @@ const SingleUser = ({ item }) => {
   };
 
   return (
-    <FriendListWrapper style={{ marginTop: "1rem" }}>
+    <FriendListWrapper>
       <div
         className="singleDog"
         onClick={() => navigate(`/feed/${item.userId}`)}
@@ -128,7 +128,11 @@ const ResultList = ({ tab, dogResult, userResult }) => {
         dogList.push(singleDog);
       }
     } else {
-      dogList.push(<p key={1}>검색 결과가 없습니다.</p>);
+      dogList.push(
+        <p className="noResult" key={1}>
+          검색 결과가 없습니다.
+        </p>
+      );
     }
     return dogList;
   };
@@ -145,7 +149,11 @@ const ResultList = ({ tab, dogResult, userResult }) => {
         userList.push(singleUser);
       }
     } else {
-      userList.push(<p key={1}>검색 결과가 없습니다.</p>);
+      userList.push(
+        <p key={1} className="noResult">
+          검색 결과가 없습니다.
+        </p>
+      );
     }
     return userList;
   };
