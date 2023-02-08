@@ -121,7 +121,6 @@ const ResultList = ({ tab, dogResult, userResult }) => {
 
     if (dogResult.length > 0) {
       for (let i = 0; i < dogResult.length; i++) {
-        console.log(dogResult[i]);
         const singleDog = (
           <SingleFriend item={dogResult[i]} key={i}></SingleFriend>
         );
@@ -142,7 +141,6 @@ const ResultList = ({ tab, dogResult, userResult }) => {
 
     if (userResult.length > 0) {
       for (let i = 0; i < userResult.length; i++) {
-        console.log(userResult[i]);
         const singleUser = (
           <SingleUser item={userResult[i]} key={i}></SingleUser>
         );
