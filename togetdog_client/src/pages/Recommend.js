@@ -57,9 +57,7 @@ const SingleFriend = ({ item }) => {
             text={`#${item.dogNeutered ? "중성화" : "중성화 X"}`}
           />
           <YellowCharacterBtn
-            text={`#${
-              item.dogCharacter1 === "obedient" ? "순종적" : "비순종적"
-            }`}
+            text={`#${item.dogCharacter1 === "obedient" ? "온순함" : "공격적"}`}
           />
           <YellowCharacterBtn
             text={`#${item.dogCharacter2 === "active" ? "활동적" : "비활동적"}`}
@@ -80,7 +78,7 @@ const FriendsList = ({ friends }) => {
   const [render, setRender] = useState(false);
 
   const issues = [...Array(4).keys()];
-  const characters = ["순종적", "비순종적", "활동적", "비활동적"];
+  const characters = ["온순함", "공격적", "활동적", "비활동적"];
 
   const Issue = ({ issue, idx }) => {
     const [bChecked, setChecked] = useState(checkedItems[idx]);
