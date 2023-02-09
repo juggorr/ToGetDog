@@ -212,14 +212,26 @@ function UserEdit() {
           },
         }
       )
-      .then((res) => {
-        console.log(res);
+      // DB에 다시 접근해서 새로운 회원정보 받아서 로컬에 업데이트
+      .then(() => {
+        axios
+        .get(`${BACKEND_URL}/user/${user.userId}`, {
+          headers: {
+            Authorization: auth,
+          },
+        })
+        .then((res) => {
+          console.log(res.data.user);
+          setUser(res.data.user);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       })
       .catch((err) => {
         console.log(err);
       });
-    console.log(localStorage.getItem('user'));
-    console.log(user);
+      
     navigate(`/feed/${user.userId}`);
   };
 
