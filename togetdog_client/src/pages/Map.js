@@ -3,7 +3,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "../recoil";
 import axios from "axios";
 
-import { BACKEND_URL, LOCAL_SERVER, DUMMY_URL } from "../config";
+import { BACKEND_URL, DUMMY_URL } from "../config";
 import {
   MapContainer,
   PlaceIconWrapper,
@@ -13,7 +13,7 @@ import {
 import dogHospital from "../assets/dog_hospital.png";
 import dogService from "../assets/dog_service.png";
 import dogRestaurant from "../assets/dog_restaurant.png";
-import dogFaiclity from "../assets/dog_facility.png";
+import dogFacility from "../assets/dog_facility.png";
 
 const SinglePlace = ({ Name, Address, Type, Distance }) => {
   let placeIcon;
@@ -24,7 +24,7 @@ const SinglePlace = ({ Name, Address, Type, Distance }) => {
   } else if (Type === "반려동물식당카페") {
     placeIcon = <PlaceIconWrapper src={dogRestaurant} alt="restaurant_img" />;
   } else {
-    placeIcon = <PlaceIconWrapper src={dogFaiclity} alt="etc_img" />;
+    placeIcon = <PlaceIconWrapper src={dogFacility} alt="etc_img" />;
   }
 
   return (
@@ -72,7 +72,7 @@ const Map = () => {
         // setError(null);
         // setLoading(true);
         const response = await axios.get(
-          `${DUMMY_URL}/facility?latitude=${curLat}&longitude=${curLng}`
+          `${BACKEND_URL}/facility?latitude=${curLat}&longitude=${curLng}`
         );
         setFacilities(response.data.storeList);
       } catch (e) {
@@ -237,7 +237,7 @@ const Map = () => {
 
       function createAllMarkers() {
         for (let i = 0; i < allPositions.length; i++) {
-          const markerImageSrc = { dogFaiclity };
+          const markerImageSrc = { dogFacility };
           const imageSize = new kakao.maps.Size(22, 26),
             imageOption = { offset: new kakao.maps.Point(27, 69) };
 
@@ -364,7 +364,7 @@ const Map = () => {
             <PlaceIconWrapper src={dogRestaurant} alt="restaurant_img" />
           </span>
           <span className="placeButtons" onClick={() => setSelectPlace("all")}>
-            <PlaceIconWrapper src={dogFaiclity} alt="etc_img" />
+            <PlaceIconWrapper src={dogFacility} alt="etc_img" />
           </span>
         </div>
         <div>
