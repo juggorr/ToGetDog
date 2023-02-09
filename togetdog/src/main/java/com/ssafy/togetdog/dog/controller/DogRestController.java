@@ -122,7 +122,7 @@ public class DogRestController {
 	public ResponseEntity<?> updateDog(
 			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
 			@RequestPart(value="dog") @ApiParam(required = true) DogUpdateParamDTO dogDTO,
-			@RequestPart(value="dogProfile") @ApiParam(required = false) MultipartFile dogImage
+			@RequestPart(value="dogProfile", required = false) @ApiParam(required = false) MultipartFile dogImage
 			) throws IllegalStateException, IOException {
 		logger.info("Dog updateDTO parameter : {}", dogDTO);
 		Map<String, Object> resultMap = new HashMap<String, Object>();

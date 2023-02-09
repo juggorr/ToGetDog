@@ -16,7 +16,6 @@ import lombok.ToString;
 @ToString
 public class DogUpdateParamDTO extends DogRegistParamDTO {
 	private long dogId;
-	private String dogImage;
 	
 	public Dog of(DogUpdateParamDTO dogDTO, Dog dog, User user) {
 		String gender = dogDTO.getDogGender();
