@@ -58,12 +58,4 @@ public class ChatMsg {
 				.date(this.date)
 				.build();
 	}
-	public ChatDTO toChatList() {
-		return ChatDTO.builder()
-				.idx(this.idx)
-				.userId(this.userId)
-				.content(this.content)
-				.date(this.date)
-				.build();
-	}
 }

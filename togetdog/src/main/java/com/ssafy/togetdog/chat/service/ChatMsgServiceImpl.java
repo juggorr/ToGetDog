@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.togetdog.chat.model.dto.ChatDTO;
+import com.ssafy.togetdog.chat.model.dto.ChattingDTO;
 import com.ssafy.togetdog.chat.model.entity.ChatMsg;
 import com.ssafy.togetdog.chat.repository.ChatMsgRepository;
 
@@ -32,12 +33,12 @@ public class ChatMsgServiceImpl implements ChatMsgService{
 	}
 	
 	@Transactional
-	public List<ChatDTO> findMessage(long roomId) {
+	public List<ChattingDTO> findMessage(long roomId) {
 		List<ChatMsg> list =  chatMsgRepo.findByRoomId(roomId).orElse(null);
 		if(list == null)
 			return null;
 		return list.stream()
-				.map(ChatMsg::toChatList)
+				.map(m -> ChattingDTO.of(m))
 				.collect(Collectors.toList());
 	}
 

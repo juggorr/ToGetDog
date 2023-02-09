@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.togetdog.chat.model.dto.ChatDTO;
+import com.ssafy.togetdog.chat.model.dto.ChatInUserInfo;
 import com.ssafy.togetdog.chat.model.dto.ChatInfoDTO;
+import com.ssafy.togetdog.chat.model.dto.ChattingDTO;
 import com.ssafy.togetdog.chat.service.ChatInfoService;
 import com.ssafy.togetdog.chat.service.ChatMsgService;
 import com.ssafy.togetdog.chat.util.ChatSaveList;
@@ -54,7 +56,6 @@ public class ChatRestController {
 			) {
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		js.validateToken(token);
 		
 		List<ChatInfoDTO> list = cis.callChatList(js.getUserId(token));
 		Collections.sort(list, new Comparator<ChatInfoDTO>() {
@@ -76,23 +77,38 @@ public class ChatRestController {
 	public ResponseEntity<?> getChat(
 			@RequestHeader(value = "Authorization")
 			@ApiParam(required = true) 
-			String token , 
+			String token,
 			@RequestBody long otherId
 			) {
 
 		js.validateToken(token);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		long userId = js.getUserId(token);
+		
+		if(userId == otherId) {
+			resultMap.put("result", FAIL);
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.BAD_REQUEST);
+		}
+		try {
+			us.getUserInfo(""+otherId);
+		} catch (Exception e) {
+			resultMap.put("result", FAIL);
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.BAD_REQUEST);
+		}
+		
 		User user = us.findUserByUserId(userId);
 		User other = us.findUserByUserId(otherId);
-		ChatInfoDTO opponent = cis.otherUserInfo(userId , other);
+		ChatInUserInfo opponent = cis.otherUserInfo(userId , other);
 		if(opponent == null) {
 			opponent = cis.createChatRoom(user, other);
 		}
 		long roomId = opponent.getRoomId();
-		List<ChatDTO> list = cms.findMessage(roomId);
-		if(csl.getList(roomId) != null && csl.getList(roomId).size() > 0)
-			list.addAll(csl.getList(roomId));
+		List<ChattingDTO> list = cms.findMessage(roomId);
+		if(csl.getList(roomId) != null) {
+			for(ChatDTO dto : csl.getList(roomId)) {
+				list.add(ChattingDTO.of(dto));				
+			}
+		}
 		if(list.size() > 1)
 			list = list.subList((int)opponent.getStart()+1, list.size());
 		
@@ -107,7 +123,7 @@ public class ChatRestController {
 	public ResponseEntity<?> deleteChat(
 			@RequestHeader(value = "Authorization")
 			@ApiParam(required = true) 
-			String token , 
+			String token,
 			@RequestParam long roomId
 			) {
 		js.validateToken(token);
