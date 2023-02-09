@@ -136,14 +136,37 @@ public class DogServiceImpl implements DogService {
 		checkRegistrationValidation(dogDTO);
 		Dog dog = findDogByDogId(dogDTO.getDogId());
 		
+		String gender = dogDTO.getDogGender();
+		if (gender.equals("female")) gender = "f";
+		else gender = "m";
+		
 		// file 변경이 없는 경우
 		if (image == null || image.isEmpty()) {
-			dogRepository.save(dogDTO.of(dogDTO, dog, user));
+			dog.setDogName(dogDTO.getDogName());
+			dog.setDogGender(gender);
+			dog.setDogType(dogDTO.getDogType());
+			dog.setDogBirth(dogDTO.getDogBirth());
+			dog.setDogWeight(dogDTO.getDogWeight());
+			dog.setDogNeutered(dogDTO.isDogNeutered());
+			dog.setDogCharacter1(dogDTO.getDogCharacter1().charAt(0) + "");
+			dog.setDogCharacter2(dogDTO.getDogCharacter2().charAt(0) + "");
+			dog.setDescription(dogDTO.getDescription());
+			dogRepository.save(dog);
 		} else {
 			// file 변경이 있는 경우
 			fileUtil.fileDelete(dog.getDogImage(), dogImageFilePath);
 			String savePath = fileUtil.fileUpload(image, dogImageFilePath);
-			dogRepository.save(dogDTO.of(dogDTO, dog, user, savePath));
+			dog.setDogName(dogDTO.getDogName());
+			dog.setDogGender(gender);
+			dog.setDogType(dogDTO.getDogType());
+			dog.setDogBirth(dogDTO.getDogBirth());
+			dog.setDogWeight(dogDTO.getDogWeight());
+			dog.setDogNeutered(dogDTO.isDogNeutered());
+			dog.setDogCharacter1(dogDTO.getDogCharacter1().charAt(0) + "");
+			dog.setDogCharacter2(dogDTO.getDogCharacter2().charAt(0) + "");
+			dog.setDescription(dogDTO.getDescription());
+			dog.setDogImage(savePath);
+			dogRepository.save(dog);
 		}
 	}
 	
