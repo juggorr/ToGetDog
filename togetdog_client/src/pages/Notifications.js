@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-// import { useRecoilState } from "recoil";
-// import { userState } from "../recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { authAtom, userState } from "../recoil";
 
 import axios from "axios";
 import { BACKEND_URL, DUMMY_URL } from "../config";
@@ -59,22 +59,27 @@ const SingleNotification = (data) => {
 
 const Notifications = () => {
   const navigate = useNavigate();
-  // const [user, setUser] = useRecoilState(userState);
+  const [user, setUser] = useRecoilState(userState);
   const [notifications, setNotifications] = useState([]);
   const [canceled, setCanceled] = useState(false);
   const [meetingCnt, setMeetingCnt] = useState();
+  const auth = useRecoilValue(authAtom);
+  const setAuth = useSetRecoilState(authAtom);
+  const pageNo = 0;
 
   useEffect(() => {
     const getNotifications = async () => {
       await axios
-        .get(`${DUMMY_URL}/notify`, {})
+        .get(`${BACKEND_URL}/notify?pageNo=${pageNo}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: auth,
+          },
+        })
         .then((response) => {
-          setNotifications([
-            ...response.data.notifyInfo.notice,
-            ...response.data.notifyInfo.notice,
-          ]);
-          setCanceled(response.data.notifyInfo.meetingCancel);
-          setMeetingCnt(response.data.notifyInfo.meetingCnt);
+          setNotifications(response.data.notice.noticeList);
+          setCanceled(response.data.notice.meetingCancel);
+          setMeetingCnt(response.data.notice.meetingCnt);
         })
         .catch((error) => {
           console.log(error);
@@ -86,7 +91,12 @@ const Notifications = () => {
 
   const cancelClick = () => {
     axios
-      .put(`${DUMMY_URL}/notify/cancel`, {})
+      .put(`${BACKEND_URL}/notify/cancel`, null, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: auth,
+        },
+      })
       .then((response) => {
         navigate("/walk");
       })
