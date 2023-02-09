@@ -22,6 +22,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 public class SearchDogDTO {
 	private long dogId;
+	private long userId;
 	private String nickName;
 	private String dogName;
 	private String dogGender;
@@ -47,7 +48,7 @@ public class SearchDogDTO {
 		if (dogC1.equals("d")) {
 			dogC1 = "disobedient";
 		} else {
-			dogC2 = "obedient";
+			dogC1 = "obedient";
 		}
 		if (dogC2.equals("a")) {
 			dogC2 = "active";
@@ -65,6 +66,7 @@ public class SearchDogDTO {
 		
 		return SearchDogDTO.builder()
 				.dogId(dog.getDogId())
+				.userId(dog.getUser().getUserId())
 				.nickName(dog.getUser().getNickName())
 				.dogName(dog.getDogName())
 				.dogGender(gender)

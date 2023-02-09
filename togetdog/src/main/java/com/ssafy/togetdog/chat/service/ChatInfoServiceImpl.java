@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.togetdog.chat.model.dto.ChatInUserInfo;
 import com.ssafy.togetdog.chat.model.dto.ChatInfoDTO;
 import com.ssafy.togetdog.chat.model.entity.ChatInfo;
 import com.ssafy.togetdog.chat.model.entity.ChatInfo.ChatInfoBuilder;
@@ -65,20 +65,20 @@ public class ChatInfoServiceImpl implements ChatInfoService{
 		if(list == null)
 			return null;
 		return list.stream()
-				.map(ChatInfo::toChatInfoDTO)
+				.map(m->ChatInfoDTO.of(m))
 				.collect(Collectors.toList());
 	}
 
 	@Transactional
-	public ChatInfoDTO otherUserInfo(long userId , User other) {
+	public ChatInUserInfo otherUserInfo(long userId , User other) {
 		ChatInfo result = chatInfoRepo.findByUserIdAndOther(userId, other).orElse(null);
 		if(result == null)
 			return null;
-		return result.toChatInnerDTO();
+		return ChatInUserInfo.of(result);
 	}
 
 	@Transactional
-	public ChatInfoDTO createChatRoom(User userId, User otherId) {
+	public ChatInUserInfo createChatRoom(User userId, User otherId) {
 		long roomId = chatRoomRepo.save(new ChatRoom()).getId();
 		ChatMsg firstChat = chatMsgRepo.save(ChatMsg.builder()
 				.idx(0)
@@ -105,7 +105,8 @@ public class ChatInfoServiceImpl implements ChatInfoService{
 				.userId(userId.getUserId())
 				.build();
 		info = chatInfoRepo.save(info);
-		return info.toChatInnerDTO();
+		
+		return ChatInUserInfo.of(info);
 	}
 
 	@Transactional

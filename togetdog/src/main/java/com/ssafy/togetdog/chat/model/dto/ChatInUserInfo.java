@@ -1,7 +1,5 @@
 package com.ssafy.togetdog.chat.model.dto;
 
-import java.time.LocalDateTime;
-
 import com.ssafy.togetdog.chat.model.entity.ChatInfo;
 
 import lombok.AllArgsConstructor;
@@ -17,9 +15,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ChatInfoDTO {
-
-	// 상대 유저 아이디
+public class ChatInUserInfo {
 	private long userId;
 	
 	private long roomId;
@@ -30,28 +26,20 @@ public class ChatInfoDTO {
 
     private String address;
 
-	private String lastChatContent;
-
-	private LocalDateTime date;
-	
 	private String nickName;
 	
-	private long newChat;
+	private long start;
 	
-	public static ChatInfoDTO of(ChatInfo info) {
-		long cnt = info.getLastChat().getIdx() - info.getLast();
-		if(cnt < 0)
-			cnt = 0;
-		return ChatInfoDTO.builder()
+	public static ChatInUserInfo of(ChatInfo info) {
+		return ChatInUserInfo.builder()
 				.userId(info.getUserId())
 				.roomId(info.getRoomId())
 				.userBirth(info.getOther().getUserBirth())
 				.gender(info.getOther().getGender())
-				.date(info.getLastChat().getDate())
 				.address(info.getOther().getAddress())
-				.lastChatContent(info.getLastChat().getContent())
 				.nickName(info.getOther().getNickName())
-				.newChat(cnt)
+				.start(info.getStart())
 				.build();
 	}
+	
 }
