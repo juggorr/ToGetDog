@@ -40,6 +40,8 @@ export const PlaceButtonWrapper = styled.div`
 `;
 
 export const SinglePlaceWrapper = styled.div`
+  font-family: "Lato", sans-serif;
+
   .placeWrapper {
     display: flex;
     flex-direction: row;
@@ -76,6 +78,7 @@ export const PlaceModal = styled.div`
   flex-flow: column;
   justify-content: center;
   align-items: center;
+  font-family: "Inter", sans-serif;
 
   top: 0;
   left: 0;
@@ -85,14 +88,63 @@ export const PlaceModal = styled.div`
   height: 100vh;
 
   .modalInside {
-    width: 18rem;
+    width: 17.3rem;
     background-color: #ffffff;
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.8rem;
     border-radius: 2rem;
   }
 
   .modalOutside {
     width: 100%;
     height: 100%;
+  }
+
+  .facilityNameContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .facilityNameWrapper {
+    margin: 0rem 1.4rem;
+  }
+
+  .facilityName {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0.3rem 0rem;
+  }
+
+  .facilityIconWrapper {
+    width: 3.2rem;
+    height: 3.2rem;
+  }
+
+  .singleIcon {
+    width: 3.2rem;
+    height: 3.2rem;
+    object-fit: cover;
+  }
+
+  .facilityInfoContainer {
+  }
+
+  .facilityInfo {
+    margin: 0.4rem 0rem;
+  }
+
+  .boldText {
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  .plainText {
+    font-size: 13px;
+  }
+
+  .btnContainer {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
   }
 `;

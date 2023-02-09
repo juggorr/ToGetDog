@@ -11,6 +11,7 @@ import {
   PlaceButtonWrapper,
   PlaceModal,
 } from "../styles/MapEmotion";
+import { MainColorShortBtn } from "../styles/BtnsEmotion";
 import dogHospital from "../assets/dog_hospital.png";
 import dogService from "../assets/dog_service.png";
 import dogRestaurant from "../assets/dog_restaurant.png";
@@ -19,14 +20,19 @@ import dogFacility from "../assets/dog_facility.png";
 const SinglePlace = ({ facility }) => {
   const [modalOpen, setModalOpen] = useState(false);
   let placeIcon;
+  let placeIconSrc;
 
   if (facility.type === "반려의료") {
+    placeIconSrc = dogHospital;
     placeIcon = <PlaceIconWrapper src={dogHospital} alt="hospital_img" />;
   } else if (facility.type === "반려동물 서비스") {
+    placeIconSrc = dogService;
     placeIcon = <PlaceIconWrapper src={dogService} alt="service_img" />;
   } else if (facility.type === "반려동물식당카페") {
+    placeIconSrc = dogRestaurant;
     placeIcon = <PlaceIconWrapper src={dogRestaurant} alt="restaurant_img" />;
   } else {
+    placeIconSrc = dogFacility;
     placeIcon = <PlaceIconWrapper src={dogFacility} alt="etc_img" />;
   }
 
@@ -34,7 +40,44 @@ const SinglePlace = ({ facility }) => {
     return (
       <PlaceModal>
         <div className="modalOutside" onClick={() => setModalOpen(false)}></div>
-        <div className="modalInside"></div>
+        <div className="modalInside">
+          <div className="facilityNameContainer">
+            <div className="facilityIconWrapper">
+              <img className="singleIcon" src={placeIconSrc} alt="placeIcon" />
+            </div>
+            <div className="facilityNameWrapper">
+              <p className="facilityName">{facility.facilityName}</p>
+              <p className="placeText">
+                {facility.distance < 1
+                  ? `${facility.distance * 1000}m`
+                  : `${facility.distance}km`}{" "}
+              </p>
+            </div>
+          </div>
+          <div className="facilityInfoContainer">
+            <div className="facilityInfo">
+              <span className="boldText">연락처: </span>
+              <span className="plainText">{facility.phone}</span>
+            </div>
+            <div className="facilityInfo">
+              <span className="boldText">주소: </span>
+              <span className="plainText">{facility.facilityAddress}</span>
+            </div>
+            <div className="facilityInfo">
+              <span className="boldText">영업시간: </span>
+              <span className="plainText">{facility.openingHours}</span>
+            </div>
+            <div className="facilityInfo">
+              <span className="boldText">휴무일: </span>
+              <span className="plainText">{facility.closedDays}</span>
+            </div>
+          </div>
+          <div className="btnContainer">
+            <MainColorShortBtn onClick={() => setModalOpen(false)}>
+              확인
+            </MainColorShortBtn>
+          </div>
+        </div>
         <div className="modalOutside" onClick={() => setModalOpen(false)}></div>
       </PlaceModal>
     );
