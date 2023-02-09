@@ -33,7 +33,7 @@ const SinglePlace = ({ Name, Address, Type, Distance }) => {
       <div className="placeDiv">
         <p className="placeName">{Name}</p>
         <p className="placeText">
-          {Distance}m | {Address}
+          {Distance < 1 ? `${Distance * 1000}m` : `${Distance}km`} | {Address}
         </p>
       </div>
     </SinglePlaceWrapper>
@@ -74,7 +74,11 @@ const Map = () => {
         const response = await axios.get(
           `${BACKEND_URL}/facility?latitude=${curLat}&longitude=${curLng}`
         );
-        setFacilities(response.data.storeList);
+        const arr = response.data.storeList;
+        arr.sort((a, b) => {
+          return a.distance - b.distance;
+        });
+        setFacilities(arr);
       } catch (e) {
         // setError(e);
       }
@@ -152,7 +156,7 @@ const Map = () => {
       // 의료 마커를 생성하고 의료 마커 배열에 추가하는 함수입니다
       function createHospitalMarkers() {
         for (let i = 0; i < hospitalPositions.length; i++) {
-          const markerImageSrc = { dogHospital };
+          const markerImageSrc = dogHospital;
           const imageSize = new kakao.maps.Size(22, 26),
             imageOption = { offset: new kakao.maps.Point(27, 69) };
 
@@ -183,7 +187,7 @@ const Map = () => {
 
       function createServiceMarkers() {
         for (let i = 0; i < servicePositions.length; i++) {
-          const markerImageSrc = { dogService };
+          const markerImageSrc = dogService;
           const imageSize = new kakao.maps.Size(22, 26),
             imageOption = { offset: new kakao.maps.Point(27, 69) };
 
@@ -210,7 +214,7 @@ const Map = () => {
 
       function createRestaurantMarkers() {
         for (let i = 0; i < restaurantPositions.length; i++) {
-          const markerImageSrc = { dogRestaurant };
+          const markerImageSrc = dogRestaurant;
           const imageSize = new kakao.maps.Size(22, 26),
             imageOption = { offset: new kakao.maps.Point(27, 69) };
 
@@ -237,7 +241,7 @@ const Map = () => {
 
       function createAllMarkers() {
         for (let i = 0; i < allPositions.length; i++) {
-          const markerImageSrc = { dogFacility };
+          const markerImageSrc = dogFacility;
           const imageSize = new kakao.maps.Size(22, 26),
             imageOption = { offset: new kakao.maps.Point(27, 69) };
 
