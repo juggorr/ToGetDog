@@ -29,6 +29,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faImage, faPen } from "@fortawesome/free-solid-svg-icons";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { faXmark, faStar } from "@fortawesome/free-solid-svg-icons";
 
 // 사용할 아이콘을 라이브러리에 추가
 library.add(faDog, faUser, faCommentDots, faCompass, faHome);
@@ -39,3 +40,4 @@ library.add(faCalendar, faChevronLeft, faChevronRight);
 library.add(faImage, faPen);
 library.add(faArrowLeft, fasHeart, farHeart, faPaperPlane);
 library.add(faCaretDown, faCaretUp);
+library.add(faXmark, faStar);

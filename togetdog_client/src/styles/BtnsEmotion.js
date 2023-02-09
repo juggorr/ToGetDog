@@ -94,7 +94,6 @@ export const MainColorShortBtn = styled.button`
   height: 2.3rem;
   border-radius: 2rem;
   border: none;
-  margin: 0.2rem;
 
   background-color: #559968;
   color: #fff;
@@ -108,9 +107,6 @@ export const GreyColorShortBtn = styled.button`
   height: 2.3rem;
   border-radius: 2rem;
   border: none;
-  margin-right: 1rem;
-  mrgin-left: 1rem;
-
   background-color: #717171;
   color: #fff;
   font-weight: 700;
@@ -123,8 +119,6 @@ export const SkyColorShortBtn = styled.button`
   height: 2.3rem;
   border-radius: 2rem;
   border: none;
-  margin-right: 1rem;
-  mrgin-left: 1rem;
 
   background-color: #699bf7;
   color: #fff;
@@ -138,8 +132,6 @@ export const RedColorShortBtn = styled.button`
   height: 2.3rem;
   border-radius: 2rem;
   border: none;
-  margin-right: 1rem;
-  mrgin-left: 1rem;
 
   background-color: #ff6565;
   color: #fff;
@@ -252,5 +244,24 @@ export const UserIconCircle = styled.div`
     background-image: ${(props) =>
       props.image ? `url(${props.image})` : `url(${dog_profile})`};
     background-size: cover;
+  }
+`;
+
+export const SmallCharacterBtn = styled.div`
+  .btn {
+    border: none;
+    padding: 0.3rem 0.5rem;
+    border-radius: 0.6rem;
+    margin: 0.1rem 0rem;
+    margin-right: 0.5rem;
+    font-size: 0.5rem;
+  }
+
+  .orange {
+    background-color: #ffd89d;
+  }
+
+  .yellow {
+    background-color: #fff0cb;
   }
 `;
