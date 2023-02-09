@@ -132,7 +132,6 @@ const SingleMeeting = ({ meeting, auth }) => {
 
   const InformationModal = () => {
     const handleMeeting = async (status) => {
-      console.log(status);
       let method = "";
       let url = `${BACKEND_URL}/meeting`;
       if (status === "cancel") {
@@ -158,6 +157,7 @@ const SingleMeeting = ({ meeting, auth }) => {
         .then(function (response) {
           // console.log(response);
           setModalOpen(false);
+          window.location.reload();
         })
         .catch((error) => {
           console.log(error);
@@ -302,7 +302,7 @@ const Walk = () => {
       .then(function (response) {
         // 데이터 들어오는 형태 확인 필요함
         // userOne이 보낸 사람, userTwo가 받은 사람
-
+        // console.log(response.data);
         const appointments = [];
         if (response.data.appointment) {
           for (let i = 0; i < response.data.appointment.length; i++) {

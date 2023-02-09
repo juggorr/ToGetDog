@@ -47,6 +47,7 @@ export const MeetingWrapper = styled.div`
     border-radius: 3%;
     background-color: #f5f0ec;
     padding-top: 2.5rem;
+    overflow-y: auto;
   }
 
   .recommendBtn {
@@ -107,7 +108,7 @@ export const SingleMeetingWrapper = styled.div`
   .appointmentLine {
     position: absolute;
     left: 0.149rem;
-    height: 7rem;
+    height: calc(100% + 1rem);
     border-left: thin solid #575757;
   }
 
@@ -232,7 +233,7 @@ export const InfoModal = styled.div`
   .characterWrapper {
     margin-top: 0.3rem;
     display: flex;
-    height: 3rem;
+    // height: 3rem;
     flex-direction: column;
     justify-content: center;
   }
