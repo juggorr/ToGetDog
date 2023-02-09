@@ -13,7 +13,7 @@ public class ChatSaveScheduler {
 	
 	@Scheduled(fixedDelay = 5000)
 	public void saveChat() {
-		System.out.println("saveChat");
+//		System.out.println("saveChat");
 		csl.saveJpaChat(0);
 	}
 	
