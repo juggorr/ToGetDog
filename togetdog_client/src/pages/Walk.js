@@ -10,6 +10,8 @@ import {
   MeetingWrapper,
   SingleMeetingWrapper,
   InfoModal,
+  StarRatingModal,
+  Stars,
 } from "../styles/WalkEmotion";
 import { SmallCharacterBtn } from "../styles/BtnsEmotion.js";
 import { LightColorLongBtn } from "../styles/BtnsEmotion.js";
@@ -17,7 +19,16 @@ import { RedColorShortBtn, MainColorShortBtn } from "../styles/BtnsEmotion.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const SingleMeeting = ({ meeting, auth }) => {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [infoModalOpen, setInfoModalOpen] = useState(false);
+  const [ratingModalOpen, setRatingModalOpen] = useState(false);
+  const [checkboxValue, setCheckboxValue] = useState(false);
+  const [activeStar, setActiveStar] = useState([
+    true,
+    true,
+    true,
+    false,
+    false,
+  ]);
 
   const dogNameList = (dogs) => {
     const nameList = [];
@@ -74,6 +85,16 @@ const SingleMeeting = ({ meeting, auth }) => {
               src={"https://i8a807.p.ssafy.io/image/dog/" + dogs[0].dogProfile}
               alt="dogProfile"
             />
+            {meeting.status === "done" &&
+            meeting.rated === false &&
+            infoModalOpen === false ? (
+              <button
+                className="ratingBtn"
+                onClick={() => setRatingModalOpen(true)}
+              >
+                평가
+              </button>
+            ) : null}
           </div>
         );
       } else if (dogs.length > 1) {
@@ -99,6 +120,16 @@ const SingleMeeting = ({ meeting, auth }) => {
                 alt="dogProfile"
               />
             </div>
+            {meeting.status === "done" &&
+            meeting.rated === false &&
+            infoModalOpen === false ? (
+              <button
+                className="ratingBtn"
+                onClick={() => setRatingModalOpen(true)}
+              >
+                평가
+              </button>
+            ) : null}
           </div>
         );
       }
@@ -156,7 +187,7 @@ const SingleMeeting = ({ meeting, auth }) => {
       })
         .then(function (response) {
           // console.log(response);
-          setModalOpen(false);
+          setInfoModalOpen(false);
           window.location.reload();
         })
         .catch((error) => {
@@ -169,48 +200,48 @@ const SingleMeeting = ({ meeting, auth }) => {
 
       if (meeting.status === "confirmed") {
         Btns.push(
-          <RedColorShortBtn onClick={() => handleMeeting("cancel")}>
+          <RedColorShortBtn onClick={() => handleMeeting("cancel")} key={1}>
             약속 취소
           </RedColorShortBtn>
         );
         Btns.push(
-          <MainColorShortBtn onClick={() => setModalOpen(false)}>
+          <MainColorShortBtn onClick={() => setInfoModalOpen(false)} key={2}>
             확인
           </MainColorShortBtn>
         );
       } else if (meeting.status === "wait") {
         if (meeting.received) {
           Btns.push(
-            <RedColorShortBtn onClick={() => handleMeeting("decline")}>
+            <RedColorShortBtn onClick={() => handleMeeting("decline")} key={1}>
               반려
             </RedColorShortBtn>
           );
           Btns.push(
-            <MainColorShortBtn onClick={() => handleMeeting("accept")}>
+            <MainColorShortBtn onClick={() => handleMeeting("accept")} key={2}>
               수락
             </MainColorShortBtn>
           );
         } else {
           Btns.push(
-            <RedColorShortBtn onClick={() => handleMeeting("decline")}>
+            <RedColorShortBtn onClick={() => handleMeeting("decline")} key={1}>
               요청 취소
             </RedColorShortBtn>
           );
           Btns.push(
-            <MainColorShortBtn onClick={() => setModalOpen(false)}>
+            <MainColorShortBtn onClick={() => setInfoModalOpen(false)} key={2}>
               확인
             </MainColorShortBtn>
           );
         }
       } else if (meeting.status === "done") {
         Btns.push(
-          <MainColorShortBtn onClick={() => setModalOpen(false)}>
+          <MainColorShortBtn onClick={() => setInfoModalOpen(false)} key={1}>
             확인
           </MainColorShortBtn>
         );
       } else if (meeting.status === "cancelled") {
         Btns.push(
-          <MainColorShortBtn onClick={() => setModalOpen(false)}>
+          <MainColorShortBtn onClick={() => setInfoModalOpen(false)} key={1}>
             확인
           </MainColorShortBtn>
         );
@@ -221,7 +252,10 @@ const SingleMeeting = ({ meeting, auth }) => {
 
     return (
       <InfoModal>
-        <div className="modalOutside" onClick={() => setModalOpen(false)}></div>
+        <div
+          className="modalOutside"
+          onClick={() => setInfoModalOpen(false)}
+        ></div>
         <div className="modalInside">
           <p className="appointmentDate">• {dayOfWeek()}</p>
           <p className="infoText">상대방의 강아지</p>
@@ -251,17 +285,149 @@ const SingleMeeting = ({ meeting, auth }) => {
           </div>
           {renderBtns()}
         </div>
-        <div className="modalOutside" onClick={() => setModalOpen(false)}></div>
+        <div
+          className="modalOutside"
+          onClick={() => setInfoModalOpen(false)}
+        ></div>
       </InfoModal>
+    );
+  };
+
+  const RatingModal = () => {
+    useEffect(() => {
+      setInfoModalOpen(false);
+    }, []);
+
+    const closeRatingModal = () => {
+      setActiveStar([true, true, true, false, false]);
+      setCheckboxValue(false);
+      setRatingModalOpen(false);
+    };
+
+    const checkHandler = ({ target }) => {
+      setCheckboxValue(!checkboxValue);
+      setActiveStar([false, false, false, false, false]);
+    };
+
+    const starHandler = (idx) => {
+      let tempActiveStar = [false, false, false, false, false];
+
+      if (checkboxValue === false) {
+        for (let i = 0; i < idx + 1; i++) {
+          tempActiveStar[i] = true;
+        }
+      }
+      setActiveStar(tempActiveStar);
+    };
+
+    const requestHandler = async () => {
+      let rating = 0;
+      if (checkboxValue === false) {
+        for (let i = 0; i < 5; i++) {
+          if (activeStar[i]) {
+            rating = rating + 1;
+          }
+        }
+      }
+      await axios
+        .post(`${BACKEND_URL}/meeting/rating`, null, {
+          params: {
+            appointmentId: meeting.roomId,
+            rating: rating,
+          },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: auth,
+          },
+        })
+        .then((response) => {
+          setRatingModalOpen(false);
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    return (
+      <StarRatingModal>
+        <div className="modalOutside" onClick={() => closeRatingModal()}></div>
+        <div className="modalInside">
+          <div className="iconWrapper">
+            <FontAwesomeIcon
+              icon="fa-xmark"
+              onClick={() => closeRatingModal()}
+            />
+          </div>
+          <p className="plainText">
+            {meeting.partnerName}님과의 산책 별점을 남겨주세요 :)
+          </p>
+          <Stars>
+            <FontAwesomeIcon
+              icon="fa-star"
+              className={"star " + (activeStar[0] ? "active" : "disabled")}
+              onClick={() => starHandler(0)}
+            ></FontAwesomeIcon>
+            <FontAwesomeIcon
+              icon="fa-star"
+              className={"star " + (activeStar[1] ? "active" : "disabled")}
+              onClick={() => starHandler(1)}
+            ></FontAwesomeIcon>
+            <FontAwesomeIcon
+              icon="fa-star"
+              className={"star " + (activeStar[2] ? "active" : "disabled")}
+              onClick={() => starHandler(2)}
+            ></FontAwesomeIcon>
+            <FontAwesomeIcon
+              icon="fa-star"
+              className={"star " + (activeStar[3] ? "active" : "disabled")}
+              onClick={() => starHandler(3)}
+            ></FontAwesomeIcon>
+            <FontAwesomeIcon
+              icon="fa-star"
+              className={"star " + (activeStar[4] ? "active" : "disabled")}
+              onClick={() => starHandler(4)}
+            ></FontAwesomeIcon>
+          </Stars>
+          <div className="checkboxWrapper">
+            <input
+              type="checkbox"
+              checked={checkboxValue}
+              onChange={(e) => checkHandler(e)}
+            />
+            <p className="checkboxText">상대방이 오지 않았어요.</p>
+          </div>
+          <div className="btnWrapper">
+            <MainColorShortBtn onClick={() => requestHandler()}>
+              확인
+            </MainColorShortBtn>
+          </div>
+        </div>
+        <div className="modalOutside" onClick={() => closeRatingModal()}></div>
+      </StarRatingModal>
     );
   };
 
   return (
     <SingleMeetingWrapper>
-      {modalOpen && (
-        <InformationModal setModalOpen={setModalOpen} meeting={meeting} />
+      {infoModalOpen && (
+        <InformationModal
+          setInfoModalOpen={setInfoModalOpen}
+          meeting={meeting}
+        />
       )}
-      <div className="appointmentContainer" onClick={() => setModalOpen(true)}>
+      {meeting.status === "done" &&
+        meeting.rated === false &&
+        ratingModalOpen && (
+          <RatingModal
+            setRatingModalOpen={setRatingModalOpen}
+            meeting={meeting}
+          ></RatingModal>
+        )}
+      <div
+        className="appointmentContainer"
+        onClick={() => setInfoModalOpen(true)}
+      >
         <div className="singleWrapper">
           <div className="appointmentLine"></div>
           <p className="appointmentDate">• {dayOfWeek()}</p>

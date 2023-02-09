@@ -185,6 +185,18 @@ export const SingleMeetingWrapper = styled.div`
     font-size: 0.58rem;
     color: #575757;
   }
+
+  .ratingBtn {
+    position: absolute;
+    margin-top: 0.5rem;
+    margin-left: -0.5rem;
+    background-color: #6eb175;
+    border: 2px solid white;
+    color: #ffffff;
+    width: 5rem;
+    height: 2.5rem;
+    border-radius: 1rem;
+  }
 `;
 
 export const InfoModal = styled.div`
@@ -202,15 +214,15 @@ export const InfoModal = styled.div`
   height: 100vh;
 
   .modalInside {
-    width: 19rem;
+    width: 18rem;
     background-color: #ffffff;
-    padding: 2rem 1.2rem;
+    padding: 2rem 1.5rem;
     border-radius: 2rem;
   }
 
   .modalOutside {
     width: 100%;
-    height: calc(100% - 10rem);
+    height: 100%;
   }
 
   .dogWrapper {
@@ -233,15 +245,87 @@ export const InfoModal = styled.div`
   .characterWrapper {
     margin-top: 0.3rem;
     display: flex;
-    // height: 3rem;
     flex-direction: column;
     justify-content: center;
   }
 
   .btnContainer {
-    padding: 1rem 1rem;
-    margin-top: 1rem;
+    padding: 0rem 1rem;
+    margin-top: 0.5rem;
     display: flex;
     justify-content: space-around;
+  }
+`;
+
+export const StarRatingModal = styled.div`
+  position: fixed;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  width: 100vw;
+  height: 100vh;
+
+  .modalInside {
+    width: 17rem;
+    background-color: #ffffff;
+    padding: 1rem 1.2rem;
+    border-radius: 1.5rem;
+  }
+
+  .modalOutside {
+    width: 100%;
+    height: 100%;
+  }
+
+  .iconWrapper {
+    display: flex;
+    justify-content: end;
+    color: #717171;
+  }
+
+  .plainText {
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .checkboxWrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  .checkboxText {
+    font-size: 12px;
+  }
+
+  .btnWrapper {
+    margin: 0.5rem 0rem;
+    display: flex;
+    justify-content: center;
+  }
+`;
+
+export const Stars = styled.div`
+  display: flex;
+  justify-content: center;
+  font-size: 30px;
+  margin-bottom: 1rem;
+
+  .star {
+    margin: 0rem 0.15rem;
+  }
+
+  .active {
+    color: #ffd89d;
+  }
+
+  .disabled {
+    color: #dddddd;
   }
 `;
