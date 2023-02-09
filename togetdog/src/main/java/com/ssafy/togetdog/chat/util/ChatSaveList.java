@@ -109,8 +109,7 @@ public class ChatSaveList {
 			return;
 		}		
 		saveSessionId.remove(session.getSessionId());
-		
-		if(cis.credentUser(session.getUserId(), session.getRoomId())) {
+		if(cis.credentUser(session.getRoomId(), session.getUserId())) {
 			System.out.println("권한없음");
 			return;
 		}
