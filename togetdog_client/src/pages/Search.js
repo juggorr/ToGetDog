@@ -112,7 +112,7 @@ const SingleUser = ({ item }) => {
         className="singleDog"
         onClick={() => navigate(`/feed/${item.userId}`)}
       >
-        <UserIcon text={item.nickName} idx={item.birth}></UserIcon>
+        <UserIcon text={item.nickName}></UserIcon>
         <div className="dogInfo">
           <div className="dogNameWrapper">
             <p className="dogName">{item.nickName}</p>

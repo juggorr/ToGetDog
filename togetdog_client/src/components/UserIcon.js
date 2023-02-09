@@ -12,19 +12,21 @@ const UserIcon = (props) => {
       },
     });
   };
+  const iconId = props.text.charCodeAt(0);
 
-  // <UserIcon text={nickName(string)} idx={idx(int)}></UserIcon> 형태로 써주세요
+  // <UserIcon text={nickName(string)}></UserIcon> 형태로 써주세요
   return (
     <UserIconCircle onClick={onClick}>
       <div
         className={
           "circle" +
-          (props.idx % 5 === 0 ? " one" : "") +
-          (props.idx % 5 === 1 ? " two" : "") +
-          (props.idx % 5 === 2 ? " three" : "") +
-          (props.idx % 5 === 3 ? " four" : "") +
-          (props.idx % 5 === 4 ? " five" : "")
-        }>
+          (iconId % 5 === 0 ? " one" : "") +
+          (iconId % 5 === 1 ? " two" : "") +
+          (iconId % 5 === 2 ? " three" : "") +
+          (iconId % 5 === 3 ? " four" : "") +
+          (iconId % 5 === 4 ? " five" : "")
+        }
+      >
         {props.text.substring(0, 1)}
       </div>
     </UserIconCircle>
