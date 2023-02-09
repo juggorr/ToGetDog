@@ -199,7 +199,7 @@ public class AppointmentService {
 		}
 	}
 
-	public List<DogInfoRespDTO> recommendFriendsForDog(long userId, long dogId) {
+	public List<DogInfoRespDTO> recommendFriendsForDog(long userId, long dogId, String type) {
 		User user = userRepository.findById(userId).orElse(null);
 		String regionCode = user.getRegionCode();
 		
@@ -243,33 +243,54 @@ public class AppointmentService {
 		List<Object[]> recList = new ArrayList<Object[]>();
 		List<DogInfoRespDTO> reclist = new ArrayList<DogInfoRespDTO>();
 		
-		if(neutured) { // 중성화 한 강아지 true = 1, false = 0
-//			if(age < 1) { // 1살 미만
-//				recList = appointmentRepository.getNeuturedList(userId, regionCode, oneYearBefore, thisYear, startWeight, endWeight);
-//				recList = appointmentRepository.getNeuturedList(userId, regionCode);
-//			} else if(age < 5) { // 1~5살
-//				recList = appointmentRepository.getNeuturedList(userId, regionCode, fiveYearBefore, oneYearBefore, startWeight, endWeight);
-//			} else if(age < 10) { // 5~10살
-//				recList = appointmentRepository.getNeuturedList(userId, regionCode, tenYearBefore, fiveYearBefore, startWeight, endWeight);
-//			} else { // 10살 이상
-//				recList = appointmentRepository.getNeuturedList(userId, regionCode, "190001", tenYearBefore, startWeight, endWeight);
-//			}
-//		} else { // 중성화 안한 강아지, 쿼리 문 뒤에 dogGender 붙여야함
-//			if(age < 1) { // 1살 미만
-//				recList = appointmentRepository.getGenderList(userId, regionCode, oneYearBefore, thisYear, startWeight, endWeight, gender);
-//			} else if(age < 5) { // 1~5살
-//				recList = appointmentRepository.getGenderList(userId, regionCode, fiveYearBefore, oneYearBefore, startWeight, endWeight, gender);
-//			} else if(age < 10) { // 5~10살
-//				recList = appointmentRepository.getGenderList(userId, regionCode, tenYearBefore, fiveYearBefore, startWeight, endWeight, gender);
-//			} else { // 10살 이상
-//				recList = appointmentRepository.getGenderList(userId, regionCode, "190001", tenYearBefore, startWeight, endWeight, gender);
-//			}
+		if(type.equals("region")) {
+			if(neutured) { // 중성화 한 강아지 true = 1, false = 0
+				if(age < 1) { // 1살 미만
+					recList = appointmentRepository.getNeuturedList(userId, regionCode, oneYearBefore, thisYear, startWeight, endWeight);
+				} else if(age < 5) { // 1~5살
+					recList = appointmentRepository.getNeuturedList(userId, regionCode, fiveYearBefore, oneYearBefore, startWeight, endWeight);
+				} else if(age < 10) { // 5~10살
+					recList = appointmentRepository.getNeuturedList(userId, regionCode, tenYearBefore, fiveYearBefore, startWeight, endWeight);
+				} else { // 10살 이상
+					recList = appointmentRepository.getNeuturedList(userId, regionCode, "190001", tenYearBefore, startWeight, endWeight);
+				}
+			} else { // 중성화 안한 강아지, 쿼리 문 뒤에 dogGender 붙여야함
+				if(age < 1) { // 1살 미만
+					recList = appointmentRepository.getGenderList(userId, regionCode, oneYearBefore, thisYear, startWeight, endWeight, gender);
+				} else if(age < 5) { // 1~5살
+					recList = appointmentRepository.getGenderList(userId, regionCode, fiveYearBefore, oneYearBefore, startWeight, endWeight, gender);
+				} else if(age < 10) { // 5~10살
+					recList = appointmentRepository.getGenderList(userId, regionCode, tenYearBefore, fiveYearBefore, startWeight, endWeight, gender);
+				} else { // 10살 이상
+					recList = appointmentRepository.getGenderList(userId, regionCode, "190001", tenYearBefore, startWeight, endWeight, gender);
+				}
+			}
+		} else {
+			if(neutured) { // 중성화 한 강아지 true = 1, false = 0
+				if(age < 1) { // 1살 미만
+					recList = appointmentRepository.getNeuturedList(userId, oneYearBefore, thisYear, startWeight, endWeight);
+				} else if(age < 5) { // 1~5살
+					recList = appointmentRepository.getNeuturedList(userId, fiveYearBefore, oneYearBefore, startWeight, endWeight);
+				} else if(age < 10) { // 5~10살
+					recList = appointmentRepository.getNeuturedList(userId, tenYearBefore, fiveYearBefore, startWeight, endWeight);
+				} else { // 10살 이상
+					recList = appointmentRepository.getNeuturedList(userId, "190001", tenYearBefore, startWeight, endWeight);
+				}
+			} else { // 중성화 안한 강아지, 쿼리 문 뒤에 dogGender 붙여야함
+				if(age < 1) { // 1살 미만
+					recList = appointmentRepository.getGenderList(userId, oneYearBefore, thisYear, startWeight, endWeight, gender);
+				} else if(age < 5) { // 1~5살
+					recList = appointmentRepository.getGenderList(userId, fiveYearBefore, oneYearBefore, startWeight, endWeight, gender);
+				} else if(age < 10) { // 5~10살
+					recList = appointmentRepository.getGenderList(userId, tenYearBefore, fiveYearBefore, startWeight, endWeight, gender);
+				} else { // 10살 이상
+					recList = appointmentRepository.getGenderList(userId, "190001", tenYearBefore, startWeight, endWeight, gender);
+				}
+			}
 		}
 		logger.info("recommendedList ============== : {}", recList);
-//		reclist = recList.stream().map(d-> DogInfoRespDTO.of(d, Double.parseDouble(d.getDogWeight())))
-//			.collect(Collectors.toList());
-//		return reclist;
-		return null;
+		reclist  = recList.stream().map(r -> recommendListToDTO(r)).collect(Collectors.toList());
+		return reclist;
 	}
 	
 	public Appointment findAppointmentById(long roomId) {
@@ -277,17 +298,16 @@ public class AppointmentService {
 	}
 	
 	// 테스트 method에요. controller에 만만한게 산책친구 찾기라서 거기서 테스트 해봤습니다.
-	public void test() {
-		// userid, region code 4 / 41135
-		List<Object[]> tmpResult = appointmentRepository.getNeuturedList(4, "41135");
-		List<DogInfoRespDTO> result = tmpResult.stream().map(r -> test2(r)).collect(Collectors.toList());
-		for (DogInfoRespDTO dogInfoRespDTO : result) {
-			logger.info("조회 dto ======= : {} ", dogInfoRespDTO);
-		}
-	}
+//	public void test(List<Object[]> recList) {
+//		recList = appointmentRepository.getNeuturedList(4, "41135");
+//		List<DogInfoRespDTO> result = recList.stream().map(r -> recommendListToDTO(r)).collect(Collectors.toList());
+//		for (DogInfoRespDTO dogInfoRespDTO : result) {
+//			logger.info("조회 dto ======= : {} ", dogInfoRespDTO);
+//		}
+//	}
 	
 	// 쿼리 조회 결과를 dto로 변환해주는 method입니다.
-	public DogInfoRespDTO test2(Object[] result) {
+	public DogInfoRespDTO recommendListToDTO(Object[] result) {
 		//birth 기준으로 개월 수 변환
 		LocalDateTime now = LocalDateTime.now();
 		int nowMonth = (now.getYear() * 12) + now.getMonthValue();
