@@ -221,8 +221,13 @@ function UserEdit() {
           },
         })
         .then((res) => {
-          console.log(res.data.user);
-          setUser(res.data.user);
+          const newUser = {
+            address: address,
+            email: user.email,
+            nickName: nickname,
+            userId: user.userId,
+          };
+          setUser(newUser)
         })
         .catch((err) => {
           console.log(err);
