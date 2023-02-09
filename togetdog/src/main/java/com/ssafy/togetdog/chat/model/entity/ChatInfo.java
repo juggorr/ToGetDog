@@ -76,9 +76,11 @@ public class ChatInfo {
 				.userId(this.other.getUserId())
 				.userBirth(this.other.getUserBirth())
 				.gender(this.other.getGender())
+				.nickName(this.other.getNickName())
 				.address(this.other.getAddress())
 				.lastChatContent(this.lastChat.getContent())
 				.date(this.lastChat.getDate())
+				.newChat(this.lastChat.getIdx() - this.last)
 				.build();
 	}
 	

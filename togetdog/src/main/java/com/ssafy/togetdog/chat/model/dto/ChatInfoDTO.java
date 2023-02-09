@@ -36,4 +36,6 @@ public class ChatInfoDTO {
 
 	private long start;
 	
+	private long newChat;
+	
 }
