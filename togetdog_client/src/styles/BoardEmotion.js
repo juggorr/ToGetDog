@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const BoardContainer = styled.div`
   display: flex;
@@ -124,7 +124,7 @@ export const BoardCommentBox = styled.div`
     padding-top: 0.5rem;
     overflow-y: scroll;
     margin-top: 0.5rem;
-    height: calc(100vh - 600px);
+    height: calc(100vh - 550px);
   }
 
   .comment-box {

@@ -1,11 +1,10 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const SignupContainer = styled.div`
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem 0;
 `;
 
 export const SignupWrapper = styled.div`
@@ -29,7 +28,7 @@ export const SignupWrapper = styled.div`
   }
 
   .two-btns-wrapper {
-    padding-top: 1.5rem;
+    padding-top: 2rem;
     justify-content: space-around;
   }
 
@@ -47,7 +46,7 @@ export const SignupWrapper = styled.div`
 
   .edit-bottom-wrapper {
     border-top: 0.125rem solid #e2e2e2;
-    margin-top: 2rem;
+    margin-top: 5rem;
     width: 90%;
   }
 
@@ -145,6 +144,14 @@ export const InputWrapper = styled.div`
     color: red;
     font-size: 0.8rem;
   }
+
+  .boardHeader {
+    text-align: center;
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 2rem 0rem;
+  }
 `;
 
 export const EmailContainer = styled.div`
@@ -162,7 +169,7 @@ export const EmailWrapper = styled.div`
   align-items: center;
 
   .email-desc {
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: "Noto Sans KR", sans-serif;
   }
 `;
 

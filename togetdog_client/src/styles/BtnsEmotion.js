@@ -207,8 +207,8 @@ export const FollowBtnOff = styled.button`
 
 export const UserIconCircle = styled.div`
   .circle {
-    width: 4rem;
-    height: 4rem;
+    width: 5rem;
+    height: 5rem;
     margin: 0.5rem 0.5rem;
     display: flex;
     align-items: center;
