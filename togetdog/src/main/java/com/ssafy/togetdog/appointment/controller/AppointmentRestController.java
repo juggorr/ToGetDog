@@ -222,6 +222,8 @@ public class AppointmentRestController {
 			@PathVariable(value = "dogId") long dogId) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
+		appointmentService.test();
+		
 //		long userId = jwtService.getUserId(token);
 		long userId = 4L;
 		List<DogInfoRespDTO> dogList = appointmentService.recommendFriendsForDog(userId, dogId);

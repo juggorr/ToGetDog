@@ -246,7 +246,7 @@ public class AppointmentService {
 		if(neutured) { // 중성화 한 강아지 true = 1, false = 0
 //			if(age < 1) { // 1살 미만
 //				recList = appointmentRepository.getNeuturedList(userId, regionCode, oneYearBefore, thisYear, startWeight, endWeight);
-				recList = appointmentRepository.getNeuturedList(userId, regionCode);
+//				recList = appointmentRepository.getNeuturedList(userId, regionCode);
 //			} else if(age < 5) { // 1~5살
 //				recList = appointmentRepository.getNeuturedList(userId, regionCode, fiveYearBefore, oneYearBefore, startWeight, endWeight);
 //			} else if(age < 10) { // 5~10살
@@ -274,5 +274,38 @@ public class AppointmentService {
 	
 	public Appointment findAppointmentById(long roomId) {
 		return appointmentRepository.findById(roomId).orElse(null);
+	}
+	
+	// 테스트 method에요. controller에 만만한게 산책친구 찾기라서 거기서 테스트 해봤습니다.
+	public void test() {
+		// userid, region code 4 / 41135
+		List<Object[]> tmpResult = appointmentRepository.getNeuturedList(4, "41135");
+		List<DogInfoRespDTO> result = tmpResult.stream().map(r -> test2(r)).collect(Collectors.toList());
+		for (DogInfoRespDTO dogInfoRespDTO : result) {
+			logger.info("조회 dto ======= : {} ", dogInfoRespDTO);
+		}
+	}
+	
+	// 쿼리 조회 결과를 dto로 변환해주는 method입니다.
+	public DogInfoRespDTO test2(Object[] result) {
+		//birth 기준으로 개월 수 변환
+		LocalDateTime now = LocalDateTime.now();
+		int nowMonth = (now.getYear() * 12) + now.getMonthValue();
+		int dogMonth = (Integer.parseInt(((String)result[5]).substring(0, 4)) * 12)
+				+ Integer.parseInt(((String)result[5]).substring(4, 6));
+		return DogInfoRespDTO.builder()
+				.dogId(Long.parseLong(String.valueOf(result[0])))
+				.userId(Long.parseLong(String.valueOf(result[1])))
+				.dogName(String.valueOf(result[2]))
+				.dogGender(String.valueOf(result[3]))
+				.dogType(String.valueOf(result[4]))
+				.dogAge(nowMonth - dogMonth)
+				.dogWeight(Double.parseDouble(String.valueOf(result[6])))
+				.dogNeutered(((Boolean) result[7]).booleanValue())
+				.dogCharacter1(String.valueOf(result[8]))
+				.dogCharacter2(String.valueOf(result[9]))
+				.description(String.valueOf(result[10]))
+				.dogProfile(String.valueOf(result[11]))
+				.build();
 	}
 }
