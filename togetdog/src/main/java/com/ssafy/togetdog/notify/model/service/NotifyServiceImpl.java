@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.togetdog.appointment.model.entity.Appointment;
 import com.ssafy.togetdog.appointment.model.repository.AppointmentRepository;
-import com.ssafy.togetdog.dog.model.service.DogService;
+import com.ssafy.togetdog.dog.model.repository.DogRepository;
 import com.ssafy.togetdog.notify.model.dto.NoticeDTO;
 import com.ssafy.togetdog.notify.model.dto.NotifyRespDTO;
 import com.ssafy.togetdog.notify.model.entity.Notify;
@@ -30,7 +30,7 @@ public class NotifyServiceImpl implements NotifyService {
 	
 	private final NotifyRepository notifyRepository;
 	private final AppointmentRepository appointmentRepository;
-	private final DogService dogService;
+	private final DogRepository dogRepository;
 	
 	/* 팔로우insert */
 	@Override
@@ -99,7 +99,7 @@ public class NotifyServiceImpl implements NotifyService {
 		if (cancelCnt > 0) {
 			meetingCancel = true;
 		}
-		List<NoticeDTO> noticeList = notifications.stream().map(n -> NoticeDTO.of(n, dogService.findDogByDogId(n.getDogId()).getDogName()))
+		List<NoticeDTO> noticeList = notifications.stream().map(n -> NoticeDTO.of(n, dogRepository.findById(n.getDogId()).orElse(null).getDogName()))
 				.collect(Collectors.toList());
 		return NotifyRespDTO.builder()
 			.meetingCnt(meetingCnt)
