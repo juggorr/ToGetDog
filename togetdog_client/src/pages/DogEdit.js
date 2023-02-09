@@ -297,17 +297,26 @@ function DogEdit() {
       newBirth = year + '0' + month;
     } else {
       newBirth = year + month;
-    }
+    };
 
-    // isNeuterd 설정=
+    // isNeuterd 설정
+    let neuterdBoolean = null;
+    switch (isNeuterd) {
+      case 1:
+        neuterdBoolean = true;
+        break;
+      default:
+        neuterdBoolean = false;
+    }; 
 
     const dog = {
+      dogId: dogId,
       dogName: name,
       dogGender: sex,
       dogType: breed,
       dogBirth: newBirth,
       dogWeight: weight,
-      dogNeutered: isNeuterd,
+      dogNeutered: neuterdBoolean,
       dogCharacter1: isObedient,
       dogCharacter2: isActive,
       description: perk,

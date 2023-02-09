@@ -236,14 +236,23 @@ function DogRegister() {
     }
 
     // isNeuterd 설정
-  
+    let neuterdBoolean = null;
+    switch (isNeuterd) {
+      case 1:
+        neuterdBoolean = true;
+        break;
+      default:
+        neuterdBoolean = false;
+    }
+    
+
     const dog = {
       dogName: name,
       dogGender: sex,
       dogType: breed,
       dogBirth: newBirth,
       dogWeight: weight,
-      dogNeutered: isNeuterd,
+      dogNeutered: neuterdBoolean,
       dogCharacter1: isObedient,
       dogCharacter2: isActive,
       description: perk,
@@ -329,7 +338,7 @@ function DogRegister() {
               />
             </div>
           </div>
-          <div className={nameError ? 'success' : 'error'}>{nameErrorMsg}</div>
+          <div className={nameError ? 'error' : 'success'}>{nameErrorMsg}</div>
         </InputWrapper>
         {/* 성별 입력 */}
         <InputWrapper>
@@ -388,8 +397,8 @@ function DogRegister() {
               <div className='month'>월</div>
             </div>
           </div>
-          <div className={yearError ? 'success' : 'error'}>{yearErrorMsg}</div>
-          <div className={monthError ? 'success' : 'error'}>{monthErrorMsg}</div>
+          <div className={yearError ? 'error' : 'success'}>{yearErrorMsg}</div>
+          <div className={monthError ? 'error' : 'success'}>{monthErrorMsg}</div>
           <p className='small-font'>정확한 나이를 모르신다면 추정 나이를 입력해 주세요</p>
         </InputWrapper>
         {/* 몸무게 입력 */}
@@ -413,7 +422,7 @@ function DogRegister() {
             </div>
             <div className='kilogram'>kg</div>
           </div>
-          <div className={weightError ? 'success' : 'error'}>{weightErrorMsg}</div>
+          <div className={weightError ? 'error' : 'success'}>{weightErrorMsg}</div>
         </InputWrapper>
         {/* 중성화 여부 */}
         <InputWrapper>
