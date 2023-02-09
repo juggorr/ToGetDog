@@ -26,7 +26,7 @@ public class ChatSendController {
     @MessageMapping("/messages/{roomId}")
     @SendTo("/subscribe/roomId/{roomId}")
     public ChattingDTO chat(ChatDTO chatDto) {
-    	if(csl.chatCondent(chatDto.getSessionId(), chatDto.getRoomId())) {
+    	if(csl.chatCondent(chatDto.getSessionId(), chatDto.getRoomId()) && chatDto.getContent().length() <= 100) {
     		chatDto.setDate(LocalDateTime.now());
     		csl.saveChat(chatDto);
     		return ChattingDTO.of(chatDto);

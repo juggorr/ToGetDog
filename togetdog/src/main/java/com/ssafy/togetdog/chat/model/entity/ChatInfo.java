@@ -10,7 +10,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.ssafy.togetdog.chat.model.dto.ChatInfoDTO;
 import com.ssafy.togetdog.user.model.entity.User;
 
 import lombok.AllArgsConstructor;
