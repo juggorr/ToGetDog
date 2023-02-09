@@ -43,7 +43,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 	@Query(value = "select dog_id, d.user_id, dog_name, dog_gender, dog_type, dog_birth, dog_weight, dog_neutered, dog_character1, dog_character2, description, dog_image " + 
 			"from user u join dog d " + 
 			"on u.user_id = d.user_id " + 
-			"where not u.user_id=:userId  and d.dog_neutered=1 "
+			"where not u.user_id=:userId and d.dog_neutered=1 "
 			+ "and d.dog_birth between :yearBefore and :thisYear and d.dog_weight between :startWeight and :endWeight", nativeQuery = true)
 	List<Object[]> getNeuturedList(@Param("userId") long userId, 
 			@Param("yearBefore") String yearBefore, @Param("thisYear") String thisYear,
@@ -52,7 +52,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 	@Query(value = "select dog_id, d.user_id, dog_name, dog_gender, dog_type, dog_birth, dog_weight, dog_neutered, dog_character1, dog_character2, description, dog_image " + 
 			"from user u join dog d " + 
 			"on u.user_id = d.user_id " + 
-			"where not u.user_id=:userId and and d.dog_neutered=0 "
+			"where not u.user_id=:userId and d.dog_neutered=0 "
 			+ "and d.dog_birth between :yearBefore and :thisYear and d.dog_weight between :startWeight and :endWeight and d.dog_gender=:gender", nativeQuery = true)
 	List<Object[]> getGenderList(@Param("userId") long userId, 
 			@Param("yearBefore") String yearBefore, @Param("thisYear") String thisYear,
