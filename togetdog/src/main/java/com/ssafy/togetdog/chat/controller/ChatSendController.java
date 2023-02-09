@@ -28,6 +28,7 @@ public class ChatSendController {
     public ChattingDTO chat(ChatDTO chatDto) {
     	if(csl.chatCondent(chatDto.getSessionId(), chatDto.getRoomId()) && chatDto.getContent().length() <= 100) {
     		chatDto.setDate(LocalDateTime.now());
+    		System.out.println("chat Info : " + chatDto);
     		csl.saveChat(chatDto);
     		return ChattingDTO.of(chatDto);
     	}else {
