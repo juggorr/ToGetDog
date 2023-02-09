@@ -139,8 +139,8 @@ function UserEdit() {
       .get(`${BACKEND_URL}/user/nickname`, { params: { nickname } })
       .then((resp) => {
         if (resp.status === 200) {
-          console.log(resp);
-          console.log("사용 가능한 닉네임");
+          // console.log(resp);
+          // console.log("사용 가능한 닉네임");
           nicknameError.current = true;
           setNicknameErrorMsg("사용 가능한 닉네임입니다.");
         }
@@ -218,7 +218,8 @@ function UserEdit() {
       .catch((err) => {
         console.log(err);
       });
-
+    console.log(localStorage.getItem('user'));
+    console.log(user);
     navigate(`/feed/${user.userId}`);
   };
 
