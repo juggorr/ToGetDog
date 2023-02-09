@@ -65,14 +65,14 @@ const Map = () => {
     });
   }, []);
 
-  const GetFacilities = (kakaoMap) => {
+  const GetFacilities = (lat, lng) => {
     const fetchFacilities = async () => {
       try {
         setFacilities(null);
         // setError(null);
         // setLoading(true);
         const response = await axios.get(
-          `${BACKEND_URL}/facility?latitude=${curLat}&longitude=${curLng}`
+          `${BACKEND_URL}/facility?latitude=${lat}&longitude=${lng}`
         );
         const arr = response.data.storeList;
         arr.sort((a, b) => {
@@ -94,7 +94,7 @@ const Map = () => {
       navigator.geolocation.getCurrentPosition(function (position) {
         setCurLat(position.coords.latitude);
         setCurLng(position.coords.longitude);
-        GetFacilities();
+        GetFacilities(position.coords.latitude, position.coords.longitude);
       });
     } else {
       // HTML5의 GeoLocation을 사용할 수 없을때
