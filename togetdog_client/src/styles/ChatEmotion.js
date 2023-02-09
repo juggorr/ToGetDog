@@ -113,11 +113,13 @@ export const ChatBtnWrapper = styled.div`
 
 export const ChatMsgBoxWrapper = styled.div`
   height: 58vh;
+  overflow-y: scroll;
 `;
 
 export const ChatInputWrapper = styled.div`
   display: flex;
   justify-content: center;
+  padding: 1rem 0;
   .chat-input-box {
     display: flex;
     align-items: center;

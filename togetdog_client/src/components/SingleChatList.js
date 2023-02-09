@@ -2,32 +2,36 @@ import { useNavigate } from 'react-router-dom';
 import { ChatRedDot, SingleChatListWrapper } from '../styles/ChatEmotion';
 import UserIcon from './UserIcon';
 
-const SingleChatList = () => {
+const SingleChatList = ({ chatData }) => {
+  console.log(chatData);
   const navigate = useNavigate();
-  const chatUser = {
-    chatId: 1,
-    nickName: '크림맘',
-    userId: 1,
-    userAge: '20대',
-    userGender: 'female',
-    userHome: '역삼동',
-    msg: '안녕하세요 뽀삐 보호자님!! 오늘 시간 어떠신가요?',
+
+  const userAge = (birthyear) => {
+    const currentYear = new Date().getFullYear();
+
+    return Math.floor((currentYear - birthyear + 1) / 10) * 10;
+  };
+
+  const userDongName = (userAddress) => {
+    let dongName = userAddress.split(' ').reverse()[0];
+    return dongName;
   };
 
   return (
     <>
-      <SingleChatListWrapper onClick={() => navigate(`/chat/${chatUser.chatId}`)}>
+      <SingleChatListWrapper onClick={() => navigate(`/chat/${chatData.roomId}`)}>
         <div className='chat-profile-box'>
-          <UserIcon text={chatUser.nickName} idx={chatUser.userId} />
+          <UserIcon text={chatData.nickName} idx={1} />
           {/* 채팅 안읽은 상태 시에만 ChatRedDot 띄우기 */}
-          <ChatRedDot />
+          {chatData.newChat > 0 ? <ChatRedDot /> : null}
         </div>
         <div className='chat-content-box'>
-          <div className='nickname'>{chatUser.nickName}</div>
+          <div className='nickname'>{chatData.nickName}</div>
           <div className='user-info'>
-            {chatUser.userAge} / {chatUser.userGender === 'male' ? '남' : '여'} / {chatUser.userHome}
+            {userAge(chatData.userBirth)}대 / {chatData.gender === 'm' ? '남' : '여'} /{' '}
+            {userDongName('서울 강남구 역삼동')}
           </div>
-          <div className='chat-preview'>{chatUser.msg}</div>
+          <div className='chat-preview'>{chatData.lastChatContent}</div>
         </div>
       </SingleChatListWrapper>
     </>
