@@ -103,6 +103,7 @@ function DogRegister() {
   const [image, setImage] = useState(null);
   const handleImage = (e) => {
     const file = e.target.files[0];
+    // console.log(file);
     setImage(file);
     setImgURL(URL.createObjectURL(file));
   };
@@ -209,7 +210,9 @@ function DogRegister() {
       return false;
     }
     // 미래의 시점 입력 제한
-    if (year === checkYear && month > checkMonth) {
+    if (year == checkYear && month > checkMonth) {
+      setMonthError(true);
+      setMonthErrorMsg('미래 시점을 입력할 수 없습니다');
       return false;
     }
     // 몸무게 유효성 검사
@@ -233,7 +236,7 @@ function DogRegister() {
     }
 
     // isNeuterd 설정
-
+  
     const dog = {
       dogName: name,
       dogGender: sex,
@@ -245,8 +248,6 @@ function DogRegister() {
       dogCharacter2: isActive,
       description: perk,
     };
-
-    // console.log(dog);
 
     formData.append('dog', new Blob([JSON.stringify(dog)], { type: 'application/json' }));
     formData.append('dogProfile', image);
