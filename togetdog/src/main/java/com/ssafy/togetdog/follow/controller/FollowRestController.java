@@ -107,7 +107,7 @@ public class FollowRestController {
 		// notify 전송
 		User sender = userService.findUserByUserId(jwtService.getUserId(token));
 		User receiver = dogService.findDogByDogId(followDTO.getDogId()).getUser();
-		notifyService.insertNotify(receiver, sender, "f", followDTO.getDogId());
+		notifyService.insertFollowNotify(receiver, sender, followDTO.getDogId());
 
 		resultMap.put("result", SUCCESS);
 		resultMap.put("msg", "강아지 팔로우!");

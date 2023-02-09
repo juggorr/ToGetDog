@@ -39,6 +39,7 @@ import com.ssafy.togetdog.dog.model.dto.DogInfoForUserDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.dog.model.service.DogService;
 import com.ssafy.togetdog.follow.model.service.FollowService;
+import com.ssafy.togetdog.notify.model.service.NotifyService;
 import com.ssafy.togetdog.user.model.dto.UserIncludesDogsDTO;
 import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
 import com.ssafy.togetdog.user.model.service.JwtService;
@@ -67,6 +68,7 @@ public class AppointmentRestController {
 //	private final FollowService followService;
 	private final AppointmentService appointmentService;
 	private final JwtService jwtService;
+	private final NotifyService notifyService;
 		
 	/***
 	 * get appointment list
@@ -139,6 +141,9 @@ public class AppointmentRestController {
 		
 		jwtService.validateToken(token);
 		appointmentService.updateAppointment(roomId, "cancelled");
+		
+		// 상대방에게 취소 알림 전송
+		notifyService.insertCancelNotify(appointmentService.findAppointmentById(roomId));
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("msg", "산책 요청이 취소되었습니다.");
