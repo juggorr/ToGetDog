@@ -1,22 +1,25 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 115px - 2rem);
+  height: calc(100vh - 115px - 1rem);
+  overflow-x: hidden;
   overflow-y: scroll;
-  padding: 1rem 2rem;
+  padding: 1rem;
 `;
 
 export const SingleChatListWrapper = styled.div`
   display: flex;
   padding-bottom: 0.7rem;
+  width: calc(100% - 32px);
 
   .chat-profile-box {
     position: relative;
   }
 
   .chat-content-box {
+    width: calc(100% - 50px);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -37,7 +40,7 @@ export const SingleChatListWrapper = styled.div`
 
   .chat-preview {
     font-size: 0.8rem;
-    width: calc(100vw - 6rem - 64px);
+    width: 85%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
