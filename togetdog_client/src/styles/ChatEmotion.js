@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const ChatContainer = styled.div`
   display: flex;
@@ -7,6 +7,12 @@ export const ChatContainer = styled.div`
   overflow-x: hidden;
   overflow-y: scroll;
   padding: 1rem;
+
+  .no-chat {
+    height: inherit;
+    text-align: center;
+    line-height: 70vh;
+  }
 `;
 
 export const SingleChatListWrapper = styled.div`
