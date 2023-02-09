@@ -218,37 +218,40 @@ public class AppointmentRestController {
 	 */
 	@ApiOperation(value = "산책 친구 찾기", notes = "같이 산책할만한 친구 추천")
 	@PostMapping("/{dogId}")
-	public ResponseEntity<?> ratingUSer(/*@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,*/
+	public ResponseEntity<?> findFreindsByRegion(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
 			@PathVariable(value = "dogId") long dogId) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
-//		long userId = jwtService.getUserId(token);
-		long userId = 4L;
-		List<DogInfoRespDTO> dogList = appointmentService.recommendFriendsForDog(userId, dogId);
+//		appointmentService.test();
 		
-		resultMap.put("object", dogList);
-//		resultMap.put("result", SUCCESS);
-//		resultMap.put("msg", "산책친구 리스트가 반환되었습니다.");
+		long userId = jwtService.getUserId(token);
+//		long userId = 4L;
+		List<DogInfoRespDTO> dogList = appointmentService.recommendFriendsForDog(userId, dogId, "region");
+		
+		resultMap.put("result", SUCCESS);
+		resultMap.put("dogs", dogList);
+		resultMap.put("msg", "동네 산책친구 리스트가 반환되었습니다.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 	
-//	/***
-//	 * recommend friends
-//	 * @param token, roomId
-//	 * @return status 200, 401, 500
-//	 */
-//	@ApiOperation(value = "전체 친구 찾기", notes = "전체 강아지 중에서 같이 산책할만한 친구 추천")
-//	@PostMapping("/{dogId}")
-//	public ResponseEntity<?> ratingUSer(/*@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,*/
-//			@PathVariable(value = "dogId") long dogId) {
-//		Map<String, Object> resultMap = new HashMap<String, Object>();
-//		
-////		long userId = jwtService.getUserId(token);
+	/***
+	 * recommend friends
+	 * @param token, roomId
+	 * @return status 200, 401, 500
+	 */
+	@ApiOperation(value = "전체 친구 찾기", notes = "전체 강아지 중에서 같이 산책할만한 친구 추천")
+	@PostMapping("/{dogId}")
+	public ResponseEntity<?> findFreinds(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@PathVariable(value = "dogId") long dogId) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		long userId = jwtService.getUserId(token);
 //		long userId = 18L;
-//		appointmentService.recommendFriendsForDog(userId, dogId);
-//		
-//		resultMap.put("result", SUCCESS);
-//		resultMap.put("msg", "별점이 부여되었습니다.");
-//		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
-//	}
+		List<DogInfoRespDTO> dogList = appointmentService.recommendFriendsForDog(userId, dogId, "all");
+		
+		resultMap.put("result", SUCCESS);
+		resultMap.put("dogs", dogList);
+		resultMap.put("msg", "전체 산책친구 리스트가 반환되었습니다.");
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+	}
 }
