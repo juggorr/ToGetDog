@@ -209,7 +209,7 @@ export const InfoModal = styled.div`
 
   .modalOutside {
     width: 100%;
-    height: 10rem;
+    height: calc(100% - 10rem);
   }
 
   .dogWrapper {
@@ -230,6 +230,7 @@ export const InfoModal = styled.div`
   }
 
   .characterWrapper {
+    margin-top: 0.3rem;
     display: flex;
     height: 3rem;
     flex-direction: column;

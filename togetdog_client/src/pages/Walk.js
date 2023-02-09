@@ -16,7 +16,7 @@ import { LightColorLongBtn } from "../styles/BtnsEmotion.js";
 import { RedColorShortBtn, MainColorShortBtn } from "../styles/BtnsEmotion.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const SingleMeeting = ({ meeting }) => {
+const SingleMeeting = ({ meeting, auth }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const dogNameList = (dogs) => {
@@ -66,7 +66,7 @@ const SingleMeeting = ({ meeting }) => {
     let result = null;
 
     if (dogs) {
-      if (meeting.partnerDogs.length === 1) {
+      if (dogs.length === 1) {
         result = (
           <div className="dogProfileImgWrapper">
             <img
@@ -76,7 +76,7 @@ const SingleMeeting = ({ meeting }) => {
             />
           </div>
         );
-      } else {
+      } else if (dogs.length > 1) {
         result = (
           <div className="manyDog">
             <div className="manyDogProfileImgWrapper">
@@ -131,37 +131,86 @@ const SingleMeeting = ({ meeting }) => {
   };
 
   const InformationModal = () => {
+    const handleMeeting = async (status) => {
+      console.log(status);
+      let method = "";
+      let url = `${BACKEND_URL}/meeting`;
+      if (status === "cancel") {
+        method = "put";
+        url = url + "/cancel";
+      } else if (status === "decline") {
+        method = "delete";
+      } else if (status === "accept") {
+        method = "put";
+        url = url + "/accept";
+      }
+      await axios({
+        method: method,
+        url: url,
+        params: {
+          appointmentId: meeting.roomId,
+        },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: auth,
+        },
+      })
+        .then(function (response) {
+          // console.log(response);
+          setModalOpen(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
     const renderBtns = () => {
       const Btns = [];
 
       if (meeting.status === "confirmed") {
-        Btns.push(<RedColorShortBtn>약속 취소</RedColorShortBtn>);
         Btns.push(
-          <MainColorShortBtn onClick={setModalOpen(false)}>
+          <RedColorShortBtn onClick={() => handleMeeting("cancel")}>
+            약속 취소
+          </RedColorShortBtn>
+        );
+        Btns.push(
+          <MainColorShortBtn onClick={() => setModalOpen(false)}>
             확인
           </MainColorShortBtn>
         );
       } else if (meeting.status === "wait") {
         if (meeting.received) {
-          Btns.push(<RedColorShortBtn>반려</RedColorShortBtn>);
-          Btns.push(<MainColorShortBtn>수락</MainColorShortBtn>);
-        } else {
-          Btns.push(<RedColorShortBtn>요청 취소</RedColorShortBtn>);
           Btns.push(
-            <MainColorShortBtn onClick={setModalOpen(false)}>
+            <RedColorShortBtn onClick={() => handleMeeting("decline")}>
+              반려
+            </RedColorShortBtn>
+          );
+          Btns.push(
+            <MainColorShortBtn onClick={() => handleMeeting("accept")}>
+              수락
+            </MainColorShortBtn>
+          );
+        } else {
+          Btns.push(
+            <RedColorShortBtn onClick={() => handleMeeting("decline")}>
+              요청 취소
+            </RedColorShortBtn>
+          );
+          Btns.push(
+            <MainColorShortBtn onClick={() => setModalOpen(false)}>
               확인
             </MainColorShortBtn>
           );
         }
       } else if (meeting.status === "done") {
         Btns.push(
-          <MainColorShortBtn onClick={setModalOpen(false)}>
+          <MainColorShortBtn onClick={() => setModalOpen(false)}>
             확인
           </MainColorShortBtn>
         );
       } else if (meeting.status === "cancelled") {
         Btns.push(
-          <MainColorShortBtn onClick={setModalOpen(false)}>
+          <MainColorShortBtn onClick={() => setModalOpen(false)}>
             확인
           </MainColorShortBtn>
         );
@@ -239,8 +288,6 @@ const Walk = () => {
   const [user, setUser] = useRecoilState(userState);
   const [active, setActive] = useState(1);
   const [originalMeetings, setOriginalMeetings] = useState([]);
-  const [myInfo, setMyInfo] = useState();
-  const [partnerInfo, setPartnerInfo] = useState();
   const navigate = useNavigate();
   const auth = useRecoilValue(authAtom);
   const setAuth = useSetRecoilState(authAtom);
@@ -255,7 +302,7 @@ const Walk = () => {
       .then(function (response) {
         // 데이터 들어오는 형태 확인 필요함
         // userOne이 보낸 사람, userTwo가 받은 사람
-        console.log(response.data.appointment);
+
         const appointments = [];
         if (response.data.appointment) {
           for (let i = 0; i < response.data.appointment.length; i++) {
@@ -305,6 +352,7 @@ const Walk = () => {
         <SingleMeeting
           key={originalMeetings[i].roomId}
           meeting={originalMeetings[i]}
+          auth={auth}
         ></SingleMeeting>
       );
       if (originalMeetings[i].status === "confirmed" && active === 1) {
