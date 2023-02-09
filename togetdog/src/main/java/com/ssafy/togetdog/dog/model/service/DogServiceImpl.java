@@ -106,13 +106,27 @@ public class DogServiceImpl implements DogService {
 			for (SentAppointment sentInfo : sentInfos) {
 				// 그 요청들 중에서 지우려는 강아지 id가 포함된 요청이 있다면
 				if (sentInfo.getDog().getDogId() == dog.getDogId()) {
+					// 취소 알림 전송
 					notifyService.insertCancelNotify(appointment);
+					// 해당 약속은 취소 처리
+					appointment.setStatus("cancelled");
+					appointmentRepository.save(appointment);
 				}
 			}
 		}
-		
+		// 프로필 이미지 삭제
 		fileUtil.fileDelete(dog.getDogImage(), dogImageFilePath);
-		dogRepository.delete(dog);
+		dog.setUser(null);
+		dog.setDogName("deleted");
+		dog.setDogGender(null);
+		dog.setDogType(null);
+		dog.setDogBirth(null);
+		dog.setDogWeight("0");
+		dog.setDogCharacter1(null);
+		dog.setDogCharacter2(null);
+		dog.setDogImage(null);
+		dog.setDescription(null);
+		dogRepository.save(dog);
 	}
 	
 	/* 강아지 정보 수정하기 */
@@ -129,7 +143,7 @@ public class DogServiceImpl implements DogService {
 		Dog dog = findDogByDogId(dogDTO.getDogId());
 		
 		// file 변경이 없는 경우
-		if (image.isEmpty()) {
+		if (image == null || image.isEmpty()) {
 			dogRepository.save(dogDTO.of(dogDTO, dog, user));
 		} else {
 			// file 변경이 있는 경우
