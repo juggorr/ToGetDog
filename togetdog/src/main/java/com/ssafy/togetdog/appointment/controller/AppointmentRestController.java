@@ -217,7 +217,7 @@ public class AppointmentRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "산책 친구 찾기", notes = "같이 산책할만한 친구 추천")
-	@PostMapping("/{dogId}")
+	@GetMapping("/{dogId}")
 	public ResponseEntity<?> findFreindsByRegion(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
 			@PathVariable(value = "dogId") long dogId) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -240,13 +240,13 @@ public class AppointmentRestController {
 	 * @return status 200, 401, 500
 	 */
 	@ApiOperation(value = "전체 친구 찾기", notes = "전체 강아지 중에서 같이 산책할만한 친구 추천")
-	@PostMapping("/{dogId}")
+	@GetMapping("/all")
 	public ResponseEntity<?> findFreinds(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
 			@PathVariable(value = "dogId") long dogId) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		long userId = jwtService.getUserId(token);
-//		long userId = 18L;
+//		long userId = 4L;
 		List<DogInfoRespDTO> dogList = appointmentService.recommendFriendsForDog(userId, dogId, "all");
 		
 		resultMap.put("result", SUCCESS);
