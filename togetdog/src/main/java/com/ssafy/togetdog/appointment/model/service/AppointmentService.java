@@ -28,6 +28,7 @@ import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.dog.model.repository.DogRepository;
 import com.ssafy.togetdog.user.model.entity.User;
+import com.ssafy.togetdog.user.model.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,6 +41,7 @@ public class AppointmentService {
 	private final AppointmentRepository appointmentRepository;
 	private final SentAppointmentRepository sentAppointmentRepository;
 	private final ReceivedAppointmentRepository receivedAppointmentRepository;
+	private final UserRepository userRepository;
 	private final DogRepository dogRepository;
 
 	public List<AppointmentListDTO> findAllByUserId(long userId) {
@@ -188,17 +190,24 @@ public class AppointmentService {
 	}
 
 	public List<DogInfoForUserDTO> recommendFriendsForDog(long userId, long dogId) {
+		User user = userRepository.findById(userId).orElse(null);
+		String regionCode = user.getRegionCode();
+		
 		Dog dog = dogRepository.findByDogId(dogId);
 		DogInfoRespDTO myDog = DogInfoRespDTO.of(dog, Double.parseDouble(dog.getDogWeight()));
 		logger.info("myDog ============== : {}", myDog);
-		String weight = String.valueOf(myDog.getDogWeight());
 		boolean neutured = myDog.isDogNeutered();
 		int age = myDog.getDogAge() % 12;
 		LocalDateTime now = LocalDateTime.now();
 		String tenYearBefore = String.valueOf(now.minusYears(10)).substring(0, 4);
 		String fiveYearBefore = String.valueOf(now.minusYears(5)).substring(0, 4);
 		String oneYearBefore = String.valueOf(now.minusYears(1)).substring(0, 4);
+		String thisYear = String.valueOf(now).substring(0, 4);
 		logger.info("age ============== : {}", age);
+		double weight = myDog.getDogWeight();
+		String startWeight = "-1";
+		String endWeight = "-1";
+		String gender = myDog.getDogGender().substring(0, 1);
 		
 		/*
 		 * 중성화 했으면 중성화 한 강아지 대상으로
@@ -211,20 +220,40 @@ public class AppointmentService {
 		 * 나이는
 		 * 1살 미만, 1살 ~ 5살, 5살 ~ 10살, 10살 이상
 		 */
-		if(neutured) { // 중성화 한 강아지 true = 1, false = 0
-			if(age < 1) { // 1살 미만
-				
-			} else if(age < 5) { // 5살 미만
-				
-			} else if(age < 10) { // 10살 미만
-				
-			} else {
-				
-			}
-		} else { // 중성화 안한 강아지, 쿼리 문 뒤에 dogGender 붙여야함
-			
+		List<Object> recList = new ArrayList<Object>();
+		if(weight < 6.0) {
+			startWeight = "0";
+			endWeight = "5.9";
+		} else if (weight >= 10.0) {
+			startWeight = "10";
+			endWeight = "80";
+		} else {
+			startWeight = "0";
+			endWeight = "80";
 		}
 		
+		if(neutured) { // 중성화 한 강아지 true = 1, false = 0
+			if(age < 1) { // 1살 미만
+				recList = appointmentRepository.getNeuturedList(userId, regionCode, oneYearBefore, thisYear, startWeight, endWeight);
+			} else if(age < 5) { // 1~5살
+				recList = appointmentRepository.getNeuturedList(userId, regionCode, fiveYearBefore, oneYearBefore, startWeight, endWeight);
+			} else if(age < 10) { // 5~10살
+				recList = appointmentRepository.getNeuturedList(userId, regionCode, tenYearBefore, fiveYearBefore, startWeight, endWeight);
+			} else { // 10살 이상
+				recList = appointmentRepository.getNeuturedList(userId, regionCode, "190001", tenYearBefore, startWeight, endWeight);
+			}
+		} else { // 중성화 안한 강아지, 쿼리 문 뒤에 dogGender 붙여야함
+			if(age < 1) { // 1살 미만
+				recList = appointmentRepository.getGenderList(userId, regionCode, oneYearBefore, thisYear, startWeight, endWeight, gender);
+			} else if(age < 5) { // 1~5살
+				recList = appointmentRepository.getGenderList(userId, regionCode, fiveYearBefore, oneYearBefore, startWeight, endWeight, gender);
+			} else if(age < 10) { // 5~10살
+				recList = appointmentRepository.getGenderList(userId, regionCode, tenYearBefore, fiveYearBefore, startWeight, endWeight, gender);
+			} else { // 10살 이상
+				recList = appointmentRepository.getGenderList(userId, regionCode, "190001", tenYearBefore, startWeight, endWeight, gender);
+			}
+		}
+		logger.info("recommendedList ============== : {}", recList);
 		return null;
 	}
 
