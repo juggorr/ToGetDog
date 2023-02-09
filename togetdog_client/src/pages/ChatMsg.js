@@ -38,6 +38,7 @@ const ChatMsg = () => {
   const stompClient = Stomp.over(socket);
 
   let sessionId = 0;
+  let roomId = 5;
   let connected = false;
 
   const handleLogout = () => {
@@ -59,30 +60,33 @@ const ChatMsg = () => {
     return dongName;
   };
 
-  const onChangeMsg = (e) => {
-    setMsgInput(e.target.value);
+  const onChangeMsg = async (e) => {
+    await setMsgInput(e.target.value);
   };
 
   const sendMessage = () => {
-    if (!msgInput) {
+    console.log('hi');
+    console.log(msgInput);
+    if (msgInput) {
       send();
       setMsgInput('');
     }
   };
 
   const send = () => {
-    if (stompClient && connected) {
+    if (stompClient) {
+      console.log('hihi');
       // 보낼 메세지 json 객체 (roomid 넣으삼)
       // 성다연 todo : roomId 저장
       const msg = {
         userId: user.userId,
         content: msgInput,
         sessionId: sessionId,
-        roomId: chatTarget.roomId,
+        roomId: roomId,
       };
       // 하단 /publish/messages/ 뒤에 서버로부터 받은 roomId 붙여주면 됨(5 대신에)
       // 성다연 todo : 하단 roomId 저장
-      stompClient.send('/publish/messages/' + chatTarget.roomId, JSON.stringify(msg), {});
+      stompClient.send('/publish/messages/' + roomId, JSON.stringify(msg), {});
     }
   };
 
@@ -101,18 +105,21 @@ const ChatMsg = () => {
         // this.sessionId - 1.처음 접속시 2 메세지 보낼시 - Json객체로 보냄
         var len = socket._transport.url.length;
         sessionId = socket._transport.url.substring(len - 8, len);
+        // sessionId = socket._transport.url.substring(len - 10, len - 18);
         console.log('세션 아이디 : ' + socket._transport.url);
         console.log('세션 아이디 : ' + sessionId);
 
         // 처음 접속시 서버로 해당 채팅방에 접속한 유저의 정보를 보냄
         // 정보 : sessionId , userId , roomId(방번호)
         // 성다연 todo : 하단 userId roomId 저장
+
+        console.log('룸넘버' + roomId);
         stompClient.send(
           '/publish/messages/sessionNum',
           JSON.stringify({
             sessionId: sessionId,
             userId: user.userId,
-            roomId: chatTarget.roomId,
+            roomId: roomId,
           }),
           {},
         );
@@ -121,8 +128,11 @@ const ChatMsg = () => {
 
         // 하단 /subscribe/roomId/ 뒤에 서버로부터 받은 roomId 붙여주면 됨(5 대신에)
         // 성다연 todo : 하단 roomId 저장
-        stompClient.subscribe('/subscribe/roomId/' + chatTarget.roomId, (res) => {
+        stompClient.subscribe('/subscribe/roomId/' + roomId, (res) => {
+          console.log('안녕');
+          console.log(res);
           // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
+          // setChats(chats.push(JSON.parse(res.body)));
           this.recvList.push(JSON.parse(res.body));
         });
       },
