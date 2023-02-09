@@ -118,12 +118,6 @@ public class DogServiceImpl implements DogService {
 		fileUtil.fileDelete(dog.getDogImage(), dogImageFilePath);
 		dog.setUser(null);
 		dog.setDogName("deleted");
-		dog.setDogGender(null);
-		dog.setDogType(null);
-		dog.setDogBirth(null);
-		dog.setDogWeight("0");
-		dog.setDogCharacter1(null);
-		dog.setDogCharacter2(null);
 		dog.setDogImage(null);
 		dog.setDescription(null);
 		dogRepository.save(dog);
