@@ -6,7 +6,7 @@ export const LoginContainer = styled.div`
   align-items: center;
   justify-content: center;
   // background-color: rgba(0, 0, 0, 0.55);
-`
+`;
 
 export const LoginWrapper = styled.div`
   width: 300px;
@@ -34,7 +34,7 @@ export const LoginWrapper = styled.div`
     text-decoration: underline;
     font-size: 13px;
   }
-`
+`;
 
 export const LogoWrapper = styled.div`
   display: flex;
@@ -43,18 +43,10 @@ export const LogoWrapper = styled.div`
   align-itmes: center;
   padding-bottom: 50px;
 
-  .login-logo {
-    width: 150px;
-    height: 150px;
-    margin: auto;
+  .logo-img {
+    width: 19rem;
   }
-
-  .logo-title {
-    font-size: 40px;
-    font-weight
-    color: #000;
-  }
-`
+`;
 
 export const InputWrapper = styled.div`
   width: 260px;
@@ -64,9 +56,20 @@ export const InputWrapper = styled.div`
     margin-bottom: 5px;
   }
 
-  .email-input, .password-input {
+  .email-input,
+  .password-input {
     width: 80%;
     font-size: 16px;
+    color: #000;
+    border: none;
+    background: none;
+    outline: none;
+    padding: 10px 5px;
+  }
+
+  .search-input {
+    width: 80%;
+    font-size: 0.751rem;
     color: #000;
     border: none;
     background: none;
@@ -80,11 +83,31 @@ export const InputWrapper = styled.div`
     font-size: 13px;
   }
 
-`
+  .input-title {
+    font-size: 15px;
+    margin-bottom: 0.5rem;
+  }  
+
+  .red-dot {
+    color: red;
+    margin-left: 3px;
+    font-weight: 700;
+  }
+
+  .success {
+    color: #0052ff;
+    font-size: 0.8rem;
+  }
+
+  .error {
+    color: red;
+    font-size: 0.8rem;
+  }
+`;
 
 export const SocialLoginLogo = styled.img`
   width: 50px;
   border-radius: 50%;
   margin: 0 15px;
   cursor: pointer;
-`
+`;
