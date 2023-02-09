@@ -256,5 +256,8 @@ public class AppointmentService {
 		logger.info("recommendedList ============== : {}", recList);
 		return null;
 	}
-
+	
+	public Appointment findAppointmentById(long roomId) {
+		return appointmentRepository.findById(roomId).orElse(null);
+	}
 }

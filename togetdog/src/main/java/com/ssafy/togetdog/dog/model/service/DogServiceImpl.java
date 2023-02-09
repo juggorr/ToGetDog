@@ -81,6 +81,8 @@ public class DogServiceImpl implements DogService {
 		if (dog.getUser().getUserId() != userId) {
 			throw new UnAuthorizedException("삭제 권한이 없는 사용자의 접근입니다.");
 		}
+		// 산책 약속을 잡아놓은 상태일때, 취소 알림을 전송하고 삭제
+		
 		fileUtil.fileDelete(dog.getDogImage(), dogImageFilePath);
 		dogRepository.delete(dog);
 	}

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.google.common.base.Optional;
 import com.ssafy.togetdog.appointment.model.entity.Appointment;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.user.model.entity.User;
