@@ -23,13 +23,13 @@ public class ChattingDTO {
 	
 	private String content;
 	
-	private LocalDateTime date;
+	private String date;
 
 	public static ChattingDTO of(ChatMsg msg) {
 		return ChattingDTO.builder()
 				.userId(msg.getUserId())
 				.content(msg.getContent())
-				.date(msg.getDate())
+				.date(msg.getDate().toString())
 				.build();
 	}
 	
@@ -37,7 +37,7 @@ public class ChattingDTO {
 		return ChattingDTO.builder()
 				.userId(dto.getUserId())
 				.content(dto.getContent())
-				.date(dto.getDate())
+				.date(dto.getDate().toString())
 				.build();
 	}
 }
