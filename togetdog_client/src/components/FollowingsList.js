@@ -2,6 +2,7 @@ import DogFollow from "./DogFollow";
 import { FollowList } from "../styles/FollowerListEmotion";
 
 const FollowingsList = ({ followings }) => {
+
   return followings.length > 0 ? (
     <div className="list-div">
       {followings.map((following) => (
