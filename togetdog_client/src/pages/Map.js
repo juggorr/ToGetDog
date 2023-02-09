@@ -9,32 +9,51 @@ import {
   PlaceIconWrapper,
   SinglePlaceWrapper,
   PlaceButtonWrapper,
+  PlaceModal,
 } from "../styles/MapEmotion";
 import dogHospital from "../assets/dog_hospital.png";
 import dogService from "../assets/dog_service.png";
 import dogRestaurant from "../assets/dog_restaurant.png";
 import dogFacility from "../assets/dog_facility.png";
 
-const SinglePlace = ({ Name, Address, Type, Distance }) => {
+const SinglePlace = ({ facility }) => {
+  const [modalOpen, setModalOpen] = useState(false);
   let placeIcon;
-  if (Type === "반려의료") {
+
+  if (facility.type === "반려의료") {
     placeIcon = <PlaceIconWrapper src={dogHospital} alt="hospital_img" />;
-  } else if (Type === "반려동물 서비스") {
+  } else if (facility.type === "반려동물 서비스") {
     placeIcon = <PlaceIconWrapper src={dogService} alt="service_img" />;
-  } else if (Type === "반려동물식당카페") {
+  } else if (facility.type === "반려동물식당카페") {
     placeIcon = <PlaceIconWrapper src={dogRestaurant} alt="restaurant_img" />;
   } else {
     placeIcon = <PlaceIconWrapper src={dogFacility} alt="etc_img" />;
   }
 
+  const SinglePlaceModal = () => {
+    return (
+      <PlaceModal>
+        <div className="modalOutside" onClick={() => setModalOpen(false)}></div>
+        <div className="modalInside"></div>
+        <div className="modalOutside" onClick={() => setModalOpen(false)}></div>
+      </PlaceModal>
+    );
+  };
+
   return (
     <SinglePlaceWrapper>
-      <div className="placeIconDiv">{placeIcon}</div>
-      <div className="placeDiv">
-        <p className="placeName">{Name}</p>
-        <p className="placeText">
-          {Distance < 1 ? `${Distance * 1000}m` : `${Distance}km`} | {Address}
-        </p>
+      {modalOpen && <SinglePlaceModal setModalOpen={setModalOpen} />}
+      <div className="placeWrapper" onClick={() => setModalOpen(true)}>
+        <div className="placeIconDiv">{placeIcon}</div>
+        <div className="placeDiv">
+          <p className="placeName">{facility.facilityName}</p>
+          <p className="placeText">
+            {facility.distance < 1
+              ? `${facility.distance * 1000}m`
+              : `${facility.distance}km`}{" "}
+            | {facility.facilityAddress}
+          </p>
+        </div>
       </div>
     </SinglePlaceWrapper>
   );
@@ -310,10 +329,7 @@ const Map = () => {
         const curFacility = (
           <SinglePlace
             key={facilities[i].facilityId}
-            Name={facilities[i].facilityName}
-            Address={facilities[i].facilityAddress}
-            Type={facilities[i].type}
-            Distance={facilities[i].distance}
+            facility={facilities[i]}
           />
         );
 
