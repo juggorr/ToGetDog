@@ -169,7 +169,12 @@ public class AppointmentService {
 		if(appointment.getSentUser().getUserId() == userId) {
 			if(appointment.isSenderRated()) return;
 			long bSum = appointment.getReceivedUser().getRatingSum();
-			long aSum = bSum + rating;
+			long aSum = bSum;
+			if(rating == 0) { // 산책 약속 "noshow"했을 경우
+				aSum -= 5;
+			} else {
+				aSum += rating;
+			}
 			long bCnt = appointment.getReceivedUser().getRatingCount();
 			long aCnt = bCnt + 1;
 			appointment.getReceivedUser().setRatingSum(aSum);
@@ -179,7 +184,12 @@ public class AppointmentService {
 		} else {
 			if(appointment.isReceiverRated()) return;
 			long bSum = appointment.getSentUser().getRatingSum();
-			long aSum = bSum + rating;
+			long aSum = bSum;
+			if(rating == 0) { // 산책 약속 "noshow"했을 경우
+				aSum -= 5;
+			} else {
+				aSum += rating;
+			}
 			long bCnt = appointment.getSentUser().getRatingCount();
 			long aCnt = bCnt + 1;
 			appointment.getSentUser().setRatingSum(aSum);
@@ -189,7 +199,7 @@ public class AppointmentService {
 		}
 	}
 
-	public List<DogInfoForUserDTO> recommendFriendsForDog(long userId, long dogId) {
+	public List<DogInfoRespDTO> recommendFriendsForDog(long userId, long dogId) {
 		User user = userRepository.findById(userId).orElse(null);
 		String regionCode = user.getRegionCode();
 		
@@ -220,7 +230,6 @@ public class AppointmentService {
 		 * 나이는
 		 * 1살 미만, 1살 ~ 5살, 5살 ~ 10살, 10살 이상
 		 */
-		List<Object> recList = new ArrayList<Object>();
 		if(weight < 6.0) {
 			startWeight = "0";
 			endWeight = "5.9";
@@ -231,29 +240,35 @@ public class AppointmentService {
 			startWeight = "0";
 			endWeight = "80";
 		}
+		List<Object[]> recList = new ArrayList<Object[]>();
+		List<DogInfoRespDTO> reclist = new ArrayList<DogInfoRespDTO>();
 		
 		if(neutured) { // 중성화 한 강아지 true = 1, false = 0
-			if(age < 1) { // 1살 미만
-				recList = appointmentRepository.getNeuturedList(userId, regionCode, oneYearBefore, thisYear, startWeight, endWeight);
-			} else if(age < 5) { // 1~5살
-				recList = appointmentRepository.getNeuturedList(userId, regionCode, fiveYearBefore, oneYearBefore, startWeight, endWeight);
-			} else if(age < 10) { // 5~10살
-				recList = appointmentRepository.getNeuturedList(userId, regionCode, tenYearBefore, fiveYearBefore, startWeight, endWeight);
-			} else { // 10살 이상
-				recList = appointmentRepository.getNeuturedList(userId, regionCode, "190001", tenYearBefore, startWeight, endWeight);
-			}
-		} else { // 중성화 안한 강아지, 쿼리 문 뒤에 dogGender 붙여야함
-			if(age < 1) { // 1살 미만
-				recList = appointmentRepository.getGenderList(userId, regionCode, oneYearBefore, thisYear, startWeight, endWeight, gender);
-			} else if(age < 5) { // 1~5살
-				recList = appointmentRepository.getGenderList(userId, regionCode, fiveYearBefore, oneYearBefore, startWeight, endWeight, gender);
-			} else if(age < 10) { // 5~10살
-				recList = appointmentRepository.getGenderList(userId, regionCode, tenYearBefore, fiveYearBefore, startWeight, endWeight, gender);
-			} else { // 10살 이상
-				recList = appointmentRepository.getGenderList(userId, regionCode, "190001", tenYearBefore, startWeight, endWeight, gender);
-			}
+//			if(age < 1) { // 1살 미만
+//				recList = appointmentRepository.getNeuturedList(userId, regionCode, oneYearBefore, thisYear, startWeight, endWeight);
+				recList = appointmentRepository.getNeuturedList(userId, regionCode);
+//			} else if(age < 5) { // 1~5살
+//				recList = appointmentRepository.getNeuturedList(userId, regionCode, fiveYearBefore, oneYearBefore, startWeight, endWeight);
+//			} else if(age < 10) { // 5~10살
+//				recList = appointmentRepository.getNeuturedList(userId, regionCode, tenYearBefore, fiveYearBefore, startWeight, endWeight);
+//			} else { // 10살 이상
+//				recList = appointmentRepository.getNeuturedList(userId, regionCode, "190001", tenYearBefore, startWeight, endWeight);
+//			}
+//		} else { // 중성화 안한 강아지, 쿼리 문 뒤에 dogGender 붙여야함
+//			if(age < 1) { // 1살 미만
+//				recList = appointmentRepository.getGenderList(userId, regionCode, oneYearBefore, thisYear, startWeight, endWeight, gender);
+//			} else if(age < 5) { // 1~5살
+//				recList = appointmentRepository.getGenderList(userId, regionCode, fiveYearBefore, oneYearBefore, startWeight, endWeight, gender);
+//			} else if(age < 10) { // 5~10살
+//				recList = appointmentRepository.getGenderList(userId, regionCode, tenYearBefore, fiveYearBefore, startWeight, endWeight, gender);
+//			} else { // 10살 이상
+//				recList = appointmentRepository.getGenderList(userId, regionCode, "190001", tenYearBefore, startWeight, endWeight, gender);
+//			}
 		}
 		logger.info("recommendedList ============== : {}", recList);
+//		reclist = recList.stream().map(d-> DogInfoRespDTO.of(d, Double.parseDouble(d.getDogWeight())))
+//			.collect(Collectors.toList());
+//		return reclist;
 		return null;
 	}
 	
