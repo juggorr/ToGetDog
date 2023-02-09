@@ -143,7 +143,7 @@ public class DogServiceImpl implements DogService {
 		Dog dog = findDogByDogId(dogDTO.getDogId());
 		
 		// file 변경이 없는 경우
-		if (image.isEmpty()) {
+		if (image == null || image.isEmpty()) {
 			dogRepository.save(dogDTO.of(dogDTO, dog, user));
 		} else {
 			// file 변경이 있는 경우
