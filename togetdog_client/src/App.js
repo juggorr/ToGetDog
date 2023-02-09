@@ -57,10 +57,10 @@ function App() {
             <Route path="/chat/:chatId" element={<ChatMsg />} />
             <Route path="/followerlist/:dogId" element={<FollowerList />} />
             <Route path="/followinglist/:userId" element={<FollowingList />} />
+            <Route path="/useredit" element={<UserEdit />} />
           </Route>
           {/* 그 이외 필요없는 컴포넌트 */}
           <Route path="/new" element={<New />} />
-          <Route path="/useredit" element={<UserEdit />} />
           <Route path="/editBoard/:boardId" element={<EditBoard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
