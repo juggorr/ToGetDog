@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 export const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
+  position: relative;
 
   .typed-out {
     overflow: hidden;
@@ -35,8 +36,8 @@ export const HomeContainer = styled.div`
     width: 7rem;
     z-index: 1;
     position: absolute;
-    right: 3%;
-    top: 17%;
+    right: 0.7rem;
+    top: 4.7rem;
     padding: 0.3rem;
     border: 1px solid #559968;
     color: #559968;
@@ -59,7 +60,7 @@ export const HomeContainer = styled.div`
 `;
 
 export const HomeWelcomeBox = styled.img`
-  width: 100vw;
+  width: 100%;
   height: 7rem;
   object-fit: cover;
   filter: brightness(50%);
