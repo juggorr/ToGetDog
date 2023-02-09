@@ -24,6 +24,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class SearchUserDTO {
+	private long userId;
 	private String email;
 	private String nickName;
 	private String birth;
@@ -60,6 +61,7 @@ public class SearchUserDTO {
 		}
 		LocalDate now = LocalDate.now();
 		return SearchUserDTO.builder()
+				.userId(user.getUserId())
 				.email(user.getEmail())
 				.nickName(user.getNickName())
 				.birth(user.getUserBirth())
