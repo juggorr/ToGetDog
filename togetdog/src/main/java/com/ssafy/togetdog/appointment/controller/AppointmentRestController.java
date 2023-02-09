@@ -36,6 +36,7 @@ import com.ssafy.togetdog.board.model.service.BoardService;
 import com.ssafy.togetdog.board.model.service.CommentService;
 import com.ssafy.togetdog.board.model.service.LikeService;
 import com.ssafy.togetdog.dog.model.dto.DogInfoForUserDTO;
+import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.dog.model.service.DogService;
 import com.ssafy.togetdog.follow.model.service.FollowService;
@@ -223,10 +224,11 @@ public class AppointmentRestController {
 		
 //		long userId = jwtService.getUserId(token);
 		long userId = 4L;
-		List<DogInfoForUserDTO> dogList = appointmentService.recommendFriendsForDog(userId, dogId);
+		List<DogInfoRespDTO> dogList = appointmentService.recommendFriendsForDog(userId, dogId);
 		
-		resultMap.put("result", SUCCESS);
-		resultMap.put("msg", "산책친구 리스트가 반환되었습니다.");
+		resultMap.put("object", dogList);
+//		resultMap.put("result", SUCCESS);
+//		resultMap.put("msg", "산책친구 리스트가 반환되었습니다.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 	
