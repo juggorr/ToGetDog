@@ -42,7 +42,7 @@ const SingleNotification = (data) => {
 
   return (
     <SingleNotificationWrapper onClick={() => onClick()}>
-      <UserIcon text={data.item.nickName} idx={data.idx}></UserIcon>
+      <UserIcon text={data.item.nickName}></UserIcon>
       {data.item.type === "좋아요" ? (
         <div className="textWrapper">
           {data.item.nickName}님이 {data.item.dogName}님의 게시물을 좋아합니다.

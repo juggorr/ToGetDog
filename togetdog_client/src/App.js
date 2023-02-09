@@ -55,22 +55,22 @@ function App() {
           <Route element={<SubLayout />}>
             <Route path="/board/:boardId" element={<Board />} />
             <Route path="/chat/:chatId" element={<ChatMsg />} />
+            <Route path="/followerlist/:dogId" element={<FollowerList />} />
+            <Route path="/followinglist/:userId" element={<FollowingList />} />
           </Route>
           {/* 그 이외 필요없는 컴포넌트 */}
           <Route path="/new" element={<New />} />
+          <Route path="/useredit" element={<UserEdit />} />
           <Route path="/editBoard/:boardId" element={<EditBoard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/emailAuth" element={<EmailAuth />} />
-          <Route path="/useredit" element={<UserEdit />} />
           <Route path="/passwordedit" element={<PasswordEdit />} />
           <Route path="/passwordsearch" element={<PasswordSearch />} />
           <Route path="/dogregister" element={<DogRegister />} />
           <Route path='/dogedit' element={<DogEdit />} />
           {/* 임시로 링크 */}
           <Route path="/dogdelete" element={<ConfirmModal />} />
-          <Route path="/followerlist/:dogId" element={<FollowerList />} />
-          <Route path="/followinglist/:userId" element={<FollowingList />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/500" element={<InternalServer />} />
           <Route path="/*" element={<NotFound />} />

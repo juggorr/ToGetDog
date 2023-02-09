@@ -139,8 +139,8 @@ function UserEdit() {
       .get(`${BACKEND_URL}/user/nickname`, { params: { nickname } })
       .then((resp) => {
         if (resp.status === 200) {
-          console.log(resp);
-          console.log("사용 가능한 닉네임");
+          // console.log(resp);
+          // console.log("사용 가능한 닉네임");
           nicknameError.current = true;
           setNicknameErrorMsg("사용 가능한 닉네임입니다.");
         }
@@ -212,13 +212,26 @@ function UserEdit() {
           },
         }
       )
-      .then((res) => {
-        console.log(res);
+      // DB에 다시 접근해서 새로운 회원정보 받아서 로컬에 업데이트
+      .then(() => {
+        axios
+        .get(`${BACKEND_URL}/user/${user.userId}`, {
+          headers: {
+            Authorization: auth,
+          },
+        })
+        .then((res) => {
+          console.log(res.data.user);
+          setUser(res.data.user);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       })
       .catch((err) => {
         console.log(err);
       });
-
+      
     navigate(`/feed/${user.userId}`);
   };
 
