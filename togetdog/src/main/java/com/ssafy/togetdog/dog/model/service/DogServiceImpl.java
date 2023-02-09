@@ -12,6 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.togetdog.appointment.model.entity.Appointment;
+import com.ssafy.togetdog.appointment.model.entity.SentAppointment;
+import com.ssafy.togetdog.appointment.model.repository.AppointmentRepository;
+import com.ssafy.togetdog.appointment.model.repository.SentAppointmentRepository;
 import com.ssafy.togetdog.dog.model.dto.DogInfoForUserDTO;
 import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.dto.DogRegistParamDTO;
@@ -22,7 +26,9 @@ import com.ssafy.togetdog.global.exception.ExcessNumberOfDogsException;
 import com.ssafy.togetdog.global.exception.InvalidInputException;
 import com.ssafy.togetdog.global.exception.UnAuthorizedException;
 import com.ssafy.togetdog.global.util.FileUtil;
+import com.ssafy.togetdog.notify.model.service.NotifyService;
 import com.ssafy.togetdog.user.model.entity.User;
+import com.ssafy.togetdog.user.model.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,7 +37,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DogServiceImpl implements DogService {
 
+	private final UserRepository userRepository;
 	private final DogRepository dogRepository;
+	private final AppointmentRepository appointmentRepository;
+	private final SentAppointmentRepository sentAppointmentRepository;
+	
+	private final NotifyService notifyService;
+	
 	private final FileUtil fileUtil;
 
 	@Value("${file.path.upload-images-dogs}")
@@ -81,7 +93,23 @@ public class DogServiceImpl implements DogService {
 		if (dog.getUser().getUserId() != userId) {
 			throw new UnAuthorizedException("삭제 권한이 없는 사용자의 접근입니다.");
 		}
+		User user = userRepository.findById(userId).orElse(null);
+		if (user == null) {
+			throw new InvalidInputException("찾을 수 없는 회원입니다.");
+		}
+		
 		// 산책 약속을 잡아놓은 상태일때, 취소 알림을 전송하고 삭제
+		// 강아지를 삭제하고자 하는 유저가 보낸 산책요청들을 전부 조회
+		List<Appointment> appointments = appointmentRepository.findAllBySentUser(user);
+		for (Appointment appointment : appointments) {
+			List<SentAppointment> sentInfos = sentAppointmentRepository.findAllByAppointment(appointment);
+			for (SentAppointment sentInfo : sentInfos) {
+				// 그 요청들 중에서 지우려는 강아지 id가 포함된 요청이 있다면
+				if (sentInfo.getDog().getDogId() == dog.getDogId()) {
+					notifyService.insertCancelNotify(appointment);
+				}
+			}
+		}
 		
 		fileUtil.fileDelete(dog.getDogImage(), dogImageFilePath);
 		dogRepository.delete(dog);
