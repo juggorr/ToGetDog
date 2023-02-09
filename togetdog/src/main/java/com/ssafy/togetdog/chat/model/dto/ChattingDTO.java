@@ -17,30 +17,27 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ChatDTO {
-
-	private long id;
-
-	private long idx;
+public class ChattingDTO {
 
 	private long userId;
-
-	private long roomId;
-
+	
 	private String content;
-
-	private String sessionId;
-
+	
 	private LocalDateTime date;
 
-	public ChatMsg toEntity() {
-		return ChatMsg.builder()
-				.id(this.id)
-				.idx(this.idx)
-				.userId(this.userId)
-				.roomId(this.roomId)
-				.content(this.content)
-				.date(this.date)
+	public static ChattingDTO of(ChatMsg msg) {
+		return ChattingDTO.builder()
+				.userId(msg.getUserId())
+				.content(msg.getContent())
+				.date(msg.getDate())
+				.build();
+	}
+	
+	public static ChattingDTO of(ChatDTO dto) {
+		return ChattingDTO.builder()
+				.userId(dto.getUserId())
+				.content(dto.getContent())
+				.date(dto.getDate())
 				.build();
 	}
 }

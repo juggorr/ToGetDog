@@ -70,29 +70,6 @@ public class ChatInfo {
 		this.start = this.last;
 	}
 	
-	public ChatInfoDTO toChatInfoDTO() {
-		return ChatInfoDTO.builder()
-				.roomId(this.roomId)
-				.userId(this.other.getUserId())
-				.userBirth(this.other.getUserBirth())
-				.gender(this.other.getGender())
-				.nickName(this.other.getNickName())
-				.address(this.other.getAddress())
-				.lastChatContent(this.lastChat.getContent())
-				.date(this.lastChat.getDate())
-				.newChat(this.lastChat.getIdx() - this.last)
-				.build();
-	}
-	
-	public ChatInfoDTO toChatInnerDTO() {
-		return ChatInfoDTO.builder()
-				.roomId(this.roomId)
-				.userId(this.other.getUserId())
-				.nickName(this.other.getNickName())
-				.userBirth(this.other.getUserBirth())
-				.gender(this.other.getGender())
-				.address(this.other.getAddress())
-				.start(this.getStart())
-				.build();
-	}
+
+
 }
