@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.togetdog.appointment.model.entity.Appointment;
 import com.ssafy.togetdog.appointment.model.repository.AppointmentRepository;
 import com.ssafy.togetdog.dog.model.service.DogService;
 import com.ssafy.togetdog.notify.model.dto.NoticeDTO;
@@ -33,11 +34,11 @@ public class NotifyServiceImpl implements NotifyService {
 	
 	/* 팔로우insert */
 	@Override
-	public void insertNotify(User receiver, User sender, String notiType, long dogId) {
+	public void insertFollowNotify(User receiver, User sender, long dogId) {
 		Notify newNoti = Notify.builder()
 				.receiver(receiver)
 				.sender(sender)
-				.notifyType(notiType)
+				.notifyType("f")
 				.dogId(dogId)
 				.notifyDate(LocalDateTime.now())
 				.check(false)
@@ -47,11 +48,11 @@ public class NotifyServiceImpl implements NotifyService {
 	
 	/* 좋아요 insert */
 	@Override
-	public void insertNotify(User receiver, User sender, String notiType, long dogId, long boardId) {
+	public void insertLikeNotify(User receiver, User sender, long dogId, long boardId) {
 		Notify newNoti = Notify.builder()
 				.receiver(receiver)
 				.sender(sender)
-				.notifyType(notiType)
+				.notifyType("l")
 				.boardId(boardId)
 				.dogId(dogId)
 				.notifyDate(LocalDateTime.now())
@@ -62,10 +63,12 @@ public class NotifyServiceImpl implements NotifyService {
 	
 	/* 산책 취소 insert */
 	@Override
-	public void insertNotify(User user, String notiType) {		
+	public void insertCancelNotify(Appointment appointment) {
 		Notify newNoti = Notify.builder()
-				.receiver(user)
-				.notifyType(notiType)
+				.receiver(appointment.getReceivedUser())
+				.sender(appointment.getSentUser())
+				.notifyType("c")
+				.notifyDate(LocalDateTime.now())
 				.check(false)
 				.build();
 		notifyRepository.save(newNoti);
@@ -78,17 +81,6 @@ public class NotifyServiceImpl implements NotifyService {
 	}
  
 	/* 알림을 받은 사람 기준으로 알림 리스트 조회*/
-	@Override
-	public List<Notify> findNotifyListByUser(User user) {
-		return notifyRepository.findAllByReceiver(user).orElse(null);
-	}
-	
-	@Override
-	public void deleteNotify(Notify notify) {
-		notifyRepository.delete(notify);
-		                                                
-	}
-	
 	@Override
 	public NotifyRespDTO getNotiList(User user, int pageNo) throws NumberFormatException {
 		// 해당 유저의 좋아요, 팔로우 알림만 알림이 생성된 순서의 내림차순으로 조회합니다.
@@ -115,5 +107,15 @@ public class NotifyServiceImpl implements NotifyService {
 			.noticeList(noticeList)
 			.build();
 	}
-
+	
+	@Override
+	public List<Notify> findNotifyListByUser(User user) {
+		return notifyRepository.findAllByReceiver(user).orElse(null);
+	}
+	
+	@Override
+	public void deleteNotify(Notify notify) {
+		notifyRepository.delete(notify);
+		                                                
+	}
 }

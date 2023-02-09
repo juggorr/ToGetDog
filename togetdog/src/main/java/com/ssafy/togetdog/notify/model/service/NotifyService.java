@@ -2,17 +2,18 @@ package com.ssafy.togetdog.notify.model.service;
 
 import java.util.List;
 
+import com.ssafy.togetdog.appointment.model.entity.Appointment;
 import com.ssafy.togetdog.notify.model.dto.NotifyRespDTO;
 import com.ssafy.togetdog.notify.model.entity.Notify;
 import com.ssafy.togetdog.user.model.entity.User;
 
 public interface NotifyService {
 	// insert follow
-	void insertNotify(User receiver, User sender, String notiType, long dogId);
+	void insertFollowNotify(User receiver, User sender, long dogId);
 	// insert like
-	void insertNotify(User receiver, User sender, String notiType, long dogId, long boardId);
+	void insertLikeNotify(User receiver, User sender, long dogId, long boardId);
 	// insert appointment cancel notice
-	void insertNotify(User user, String notiType);
+	void insertCancelNotify(Appointment appointment);
 	// check notice
 	void updateNotify(User user);
 	// select notice
