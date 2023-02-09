@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { authAtom, userState } from '../recoil';
 import Select from 'react-select';
 import axios from 'axios';
@@ -44,7 +44,7 @@ const char1BtnList = [
   },
   {
     btn_id: 'disobedient',
-    text: '사나움',
+    text: '공격적',
   },
 ];
 // 강아지 성격2 선택 옵션들
@@ -59,11 +59,31 @@ const char2BtnList = [
   },
 ];
 
-function DogRegister() {
-  // const [user, setUser] = useRecoilState(userState);
-  const auth = useRecoilValue(authAtom);
 
+
+function DogEdit() {
+
+  const auth = useRecoilValue(authAtom);
+  const setAuth = useSetRecoilState(authAtom);
+  const [user, setUser] = useRecoilState(userState);
+  
   const navigate = useNavigate();
+
+  // 들어오면 강아지 정보 받아오기 & 현재 년, 월 받아오기
+  const [dog, setDog] = useState({});
+  useEffect(() => {
+    axios
+      .get(`${BACKEND_URL}/dog/${dogId}`)
+      .then((res) => {
+        console.log(res)
+        setDog(res.data.dog)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
+  const location = useLocation();
+  const dogId = location.state;
 
   // 견종 리스트 public/breeds.txt에서 불러오기
   const [breedList, setBreedList] = useState([]);
@@ -81,20 +101,82 @@ function DogRegister() {
     fetchData();
   }, []);
 
+  // placeholder들 받아오기
+  const [imageHold, setImageHold] = useState('');
+  const [imageHoldURL, setImageHoldURL] = useState('');
+  const [nameHold, setNameHold] = useState('');
+  const [breedHold, setBreedHold] = useState('');
+  const [ageHold, setAgeHold] = useState('');
+  const [yearHold, setYearHold] = useState('');
+  const [monthHold, setMonthHold] = useState('');
+  const [weightHold, setWeightHold] = useState('');
+  const [perkHold, setPerkHold] = useState('');
+  useEffect(() => {
+    // placeholder들을 기본값으로 설정해주는 부분
+    setImage(dog.dogProfile);
+    setName(dog.dogName);
+    setBreed(dog.dogType);
+    setWeight(dog.dogWeight);
+    setPerk(dog.description);
+    // 버튼들은 기본값을 주어야 placeholder 설정가능
+    setSex(dog.dogGender);
+    if (dog.dogNeutered) {
+      setIsNeuterd(1);
+    } else {
+      setIsNeuterd(2);
+    }
+    setIsObedient(dog.dogCharacter1);
+    setIsActive(dog.dogCharacter2);
+    // placeholder 설정하기
+    setImageHold(dog.dogProfile);
+    setNameHold(dog.dogName);
+    setBreedHold(dog.dogType);
+    setAgeHold(dog.dogAge);
+    setWeightHold(dog.dogWeight);
+    setPerkHold(dog.description);
+  }, [dog])
+
+  // age들어오면 강아지 태어난 년, 월 계산하기
+  useEffect(() => {
+    const result = parseInt(ageHold / 12);
+    const remainder = ageHold % 12;
+    let yearTemp = new Date().getFullYear() - result;
+    let monthTemp = new Date().getMonth() + 1;
+    // 월수 계산 위한 변수
+    let x = monthTemp - remainder;
+
+    if (x === monthTemp) {
+      setYearHold(yearTemp);
+      setMonthHold(monthTemp);
+      setYear(String(yearTemp));
+      setMonth(String(monthTemp));
+      return;
+    }
+    if (x < 0) {
+      setYearHold(yearTemp - 1);
+      setMonthHold(12 + x);
+      setYear(String(yearTemp - 1));
+      setMonth(String(12 + x));
+      return;
+    }
+    if (0 < x < monthTemp) {
+      setYearHold(yearTemp);
+      setMonthHold(x);
+      setYear(String(yearTemp));
+      setMonth(String(x));
+      return;
+    }
+  }, [ageHold])
+
 
   const [noEssentialsModal, setNoEssentialsModal] = useState(false);
 
-  // const [inputError, setInputError] = useState(false);
-  // const [inputErrorMsg, setInputErrorMsg] = useState('');
   const [nameError, setNameError] = useState(false);
   const [nameErrorMsg, setNameErrorMsg] = useState('');
   const [yearError, setYearError] = useState(false);
   const [yearErrorMsg, setYearErrorMsg] = useState('');
   const [monthError, setMonthError] = useState(false);
   const [monthErrorMsg, setMonthErrorMsg] = useState('');
-  // 미래시점 입력시 발생하는 err
-  // const [ageError, setAgeError] = useState(false);
-  // const [ageErrorMsg, setAgeErrorMsg] = useState('');
   const [weightError, setWeightError] = useState(false);
   const [weightErrorMsg, setWeightErrorMsg] = useState('');
 
@@ -102,8 +184,9 @@ function DogRegister() {
   const [imgURL, setImgURL] = useState('');
   const [image, setImage] = useState(null);
   const handleImage = (e) => {
+    // 파일 새로 올리면 placeholder null로 바꿔서 올린 이미지 미리보기
+    setImageHold(null);
     const file = e.target.files[0];
-    // console.log(file);
     setImage(file);
     setImgURL(URL.createObjectURL(file));
   };
@@ -132,20 +215,6 @@ function DogRegister() {
   const handleMonth = ({ target: { value } }) => {
     setMonth(value.slice(0, 2));
   };
-  // 나이 문자열형태로 바꾸기 함수 '202201'
-  // const [age, setAge] = useState("");
-  // const makeAge = async () => {
-  //   if (year && month && month < 10) {
-  //     const string = year.toString() + "0" + month.toString();
-  //     await setAge(string);
-  //     return;
-  //   }
-  //   if (year && month && month >= 10) {
-  //     const string = year.toString() + month.toString();
-  //     await setAge(string);
-  //     return;
-  //   }
-  // };
   // 몸무게, 4글자 이상 입력 불가
   const [weight, setWeight] = useState('');
   const handleWeight = ({ target: { value } }) => {
@@ -172,16 +241,12 @@ function DogRegister() {
     setPerk(value.slice(0, 20));
   };
 
-  // female male
-  // 몸무게 4자리 (1.23 가능)
-  // 순종적 obedient disobedient
-  // 활동적 active inactive
-
   // 유효성 검사 함수
   const checkValidation = () => {
     // 필수 입력 값들이 입력되었는지 확인
     if (!image || !name || !sex || !breed || !year || !month || !weight || !isNeuterd || !isObedient || !isActive) {
       setNoEssentialsModal(true);
+      console.log(image);
       // setInputError(true);
       // setInputErrorMsg('필수 값이 입력되지 않았습니다');
       return false;
@@ -210,9 +275,9 @@ function DogRegister() {
       return false;
     }
     // 미래의 시점 입력 제한
-    if (year == checkYear && month > checkMonth) {
+    if (year === checkYear && month > checkMonth) {
       setMonthError(true);
-      setMonthErrorMsg('미래 시점을 입력할 수 없습니다');
+      setMonthErrorMsg('현재 시점 이후를 입력할 수 없어요')
       return false;
     }
     // 몸무게 유효성 검사
@@ -225,15 +290,14 @@ function DogRegister() {
     return true;
   };
 
-  const sendPOST = async () => {
-    // console.log(age);
+  const sendPUT = async () => {
     const formData = new FormData();
     let newBirth = month;
     if (month < 10 && month.length === 1) {
       newBirth = year + '0' + month;
     } else {
       newBirth = year + month;
-    }
+    };
 
     // isNeuterd 설정
     let neuterdBoolean = null;
@@ -243,10 +307,10 @@ function DogRegister() {
         break;
       default:
         neuterdBoolean = false;
-    }
-    
+    }; 
 
     const dog = {
+      dogId: dogId,
       dogName: name,
       dogGender: sex,
       dogType: breed,
@@ -258,17 +322,21 @@ function DogRegister() {
       description: perk,
     };
 
+    console.log(dog)
+
     formData.append('dog', new Blob([JSON.stringify(dog)], { type: 'application/json' }));
-    formData.append('dogProfile', image);
+    if (!imageHold) {
+      formData.append('dogProfile', image);
+    } 
 
     // console.log(formData.get("dog"));
 
     // 폼데이터 확인
-    // for (let key of formData.keys()) {
-    //   console.log(key, ':', formData.get(key));
-    // }
+    for (let key of formData.keys()) {
+      console.log(key, ':', formData.get(key));
+    }
     await axios
-      .post(`${BACKEND_URL}/dog`, formData, {
+      .put(`${BACKEND_URL}/dog`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: auth,
@@ -276,26 +344,23 @@ function DogRegister() {
       })
       .then((res) => {
         console.log(res.data);
-        navigate('/');
+        navigate(`/feed/${user.userId}`);
       })
       .catch((err) => {
         console.log(err);
       });
-  };
+  }
 
-  // 버튼누르면
-  const handleRegister = () => {
-    // 유효성 검사 통과 시
+
+  const handleEdit = () => {
     if (checkValidation()) {
-      // 나이 바꿔주기 (2022.07 => '202207')
-      // makeAge();
-      // POST요청 보내기
-      sendPOST();
+      sendPUT();
+      console.log('성공했습니다')
     } else {
-      console.log('정상 처리되지 않았음');
+      console.log('정상처리 실패')
       return;
     }
-  };
+  }
 
   return (
     <RegisterContainer>
@@ -305,7 +370,7 @@ function DogRegister() {
         setNoEssentialsModal={setNoEssentialsModal}
       />
       <RegisterWrapper>
-        <ProfileImage image={imgURL}>
+        <ProfileImage image={imageHold? `https://i8a807.p.ssafy.io/image/dog/` + imageHold : imgURL}>
           {/* 사진 등록 */}
           <AddImage>
             <label htmlFor='imgUp'>
@@ -332,13 +397,13 @@ function DogRegister() {
                 name='name'
                 className='string-input'
                 type='text'
-                placeholder='이름을 입력해 주세요'
+                placeholder={nameHold}
                 value={name}
                 onChange={handleName}
               />
             </div>
           </div>
-          <div className={nameError ? 'error' : 'success'}>{nameErrorMsg}</div>
+          <div className={nameError ? 'success' : 'error'}>{nameErrorMsg}</div>
         </InputWrapper>
         {/* 성별 입력 */}
         <InputWrapper>
@@ -358,7 +423,7 @@ function DogRegister() {
             견종
             <span className='red-dot'>*</span>
           </div>
-          <Select defaultValue={breed} onChange={handleBreed} options={breedList} placeholder='견종을 선택해주세요' />
+          <Select defaultValue={breed} onChange={handleBreed} options={breedList} placeholder={breedHold} />
         </InputWrapper>
         {/* 생년 월 입력 */}
         <InputWrapper>
@@ -375,7 +440,7 @@ function DogRegister() {
                   min='2000'
                   max='2023'
                   step='1'
-                  placeholder='2022'
+                  placeholder={yearHold}
                   value={year}
                   onChange={handleYear}
                 />
@@ -389,7 +454,7 @@ function DogRegister() {
                   min='1'
                   max='12'
                   step='1'
-                  placeholder='7'
+                  placeholder={monthHold}
                   value={month}
                   onChange={handleMonth}
                 />
@@ -397,8 +462,8 @@ function DogRegister() {
               <div className='month'>월</div>
             </div>
           </div>
-          <div className={yearError ? 'error' : 'success'}>{yearErrorMsg}</div>
-          <div className={monthError ? 'error' : 'success'}>{monthErrorMsg}</div>
+          <div className={yearError ? 'success' : 'error'}>{yearErrorMsg}</div>
+          <div className={monthError ? 'success' : 'error'}>{monthErrorMsg}</div>
           <p className='small-font'>정확한 나이를 모르신다면 추정 나이를 입력해 주세요</p>
         </InputWrapper>
         {/* 몸무게 입력 */}
@@ -415,14 +480,14 @@ function DogRegister() {
                 min='0'
                 max='80'
                 step='0.1'
-                placeholder='5.7'
+                placeholder={weightHold}
                 value={weight}
                 onChange={handleWeight}
               />
             </div>
             <div className='kilogram'>kg</div>
           </div>
-          <div className={weightError ? 'error' : 'success'}>{weightErrorMsg}</div>
+          <div className={weightError ? 'success' : 'error'}>{weightErrorMsg}</div>
         </InputWrapper>
         {/* 중성화 여부 */}
         <InputWrapper>
@@ -467,7 +532,7 @@ function DogRegister() {
                 name='unique'
                 className='string-input'
                 type='text'
-                placeholder='특이사항을 입력해 주세요'
+                placeholder={perkHold? perkHold : '특이사항을 입력해 주세요'}
                 value={perk}
                 onChange={handlePerk}
               />
@@ -477,7 +542,7 @@ function DogRegister() {
         </InputWrapper>
         <div className='signup-desc'>*표시는 필수 입력 값입니다.</div>
         <div className='btn-wrapper'>
-          <MainColorLongBtn onClick={handleRegister}>등록하기</MainColorLongBtn>
+          <MainColorLongBtn onClick={handleEdit}>등록하기</MainColorLongBtn>
         </div>
         {/* 추후에 우리로고로 바꾸기 */}
         {/* <div className="logo-div">
@@ -485,7 +550,7 @@ function DogRegister() {
         </div> */}
       </RegisterWrapper>
     </RegisterContainer>
-  );
+  )
 }
 
-export default DogRegister;
+export default DogEdit;

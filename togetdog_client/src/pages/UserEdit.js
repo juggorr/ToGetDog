@@ -198,7 +198,7 @@ function UserEdit() {
     await axios
       .put(
         `${BACKEND_URL}/user`,
-        {
+        { 
           nickName: nickname,
           gender: gender,
           birth: birth,

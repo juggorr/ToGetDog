@@ -31,7 +31,7 @@ import FollowerList from "./pages/FollowerList";
 import FollowingList from "./pages/FollowingList";
 import ConfirmModal from "./components/ConfirmModal";
 
-// import DogEdit from "./pages/DogEdit";
+import DogEdit from "./pages/DogEdit";
 import Notifications from "./pages/Notifications";
 import Recommend from "./pages/Recommend";
 import EditBoard from "./pages/EditBoard";
@@ -66,7 +66,7 @@ function App() {
           <Route path="/passwordedit" element={<PasswordEdit />} />
           <Route path="/passwordsearch" element={<PasswordSearch />} />
           <Route path="/dogregister" element={<DogRegister />} />
-          {/* <Route path='/dogedit' element={<DogEdit />} /> */}
+          <Route path='/dogedit' element={<DogEdit />} />
           {/* 임시로 링크 */}
           <Route path="/dogdelete" element={<ConfirmModal />} />
           <Route path="/followerlist/:dogId" element={<FollowerList />} />

@@ -48,7 +48,7 @@ const Feed = () => {
     {
       menu_id: 3,
       text: '강아지 프로필 수정',
-      link: '/',
+      link: '/dogedit',
     },
     {
       menu_id: 4,
@@ -190,6 +190,7 @@ const Feed = () => {
           setConfirmBtnClick={setConfirmBtnClick}
           setNoDogBtnClick={setNoDogBtnClick}
           feedDogData={feedDogData}
+          dogId={currentDog?.dogId}
         />
         <FeedProfileWrapper>
           {/* 프로필 상단 */}
