@@ -23,6 +23,8 @@ import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.dto.DogRecommendListDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.dog.model.repository.DogRepository;
+import com.ssafy.togetdog.follow.model.repository.FollowRepository;
+import com.ssafy.togetdog.follow.model.service.FollowService;
 import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.repository.UserRepository;
 
@@ -39,6 +41,7 @@ public class AppointmentService {
 	private final ReceivedAppointmentRepository receivedAppointmentRepository;
 	private final UserRepository userRepository;
 	private final DogRepository dogRepository;
+	private final FollowService followService;
 
 	public List<AppointmentListDTO> findAllByUserId(long userId) {
 		User user = new User();
@@ -195,7 +198,8 @@ public class AppointmentService {
 		}
 	}
 
-	public List<DogRecommendListDTO> recommendFriendsForDog(long userId, long dogId, String type) {
+	// 동네 친구 추천
+	public List<DogRecommendListDTO> recommendFriendsForDog(long userId, long dogId) {
 		User user = userRepository.findById(userId).orElse(null);
 		String regionCode = user.getRegionCode();
 		
@@ -239,51 +243,45 @@ public class AppointmentService {
 		List<Object[]> recList = new ArrayList<Object[]>();
 		List<DogRecommendListDTO> reclist = new ArrayList<DogRecommendListDTO>();
 		
-		if(type.equals("region")) {
-			if(neutured) { // 중성화 한 강아지 true = 1, false = 0
-				if(age < 1) { // 1살 미만
-					recList = appointmentRepository.getNeuturedList(userId, regionCode, oneYearBefore, thisYear, startWeight, endWeight);
-				} else if(age < 5) { // 1~5살
-					recList = appointmentRepository.getNeuturedList(userId, regionCode, fiveYearBefore, oneYearBefore, startWeight, endWeight);
-				} else if(age < 10) { // 5~10살
-					recList = appointmentRepository.getNeuturedList(userId, regionCode, tenYearBefore, fiveYearBefore, startWeight, endWeight);
-				} else { // 10살 이상
-					recList = appointmentRepository.getNeuturedList(userId, regionCode, "190001", tenYearBefore, startWeight, endWeight);
-				}
-			} else { // 중성화 안한 강아지, 쿼리 문 뒤에 dogGender 붙여야함
-				if(age < 1) { // 1살 미만
-					recList = appointmentRepository.getGenderList(userId, regionCode, oneYearBefore, thisYear, startWeight, endWeight, gender);
-				} else if(age < 5) { // 1~5살
-					recList = appointmentRepository.getGenderList(userId, regionCode, fiveYearBefore, oneYearBefore, startWeight, endWeight, gender);
-				} else if(age < 10) { // 5~10살
-					recList = appointmentRepository.getGenderList(userId, regionCode, tenYearBefore, fiveYearBefore, startWeight, endWeight, gender);
-				} else { // 10살 이상
-					recList = appointmentRepository.getGenderList(userId, regionCode, "190001", tenYearBefore, startWeight, endWeight, gender);
-				}
+		if(neutured) { // 중성화 한 강아지 true = 1, false = 0
+			if(age < 1) { // 1살 미만
+				recList = appointmentRepository.getNeuturedList(userId, regionCode, oneYearBefore, thisYear, startWeight, endWeight);
+			} else if(age < 5) { // 1~5살
+				recList = appointmentRepository.getNeuturedList(userId, regionCode, fiveYearBefore, oneYearBefore, startWeight, endWeight);
+			} else if(age < 10) { // 5~10살
+				recList = appointmentRepository.getNeuturedList(userId, regionCode, tenYearBefore, fiveYearBefore, startWeight, endWeight);
+			} else { // 10살 이상
+				recList = appointmentRepository.getNeuturedList(userId, regionCode, "190001", tenYearBefore, startWeight, endWeight);
 			}
-		} else {
-			if(neutured) { // 중성화 한 강아지 true = 1, false = 0
-				if(age < 1) { // 1살 미만
-					recList = appointmentRepository.getNeuturedList(userId, oneYearBefore, thisYear, startWeight, endWeight);
-				} else if(age < 5) { // 1~5살
-					recList = appointmentRepository.getNeuturedList(userId, fiveYearBefore, oneYearBefore, startWeight, endWeight);
-				} else if(age < 10) { // 5~10살
-					recList = appointmentRepository.getNeuturedList(userId, tenYearBefore, fiveYearBefore, startWeight, endWeight);
-				} else { // 10살 이상
-					recList = appointmentRepository.getNeuturedList(userId, "190001", tenYearBefore, startWeight, endWeight);
-				}
-			} else { // 중성화 안한 강아지, 쿼리 문 뒤에 dogGender 붙여야함
-				if(age < 1) { // 1살 미만
-					recList = appointmentRepository.getGenderList(userId, oneYearBefore, thisYear, startWeight, endWeight, gender);
-				} else if(age < 5) { // 1~5살
-					recList = appointmentRepository.getGenderList(userId, fiveYearBefore, oneYearBefore, startWeight, endWeight, gender);
-				} else if(age < 10) { // 5~10살
-					recList = appointmentRepository.getGenderList(userId, tenYearBefore, fiveYearBefore, startWeight, endWeight, gender);
-				} else { // 10살 이상
-					recList = appointmentRepository.getGenderList(userId, "190001", tenYearBefore, startWeight, endWeight, gender);
-				}
+		} else { // 중성화 안한 강아지, 쿼리 문 뒤에 dogGender 붙여야함
+			if(age < 1) { // 1살 미만
+				recList = appointmentRepository.getGenderList(userId, regionCode, oneYearBefore, thisYear, startWeight, endWeight, gender);
+			} else if(age < 5) { // 1~5살
+				recList = appointmentRepository.getGenderList(userId, regionCode, fiveYearBefore, oneYearBefore, startWeight, endWeight, gender);
+			} else if(age < 10) { // 5~10살
+				recList = appointmentRepository.getGenderList(userId, regionCode, tenYearBefore, fiveYearBefore, startWeight, endWeight, gender);
+			} else { // 10살 이상
+				recList = appointmentRepository.getGenderList(userId, regionCode, "190001", tenYearBefore, startWeight, endWeight, gender);
 			}
 		}
+		logger.info("recommendedList ============== : {}", recList);
+		reclist  = recList.stream().map(r -> DogRecommendListDTO.of(r)).collect(Collectors.toList());
+		return reclist;
+	}
+	
+	// 전체 친구 추천
+	public List<DogRecommendListDTO> recommendFriendsForDog(long userId) {
+		List<DogInfoRespDTO> followDogs= followService.getFollowingList(userId);
+		List<Long> followDogIds = new ArrayList<Long>();
+		
+		for (DogInfoRespDTO dog : followDogs) {
+			followDogIds.add(dog.getDogId());
+		}
+		
+		List<Object[]> recList = new ArrayList<Object[]>();
+		List<DogRecommendListDTO> reclist = new ArrayList<DogRecommendListDTO>();
+		
+		recList = appointmentRepository.getDogAllList(userId, followDogIds);
 		logger.info("recommendedList ============== : {}", recList);
 		reclist  = recList.stream().map(r -> DogRecommendListDTO.of(r)).collect(Collectors.toList());
 		return reclist;
