@@ -145,6 +145,10 @@ const Home = () => {
   };
 
   const getBoardList = useCallback(async () => {
+    if (!auth || !localStorage.getItem("recoil-persist")) {
+      navigate("/login");
+      return;
+    }
     if (!boardList) {
       setLoading(true);
     } else {
