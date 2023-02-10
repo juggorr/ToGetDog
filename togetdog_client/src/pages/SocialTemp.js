@@ -29,10 +29,10 @@ const genderBtnList = [
 const nicknameKorRegexp = /^[가-힣]{1,8}$/; // 한글 1~8자
 const nicknameEngRegexp = /^[a-zA-Z]{2,16}$/; // 영문 2~16자
 
-function SocialSignup() {
+function SocialTemp() {
+  
   const navigate = useNavigate();
-  const location = useLocation();
-  const params = location.search 
+  const params = "?user=UserSocialLoginRespDTO(email=pincelephant@gmail.com,%20nickName=이건없지용,%20social=K)"
 
   const [email, setEmail] = useState('');
   const [socialNickname, setSocialNickname] = useState('');
@@ -52,7 +52,7 @@ function SocialSignup() {
 
   // 닉네임을 설정하는 함수
   useEffect(() => {
-    console.log(socialNickname);
+    // console.log('여기요' + socialNickname);
     handleSocialNickname(socialNickname);
   }, [socialNickname])
 
@@ -100,6 +100,7 @@ function SocialSignup() {
         ...inputs,
         nickname: socialNickname,
       })
+      // console.log('통과실패');
       return;
     }
     // await axios
@@ -111,6 +112,7 @@ function SocialSignup() {
     //     }
     //   })
     //   .catch((err) => {
+    //     console.log(err)
     //     setSocialNicknameErr(false);
     //   });
   };
@@ -176,6 +178,7 @@ function SocialSignup() {
 
 
   const handleSignup = async () => {
+    // console.log('회원가입 시도')
     let genderStr = '';
     switch (gender) {
       case 1:
@@ -199,10 +202,10 @@ function SocialSignup() {
       });
     }
 
-    console.log(email)
-    console.log(social)
-    console.log(inputs)
-    
+    // console.log(email)
+    // console.log(social)
+    // console.log(inputs)
+
     await axios
       .post(
         `${BACKEND_URL}/user/social`, // 소셜 로그인 POST api 주소
@@ -347,4 +350,4 @@ function SocialSignup() {
   );
 }
 
-export default SocialSignup;
+export default SocialTemp;
