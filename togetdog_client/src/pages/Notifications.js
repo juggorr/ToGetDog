@@ -9,25 +9,11 @@ import {
   NotificationsWrapper,
   SingleNotificationWrapper,
 } from "../styles/NotificationsEmotion";
-import { HeaderWrapper } from "../styles/MainHeaderEmotion";
+
 import UserIcon from "../components/UserIcon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import WalkingWithDog from "../assets/walking_with_dog.png";
 import CancelEvent from "../assets/cancel-event.png";
-
-const NotificationsHeader = () => {
-  const navigate = useNavigate();
-
-  return (
-    <HeaderWrapper>
-      <div className="icon-box">
-        <div className="header-icon" onClick={() => navigate(-1)}>
-          <FontAwesomeIcon icon="fa-arrow-left" />
-        </div>
-      </div>
-    </HeaderWrapper>
-  );
-};
 
 const SingleNotification = (data) => {
   const navigate = useNavigate();
@@ -107,7 +93,6 @@ const Notifications = () => {
 
   return (
     <div>
-      <NotificationsHeader></NotificationsHeader>
       <NotificationsWrapper>
         <div className="walkRequestWrapper" onClick={() => navigate("/walk")}>
           <div className="walkRequest">
