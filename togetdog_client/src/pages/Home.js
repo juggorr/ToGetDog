@@ -10,17 +10,91 @@ import { BACKEND_URL } from "../config";
 import { authAtom, userState } from "../recoil";
 import {
   HomeContainer,
-  HomeWelcomeBox,
+  HomeWrapper,
   RecommendBoxWrapper,
+  SingleBoardWrapper,
+  DogInfoWrapper,
+  DogImgWrapper,
 } from "../styles/HomeEmotion";
+
+import Boy from "../assets/boy.png";
+import Girl from "../assets/girl.png";
+
+const BoardList = (boardList) => {
+  const SingleBoard = ({ board }) => {
+    const navigate = useNavigate();
+    return (
+      <SingleBoardWrapper>
+        <div className="contentLine"></div>
+        <div className="profileWrapper">
+          <DogImgWrapper>
+            <div className="dogProfileCircle">
+              <img
+                className="dogProfileImg"
+                src={
+                  "https://i8a807.p.ssafy.io/image/dog/" + board.dog.dogProfile
+                }
+                alt={board.dog.dogName}
+              />
+            </div>
+          </DogImgWrapper>
+          <DogInfoWrapper>
+            <div className="dogInfo">
+              <div className="dogNameWrapper">{board.dog.dogName}</div>
+              <div className="dogType">
+                {board.dog.dogType} /{" "}
+                {board.dog.dogAge < 12
+                  ? board.dog.dogAge
+                  : Math.floor(board.dog.dogAge / 12)}
+                {board.dog.dogAge < 12 ? "개월" : "살"}
+                <div className="genderWrapper">
+                  <img
+                    src={board.dog.dogGender === "male" ? Boy : Girl}
+                    alt="gender"
+                    className="genderImg"
+                  />
+                </div>
+              </div>
+            </div>
+          </DogInfoWrapper>
+        </div>
+        <div
+          className="contentWrapper"
+          onClick={() => {
+            navigate(`/board/${board.boardId}`);
+          }}
+        >
+          <div className="imgWrapper">
+            <img
+              className="contentImg"
+              src={"https://i8a807.p.ssafy.io/image/board/" + board.image}
+              alt="content_img"
+            />
+          </div>
+        </div>
+        <div className="contentText">{board.content}</div>
+      </SingleBoardWrapper>
+    );
+  };
+  let tempBoardList = [];
+
+  if (boardList) {
+    for (let i = 0; i < boardList.length; i++) {
+      tempBoardList.push(
+        <SingleBoard key={i} board={boardList[i]}></SingleBoard>
+      );
+    }
+  }
+
+  return tempBoardList;
+};
 
 const RecommendWrapper = (dogs) => {
   let tempList = [];
 
   if (dogs) {
     for (let i = 0; i < dogs.length; i++) {
-      console.log(dogs[i]);
-      tempList.push(<DogRecommend dog={dogs[i]}></DogRecommend>);
+      tempList.push(<DogRecommend dog={dogs[i]} key={i}></DogRecommend>);
     }
   }
 
@@ -30,12 +104,15 @@ const RecommendWrapper = (dogs) => {
 const Home = () => {
   const [user, setUser] = useRecoilState(userState);
   const [recommendList, setRecommendList] = useState([]);
+  const [boardList, setBoardList] = useState([]);
 
   const auth = useRecoilValue(authAtom);
   const setAuth = useSetRecoilState(authAtom);
   const navigate = useNavigate();
 
   const [isLoading, setLoading] = useState(true);
+
+  const pageNo = 1;
 
   const handleLogout = () => {
     setUser(null);
@@ -45,43 +122,57 @@ const Home = () => {
     navigate("/login");
   };
 
-  useEffect(() => {
-    axios
-      .all([
-        axios.get(`${BACKEND_URL}/home`, {
-          params: {
-            pageNo: 1,
-          },
-          headers: {
-            Authorization: auth,
-          },
-        }),
-        axios.get(`${BACKEND_URL}/meeting/all`, {
-          headers: {
-            Authorization: auth,
-          },
-        }),
-      ])
-      .then(
-        axios.spread((res1, res2) => {
-          console.log(res1.data);
-          console.log(res1.data.boardList);
-          console.log(res2.data);
-          console.log(res2.data.dogs);
-          setRecommendList(res2.data.dogs);
-          setLoading(false);
-        })
-      )
-      .catch((err) => {
-        console.log(err);
-        console.log("추천 친구 불러오기 실패");
-        if (err.response.status === 404) {
+  const getBoardList = async () => {
+    await axios
+      .get(`${BACKEND_URL}/home`, {
+        params: {
+          pageNo: pageNo,
+        },
+        headers: {
+          Authorization: auth,
+        },
+      })
+      .then((response) => {
+        // console.log(response.data);
+        setBoardList([...boardList, ...response.data.boardList]);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response.status === 404) {
           navigate("/*");
-        } else if (err.response.status === 401) {
+        } else if (error.response.status === 401) {
           alert("토큰이 만료되어 자동 로그아웃되었습니다.");
           handleLogout();
         }
       });
+  };
+
+  const getFriendList = async () => {
+    await axios
+      .get(`${BACKEND_URL}/meeting/all`, {
+        headers: {
+          Authorization: auth,
+        },
+      })
+      .then((response) => {
+        // console.log(response.data);
+        setRecommendList(response.data.dogs);
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response.status === 404) {
+          navigate("/*");
+        } else if (error.response.status === 401) {
+          alert("토큰이 만료되어 자동 로그아웃되었습니다.");
+          handleLogout();
+        }
+      });
+  };
+
+  useEffect(() => {
+    getBoardList();
+    getFriendList();
   }, []);
 
   if (isLoading) {
@@ -89,7 +180,7 @@ const Home = () => {
   }
 
   return (
-    <>
+    <HomeWrapper>
       <HomeContainer>
         <div className="container">
           <div className="typedOutContainer">
@@ -107,9 +198,9 @@ const Home = () => {
           <span className="recommend-txt">추천 댕댕이 친구들</span>
         </div>
         <div className="recommendBox">{RecommendWrapper(recommendList)}</div>
-        {/* <RecommendWrapper dogs={recommendList}></RecommendWrapper> */}
       </RecommendBoxWrapper>
-    </>
+      {BoardList(boardList)}
+    </HomeWrapper>
   );
 };
 
