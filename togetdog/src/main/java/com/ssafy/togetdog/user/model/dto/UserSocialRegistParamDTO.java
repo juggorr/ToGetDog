@@ -38,7 +38,7 @@ public class UserSocialRegistParamDTO {
 				.email(userDTO.getEmail())
 				.nickName(userDTO.getNickname())
 				.password("=====social=====")
-				.gender(userDTO.getGender())
+				.gender(userDTO.getGender().charAt(0) + "")
 				.userBirth(userDTO.getBirth())
 				.address(userDTO.getAddress())
 				.regionCode(userDTO.getRegionCode())
