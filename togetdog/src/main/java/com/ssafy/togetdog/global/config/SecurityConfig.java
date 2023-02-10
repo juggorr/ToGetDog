@@ -12,6 +12,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.ssafy.togetdog.global.interceptor.OAuth2FailureHandler;
+import com.ssafy.togetdog.global.interceptor.OAuth2SuccessHandler;
 import com.ssafy.togetdog.user.model.service.UserOAuth2Service;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,8 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 	
 	private final UserOAuth2Service userOauth2Service;
+	private final OAuth2SuccessHandler oAuth2SuccessHandler;
+	private final OAuth2FailureHandler oAuth2FailureHandler;
 	
 	@Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -43,26 +47,11 @@ public class SecurityConfig {
         		.userInfoEndpoint() //OAuth2 로그인 후 사용자 정보를 가져올 때의 설정 담당
         		.userService(userOauth2Service)
         		.and()
-        		.defaultSuccessUrl("/api/auth");
-//              .failureHandler(oAuth2AuthenticationFailureHandler());
+        		.successHandler(oAuth2SuccessHandler)
+                .failureHandler(oAuth2FailureHandler);
         return http.build(); 
     }
 	
-	private static final String[] PERMIT_URL_ARRAY = {
-			 	"/**", //다 허용 일단 나중에 수정해야 함
-	            /* swagger v2 */
-	            "/v2/api-docs",
-	            "/swagger-resources",
-	            "/swagger-resources/**",
-	            "/configuration/ui",
-	            "/configuration/security",
-	            "/swagger-ui.html",
-	            "/webjars/**",
-	            /* swagger v3 */
-	            "/v3/api-docs/**",
-	            "/swagger-ui/**"
-	};
-
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -83,5 +72,19 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
+    
+	private static final String[] PERMIT_URL_ARRAY = {
+		 	"/**", //다 허용 일단 나중에 수정해야 함
+            /* swagger v2 */
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            /* swagger v3 */
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+	};
 }
