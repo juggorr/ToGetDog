@@ -7,6 +7,7 @@ import { BACKEND_URL, DUMMY_URL } from "../config";
 
 import SignoutConfirmModal from "../components/SignoutConfirmModal";
 import {
+  MainColorLongBtn,
   BlackBtn,
   MainColorShortBtn,
   GreyColorShortBtn,
@@ -221,8 +222,13 @@ function UserEdit() {
           },
         })
         .then((res) => {
-          console.log(res.data.user);
-          setUser(res.data.user);
+          const newUser = {
+            address: address,
+            email: user.email,
+            nickName: nickname,
+            userId: user.userId,
+          };
+          setUser(newUser)
         })
         .catch((err) => {
           console.log(err);
@@ -322,7 +328,7 @@ function UserEdit() {
                 />
               </div>
             </div>
-            <div className={nicknameError ? "success" : "error"}>
+            <div className={nicknameError.current ? "success" : "error"}>
               {nicknameErrorMsg}
             </div>
           </InputWrapper>
@@ -394,10 +400,10 @@ function UserEdit() {
           </InputWrapper>
           <div className="signup-desc">* 표시는 필수 입력 값입니다.</div>
           <div className="two-btns-wrapper">
-            <GreyColorShortBtn onClick={handleNotEdit}>
+            {/* <GreyColorShortBtn onClick={handleNotEdit}>
               돌아가기
-            </GreyColorShortBtn>
-            <MainColorShortBtn onClick={checkEdit}>변경하기</MainColorShortBtn>
+            </GreyColorShortBtn> */}
+            <MainColorLongBtn onClick={checkEdit}>변경하기</MainColorLongBtn>
           </div>
           <div className="edit-bottom-wrapper">
             <div className="edit-bottom-text" onClick={handleSignout}>
