@@ -35,7 +35,7 @@ import io.jsonwebtoken.security.SignatureException;
 public class JwtServiceImpl implements JwtService {
 
 	public static final Logger logger = LoggerFactory.getLogger(JwtServiceImpl.class);
-	private static final int ACCESS_TOKEN_EXPIRE_MINUTES = 24; // hour
+	private static final int ACCESS_TOKEN_EXPIRE_MINUTES = 1; // day
 
 	@Value("${jwt.secret}")
 	private String secretSalt;
@@ -49,12 +49,12 @@ public class JwtServiceImpl implements JwtService {
 
 	@Override
 	public <T> String createAccessToken(long userId) {
-		return create(userId, "togetDog", 1000 * 10 * 60 * ACCESS_TOKEN_EXPIRE_MINUTES);
+		return create(userId, "togetDog", 1000 * 60 * 60 * 24 * ACCESS_TOKEN_EXPIRE_MINUTES);
 	}
 	
 	@Override
 	public <T> String createAccessToken(long userId, String role) {
-		return create(userId, "togetDog", 1000 * 10 * 60 * ACCESS_TOKEN_EXPIRE_MINUTES, role);
+		return create(userId, "togetDog", 1000 * 10 * 60 * 24 * ACCESS_TOKEN_EXPIRE_MINUTES, role);
 	}
 
 	@Override
@@ -85,21 +85,20 @@ public class JwtServiceImpl implements JwtService {
 
 	// 유효기간이 다되어가면 refresh token검사해서 갱신해줘야 함!!
 	@Override
-	public boolean validateToken(String jwtToken) {
+	public void validateToken(String jwtToken) {
 		Jws<Claims> claims = null;
 		try {
 			claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwtToken);
 			logger.debug("claims: {}", claims);
-			return true;
 		} catch (SignatureException | MalformedJwtException e) {
 			logger.error("SignatureException : ", e.getMessage());
-			return false;
+			throw new TokenValidFailedException("사용할 수 없는 Signature입니다.");
 		} catch (ExpiredJwtException e) {
 			logger.error("Expired JWT token : ", e.getMessage());
-			return false;
+			throw new TokenValidFailedException("사용 기간이 만료된 토큰입니다.");
 		} catch (Exception e) {
 			logger.error("Unexpected error : ", e.getMessage());
-			return false;
+			throw new TokenValidFailedException("토큰 검증 중 예상치 못한 오류가 발생했습니다.");
 		}
 	}
 
@@ -110,7 +109,7 @@ public class JwtServiceImpl implements JwtService {
 			claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwtToken);
 		} catch (Exception e) {
 			logger.error("jwt parseClaims error : ", e.getMessage());
-			// throw new UnAuthorizedException();
+			throw new TokenValidFailedException("토큰 해석 중 예상치 못한 오류가 발생했습니다.");
 		}
 		Map<String, Object> value = claims.getBody();
 		logger.info("value : {}", value);
@@ -123,19 +122,14 @@ public class JwtServiceImpl implements JwtService {
 	}
 
 	public Authentication getAuthentication(String token) {
-		if (validateToken(token)) {
-			Map<String, Object> claims = get(token);
-			Collection<? extends GrantedAuthority> authorities = Arrays
-					.stream(new String[] { claims.get("role").toString() }).map(SimpleGrantedAuthority::new)
-					.collect(Collectors.toList());
-
-			logger.debug("claims subject := [{}]", claims.get("subject"));
-			User principal = new User((String) claims.get("subject"), "", authorities);
-
-			return new UsernamePasswordAuthenticationToken(principal, token, authorities);
-		} else {
-			throw new TokenValidFailedException();
-		}
+		validateToken(token);
+		Map<String, Object> claims = get(token);
+		Collection<? extends GrantedAuthority> authorities = Arrays
+				.stream(new String[] { claims.get("role").toString() }).map(SimpleGrantedAuthority::new)
+				.collect(Collectors.toList());
+		logger.debug("claims subject := [{}]", claims.get("subject"));
+		User principal = new User((String) claims.get("subject"), "", authorities);
+		return new UsernamePasswordAuthenticationToken(principal, token, authorities);
 	}
 
 }
