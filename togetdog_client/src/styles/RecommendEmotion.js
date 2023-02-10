@@ -118,6 +118,13 @@ export const FriendListWrapper = styled.div`
     width: 0.8rem;
     height: 0.8rem;
   }
+
+  .noFriends {
+    margin: 2rem;
+    text-align: center;
+    color: #717171;
+    font-size: 14px;
+  }
 `;
 
 export const CheckBoxWrapper = styled.div`
