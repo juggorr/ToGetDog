@@ -43,7 +43,7 @@ public class ChatInfoDTO {
 		if(cnt < 0)
 			cnt = 0;
 		return ChatInfoDTO.builder()
-				.userId(info.getUserId())
+				.userId(info.getOther().getUserId())
 				.roomId(info.getRoomId())
 				.userBirth(info.getOther().getUserBirth())
 				.gender(info.getOther().getGender())
