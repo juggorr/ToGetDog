@@ -250,7 +250,7 @@ function SocialSignup() {
                     name='nickname'
                     className='email-input'
                     placeholder='닉네임을 입력해 주세요.'
-                    onChange={(e) => handleNickname(e)}
+                    // onChange={(e) => handleNickname(e)}
                   />
                 </div>
               </div>
