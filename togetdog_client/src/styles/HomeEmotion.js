@@ -3,7 +3,9 @@ import styled from "@emotion/styled";
 export const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
-  position: relative;
+  height: 8rem;
+  background-image: url("https://search.pstatic.net/sunny/?src=https%3A%2F%2Fcdn.crowdpic.net%2Fdetail-thumb%2Fthumb_d_C8654F421B0E4D3419DCAF3EAB2DDF87.jpg&type=sc960_832");
+  background-size: contain;
 
   .typed-out {
     overflow: hidden;
@@ -16,11 +18,18 @@ export const HomeContainer = styled.div`
   }
 
   .container {
+    width: calc(100% - 3rem);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    // align-content: space-between;
     z-index: 1;
-    position: absolute;
+    padding: 1.5rem;
+  }
+
+  .typedOutContainer {
     display: inline-block;
-    padding-top: 1rem;
-    padding-left: 0.7rem;
   }
 
   @keyframes typing {
@@ -35,7 +44,6 @@ export const HomeContainer = styled.div`
   .walk-btn {
     width: 7rem;
     z-index: 1;
-    position: absolute;
     right: 0.7rem;
     top: 4.7rem;
     padding: 0.3rem;
@@ -44,6 +52,18 @@ export const HomeContainer = styled.div`
     font-weight: 700;
     font-size: 0.8rem;
     border-radius: 1rem;
+  }
+`;
+
+export const RecommendBoxWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0.3rem 0rem;
+
+  .recommendBox {
+    display: flex;
+    overflow-x: scroll;
+    padding-left: 0.3rem;
   }
 
   .recommend-txt-box {
@@ -59,18 +79,6 @@ export const HomeContainer = styled.div`
   }
 `;
 
-export const HomeWelcomeBox = styled.img`
-  width: 100%;
-  height: 7rem;
-  object-fit: cover;
-  filter: brightness(50%);
-`;
-
-export const RecommendBox = styled.div`
-  display: flex;
-  overflow-x: scroll;
-`;
-
 export const DogRecommendWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -80,9 +88,10 @@ export const DogRecommendWrapper = styled.div`
 `;
 
 export const DogProfile = styled.img`
-  width: 4.5rem;
-  height: 4.5rem;
+  width: 4rem;
+  height: 4rem;
   border-radius: 50%;
+  object-fit: cover;
 `;
 
 export const DogName = styled.div`
