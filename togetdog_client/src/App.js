@@ -19,6 +19,9 @@ import React, { useEffect } from "react";
 
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Oauth from "./pages/Oauth";
+import OauthError from "./pages/OauthError";
+import SocialSignup from "./pages/SocialSignup";
 
 import NotFound from "./pages/NotFound";
 import InternalServer from "./pages/InternalServer";
@@ -64,6 +67,7 @@ function App() {
           <Route path="/editBoard/:boardId" element={<EditBoard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/socialsignup" element={<SocialSignup />} />
           <Route path="/emailAuth" element={<EmailAuth />} />
           <Route path="/passwordedit" element={<PasswordEdit />} />
           <Route path="/passwordsearch" element={<PasswordSearch />} />
@@ -74,6 +78,8 @@ function App() {
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/500" element={<InternalServer />} />
           <Route path="/*" element={<NotFound />} />
+          <Route path="/oauth" element={<Oauth />} />
+          <Route path="/oautherror" element={<OauthError />} />
           <Route path="/createAppointment" element={<CreateAppointment />} />
           <Route path="/search" element={<Search />} />
         </Routes>
