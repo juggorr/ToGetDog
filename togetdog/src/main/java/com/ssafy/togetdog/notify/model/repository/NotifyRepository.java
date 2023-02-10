@@ -24,7 +24,13 @@ public interface NotifyRepository extends JpaRepository<Notify, Long> {
 	// 약속 취소 알람 리스트 반환 -> 전부 삭제처리 하기 위해서
 	Optional<List<Notify>> findAllByReceiverAndNotifyTypeAndCheck(User user, String notifyType, boolean check);
 	
+	// 특정 userid로 받은 약속 취소 알림 삭제
 	@Modifying
 	@Query(value = "delete from notify n where n.receiver_user_id=:userId and n.notify_type='c'", nativeQuery = true)
 	void deleteAppointmentCancelNotifyByUserId(@Param("userId") long userId);
+	
+	// 특정 강아지 id로 받은 알림 삭제
+	@Modifying
+	@Query(value = "delete from notify n where n.dog_id=:dogId", nativeQuery = true)
+	void deleteAllByDogId(@Param("dogId") long dogId);
 }
