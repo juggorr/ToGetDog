@@ -190,11 +190,11 @@ function DogRegister() {
       return false;
     }
     // 사진 형식 유효성 검사
-    if (!imageRegexp.text(image.name)) {
-      setImageError(true);
-      setImageErrorMsg('적절한 이미지 형식이 아닙니다')
-      return false;
-    }
+    // if (!imageRegexp.text(image.name)) {
+    //   setImageError(true);
+    //   setImageErrorMsg('적절한 이미지 형식이 아닙니다')
+    //   return false;
+    // }
     // 이름 유효성 검사
     // 참 거짓 헷갈림..
     if (!nameRegexp.test(name)) {
