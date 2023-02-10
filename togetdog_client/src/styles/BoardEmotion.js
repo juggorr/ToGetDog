@@ -1,17 +1,23 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const BoardContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
+export const CommentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 export const BoardUserInfoBox = styled.div`
   display: flex;
-  padding: 0.7rem;
+  padding: 0.7rem 0.9rem 0.7rem 2rem;
   justify-content: space-between;
 
   .board-info-box-left {
     display: flex;
+    // padding-left: 1rem;
   }
 
   .menu-icon {
@@ -25,6 +31,7 @@ export const BoardUserPic = styled.img`
   width: 3.3rem;
   height: 3.3rem;
   border-radius: 50%;
+  object-fit: cover;
 `;
 
 export const BoardUserInfo = styled.div`
@@ -85,7 +92,7 @@ export const BoardContentBox = styled.div`
 `;
 
 export const BoardCommentBox = styled.div`
-  padding: 0 2rem;
+  padding: 1rem 2rem;
   display: flex;
   flex-direction: column;
 
@@ -115,6 +122,9 @@ export const BoardCommentBox = styled.div`
     display: flex;
     flex-direction: column;
     padding-top: 0.5rem;
+    overflow-y: scroll;
+    margin-top: 0.5rem;
+    height: calc(100vh - 550px);
   }
 
   .comment-box {
@@ -132,4 +142,10 @@ export const BoardCommentBox = styled.div`
   .comment-content {
     flex: 0.8;
   }
+`;
+
+export const ContentEditImg = styled.img`
+  width: 12rem;
+  height: 12rem;
+  object-fit: cover;
 `;

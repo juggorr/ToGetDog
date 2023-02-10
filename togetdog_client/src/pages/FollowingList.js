@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import axios from 'axios';
 
+import { authAtom } from "../recoil";
+import { BACKEND_URL } from "../config";
 import FollowingsList from "../components/FollowingsList";
 import { 
   ListContainer, 
@@ -10,6 +13,8 @@ import {
 
 
 function FollowingList() {
+
+  const auth = useRecoilValue(authAtom);
 
   // navigate로 넘어온 유저Id 받기
   // useEffect에 넣어야할 것 같기도함
@@ -20,8 +25,19 @@ function FollowingList() {
 
   useEffect(() => {
     const fetchFollowings = async () => {
-      const res = await axios.get(`http://i8a807.p.ssafy.io:8081/dummy/follow/following?userId=${userId}`)
-      setFollowings(res.data.dogs)
+      axios
+        .get(`${BACKEND_URL}/follow/following?userId=${userId}`, {
+          headers: {
+            Authorization: auth,
+          }
+        })
+        .then((res) => {
+          console.log(res);
+          setFollowings(res.data.dogs)
+        })
+        .catch((err) => {
+          console.log(err)
+        });
     };
 
     fetchFollowings();

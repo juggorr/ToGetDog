@@ -3,38 +3,100 @@ import { useRecoilState } from "recoil";
 import { userState } from "../recoil";
 import axios from "axios";
 
-import { BACKEND_URL, LOCAL_SERVER, DUMMY_URL } from "../config";
+import { BACKEND_URL, DUMMY_URL } from "../config";
 import {
   MapContainer,
   PlaceIconWrapper,
   SinglePlaceWrapper,
   PlaceButtonWrapper,
+  PlaceModal,
 } from "../styles/MapEmotion";
+import { MainColorShortBtn } from "../styles/BtnsEmotion";
 import dogHospital from "../assets/dog_hospital.png";
 import dogService from "../assets/dog_service.png";
 import dogRestaurant from "../assets/dog_restaurant.png";
-import dogFaiclity from "../assets/dog_facility.png";
+import dogFacility from "../assets/dog_facility.png";
 
-const SinglePlace = ({ Name, Address, Type, Distance }) => {
+const SinglePlace = ({ facility }) => {
+  const [modalOpen, setModalOpen] = useState(false);
   let placeIcon;
-  if (Type === "반려의료") {
+  let placeIconSrc;
+
+  if (facility.type === "반려의료") {
+    placeIconSrc = dogHospital;
     placeIcon = <PlaceIconWrapper src={dogHospital} alt="hospital_img" />;
-  } else if (Type === "반려동물 서비스") {
+  } else if (facility.type === "반려동물 서비스") {
+    placeIconSrc = dogService;
     placeIcon = <PlaceIconWrapper src={dogService} alt="service_img" />;
-  } else if (Type === "반려동물식당카페") {
+  } else if (facility.type === "반려동물식당카페") {
+    placeIconSrc = dogRestaurant;
     placeIcon = <PlaceIconWrapper src={dogRestaurant} alt="restaurant_img" />;
   } else {
-    placeIcon = <PlaceIconWrapper src={dogFaiclity} alt="etc_img" />;
+    placeIconSrc = dogFacility;
+    placeIcon = <PlaceIconWrapper src={dogFacility} alt="etc_img" />;
   }
+
+  const SinglePlaceModal = () => {
+    return (
+      <PlaceModal>
+        <div className="modalOutside" onClick={() => setModalOpen(false)}></div>
+        <div className="modalInside">
+          <div className="facilityNameContainer">
+            <div className="facilityIconWrapper">
+              <img className="singleIcon" src={placeIconSrc} alt="placeIcon" />
+            </div>
+            <div className="facilityNameWrapper">
+              <p className="facilityName">{facility.facilityName}</p>
+              <p className="placeText">
+                {facility.distance < 1
+                  ? `${facility.distance * 1000}m`
+                  : `${facility.distance}km`}{" "}
+              </p>
+            </div>
+          </div>
+          <div className="facilityInfoContainer">
+            <div className="facilityInfo">
+              <span className="boldText">연락처: </span>
+              <span className="plainText">{facility.phone}</span>
+            </div>
+            <div className="facilityInfo">
+              <span className="boldText">주소: </span>
+              <span className="plainText">{facility.facilityAddress}</span>
+            </div>
+            <div className="facilityInfo">
+              <span className="boldText">영업시간: </span>
+              <span className="plainText">{facility.openingHours}</span>
+            </div>
+            <div className="facilityInfo">
+              <span className="boldText">휴무일: </span>
+              <span className="plainText">{facility.closedDays}</span>
+            </div>
+          </div>
+          <div className="btnContainer">
+            <MainColorShortBtn onClick={() => setModalOpen(false)}>
+              확인
+            </MainColorShortBtn>
+          </div>
+        </div>
+        <div className="modalOutside" onClick={() => setModalOpen(false)}></div>
+      </PlaceModal>
+    );
+  };
 
   return (
     <SinglePlaceWrapper>
-      <div className="placeIconDiv">{placeIcon}</div>
-      <div className="placeDiv">
-        <p className="placeName">{Name}</p>
-        <p className="placeText">
-          {Distance}m | {Address}
-        </p>
+      {modalOpen && <SinglePlaceModal setModalOpen={setModalOpen} />}
+      <div className="placeWrapper" onClick={() => setModalOpen(true)}>
+        <div className="placeIconDiv">{placeIcon}</div>
+        <div className="placeDiv">
+          <p className="placeName">{facility.facilityName}</p>
+          <p className="placeText">
+            {facility.distance < 1
+              ? `${facility.distance * 1000}m`
+              : `${facility.distance}km`}{" "}
+            | {facility.facilityAddress}
+          </p>
+        </div>
       </div>
     </SinglePlaceWrapper>
   );
@@ -65,16 +127,20 @@ const Map = () => {
     });
   }, []);
 
-  const GetFacilities = (kakaoMap) => {
+  const GetFacilities = (lat, lng) => {
     const fetchFacilities = async () => {
       try {
         setFacilities(null);
         // setError(null);
         // setLoading(true);
         const response = await axios.get(
-          `${DUMMY_URL}/facility?latitude=${curLat}&longitude=${curLng}`
+          `${BACKEND_URL}/facility?latitude=${lat}&longitude=${lng}`
         );
-        setFacilities(response.data.storeList);
+        const arr = response.data.storeList;
+        arr.sort((a, b) => {
+          return a.distance - b.distance;
+        });
+        setFacilities(arr);
       } catch (e) {
         // setError(e);
       }
@@ -90,7 +156,7 @@ const Map = () => {
       navigator.geolocation.getCurrentPosition(function (position) {
         setCurLat(position.coords.latitude);
         setCurLng(position.coords.longitude);
-        GetFacilities();
+        GetFacilities(position.coords.latitude, position.coords.longitude);
       });
     } else {
       // HTML5의 GeoLocation을 사용할 수 없을때
@@ -152,7 +218,7 @@ const Map = () => {
       // 의료 마커를 생성하고 의료 마커 배열에 추가하는 함수입니다
       function createHospitalMarkers() {
         for (let i = 0; i < hospitalPositions.length; i++) {
-          const markerImageSrc = { dogHospital };
+          const markerImageSrc = dogHospital;
           const imageSize = new kakao.maps.Size(22, 26),
             imageOption = { offset: new kakao.maps.Point(27, 69) };
 
@@ -183,7 +249,7 @@ const Map = () => {
 
       function createServiceMarkers() {
         for (let i = 0; i < servicePositions.length; i++) {
-          const markerImageSrc = { dogService };
+          const markerImageSrc = dogService;
           const imageSize = new kakao.maps.Size(22, 26),
             imageOption = { offset: new kakao.maps.Point(27, 69) };
 
@@ -210,7 +276,7 @@ const Map = () => {
 
       function createRestaurantMarkers() {
         for (let i = 0; i < restaurantPositions.length; i++) {
-          const markerImageSrc = { dogRestaurant };
+          const markerImageSrc = dogRestaurant;
           const imageSize = new kakao.maps.Size(22, 26),
             imageOption = { offset: new kakao.maps.Point(27, 69) };
 
@@ -237,7 +303,7 @@ const Map = () => {
 
       function createAllMarkers() {
         for (let i = 0; i < allPositions.length; i++) {
-          const markerImageSrc = { dogFaiclity };
+          const markerImageSrc = dogFacility;
           const imageSize = new kakao.maps.Size(22, 26),
             imageOption = { offset: new kakao.maps.Point(27, 69) };
 
@@ -306,10 +372,7 @@ const Map = () => {
         const curFacility = (
           <SinglePlace
             key={facilities[i].facilityId}
-            Name={facilities[i].facilityName}
-            Address={facilities[i].facilityAddress}
-            Type={facilities[i].type}
-            Distance={facilities[i].distance}
+            facility={facilities[i]}
           />
         );
 
@@ -364,7 +427,7 @@ const Map = () => {
             <PlaceIconWrapper src={dogRestaurant} alt="restaurant_img" />
           </span>
           <span className="placeButtons" onClick={() => setSelectPlace("all")}>
-            <PlaceIconWrapper src={dogFaiclity} alt="etc_img" />
+            <PlaceIconWrapper src={dogFacility} alt="etc_img" />
           </span>
         </div>
         <div>
