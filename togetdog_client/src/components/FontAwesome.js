@@ -1,18 +1,13 @@
 // 라이브러리
-import { library } from "@fortawesome/fontawesome-svg-core";
+import { library } from '@fortawesome/fontawesome-svg-core';
 // 사용할 아이콘 import
-import { faDog, faHospital } from "@fortawesome/free-solid-svg-icons";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
-import { faCompass } from "@fortawesome/free-solid-svg-icons";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
-import {
-  faHouse,
-  faMagnifyingGlass,
-  faBell,
-  faSquarePlus,
-} from "@fortawesome/free-solid-svg-icons";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faDog, faHospital } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faCommentDots } from '@fortawesome/free-solid-svg-icons';
+import { faCompass } from '@fortawesome/free-solid-svg-icons';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faMagnifyingGlass, faBell, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import {
   faUserGroup,
   faClock,
@@ -20,17 +15,13 @@ import {
   faArrowLeft,
   faPaperPlane,
   faPaw,
-} from "@fortawesome/free-solid-svg-icons";
-import { faHeart as fasHeart } from "@fortawesome/free-solid-svg-icons";
-import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
-import {
-  faCalendar,
-  faChevronLeft,
-  faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
-import { faImage, faPen } from "@fortawesome/free-solid-svg-icons";
-import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
-import { faXmark, faStar } from "@fortawesome/free-solid-svg-icons";
+} from '@fortawesome/free-solid-svg-icons';
+import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons';
+import { faCalendar, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faImage, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
+import { faXmark, faStar } from '@fortawesome/free-solid-svg-icons';
 
 // 사용할 아이콘을 라이브러리에 추가
 library.add(faDog, faUser, faCommentDots, faCompass, faHome);

@@ -9,7 +9,7 @@ import OptionBtn from '../components/OptionBtn';
 import { SignupContainer, SignupWrapper, InputWrapper } from '../styles/SignupEmotion';
 import DaumKakaoAddress from '../components/DaumKakaoAddress';
 import { useNavigate } from 'react-router-dom';
-import EmailSent from '../components/EmailSent';
+// import EmailSent from '../components/EmailSent';
 
 const genderBtnList = [
   {
@@ -51,10 +51,10 @@ function SocialSignup() {
   }, [])
 
   // 닉네임을 설정하는 함수
-  useEffect(() => {
-    console.log(socialNickname);
-    handleSocialNickname(socialNickname);
-  }, [socialNickname])
+  // useEffect(() => {
+  //   console.log(socialNickname);
+  //   handleSocialNickname(socialNickname);
+  // }, [socialNickname])
 
 
   const [inputs, setInputs] = useState({
@@ -81,7 +81,7 @@ function SocialSignup() {
   const [birthErrorMsg, setBirthErrorMsg] = useState('');
   const [addressError, setAddressError] = useState(false);
   const [addressErrorMsg, setAddressErrorMsg] = useState('');
-  const [emailStatus, setEmailStatus] = useState(false);
+  // const [emailStatus, setEmailStatus] = useState(false);
 
 
   const onChange = (e) => {
@@ -93,15 +93,15 @@ function SocialSignup() {
   };
 
   // 소셜로 받아온 닉네임 핸들러 메소드
-  const handleSocialNickname = async (val) => {
-    console.log(val);
-    if (!nicknameKorRegexp.test(val) && !nicknameEngRegexp.test(val)) {
-      setInputs({
-        ...inputs,
-        nickname: socialNickname,
-      })
-      return;
-    }
+  // const handleSocialNickname = async (val) => {
+  //   console.log(val);
+  //   if (!nicknameKorRegexp.test(val) && !nicknameEngRegexp.test(val)) {
+  //     setInputs({
+  //       ...inputs,
+  //       nickname: socialNickname,
+  //     })
+  //     return;
+  //   }
     // await axios
     //   .get(`${BACKEND_URL}/user/nickname`, { params: { val } })
     //   .then((res) => {
@@ -113,7 +113,7 @@ function SocialSignup() {
     //   .catch((err) => {
     //     setSocialNicknameErr(false);
     //   });
-  };
+  // };
 
 
   // 닉네임 핸들러 메소드
@@ -222,10 +222,10 @@ function SocialSignup() {
         },
       )
       .then((res) => {
-        setEmailStatus(true);
+        // setEmailStatus(true);
         console.log('회원가입 성공!')
         console.log(res);
-        navigate('/signup');
+        navigate('/login');
       })
       .catch((err) => {
         console.log(err);
@@ -258,9 +258,6 @@ function SocialSignup() {
   return(
     <>
       <SignupContainer>
-        {emailStatus ? (
-          <EmailSent email="email" />
-        ) : (
         <SignupWrapper>
           <div className='signup-title'>
             Create a <span className='togetdog'>ToGetDog</span> Account!
@@ -340,8 +337,6 @@ function SocialSignup() {
             <MainColorLongBtn onClick={checkOthers}>회원가입</MainColorLongBtn>
           </div>
         </SignupWrapper>
-
-        )}
       </SignupContainer>
     </>
   );

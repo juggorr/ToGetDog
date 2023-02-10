@@ -103,9 +103,9 @@ const Login = () => {
   };
 
   // 소셜 로그인 주소
-  const naverURL = 'http://70.12.247.230:8080/oauth2/authorization/naver'
-  const kakaoURL = 'http://70.12.247.230:8080/oauth2/authorization/kakao'
-  const googleURL = 'http://70.12.247.230:8080/oauth2/authorization/google'
+  // const naverURL = 'http://70.12.247.230:8080/oauth2/authorization/naver'
+  // const kakaoURL = 'http://70.12.247.230:8080/oauth2/authorization/kakao'
+  // const googleURL = 'http://70.12.247.230:8080/oauth2/authorization/google'
 
 
   return (
