@@ -15,7 +15,7 @@ function OauthError() {
         <div className="errorDesc">이미 가입된 이메일 입니다.</div>
         <HomeTextBtn
           onClick={() => {
-            navigate('/');
+            navigate('/login');
           }}
         >
           홈으로 이동

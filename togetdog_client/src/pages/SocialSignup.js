@@ -32,10 +32,12 @@ const genderBtnList = [
 // 추가해야할 값들 = 성별, 출생연도, 주소 => 이 3개만 뜨는 페이지 만들기
 function SocialSignup() {
   const navigate = useNavigate();
-  const socialUser = useParams();
+  const { socialUser } = useParams();
+  
 
   useEffect(() => {
-    console.log(socialUser);
+    console.log(socialUser.email);
+    console.log(socialUser.data);
   })
 
   const [inputs, setInputs] = useState({
