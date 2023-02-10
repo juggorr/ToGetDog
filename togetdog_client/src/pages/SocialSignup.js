@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from 'react';
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import { BACKEND_URL } from '../config';
 
@@ -32,12 +32,13 @@ const genderBtnList = [
 // 추가해야할 값들 = 성별, 출생연도, 주소 => 이 3개만 뜨는 페이지 만들기
 function SocialSignup() {
   const navigate = useNavigate();
-  const { socialUser } = useParams();
+  const location = useLocation();
+
   
 
   useEffect(() => {
-    console.log(socialUser);
-    console.log(socialUser.user);
+    console.log(location);
+    console.log(location.user);
   })
 
   const [inputs, setInputs] = useState({
@@ -117,13 +118,13 @@ function SocialSignup() {
       .post(
         `${BACKEND_URL}/user/social`, // 소셜 로그인 POST api 주소
         {
-          email: socialUser.email,
-          nickname: socialUser.nickname,
+          // email: socialUser.email,
+          // nickname: socialUser.nickname,
           gender: genderStr,
           birth: birth,
           address: address,
           regionCode: sigunguCode,
-          social: socialUser.social,
+          // social: socialUser.social,
         },
         {
           headers: {

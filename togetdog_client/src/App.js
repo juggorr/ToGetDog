@@ -67,7 +67,7 @@ function App() {
           <Route path="/editBoard/:boardId" element={<EditBoard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/socialsignup/:user" element={<SocialSignup />} />
+          <Route path="/socialsignup" element={<SocialSignup />} />
           <Route path="/emailAuth" element={<EmailAuth />} />
           <Route path="/passwordedit" element={<PasswordEdit />} />
           <Route path="/passwordsearch" element={<PasswordSearch />} />
@@ -78,7 +78,7 @@ function App() {
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/500" element={<InternalServer />} />
           <Route path="/*" element={<NotFound />} />
-          <Route path="/oauth/:token" element={<Oauth />} />
+          <Route path="/oauth" element={<Oauth />} />
           <Route path="/oautherror" element={<OauthError />} />
           <Route path="/createAppointment" element={<CreateAppointment />} />
           <Route path="/search" element={<Search />} />
