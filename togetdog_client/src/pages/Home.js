@@ -16,7 +16,12 @@ import {
   DogInfoWrapper,
   DogImgWrapper,
 } from "../styles/HomeEmotion";
-
+import Banner1 from "../assets/banner1.svg";
+import Banner2 from "../assets/banner2.svg";
+import Banner3 from "../assets/banner3.svg";
+import Banner4 from "../assets/banner4.svg";
+import Banner5 from "../assets/banner5.svg";
+import Banner6 from "../assets/banner6.svg";
 import Boy from "../assets/boy.png";
 import Girl from "../assets/girl.png";
 
@@ -113,6 +118,17 @@ const Home = () => {
   const [isLoading, setLoading] = useState(true);
 
   const pageNo = 1;
+  const backgroundImages = [
+    Banner1,
+    Banner2,
+    Banner3,
+    Banner4,
+    Banner5,
+    Banner6,
+  ];
+
+  const randomIndex = Math.floor(Math.random() * backgroundImages.length);
+  const backgroundImg = backgroundImages[randomIndex];
 
   const handleLogout = () => {
     setUser(null);
@@ -183,13 +199,21 @@ const Home = () => {
     <HomeWrapper>
       <HomeContainer>
         <div className="container">
+          <img
+            className="backgroundImg"
+            src={backgroundImg}
+            alt="banner_img"
+          ></img>
           <div className="typedOutContainer">
             <div className="typed-out">안녕하세요 {user.nickName}님</div>
           </div>
-          <button className="walk-btn" onClick={() => navigate("/recommend")}>
-            산책 친구 찾기
-          </button>
+          <div className="btnContainer">
+            <button className="walk-btn" onClick={() => navigate("/recommend")}>
+              산책 친구 찾기
+            </button>
+          </div>
         </div>
+
         {/* <HomeWelcomeBox src="https://image.utoimage.com/preview/cp872722/2021/08/202108022949_500.jpg" /> */}
       </HomeContainer>
       <RecommendBoxWrapper>

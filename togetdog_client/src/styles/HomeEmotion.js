@@ -8,16 +8,27 @@ export const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 8rem;
-  background-image: url("https://search.pstatic.net/sunny/?src=https%3A%2F%2Fcdn.crowdpic.net%2Fdetail-thumb%2Fthumb_d_C8654F421B0E4D3419DCAF3EAB2DDF87.jpg&type=sc960_832");
-  background-size: contain;
+  // background-image: url("https://search.pstatic.net/sunny/?src=https%3A%2F%2Fcdn.crowdpic.net%2Fdetail-thumb%2Fthumb_d_C8654F421B0E4D3419DCAF3EAB2DDF87.jpg&type=sc960_832");
+  // background-size: contain;
+  background-color: #559968;
+
+  .backgroundImg {
+    right: 1rem;
+    z-index: 1;
+    position: absolute;
+    height: 6rem;
+    object-fit: contain;
+  }
 
   .typed-out {
+    z-index: 2;
     overflow: hidden;
     white-space: nowrap;
     font-size: 1.3rem;
     font-weight: 700;
     font-family: "Gowun Dodum", sans-serif;
     color: #fff;
+    text-shadow: -1px 0 #559968, 0 1px #559968, 1px 0 #559968, 0 -1px #559968;
     animation: typing 1s steps(20, end) forwards;
   }
 
@@ -27,9 +38,10 @@ export const HomeContainer = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    // align-content: space-between;
-    z-index: 1;
+    align-items: space-between;
+    z-index: 2;
     padding: 1.5rem;
+    overflow: hidden;
   }
 
   .typedOutContainer {
@@ -44,12 +56,14 @@ export const HomeContainer = styled.div`
       width: 100%;
     }
   }
+  .btnContainer {
+    display: flex;
+    justify-content: end;
+  }
 
   .walk-btn {
     width: 7rem;
-    z-index: 1;
-    right: 0.7rem;
-    top: 4.7rem;
+    z-index: 2;
     padding: 0.3rem;
     border: 1px solid #559968;
     color: #559968;
