@@ -1,11 +1,11 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const FeedContainer = styled.div`
   width: 100%;
   height: calc(100vh - 115px);
   display: flex;
   flex-direction: column;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
 
   .no-photo {
     height: 100%;
@@ -26,15 +26,15 @@ export const FeedProfileWrapper = styled.div`
 export const FeedPhotoWrapper = styled.div`
   display: flex;
   height: 100%;
-  justify-content: space-around;
+  // justify-content: space-around;
   align-content: flex-start;
   flex-wrap: wrap;
   overflow-y: scroll;
 `;
 
 export const FeedPhoto = styled.img`
-  width: 33%;
-  margin-bottom: 0.15rem;
+  width: 33.333%;
+  margin-bottom: 0.1rem;
   object-fit: cover;
 
   @media (min-width: 650px) {
@@ -43,7 +43,7 @@ export const FeedPhoto = styled.img`
 
   @media (max-width: 650px) {
     /* 650px 이하일 때 */
-    height: 33vw;
+    height: 33.333vw;
   }
 `;
 
@@ -131,6 +131,7 @@ export const MainDogImg = styled.img`
   width: 100px;
   height: 100px;
   border-radius: 50%;
+  object-fit: cover;
 `;
 
 export const SubDogImg = styled.img`
@@ -138,4 +139,5 @@ export const SubDogImg = styled.img`
   height: 3.5rem;
   border-radius: 50%;
   margin-right: 0.3rem;
+  object-fit: cover;
 `;

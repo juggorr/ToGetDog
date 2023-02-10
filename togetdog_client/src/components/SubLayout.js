@@ -1,5 +1,4 @@
 import BackHeader from "./BackHeader";
-import MainFooter from "./MainFooter";
 import { Outlet } from "react-router-dom";
 
 const SubLayout = () => {
@@ -7,7 +6,6 @@ const SubLayout = () => {
     <>
       <BackHeader />
       <Outlet />
-      <MainFooter />
     </>
   );
 };
