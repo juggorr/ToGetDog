@@ -35,7 +35,7 @@ export const TabList = styled.div`
 `;
 
 export const MeetingWrapper = styled.div`
-  position: absolute;
+  position: relative;
   width: 100%;
   top: 1.2rem;
   display: flex;
@@ -54,8 +54,8 @@ export const MeetingWrapper = styled.div`
     width: 4rem;
     height: 4rem;
     color: white;
-    position: fixed;
-    bottom: 4rem;
+    position: absolute;
+    bottom: 1rem;
     right: 1.2rem;
     border-radius: 70%;
     border: 0.3rem solid white;

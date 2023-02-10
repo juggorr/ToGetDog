@@ -4,7 +4,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { authAtom, userState } from "../recoil";
 import axios from "axios";
 
-import { BACKEND_URL, DUMMY_URL } from "../config";
+import { BACKEND_URL } from "../config";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   DropdownWrapper,
@@ -26,9 +26,11 @@ const SingleFriend = ({ item }) => {
   // };
 
   return (
-    <div className="singleDog" onClick={() => navigate(`/feed/${item.userId}`)}>
+    <div className="singleDog">
       <DogImgWrapper>
-        <div className="dogProfileCircle">
+        <div
+          className="dogProfileCircle"
+          onClick={() => navigate(`/feed/${item.userId}`)}>
           <img
             src={"https://i8a807.p.ssafy.io/image/dog/" + item.dogProfile}
             alt="dog_img"
@@ -36,7 +38,18 @@ const SingleFriend = ({ item }) => {
           />
         </div>
       </DogImgWrapper>
-      <div className="dogInfo">
+      <div
+        className="make-appointment-btn"
+        onClick={() =>
+          navigate("/createAppointment", {
+            state: {
+              partnerId: item.userId,
+            },
+          })
+        }>
+        <FontAwesomeIcon icon="fa-calendar" />
+      </div>
+      <div className="dogInfo" onClick={() => navigate(`/feed/${item.userId}`)}>
         <div className="dogNameWrapper">
           <p className="dogName">{item.dogName}</p>
           {/* {dogTown(item.address)} */}
