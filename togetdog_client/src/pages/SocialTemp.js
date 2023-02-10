@@ -9,7 +9,6 @@ import OptionBtn from '../components/OptionBtn';
 import { SignupContainer, SignupWrapper, InputWrapper } from '../styles/SignupEmotion';
 import DaumKakaoAddress from '../components/DaumKakaoAddress';
 import { useNavigate } from 'react-router-dom';
-import EmailSent from '../components/EmailSent';
 
 const genderBtnList = [
   {
@@ -51,10 +50,14 @@ function SocialTemp() {
   }, [])
 
   // 닉네임을 설정하는 함수
-  useEffect(() => {
+  // useEffect(() => {
     // console.log('여기요' + socialNickname);
-    handleSocialNickname(socialNickname);
-  }, [socialNickname])
+  //   async function handleSocialNickname(socialNickname) {
+
+  //   }
+
+
+  // }, [socialNickname])
 
 
   const [inputs, setInputs] = useState({
@@ -93,16 +96,16 @@ function SocialTemp() {
   };
 
   // 소셜로 받아온 닉네임 핸들러 메소드
-  const handleSocialNickname = async (val) => {
-    console.log(val);
-    if (!nicknameKorRegexp.test(val) && !nicknameEngRegexp.test(val)) {
-      setInputs({
-        ...inputs,
-        nickname: socialNickname,
-      })
+  // const handleSocialNickname = async (val) => {
+  //   console.log(val);
+  //   if (!nicknameKorRegexp.test(val) && !nicknameEngRegexp.test(val)) {
+  //     setInputs({
+  //       ...inputs,
+  //       nickname: socialNickname,
+  //     })
       // console.log('통과실패');
-      return;
-    }
+      // return;
+    // }
     // await axios
     //   .get(`${BACKEND_URL}/user/nickname`, { params: { val } })
     //   .then((res) => {
@@ -115,7 +118,7 @@ function SocialTemp() {
     //     console.log(err)
     //     setSocialNicknameErr(false);
     //   });
-  };
+  // };
 
 
   // 닉네임 핸들러 메소드
@@ -228,7 +231,7 @@ function SocialTemp() {
         setEmailStatus(true);
         console.log('회원가입 성공!')
         console.log(res);
-        navigate('/signup');
+        navigate('/login');
       })
       .catch((err) => {
         console.log(err);
@@ -261,9 +264,6 @@ function SocialTemp() {
   return(
     <>
       <SignupContainer>
-        {emailStatus ? (
-          <EmailSent email="email" />
-        ) : (
         <SignupWrapper>
           <div className='signup-title'>
             Create a <span className='togetdog'>ToGetDog</span> Account!
@@ -343,8 +343,6 @@ function SocialTemp() {
             <MainColorLongBtn onClick={checkOthers}>회원가입</MainColorLongBtn>
           </div>
         </SignupWrapper>
-
-        )}
       </SignupContainer>
     </>
   );
