@@ -87,6 +87,7 @@ export const ProfileImage = styled.div`
   background-image: ${(props) =>
     props.image ? `url(${props.image})` : `url(${dog_profile})`};
   background-size: cover;
+  background-position: center;
 
   position: relative;
 
