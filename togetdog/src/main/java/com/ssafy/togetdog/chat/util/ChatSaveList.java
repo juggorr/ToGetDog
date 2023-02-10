@@ -53,9 +53,6 @@ public class ChatSaveList {
 	// 채팅 저장 메소드
 	public void saveChat(ChatDTO chatDto) {
 		long roomId = chatDto.getRoomId();
-		if(!chatIdx.containsKey(roomId)) {
-			chatIdx.put(roomId , cms.chatCount(roomId)+1);
-		}
 		long idx = chatIdx.get(roomId);
 		chatDto.setIdx(idx);
 		chatList.get(roomId).add(chatDto);	// 채팅 내역 저장
@@ -90,7 +87,6 @@ public class ChatSaveList {
 			set.add(roomId);
 		}
 			
-//		System.out.println("saveCome");
 		for(long key : set) {
 			if(chatList.get(key).size() == 0) {
 				continue;
@@ -114,7 +110,6 @@ public class ChatSaveList {
 		}		
 		saveSessionId.remove(session.getSessionId());
 		if(cis.credentUser(session.getRoomId(), session.getUserId())) {
-			System.out.println("권한없음");
 			return;
 		}
 

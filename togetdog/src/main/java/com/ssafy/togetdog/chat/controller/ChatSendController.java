@@ -26,11 +26,13 @@ public class ChatSendController {
     @MessageMapping("/messages/{roomId}")
     @SendTo("/subscribe/roomId/{roomId}")
     public ChattingDTO chat(ChatDTO chatDto) {
-    	if(chatDto.getContent().length() > 100) {
+    	if(csl.chatCondent(chatDto.getSessionId(), chatDto.getRoomId()) && chatDto.getContent().length() <= 100) {
+    		chatDto.setDate(LocalDateTime.now());
+//    		System.out.println("chat Info : " + chatDto);
+    		csl.saveChat(chatDto);
+    		return ChattingDTO.of(chatDto);
+    	}else {
     		return null;
     	}
-    	chatDto.setDate(LocalDateTime.now());
-    	csl.saveChat(chatDto);
-    	return ChattingDTO.of(chatDto);
     }
 }
