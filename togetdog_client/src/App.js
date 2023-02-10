@@ -39,6 +39,7 @@ import Notifications from "./pages/Notifications";
 import Recommend from "./pages/Recommend";
 import EditBoard from "./pages/EditBoard";
 import ChatMsg from "./pages/ChatMsg";
+import SocialTemp from "./pages/SocialTemp";
 
 function App() {
   return (
@@ -60,6 +61,7 @@ function App() {
             <Route path="/chat/:chatId" element={<ChatMsg />} />
             <Route path="/followerlist/:dogId" element={<FollowerList />} />
             <Route path="/followinglist/:userId" element={<FollowingList />} />
+            <Route path="/notifications" element={<Notifications />} />
             <Route path="/useredit" element={<UserEdit />} />
           </Route>
           {/* 그 이외 필요없는 컴포넌트 */}
@@ -72,16 +74,17 @@ function App() {
           <Route path="/passwordedit" element={<PasswordEdit />} />
           <Route path="/passwordsearch" element={<PasswordSearch />} />
           <Route path="/dogregister" element={<DogRegister />} />
-          <Route path='/dogedit' element={<DogEdit />} />
+          <Route path="/dogedit" element={<DogEdit />} />
           {/* 임시로 링크 */}
           <Route path="/dogdelete" element={<ConfirmModal />} />
-          <Route path="/notifications" element={<Notifications />} />
+
           <Route path="/500" element={<InternalServer />} />
           <Route path="/*" element={<NotFound />} />
           <Route path="/oauth" element={<Oauth />} />
           <Route path="/oautherror" element={<OauthError />} />
           <Route path="/createAppointment" element={<CreateAppointment />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/socialtemp" element={<SocialTemp />} />
         </Routes>
       </div>
     </BrowserRouter>
