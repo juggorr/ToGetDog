@@ -1,17 +1,18 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 // 이페이지에서 Params에 토큰이 들어옴
 
 function Oauth() {
 
-  const { socialToken } = useParams();
+  const location = useLocation();
+
 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log(socialToken.token);
+    console.log(location);
   }, [])
   
   return(

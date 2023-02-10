@@ -9,7 +9,6 @@ import OptionBtn from '../components/OptionBtn';
 import { SignupContainer, SignupWrapper, InputWrapper } from '../styles/SignupEmotion';
 import DaumKakaoAddress from '../components/DaumKakaoAddress';
 import { useNavigate } from 'react-router-dom';
-import EmailSent from '../components/EmailSent';
 
 const genderBtnList = [
   {
@@ -265,9 +264,6 @@ function SocialTemp() {
   return(
     <>
       <SignupContainer>
-        {emailStatus ? (
-          <EmailSent email="email" />
-        ) : (
         <SignupWrapper>
           <div className='signup-title'>
             Create a <span className='togetdog'>ToGetDog</span> Account!
@@ -347,8 +343,6 @@ function SocialTemp() {
             <MainColorLongBtn onClick={checkOthers}>회원가입</MainColorLongBtn>
           </div>
         </SignupWrapper>
-
-        )}
       </SignupContainer>
     </>
   );
