@@ -24,7 +24,8 @@ function Oauth() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log(location);
+    console.log(location.search);
+    console.log(decodeURIComponent(location.search));
   }, [])
   
   return(
