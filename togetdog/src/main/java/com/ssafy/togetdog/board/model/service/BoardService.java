@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.togetdog.board.model.dto.BoardDTO;
+import com.ssafy.togetdog.board.model.dto.BoardHomeDTO;
 import com.ssafy.togetdog.board.model.dto.BoardShowDTO;
 import com.ssafy.togetdog.board.model.entity.Board;
 import com.ssafy.togetdog.board.model.repository.BoardRepository;
@@ -118,15 +119,19 @@ public class BoardService {
 		return boardList;
 	}
 
-	public Page<BoardDTO> getAllInDogIds(List<Long> dogIds, int page) {
+	public Page<BoardHomeDTO> getAllInDogIds(List<Long> dogIds, int page) {
 		Pageable pageable = PageRequest.of(page, 30);
 		List<Dog> dogList = new ArrayList<Dog>();
 		for (Long id : dogIds) {
-			Dog dog = new Dog();
-			dog.setDogId(id);
+			Dog dog = dogRepository.findByDogId(id);
+			logger.debug("======= dog : {}", dog);
 			dogList.add(dog);
 		}
-		Page<BoardDTO> fbList = boardRepository.findAllByDogIn(dogList, pageable);
+		Page<BoardHomeDTO> fbList = boardRepository.findAllByDogIn(dogList, pageable);
+		for (int i = 0; i < fbList.getNumberOfElements(); i++) {
+			long dogId = fbList.getContent().get(i).getDogId();
+			fbList.getContent().get(i).setDog(DogInfoRespDTO.of(dogRepository.findByDogId(dogId)));
+		}
 		logger.debug("======= fbList : {}", fbList.getContent());
 		
 		return fbList;
