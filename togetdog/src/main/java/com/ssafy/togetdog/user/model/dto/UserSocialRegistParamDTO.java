@@ -28,10 +28,10 @@ public class UserSocialRegistParamDTO {
 	
 	public static User of(UserSocialRegistParamDTO userDTO) {
 		ProviderType social = ProviderType.N;
-		if (userDTO.getSocial().equals("kakao") || userDTO.getSocial().equals("k")) {
+		if (userDTO.getSocial().equals("kakao") || userDTO.getSocial().equals("k") || userDTO.getSocial().equals("K")) {
 			social = ProviderType.K;
 		}
-		if (userDTO.getSocial().equals("google") || userDTO.getSocial().equals("g")) {
+		if (userDTO.getSocial().equals("google") || userDTO.getSocial().equals("g") || userDTO.getSocial().equals("G")) {
 			social = ProviderType.G;
 		}
 		return User.builder()
