@@ -6,7 +6,11 @@ import { userState } from "../recoil";
 
 import "./FontAwesome";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { HeaderWrapper, SearchModal } from "../styles/MainHeaderEmotion";
+import {
+  HeaderWrapper,
+  PositionDiv,
+  SearchModal,
+} from "../styles/MainHeaderEmotion";
 
 const Modal = ({ setModalOpen }) => {
   const navigate = useNavigate();
@@ -56,6 +60,7 @@ function Navbar() {
     <>
       {modalOpen && <Modal setModalOpen={setModalOpen} />}
       <HeaderWrapper>
+        <div className="positionDiv"></div>
         <div className="head-icon-wrapper head-left">
           <div className="dongName-box notoSans">
             <FontAwesomeIcon className="header-icon" icon="fa-solid fa-house" />
@@ -80,6 +85,7 @@ function Navbar() {
           </div>
         </div>
       </HeaderWrapper>
+      <PositionDiv></PositionDiv>
     </>
   );
 }
