@@ -19,12 +19,12 @@ public class StompHandler extends ChannelInterceptorAdapter {
         String sessionId = accessor.getSessionId();
         switch (accessor.getCommand()) {
             case CONNECT:
-//            	System.out.println("testfor connect : " + sessionId);
+            	System.out.println("testfor connect : " + sessionId);
             	csl.saveSesId(sessionId);
                 break;
             case DISCONNECT:
             	// 세션 종료시
-//            	System.out.println("testfor disconnect : " + sessionId);
+            	System.out.println("testfor disconnect : " + sessionId);
             	csl.deleteSessionId(sessionId);
                 break;
             default:
