@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.togetdog.board.model.dto.BoardDTO;
+import com.ssafy.togetdog.board.model.dto.BoardHomeDTO;
 import com.ssafy.togetdog.board.model.dto.BoardShowDTO;
 import com.ssafy.togetdog.board.model.dto.CommentDTO;
 import com.ssafy.togetdog.board.model.dto.LikeDTO;
@@ -82,13 +83,14 @@ public class BoardRestController {
 		Long userId = jwtService.getUserId(token);
 //		Long userId = 4L;
 		
+		// 강아지 (이름, 프로필 이미지랑, 견종, 나이, 성별)
 		List<DogInfoRespDTO> followList = followService.getFollowingList(userId);
 		logger.info("return boardList : {}", followList);
 		List<Long> dogIds = new ArrayList<Long>();
 		for (DogInfoRespDTO follow : followList) {
 			dogIds.add(follow.getDogId());
 		}
-		Page<BoardDTO> boardList = boardService.getAllInDogIds(dogIds, pageNo - 1);
+		Page<BoardHomeDTO> boardList = boardService.getAllInDogIds(dogIds, pageNo - 1);
 //		Page<BoardDTO> boardList = boardService.findAll(pageNo - 1);
 		
 		resultMap.put("result", SUCCESS);
