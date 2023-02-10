@@ -37,8 +37,7 @@ function SocialSignup() {
 
   useEffect(() => {
     console.log(socialUser);
-    console.log(socialUser.UserSocialLoginRespDTO);
-    console.log(socialUser.data);
+    console.log(socialUser.user);
   })
 
   const [inputs, setInputs] = useState({

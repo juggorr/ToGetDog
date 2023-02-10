@@ -6,12 +6,12 @@ import { useNavigate, useParams } from "react-router-dom";
 
 function Oauth() {
 
-  const socialToken = useParams();
+  const { socialToken } = useParams();
 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log(socialToken)
+    console.log(socialToken.token);
   }, [])
   
   return(
