@@ -1,7 +1,5 @@
 package com.ssafy.togetdog.appointment.controller;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +7,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,27 +21,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.togetdog.appointment.model.dto.AppointmentAddDTO;
-import com.ssafy.togetdog.appointment.model.dto.AppointmentInfoRegistDTO;
-import com.ssafy.togetdog.appointment.model.dto.AppointmentInfoRespDTO;
 import com.ssafy.togetdog.appointment.model.dto.AppointmentListDTO;
 import com.ssafy.togetdog.appointment.model.service.AppointmentService;
-import com.ssafy.togetdog.board.model.dto.BoardDTO;
-import com.ssafy.togetdog.board.model.dto.BoardShowDTO;
-import com.ssafy.togetdog.board.model.dto.CommentDTO;
-import com.ssafy.togetdog.board.model.dto.LikeDTO;
-import com.ssafy.togetdog.board.model.service.BoardService;
-import com.ssafy.togetdog.board.model.service.CommentService;
-import com.ssafy.togetdog.board.model.service.LikeService;
-import com.ssafy.togetdog.dog.model.dto.DogInfoForUserDTO;
-import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
+import com.ssafy.togetdog.dog.model.dto.DogRecommendListDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
-import com.ssafy.togetdog.dog.model.service.DogService;
-import com.ssafy.togetdog.follow.model.service.FollowService;
 import com.ssafy.togetdog.notify.model.service.NotifyService;
-import com.ssafy.togetdog.user.model.dto.UserIncludesDogsDTO;
-import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
 import com.ssafy.togetdog.user.model.service.JwtService;
-import com.ssafy.togetdog.user.model.service.UserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -226,7 +208,7 @@ public class AppointmentRestController {
 		
 		long userId = jwtService.getUserId(token);
 //		long userId = 4L;
-		List<DogInfoRespDTO> dogList = appointmentService.recommendFriendsForDog(userId, dogId, "region");
+		List<DogRecommendListDTO> dogList = appointmentService.recommendFriendsForDog(userId, dogId, "region");
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("dogs", dogList);
@@ -247,7 +229,7 @@ public class AppointmentRestController {
 		
 		long userId = jwtService.getUserId(token);
 //		long userId = 4L;
-		List<DogInfoRespDTO> dogList = appointmentService.recommendFriendsForDog(userId, dogId, "all");
+		List<DogRecommendListDTO> dogList = appointmentService.recommendFriendsForDog(userId, dogId, "all");
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("dogs", dogList);
