@@ -26,6 +26,8 @@ import com.ssafy.togetdog.global.exception.ExcessNumberOfDogsException;
 import com.ssafy.togetdog.global.exception.InvalidInputException;
 import com.ssafy.togetdog.global.exception.UnAuthorizedException;
 import com.ssafy.togetdog.global.util.FileUtil;
+import com.ssafy.togetdog.notify.model.entity.Notify;
+import com.ssafy.togetdog.notify.model.repository.NotifyRepository;
 import com.ssafy.togetdog.notify.model.service.NotifyService;
 import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.repository.UserRepository;
@@ -41,6 +43,7 @@ public class DogServiceImpl implements DogService {
 	private final DogRepository dogRepository;
 	private final AppointmentRepository appointmentRepository;
 	private final SentAppointmentRepository sentAppointmentRepository;
+	private final NotifyRepository notifyRepository;
 	
 	private final NotifyService notifyService;
 	
@@ -114,8 +117,13 @@ public class DogServiceImpl implements DogService {
 				}
 			}
 		}
-		// 프로필 이미지 삭제
+		// 해당 강아지를 대상으로 좋아요, 팔로우 알림을 전송받은 내역을 삭제합니다.
+		notifyRepository.deleteAllByDogId(dog.getDogId());
+		
+		// 프로필 이미지 파일 삭제
 		fileUtil.fileDelete(dog.getDogImage(), dogImageFilePath);
+		
+		// 강아지 엔티티는 null처리합니다.
 		dog.setUser(null);
 		dog.setDogName("deleted");
 		dog.setDogImage(null);
