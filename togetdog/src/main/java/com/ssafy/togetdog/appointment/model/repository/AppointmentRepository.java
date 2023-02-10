@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.ssafy.togetdog.appointment.model.entity.Appointment;
-import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.user.model.entity.User;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
@@ -21,7 +20,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 	Long countByReceivedUserAndStatus(User user, String status);
 	
 	
-	@Query(value = "select dog_id, d.user_id, dog_name, dog_gender, dog_type, dog_birth, dog_weight, dog_neutered, dog_character1, dog_character2, description, dog_image " + 
+	@Query(value = "select dog_id, d.user_id, dog_name, dog_gender, dog_type, dog_birth, dog_weight, dog_neutered, dog_character1, dog_character2, description, dog_image, u.address, u.nickname " + 
 			"from user u join dog d " + 
 			"on u.user_id = d.user_id " + 
 			"where not u.user_id=:userId and u.region_code=:regionCode and d.dog_neutered=1 "
@@ -30,7 +29,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 			@Param("yearBefore") String yearBefore, @Param("thisYear") String thisYear,
 			@Param("startWeight")String startWeight, @Param("endWeight") String endWeight);
 	
-	@Query(value = "select dog_id, d.user_id, dog_name, dog_gender, dog_type, dog_birth, dog_weight, dog_neutered, dog_character1, dog_character2, description, dog_image " + 
+	@Query(value = "select dog_id, d.user_id, dog_name, dog_gender, dog_type, dog_birth, dog_weight, dog_neutered, dog_character1, dog_character2, description, dog_image, u.address, u.nickname " + 
 			"from user u join dog d " + 
 			"on u.user_id = d.user_id " + 
 			"where not u.user_id=:userId and u.region_code=:regionCode and d.dog_neutered=0 "
@@ -40,7 +39,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 			@Param("startWeight") String startWeight, @Param("endWeight") String endWeight,
 			@Param("gender") String gender);
 	
-	@Query(value = "select dog_id, d.user_id, dog_name, dog_gender, dog_type, dog_birth, dog_weight, dog_neutered, dog_character1, dog_character2, description, dog_image " + 
+	@Query(value = "select dog_id, d.user_id, dog_name, dog_gender, dog_type, dog_birth, dog_weight, dog_neutered, dog_character1, dog_character2, description, dog_image, u.address, u.nickname " + 
 			"from user u join dog d " + 
 			"on u.user_id = d.user_id " + 
 			"where not u.user_id=:userId and d.dog_neutered=1 "
@@ -49,7 +48,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 			@Param("yearBefore") String yearBefore, @Param("thisYear") String thisYear,
 			@Param("startWeight")String startWeight, @Param("endWeight") String endWeight);
 	
-	@Query(value = "select dog_id, d.user_id, dog_name, dog_gender, dog_type, dog_birth, dog_weight, dog_neutered, dog_character1, dog_character2, description, dog_image " + 
+	@Query(value = "select dog_id, d.user_id, dog_name, dog_gender, dog_type, dog_birth, dog_weight, dog_neutered, dog_character1, dog_character2, description, dog_image, u.address, u.nickname " + 
 			"from user u join dog d " + 
 			"on u.user_id = d.user_id " + 
 			"where not u.user_id=:userId and d.dog_neutered=0 "

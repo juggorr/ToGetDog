@@ -1,8 +1,6 @@
 package com.ssafy.togetdog.appointment.model.service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.togetdog.appointment.model.dto.AppointmentInfoRegistDTO;
-import com.ssafy.togetdog.appointment.model.dto.AppointmentInfoRespDTO;
 import com.ssafy.togetdog.appointment.model.dto.AppointmentListDTO;
 import com.ssafy.togetdog.appointment.model.entity.Appointment;
 import com.ssafy.togetdog.appointment.model.entity.ReceivedAppointment;
@@ -22,9 +19,8 @@ import com.ssafy.togetdog.appointment.model.entity.SentAppointment;
 import com.ssafy.togetdog.appointment.model.repository.AppointmentRepository;
 import com.ssafy.togetdog.appointment.model.repository.ReceivedAppointmentRepository;
 import com.ssafy.togetdog.appointment.model.repository.SentAppointmentRepository;
-import com.ssafy.togetdog.board.model.service.BoardService;
-import com.ssafy.togetdog.dog.model.dto.DogInfoForUserDTO;
 import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
+import com.ssafy.togetdog.dog.model.dto.DogRecommendListDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.dog.model.repository.DogRepository;
 import com.ssafy.togetdog.user.model.entity.User;
@@ -199,7 +195,7 @@ public class AppointmentService {
 		}
 	}
 
-	public List<DogInfoRespDTO> recommendFriendsForDog(long userId, long dogId, String type) {
+	public List<DogRecommendListDTO> recommendFriendsForDog(long userId, long dogId, String type) {
 		User user = userRepository.findById(userId).orElse(null);
 		String regionCode = user.getRegionCode();
 		
@@ -241,7 +237,7 @@ public class AppointmentService {
 			endWeight = "80";
 		}
 		List<Object[]> recList = new ArrayList<Object[]>();
-		List<DogInfoRespDTO> reclist = new ArrayList<DogInfoRespDTO>();
+		List<DogRecommendListDTO> reclist = new ArrayList<DogRecommendListDTO>();
 		
 		if(type.equals("region")) {
 			if(neutured) { // 중성화 한 강아지 true = 1, false = 0
@@ -289,43 +285,11 @@ public class AppointmentService {
 			}
 		}
 		logger.info("recommendedList ============== : {}", recList);
-		reclist  = recList.stream().map(r -> recommendListToDTO(r)).collect(Collectors.toList());
+		reclist  = recList.stream().map(r -> DogRecommendListDTO.of(r)).collect(Collectors.toList());
 		return reclist;
 	}
 	
 	public Appointment findAppointmentById(long roomId) {
 		return appointmentRepository.findById(roomId).orElse(null);
-	}
-	
-	// 테스트 method에요. controller에 만만한게 산책친구 찾기라서 거기서 테스트 해봤습니다.
-//	public void test(List<Object[]> recList) {
-//		recList = appointmentRepository.getNeuturedList(4, "41135");
-//		List<DogInfoRespDTO> result = recList.stream().map(r -> recommendListToDTO(r)).collect(Collectors.toList());
-//		for (DogInfoRespDTO dogInfoRespDTO : result) {
-//			logger.info("조회 dto ======= : {} ", dogInfoRespDTO);
-//		}
-//	}
-	
-	// 쿼리 조회 결과를 dto로 변환해주는 method입니다.
-	public DogInfoRespDTO recommendListToDTO(Object[] result) {
-		//birth 기준으로 개월 수 변환
-		LocalDateTime now = LocalDateTime.now();
-		int nowMonth = (now.getYear() * 12) + now.getMonthValue();
-		int dogMonth = (Integer.parseInt(((String)result[5]).substring(0, 4)) * 12)
-				+ Integer.parseInt(((String)result[5]).substring(4, 6));
-		return DogInfoRespDTO.builder()
-				.dogId(Long.parseLong(String.valueOf(result[0])))
-				.userId(Long.parseLong(String.valueOf(result[1])))
-				.dogName(String.valueOf(result[2]))
-				.dogGender(String.valueOf(result[3]))
-				.dogType(String.valueOf(result[4]))
-				.dogAge(nowMonth - dogMonth)
-				.dogWeight(Double.parseDouble(String.valueOf(result[6])))
-				.dogNeutered(((Boolean) result[7]).booleanValue())
-				.dogCharacter1(String.valueOf(result[8]))
-				.dogCharacter2(String.valueOf(result[9]))
-				.description(String.valueOf(result[10]))
-				.dogProfile(String.valueOf(result[11]))
-				.build();
 	}
 }
