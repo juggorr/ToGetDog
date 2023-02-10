@@ -9,7 +9,6 @@ import OptionBtn from '../components/OptionBtn';
 import { SignupContainer, SignupWrapper, InputWrapper } from '../styles/SignupEmotion';
 import DaumKakaoAddress from '../components/DaumKakaoAddress';
 import { useNavigate } from 'react-router-dom';
-import EmailSent from '../components/EmailSent';
 
 const genderBtnList = [
   {
@@ -32,7 +31,7 @@ const nicknameEngRegexp = /^[a-zA-Z]{2,16}$/; // 영문 2~16자
 function SocialTemp() {
   
   const navigate = useNavigate();
-  const params = "?user=UserSocialLoginRespDTO(email=pincelephant@gmail.com,%20nickName=이건없지용,%20social=K)"
+  const params = "?user=UserSocialLoginRespDTO(email=pincele@gmail.com,%20nickName=abcdefg,%20social=K)"
 
   const [email, setEmail] = useState('');
   const [socialNickname, setSocialNickname] = useState('');
@@ -50,10 +49,32 @@ function SocialTemp() {
     console.log(email, nickname, social);
   }, [])
 
-  // 닉네임을 설정하는 함수
+  // 소셜 닉네임 확인하는 함수
   useEffect(() => {
-    // console.log('여기요' + socialNickname);
-    handleSocialNickname(socialNickname);
+    const checkNickname = async (val) => {
+      if (!nicknameKorRegexp.test(val) && !nicknameEngRegexp.test(val)) {
+        console.log('소셜 닉네임이 형식에 맞지 않음');
+        setSocialNicknameErr(false);
+        // setNicknameErrorMsg('닉네임은 한글 1~8자 혹은 영문 2~16자');
+        return;
+      }
+      try {
+        const res = await axios.get(`${BACKEND_URL}/user/nickname`, { params: { val } })
+        if (res.status === 200) {
+          console.log('사용할 수 있는 닉네임')
+          console.log(res);
+          setSocialNicknameErr(true);
+        }
+      }
+      catch(err){
+        console.log('증복되는 닉네임')
+        console.log(err);
+        setSocialNicknameErr(false);
+      }
+
+    }
+
+    checkNickname(socialNickname);
   }, [socialNickname])
 
 
@@ -73,7 +94,7 @@ function SocialTemp() {
     sigunguCode,
   } = inputs;
 
-  const [socialNicknameErr, setSocialNicknameErr] = useState(true);
+  const [socialNicknameErr, setSocialNicknameErr] = useState(false);
 
   const [nicknameError, setNicknameError] = useState(false);
   const [nicknameErrorMsg, setNicknameErrorMsg] = useState('');
@@ -81,7 +102,6 @@ function SocialTemp() {
   const [birthErrorMsg, setBirthErrorMsg] = useState('');
   const [addressError, setAddressError] = useState(false);
   const [addressErrorMsg, setAddressErrorMsg] = useState('');
-  const [emailStatus, setEmailStatus] = useState(false);
 
 
   const onChange = (e) => {
@@ -91,32 +111,6 @@ function SocialTemp() {
       [name]: value,
     });
   };
-
-  // 소셜로 받아온 닉네임 핸들러 메소드
-  const handleSocialNickname = async (val) => {
-    console.log(val);
-    if (!nicknameKorRegexp.test(val) && !nicknameEngRegexp.test(val)) {
-      setInputs({
-        ...inputs,
-        nickname: socialNickname,
-      })
-      // console.log('통과실패');
-      return;
-    }
-    // await axios
-    //   .get(`${BACKEND_URL}/user/nickname`, { params: { val } })
-    //   .then((res) => {
-    //     if (res.status === 200) {
-    //       console.log(res);
-    //       setSocialNicknameErr(true);
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err)
-    //     setSocialNicknameErr(false);
-    //   });
-  };
-
 
   // 닉네임 핸들러 메소드
   const handleNickname = async (e) => {
@@ -225,10 +219,9 @@ function SocialTemp() {
         },
       )
       .then((res) => {
-        setEmailStatus(true);
         console.log('회원가입 성공!')
-        console.log(res);
-        navigate('/signup');
+        console.log(res)
+        navigate('/login');
       })
       .catch((err) => {
         console.log(err);
@@ -261,15 +254,12 @@ function SocialTemp() {
   return(
     <>
       <SignupContainer>
-        {emailStatus ? (
-          <EmailSent email="email" />
-        ) : (
         <SignupWrapper>
           <div className='signup-title'>
             Create a <span className='togetdog'>ToGetDog</span> Account!
           </div>
           {/* 소셜 닉네임이 유효하지 않으면 닉네임 입력하기 활성화 */}
-          {socialNicknameErr? (
+          {!socialNicknameErr? (
           <InputWrapper>
               <div className='input-title'>
                 닉네임<span className='red-dot'>*</span>
@@ -343,8 +333,6 @@ function SocialTemp() {
             <MainColorLongBtn onClick={checkOthers}>회원가입</MainColorLongBtn>
           </div>
         </SignupWrapper>
-
-        )}
       </SignupContainer>
     </>
   );

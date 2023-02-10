@@ -1,12 +1,15 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const HeaderWrapper = styled.div`
   display: flex;
   width: inherit;
   height: 60px;
 
-  display: flex;
+  position: fixed;
+  top: 0;
   justify-content: space-between;
+  background-color: #fff;
+  z-index: 9;
 
   .head-icon-wrapper {
     display: flex;
@@ -22,7 +25,7 @@ export const HeaderWrapper = styled.div`
   }
 
   .notoSans {
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: "Noto Sans KR", sans-serif;
   }
 
   .dongName-box {
@@ -89,7 +92,7 @@ export const SearchModal = styled.div`
     height: 2.5rem;
     border: 2px solid #6eb175;
     border-radius: 1rem;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: "Noto Sans KR", sans-serif;
     font-size: 0.8rem;
   }
 
@@ -104,4 +107,8 @@ export const SearchModal = styled.div`
     background-color: #6eb175;
     border-radius: 0.8rem;
   }
+`;
+
+export const PositionDiv = styled.div`
+  height: 60px;
 `;

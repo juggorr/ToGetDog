@@ -13,7 +13,6 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.ssafy.togetdog.user.controller.Oauth2RestController;
 import com.ssafy.togetdog.user.model.dto.UserLoginRespDTO;
 import com.ssafy.togetdog.user.model.dto.UserSocialLoginRespDTO;
 import com.ssafy.togetdog.user.model.entity.User;
@@ -30,7 +29,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 	private final JwtService jwtService;
 	private final UserRepository userRepository;
 	
-	private final Logger logger = LoggerFactory.getLogger(Oauth2RestController.class);
+	private final Logger logger = LoggerFactory.getLogger(OAuth2SuccessHandler.class);
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -57,7 +56,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 			return UriComponentsBuilder.fromUriString("/oauth")
 	                .queryParam("access-token", accessToken)
 	                .queryParam("user", UserLoginRespDTO.of(user))
-	                .build().toUriString();
+	                .build()
+	                .encode()
+	                .toUriString();
 		} else {
 			// 새로운 소셜 가입 시도
 			User user = User.builder()
@@ -67,7 +68,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 					.build();
 			return UriComponentsBuilder.fromUriString("/socialsignup")
 	                .queryParam("user", UserSocialLoginRespDTO.of(user))
-	                .build().toUriString();
+	                .build()
+	                .encode()
+	                .toUriString();
 		}
     }
 	
