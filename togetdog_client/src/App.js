@@ -57,6 +57,7 @@ function App() {
             <Route path="/chat/:chatId" element={<ChatMsg />} />
             <Route path="/followerlist/:dogId" element={<FollowerList />} />
             <Route path="/followinglist/:userId" element={<FollowingList />} />
+            <Route path="/notifications" element={<Notifications />} />
           </Route>
           {/* 그 이외 필요없는 컴포넌트 */}
           <Route path="/new" element={<New />} />
@@ -68,10 +69,10 @@ function App() {
           <Route path="/passwordedit" element={<PasswordEdit />} />
           <Route path="/passwordsearch" element={<PasswordSearch />} />
           <Route path="/dogregister" element={<DogRegister />} />
-          <Route path='/dogedit' element={<DogEdit />} />
+          <Route path="/dogedit" element={<DogEdit />} />
           {/* 임시로 링크 */}
           <Route path="/dogdelete" element={<ConfirmModal />} />
-          <Route path="/notifications" element={<Notifications />} />
+
           <Route path="/500" element={<InternalServer />} />
           <Route path="/*" element={<NotFound />} />
           <Route path="/createAppointment" element={<CreateAppointment />} />
