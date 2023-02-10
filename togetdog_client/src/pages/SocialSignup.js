@@ -51,10 +51,10 @@ function SocialSignup() {
   }, [])
 
   // 닉네임을 설정하는 함수
-  useEffect(() => {
-    console.log(socialNickname);
-    handleSocialNickname(socialNickname);
-  }, [socialNickname])
+  // useEffect(() => {
+  //   console.log(socialNickname);
+  //   handleSocialNickname(socialNickname);
+  // }, [socialNickname])
 
 
   const [inputs, setInputs] = useState({
@@ -93,15 +93,15 @@ function SocialSignup() {
   };
 
   // 소셜로 받아온 닉네임 핸들러 메소드
-  const handleSocialNickname = async (val) => {
-    console.log(val);
-    if (!nicknameKorRegexp.test(val) && !nicknameEngRegexp.test(val)) {
-      setInputs({
-        ...inputs,
-        nickname: socialNickname,
-      })
-      return;
-    }
+  // const handleSocialNickname = async (val) => {
+  //   console.log(val);
+  //   if (!nicknameKorRegexp.test(val) && !nicknameEngRegexp.test(val)) {
+  //     setInputs({
+  //       ...inputs,
+  //       nickname: socialNickname,
+  //     })
+  //     return;
+  //   }
     // await axios
     //   .get(`${BACKEND_URL}/user/nickname`, { params: { val } })
     //   .then((res) => {
@@ -113,7 +113,7 @@ function SocialSignup() {
     //   .catch((err) => {
     //     setSocialNicknameErr(false);
     //   });
-  };
+  // };
 
 
   // 닉네임 핸들러 메소드
@@ -225,7 +225,7 @@ function SocialSignup() {
         setEmailStatus(true);
         console.log('회원가입 성공!')
         console.log(res);
-        navigate('/signup');
+        navigate('/login');
       })
       .catch((err) => {
         console.log(err);
