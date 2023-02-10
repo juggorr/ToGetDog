@@ -40,7 +40,13 @@ const SingleFriend = ({ item }) => {
       </DogImgWrapper>
       <div
         className="make-appointment-btn"
-        onClick={() => navigate("/createAppointment", { state: item.userId })}>
+        onClick={() =>
+          navigate("/createAppointment", {
+            state: {
+              partnerId: item.userId,
+            },
+          })
+        }>
         <FontAwesomeIcon icon="fa-calendar" />
       </div>
       <div className="dogInfo" onClick={() => navigate(`/feed/${item.userId}`)}>
