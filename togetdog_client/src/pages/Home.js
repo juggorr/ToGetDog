@@ -29,7 +29,7 @@ import { useInView } from "react-intersection-observer";
 
 const SingleBoard = ({ board }) => {
   const navigate = useNavigate();
-  console.log("게시물 렌더링됨");
+
   return (
     <SingleBoardWrapper>
       <div className="contentLine"></div>
@@ -99,7 +99,6 @@ const BoardList = (boardList) => {
 
 const RecommendWrapper = (dogs) => {
   let tempList = [];
-  console.log("친구 목록 렌더링");
 
   if (dogs) {
     for (let i = 0; i < dogs.length; i++) {
@@ -209,7 +208,6 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    console.log(inView, hasNextPage);
     if (inView && hasNextPage) {
       getBoardList();
     }
