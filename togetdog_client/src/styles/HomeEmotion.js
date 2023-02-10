@@ -45,6 +45,7 @@ export const HomeContainer = styled.div`
 
   .typedOutContainer {
     display: inline-block;
+    z-index: 2;
   }
 
   @keyframes typing {
