@@ -1,11 +1,11 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const FeedContainer = styled.div`
   width: 100%;
   height: calc(100vh - 115px);
   display: flex;
   flex-direction: column;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
 
   .no-photo {
     height: 100%;
@@ -105,6 +105,24 @@ export const FeedProfileTop = styled.div`
 
   .no-dogs-txt {
     font-size: 0.9rem;
+  }
+
+  .other-user-btns {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+  }
+
+  .make-appointment-btn {
+    width: 1.7rem;
+    height: 1.7rem;
+    font-size: 0.8rem;
+    background-color: #7fb77e;
+    text-align: center;
+    line-height: 1.5rem;
+    border-radius: 50%;
+    color: #fff;
+    margin-top: 2.6rem;
   }
 `;
 

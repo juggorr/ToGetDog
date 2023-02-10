@@ -138,8 +138,8 @@ export const FriendListWrapper = styled.div`
     border-radius: 50%;
     color: #fff;
     position: absolute;
-    top: 2rem;
-    left: 5rem;
+    top: 2.2rem;
+    left: 4rem;
   }
 `;
 
