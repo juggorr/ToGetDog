@@ -32,7 +32,7 @@ public class ChatInUserInfo {
 	
 	public static ChatInUserInfo of(ChatInfo info) {
 		return ChatInUserInfo.builder()
-				.userId(info.getUserId())
+				.userId(info.getOther().getUserId())
 				.roomId(info.getRoomId())
 				.userBirth(info.getOther().getUserBirth())
 				.gender(info.getOther().getGender())
