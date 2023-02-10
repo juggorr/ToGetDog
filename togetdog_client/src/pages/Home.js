@@ -24,6 +24,7 @@ import Banner5 from "../assets/banner5.svg";
 import Banner6 from "../assets/banner6.svg";
 import Boy from "../assets/boy.png";
 import Girl from "../assets/girl.png";
+import Loading from "../assets/loading.gif";
 
 const BoardList = (boardList) => {
   const SingleBoard = ({ board }) => {
@@ -194,7 +195,11 @@ const Home = () => {
   }, []);
 
   if (isLoading) {
-    return <div className="loading">Loading...</div>;
+    return (
+      <div className="loading">
+        <img src={Loading} alt="loading..."></img>
+      </div>
+    );
   }
 
   return (
