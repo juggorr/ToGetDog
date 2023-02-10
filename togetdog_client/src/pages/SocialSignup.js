@@ -266,7 +266,7 @@ function SocialSignup() {
             Create a <span className='togetdog'>ToGetDog</span> Account!
           </div>
           {/* 소셜 닉네임이 유효하지 않으면 닉네임 입력하기 활성화 */}
-          {!socialNicknameErr? (
+          {socialNicknameErr? (
           <InputWrapper>
               <div className='input-title'>
                 닉네임<span className='red-dot'>*</span>
