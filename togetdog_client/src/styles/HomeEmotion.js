@@ -2,6 +2,16 @@ import styled from "@emotion/styled";
 
 export const HomeWrapper = styled.div`
   overflow-y: scroll;
+
+  .scrollHandler {
+    height: 100px;
+  }
+
+  .tinyLoading {
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+  }
 `;
 
 export const HomeContainer = styled.div`
