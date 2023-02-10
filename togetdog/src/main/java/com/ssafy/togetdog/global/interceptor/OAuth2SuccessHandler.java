@@ -56,7 +56,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 			return UriComponentsBuilder.fromUriString("/oauth")
 	                .queryParam("access-token", accessToken)
 	                .queryParam("user", UserLoginRespDTO.of(user))
-	                .build().toUriString();
+	                .build()
+	                .encode()
+	                .toUriString();
 		} else {
 			// 새로운 소셜 가입 시도
 			User user = User.builder()
