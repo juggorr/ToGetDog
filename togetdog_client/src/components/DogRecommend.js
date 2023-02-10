@@ -1,18 +1,19 @@
+import { useNavigate } from "react-router-dom";
 import {
   DogName,
   DogProfile,
   DogRecommendWrapper,
 } from "../styles/HomeEmotion";
 
-const DogRecommend = () => {
-  let dog = {
-    img: "https://post-phinf.pstatic.net/MjAyMTA2MDhfMTIw/MDAxNjIzMTQ1NTQwMDU1.1_Esuf0lFSK3JJc7I_VZ3iq1Jj_t52YSBwLrPZPNa6kg.W1SBiwLj_zQ-7tI8ZAFQCv-UoUXO0gr6CXxvYuAj1y0g.JPEG/%EC%8A%88%ED%8D%BC%EC%BD%9C%EB%9D%BC_%EC%9D%B4%EB%AF%B8%EC%A7%803.jpg?type=w1200",
-    dogName: "콜라",
-  };
+const DogRecommend = ({ dog }) => {
+  const navigate = useNavigate();
+
   return (
     <>
-      <DogRecommendWrapper>
-        <DogProfile src={dog.img} />
+      <DogRecommendWrapper onClick={() => navigate(`/feed/${dog.userId}`)}>
+        <DogProfile
+          src={"https://i8a807.p.ssafy.io/image/dog/" + dog.dogProfile}
+        />
         <DogName>{dog.dogName}</DogName>
       </DogRecommendWrapper>
     </>

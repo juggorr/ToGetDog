@@ -61,18 +61,10 @@ const SingleFriend = ({ item }) => {
             text={`#${item.dogNeutered ? "중성화" : "중성화 X"}`}
           />
           <YellowCharacterBtn
-            text={`#${
-              item.dogCharacter1 === "obedient" || item.dogCharacter1 === "o"
-                ? "온순함"
-                : "사나움"
-            }`}
+            text={`#${item.dogCharacter1 === "obedient" ? "온순함" : "사나움"}`}
           />
           <YellowCharacterBtn
-            text={`#${
-              item.dogCharacter2 === "active" || item.dogCharacter2 === "a"
-                ? "활동적"
-                : "비활동적"
-            }`}
+            text={`#${item.dogCharacter2 === "active" ? "활동적" : "비활동적"}`}
           />
         </div>
       </div>
