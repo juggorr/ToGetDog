@@ -103,34 +103,34 @@ function SocialSignup() {
 
 
   // 닉네임 핸들러 메소드
-  const handleNickname = async (e) => {
-    const nickname = e.target.value;
-    console.log(nickname);
-    if (!nicknameKorRegexp.test(nickname) && !nicknameEngRegexp.test(nickname)) {
-      console.log('닉네임 형식에 맞지 않음');
-      setNicknameError(false);
-      setNicknameErrorMsg('닉네임은 한글 1~8자 혹은 영문 2~16자');
-      return;
-    }
-    await axios
-      .get(`${BACKEND_URL}/user/nickname`, { params: { nickname } })
-      .then((resp) => {
-        if (resp.status === 200) {
-          console.log(resp);
-          console.log('사용 가능한 닉네임');
-          setNicknameError(true);
-          setNicknameErrorMsg('사용 가능한 닉네임입니다.');
-        }
-      })
-      .catch((err) => {
-        // 409 에러일 경우로 코드 리팩토링 필요
-        console.log('사용 불가능한 닉네임');
-        setNicknameError(false);
-        setNicknameErrorMsg('중복된 닉네임입니다.');
-      });
+  // const handleNickname = async (e) => {
+  //   const nickname = e.target.value;
+  //   console.log(nickname);
+  //   if (!nicknameKorRegexp.test(nickname) && !nicknameEngRegexp.test(nickname)) {
+  //     console.log('닉네임 형식에 맞지 않음');
+  //     setNicknameError(false);
+  //     setNicknameErrorMsg('닉네임은 한글 1~8자 혹은 영문 2~16자');
+  //     return;
+  //   }
+  //   await axios
+  //     .get(`${BACKEND_URL}/user/nickname`, { params: { nickname } })
+  //     .then((resp) => {
+  //       if (resp.status === 200) {
+  //         console.log(resp);
+  //         console.log('사용 가능한 닉네임');
+  //         setNicknameError(true);
+  //         setNicknameErrorMsg('사용 가능한 닉네임입니다.');
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       // 409 에러일 경우로 코드 리팩토링 필요
+  //       console.log('사용 불가능한 닉네임');
+  //       setNicknameError(false);
+  //       setNicknameErrorMsg('중복된 닉네임입니다.');
+  //     });
 
-    onChange(e);
-  };
+  //   onChange(e);
+  // };
 
 
   // 성별 선택 메소드
