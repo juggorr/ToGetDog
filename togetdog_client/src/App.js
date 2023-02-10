@@ -82,6 +82,7 @@ function App() {
           <Route path="/oautherror" element={<OauthError />} />
           <Route path="/createAppointment" element={<CreateAppointment />} />
           <Route path="/search" element={<Search />} />
+
         </Routes>
       </div>
     </BrowserRouter>
