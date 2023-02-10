@@ -62,6 +62,7 @@ function SocialSignup() {
 
 
   const [inputs, setInputs] = useState({
+    nickname: '',
     gender: 1,
     birth: '',
     address: '',
@@ -69,6 +70,7 @@ function SocialSignup() {
     });
 
   const {
+    nickname,
     gender,
     birth,
     address,
@@ -237,7 +239,7 @@ function SocialSignup() {
           <div className='signup-title'>
             Create a <span className='togetdog'>ToGetDog</span> Account!
           </div>
-          {/* 닉네임 선택 wrapper */}
+          {/* {socialNicknameErr? ( */}
           <InputWrapper>
               <div className='input-title'>
                 닉네임<span className='red-dot'>*</span>
@@ -254,6 +256,7 @@ function SocialSignup() {
               </div>
               <div className={nicknameError ? 'success' : 'error'}>{nicknameErrorMsg}</div>
             </InputWrapper>
+          {/* ) : null} */}
           {/* 성별 선택 */}
           <InputWrapper>
             <div className='input-title'>
