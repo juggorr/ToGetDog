@@ -14,6 +14,7 @@ import { RegisterContainer, RegisterWrapper, ProfileImage, AddImage, InputWrappe
 import BackHeader from '../components/BackHeader';
 
 const nameRegexp = /^[가-힣]{1,5}$/;
+const imageRegexp = /(.*?)\.(jpg|jpeg|png)$/;
 // 강아지 성별 선택 옵션들
 const genderBtnList = [
   {
@@ -86,6 +87,8 @@ function DogRegister() {
 
   // const [inputError, setInputError] = useState(false);
   // const [inputErrorMsg, setInputErrorMsg] = useState('');
+  const [imageError, setImageError] = useState(false);
+  const [imageErrorMsg, setImageErrorMsg] = useState('');
   const [nameError, setNameError] = useState(false);
   const [nameErrorMsg, setNameErrorMsg] = useState('');
   const [yearError, setYearError] = useState(false);
@@ -184,6 +187,12 @@ function DogRegister() {
       setNoEssentialsModal(true);
       // setInputError(true);
       // setInputErrorMsg('필수 값이 입력되지 않았습니다');
+      return false;
+    }
+    // 사진 형식 유효성 검사
+    if (!imageRegexp.text(image.name)) {
+      setImageError(true);
+      setImageErrorMsg('적절한 이미지 형식이 아닙니다')
       return false;
     }
     // 이름 유효성 검사
@@ -319,6 +328,7 @@ function DogRegister() {
             accept='image/jpg, image/png, image/jpeg'
             onChange={handleImage}
           />
+          <div className={imageError ? 'error' : 'success'}>{imageErrorMsg}</div>
         </ProfileImage>
         {/* 이름 입력 */}
         <InputWrapper>

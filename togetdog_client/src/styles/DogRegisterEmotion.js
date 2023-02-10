@@ -96,6 +96,16 @@ export const ProfileImage = styled.div`
     height: 100%;
     object-fit: cover;
   }
+
+  .success {
+    color: #0052ff;
+    font-size: 0.8rem;
+  }
+
+  .error {
+    color: red;
+    font-size: 0.8rem;
+  }
 `;
 
 export const AddImage = styled.div`

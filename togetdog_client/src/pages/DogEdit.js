@@ -542,7 +542,7 @@ function DogEdit() {
         </InputWrapper>
         <div className='signup-desc'>*표시는 필수 입력 값입니다.</div>
         <div className='btn-wrapper'>
-          <MainColorLongBtn onClick={handleEdit}>등록하기</MainColorLongBtn>
+          <MainColorLongBtn onClick={handleEdit}>수정하기</MainColorLongBtn>
         </div>
         {/* 추후에 우리로고로 바꾸기 */}
         {/* <div className="logo-div">
