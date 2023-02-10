@@ -57,7 +57,7 @@ function SocialSignup() {
 
   // 닉네임을 설정하는 함수
   useEffect(() => {
-    handleSocialNickname();
+    handleSocialNickname(socialNickname);
   }, [socialNickname])
 
 
@@ -99,6 +99,22 @@ function SocialSignup() {
   // 소셜로 받아온 닉네임 핸들러 메소드
   const handleSocialNickname = async (val) => {
     console.log(val);
+    if (!nicknameKorRegexp.test(val) && !nicknameEngRegexp.test(val)) {
+      setSocialNicknameErr(false);
+      console.log('통과실패');
+      return;
+    }
+    await axios
+      .get(`${BACKEND_URL}/user/nickname`, { params: { val } })
+      .then((res) => {
+        if (res.status === 200) {
+          console.log(res);
+          setSocialNicknameErr(true);
+        }
+      })
+      .catch((err) => {
+        setSocialNicknameErr(false);
+      });
   };
 
 
