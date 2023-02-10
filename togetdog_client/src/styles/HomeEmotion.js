@@ -8,8 +8,6 @@ export const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 8rem;
-  // background-image: url("https://search.pstatic.net/sunny/?src=https%3A%2F%2Fcdn.crowdpic.net%2Fdetail-thumb%2Fthumb_d_C8654F421B0E4D3419DCAF3EAB2DDF87.jpg&type=sc960_832");
-  // background-size: contain;
   background-color: #559968;
 
   .backgroundImg {
@@ -113,8 +111,10 @@ export const DogProfile = styled.img`
 `;
 
 export const DogName = styled.div`
+  font-family: "Inter", sans-serif;
   font-size: 0.8rem;
   padding-top: 0.3rem;
+  font-weight: 600;
 `;
 
 export const SingleBoardWrapper = styled.div`

@@ -28,6 +28,7 @@ import Girl from "../assets/girl.png";
 const BoardList = (boardList) => {
   const SingleBoard = ({ board }) => {
     const navigate = useNavigate();
+    console.log("게시물 렌더링됨");
     return (
       <SingleBoardWrapper>
         <div className="contentLine"></div>
@@ -96,6 +97,7 @@ const BoardList = (boardList) => {
 
 const RecommendWrapper = (dogs) => {
   let tempList = [];
+  console.log("친구 목록 렌더링");
 
   if (dogs) {
     for (let i = 0; i < dogs.length; i++) {
@@ -205,7 +207,7 @@ const Home = () => {
             alt="banner_img"
           ></img>
           <div className="typedOutContainer">
-            <div className="typed-out">안녕하세요 {user.nickName}님</div>
+            <div className="typed-out">안녕하세요, {user.nickName}님!</div>
           </div>
           <div className="btnContainer">
             <button className="walk-btn" onClick={() => navigate("/recommend")}>
@@ -213,8 +215,6 @@ const Home = () => {
             </button>
           </div>
         </div>
-
-        {/* <HomeWelcomeBox src="https://image.utoimage.com/preview/cp872722/2021/08/202108022949_500.jpg" /> */}
       </HomeContainer>
       <RecommendBoxWrapper>
         <div className="recommend-txt-box">
