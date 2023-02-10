@@ -11,7 +11,7 @@ export const HomeContainer = styled.div`
   background-color: #559968;
 
   .backgroundImg {
-    right: 1rem;
+    right: 1.5rem;
     z-index: 1;
     position: absolute;
     height: 6rem;
@@ -32,6 +32,7 @@ export const HomeContainer = styled.div`
 
   .container {
     width: calc(100% - 3rem);
+    position: relative;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -44,6 +45,7 @@ export const HomeContainer = styled.div`
 
   .typedOutContainer {
     display: inline-block;
+    z-index: 2;
   }
 
   @keyframes typing {
