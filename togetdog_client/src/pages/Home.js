@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -25,64 +25,65 @@ import Banner6 from "../assets/banner6.svg";
 import Boy from "../assets/boy.png";
 import Girl from "../assets/girl.png";
 import Loading from "../assets/loading.gif";
+import { useInView } from "react-intersection-observer";
 
-const BoardList = (boardList) => {
-  const SingleBoard = ({ board }) => {
-    const navigate = useNavigate();
-    console.log("게시물 렌더링됨");
-    return (
-      <SingleBoardWrapper>
-        <div className="contentLine"></div>
-        <div className="profileWrapper">
-          <DogImgWrapper>
-            <div className="dogProfileCircle">
-              <img
-                className="dogProfileImg"
-                src={
-                  "https://i8a807.p.ssafy.io/image/dog/" + board.dog.dogProfile
-                }
-                alt={board.dog.dogName}
-              />
-            </div>
-          </DogImgWrapper>
-          <DogInfoWrapper>
-            <div className="dogInfo">
-              <div className="dogNameWrapper">{board.dog.dogName}</div>
-              <div className="dogType">
-                {board.dog.dogType} /{" "}
-                {board.dog.dogAge < 12
-                  ? board.dog.dogAge
-                  : Math.floor(board.dog.dogAge / 12)}
-                {board.dog.dogAge < 12 ? "개월" : "살"}
-                <div className="genderWrapper">
-                  <img
-                    src={board.dog.dogGender === "male" ? Boy : Girl}
-                    alt="gender"
-                    className="genderImg"
-                  />
-                </div>
-              </div>
-            </div>
-          </DogInfoWrapper>
-        </div>
-        <div
-          className="contentWrapper"
-          onClick={() => {
-            navigate(`/board/${board.boardId}`);
-          }}
-        >
-          <div className="imgWrapper">
+const SingleBoard = ({ board }) => {
+  const navigate = useNavigate();
+  console.log("게시물 렌더링됨");
+  return (
+    <SingleBoardWrapper>
+      <div className="contentLine"></div>
+      <div className="profileWrapper">
+        <DogImgWrapper>
+          <div className="dogProfileCircle">
             <img
-              className="contentImg"
-              src={"https://i8a807.p.ssafy.io/image/board/" + board.image}
-              alt="content_img"
+              className="dogProfileImg"
+              src={
+                "https://i8a807.p.ssafy.io/image/dog/" + board.dog.dogProfile
+              }
+              alt={board.dog.dogName}
             />
           </div>
+        </DogImgWrapper>
+        <DogInfoWrapper>
+          <div className="dogInfo">
+            <div className="dogNameWrapper">{board.dog.dogName}</div>
+            <div className="dogType">
+              {board.dog.dogType} /{" "}
+              {board.dog.dogAge < 12
+                ? board.dog.dogAge
+                : Math.floor(board.dog.dogAge / 12)}
+              {board.dog.dogAge < 12 ? "개월" : "살"}
+              <div className="genderWrapper">
+                <img
+                  src={board.dog.dogGender === "male" ? Boy : Girl}
+                  alt="gender"
+                  className="genderImg"
+                />
+              </div>
+            </div>
+          </div>
+        </DogInfoWrapper>
+      </div>
+      <div
+        className="contentWrapper"
+        onClick={() => {
+          navigate(`/board/${board.boardId}`);
+        }}
+      >
+        <div className="imgWrapper">
+          <img
+            className="contentImg"
+            src={"https://i8a807.p.ssafy.io/image/board/" + board.image}
+            alt="content_img"
+          />
         </div>
-        <div className="contentText">{board.content}</div>
-      </SingleBoardWrapper>
-    );
-  };
+      </div>
+      <div className="contentText">{board.content}</div>
+    </SingleBoardWrapper>
+  );
+};
+const BoardList = (boardList) => {
   let tempBoardList = [];
 
   if (boardList) {
@@ -113,14 +114,17 @@ const Home = () => {
   const [user, setUser] = useRecoilState(userState);
   const [recommendList, setRecommendList] = useState([]);
   const [boardList, setBoardList] = useState([]);
+  const [hasNextPage, setHasNextPage] = useState(true);
+  const [ref, inView] = useInView();
 
   const auth = useRecoilValue(authAtom);
   const setAuth = useSetRecoilState(authAtom);
   const navigate = useNavigate();
 
   const [isLoading, setLoading] = useState(true);
+  const [tinyLoading, setTinyLoading] = useState(true);
 
-  const pageNo = 1;
+  const pageNo = useRef(1);
   const backgroundImages = [
     Banner1,
     Banner2,
@@ -141,11 +145,16 @@ const Home = () => {
     navigate("/login");
   };
 
-  const getBoardList = async () => {
+  const getBoardList = useCallback(async () => {
+    if (!boardList) {
+      setLoading(true);
+    } else {
+      setTinyLoading(true);
+    }
     await axios
       .get(`${BACKEND_URL}/home`, {
         params: {
-          pageNo: pageNo,
+          pageNo: pageNo.current,
         },
         headers: {
           Authorization: auth,
@@ -155,6 +164,11 @@ const Home = () => {
         // console.log(response.data);
         setBoardList([...boardList, ...response.data.boardList]);
         setLoading(false);
+        setTinyLoading(false);
+        setHasNextPage(response.data.boardList.length === 30);
+        if (response.data.boardList.length) {
+          pageNo.current += 1;
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -165,7 +179,7 @@ const Home = () => {
           handleLogout();
         }
       });
-  };
+  });
 
   const getFriendList = async () => {
     await axios
@@ -194,6 +208,13 @@ const Home = () => {
     getFriendList();
   }, []);
 
+  useEffect(() => {
+    console.log(inView, hasNextPage);
+    if (inView && hasNextPage) {
+      getBoardList();
+    }
+  }, [getBoardList, hasNextPage, inView]);
+
   if (isLoading) {
     return (
       <div className="loading">
@@ -221,6 +242,7 @@ const Home = () => {
           </div>
         </div>
       </HomeContainer>
+
       <RecommendBoxWrapper>
         <div className="recommend-txt-box">
           <FontAwesomeIcon icon="fa-solid fa-paw" />
@@ -229,6 +251,13 @@ const Home = () => {
         <div className="recommendBox">{RecommendWrapper(recommendList)}</div>
       </RecommendBoxWrapper>
       {BoardList(boardList)}
+
+      {tinyLoading ? (
+        <div className="tinyLoading">
+          <img src={Loading} alt="loading..."></img>
+        </div>
+      ) : null}
+      <div ref={ref} className="scrollHandler" />
     </HomeWrapper>
   );
 };
