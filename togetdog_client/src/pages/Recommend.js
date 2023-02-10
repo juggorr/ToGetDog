@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { userState } from "../recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { authAtom, userState } from "../recoil";
 import axios from "axios";
 
 import { BACKEND_URL, DUMMY_URL } from "../config";
@@ -20,24 +20,28 @@ import Girl from "../assets/girl.png";
 const SingleFriend = ({ item }) => {
   const navigate = useNavigate();
 
-  const dogTown = (town) => {
-    const townData = town.split(" ");
-    return <p className="dogTown">{townData[townData.length - 1]}</p>;
-  };
+  // const dogTown = (town) => {
+  //   const townData = town.split(" ");
+  //   return <p className="dogTown">{townData[townData.length - 1]}</p>;
+  // };
 
   return (
     <div className="singleDog" onClick={() => navigate(`/feed/${item.userId}`)}>
       <DogImgWrapper>
         <div className="dogProfileCircle">
-          <img src={item.dogProfile} alt="dog_img" className="dogProfileImg" />
+          <img
+            src={"https://i8a807.p.ssafy.io/image/dog/" + item.dogProfile}
+            alt="dog_img"
+            className="dogProfileImg"
+          />
         </div>
       </DogImgWrapper>
       <div className="dogInfo">
         <div className="dogNameWrapper">
           <p className="dogName">{item.dogName}</p>
-          {dogTown(item.address)}
+          {/* {dogTown(item.address)} */}
           <p className="ownerName">
-            <FontAwesomeIcon icon="fa-user" /> {item.nickName}
+            <FontAwesomeIcon icon="fa-user" /> {item.nickname}
           </p>
         </div>
         <div className="dogType">
@@ -107,7 +111,8 @@ const FriendsList = ({ friends }) => {
 
   const renderFriends = () => {
     const tempFilter = [];
-    if (friends) {
+
+    if (friends && friends.length) {
       for (let i = 0; i < friends.length; i++) {
         const tempFriend = (
           <SingleFriend key={i} item={friends[i]}></SingleFriend>
@@ -132,6 +137,11 @@ const FriendsList = ({ friends }) => {
           tempFilter.push(tempFriend);
         }
       }
+      if (!tempFilter.length) {
+        tempFilter.push(<p className="noFriends">검색 결과가 없습니다.</p>);
+      }
+    } else {
+      tempFilter.push(<p className="noFriends">검색 결과가 없습니다.</p>);
     }
     return tempFilter;
   };
@@ -155,34 +165,47 @@ const Recommend = () => {
   const [user, setUser] = useRecoilState(userState);
   const [userData, setUserData] = useState();
   const [view, setView] = useState(false);
-  const [currentDog, setCurrentDog] = useState(0);
+  const [currentDog, setCurrentDog] = useState(-1);
   const [currentDogName, setCurrentDogName] = useState();
   const [friends, setFriends] = useState();
+  const auth = useRecoilValue(authAtom);
+  const setAuth = useSetRecoilState(authAtom);
 
   useEffect(() => {
     axios
-      .get(`${DUMMY_URL}/user/includesDog/${user.userId}`, {})
+      .get(`${BACKEND_URL}/user/includesDog/${user.userId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: auth,
+        },
+      })
       .then((response) => {
         setUserData(response.data);
-        setCurrentDog(response.data.dogs[0].dogId);
-        setCurrentDogName(response.data.dogs[0].dogName);
+        setCurrentDog(response.data.user.dogs[0].dogId);
+        setCurrentDogName(response.data.user.dogs[0].dogName);
       })
       .catch((error) => {
         // 오류발생시 실행
+        console.log(error);
       });
   }, []);
 
   useEffect(() => {
-    axios
-      .post(`${DUMMY_URL}/meeting/recommend`, null, {
-        params: { dogId: currentDog },
-      })
-      .then((response) => {
-        setFriends(response.data.dogs);
-      })
-      .catch((error) => {
-        // 오류발생시 실행
-      });
+    if (currentDog !== -1) {
+      axios
+        .get(`${BACKEND_URL}/meeting/${currentDog}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: auth,
+          },
+        })
+        .then((response) => {
+          setFriends(response.data.dogs);
+        })
+        .catch((error) => {
+          // 오류발생시 실행
+        });
+    }
   }, [currentDog]);
 
   const onClick = (item) => {
@@ -193,7 +216,7 @@ const Recommend = () => {
   const Dropdown = () => {
     return (
       <div className="dropdownListWrapper">
-        {userData.dogs.map((item, idx) => (
+        {userData.user.dogs.map((item, idx) => (
           <div className="dropdownList" onClick={() => onClick(item)} key={idx}>
             <li className="dropdownText ">{item.dogName}</li>
           </div>
@@ -216,7 +239,7 @@ const Recommend = () => {
         </ul>
         <p className="plainText">의 산책 친구들</p>
       </DropdownWrapper>
-      {friends ? <FriendsList friends={friends}></FriendsList> : null}
+      {friends !== [] ? <FriendsList friends={friends}></FriendsList> : null}
     </div>
   );
 };
