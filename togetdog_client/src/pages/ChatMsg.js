@@ -8,7 +8,6 @@ import {
 import MenuIcon from '../assets/menu_icon.png';
 import { useEffect, useState } from 'react';
 import UserIcon from '../components/UserIcon';
-import { MainColorLongBtn } from '../styles/BtnsEmotion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MyChat from '../components/MyChat';
 import YourChat from '../components/YourChat';
@@ -17,6 +16,9 @@ import { authAtom, userState } from '../recoil';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BACKEND_URL } from '../config';
+
+import Stomp from 'webstomp-client';
+import SockJS from 'sockjs-client';
 
 const ChatMsg = () => {
   const auth = useRecoilValue(authAtom);
@@ -30,6 +32,14 @@ const ChatMsg = () => {
   const [chats, setChats] = useState();
   const [menuBtnClick, setMenuBtnClick] = useState(false);
   const [isLoading, setLoading] = useState(true);
+
+  const serverURL = 'https://togetdog.site/ws/chat';
+  let socket = new SockJS(serverURL);
+  const stompClient = Stomp.over(socket);
+
+  let sessionId = 0;
+  let roomId = 5;
+  let connected = false;
 
   const handleLogout = () => {
     setUser(null);
@@ -50,8 +60,88 @@ const ChatMsg = () => {
     return dongName;
   };
 
-  const onChangeMsg = (e) => {
-    setMsgInput(e.target.value);
+  const onChangeMsg = async (e) => {
+    await setMsgInput(e.target.value);
+  };
+
+  const sendMessage = () => {
+    console.log('hi');
+    console.log(msgInput);
+    if (msgInput) {
+      send();
+      setMsgInput('');
+    }
+  };
+
+  const send = () => {
+    if (stompClient) {
+      console.log('hihi');
+      // 보낼 메세지 json 객체 (roomid 넣으삼)
+      // 성다연 todo : roomId 저장
+      const msg = {
+        userId: user.userId,
+        content: msgInput,
+        sessionId: sessionId,
+        roomId: roomId,
+      };
+      // 하단 /publish/messages/ 뒤에 서버로부터 받은 roomId 붙여주면 됨(5 대신에)
+      // 성다연 todo : 하단 roomId 저장
+      stompClient.send('/publish/messages/' + roomId, JSON.stringify(msg), {});
+    }
+  };
+
+  const connect = () => {
+    // console.log(socket);
+    // console.log(Stomp.over(socket));
+
+    stompClient.connect(
+      {},
+      (frame) => {
+        // 소켓 연결 성공
+        connected = true;
+        console.log('소켓 연결 성공', frame);
+
+        // this.sessionId 에 현재 접속한 유저의 세션 아이디를 저장해 놓음
+        // this.sessionId - 1.처음 접속시 2 메세지 보낼시 - Json객체로 보냄
+        var len = socket._transport.url.length;
+        sessionId = socket._transport.url.substring(len - 8, len);
+        // sessionId = socket._transport.url.substring(len - 10, len - 18);
+        console.log('세션 아이디 : ' + socket._transport.url);
+        console.log('세션 아이디 : ' + sessionId);
+
+        // 처음 접속시 서버로 해당 채팅방에 접속한 유저의 정보를 보냄
+        // 정보 : sessionId , userId , roomId(방번호)
+        // 성다연 todo : 하단 userId roomId 저장
+
+        console.log('룸넘버' + roomId);
+        stompClient.send(
+          '/publish/messages/sessionNum',
+          JSON.stringify({
+            sessionId: sessionId,
+            userId: user.userId,
+            roomId: roomId,
+          }),
+          {},
+        );
+
+        // 서버의 메시지 전송 endpoint를 구독합니다. 이런형태를 pub sub 구조라고 합니다.
+
+        // 하단 /subscribe/roomId/ 뒤에 서버로부터 받은 roomId 붙여주면 됨(5 대신에)
+        // 성다연 todo : 하단 roomId 저장
+        stompClient.subscribe('/subscribe/roomId/' + roomId, (res) => {
+          console.log('안녕');
+          console.log(res);
+          // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
+          // setChats(chats.push(JSON.parse(res.body)));
+          this.recvList.push(JSON.parse(res.body));
+        });
+      },
+      (error) => {
+        // 소켓 연결 실패
+        console.log('소켓 연결 실패', error);
+        connected = false;
+      },
+    );
   };
 
   useEffect(() => {
@@ -83,6 +173,9 @@ const ChatMsg = () => {
           handleLogout();
         }
       });
+
+    // 소켓 연결 시도
+    connect();
   }, []);
 
   if (isLoading) {
@@ -130,7 +223,7 @@ const ChatMsg = () => {
         <ChatInputWrapper>
           <div className='chat-input-box'>
             <input className='chat-input' onChange={onChangeMsg} maxLength='5' placeholder='메시지를 입력하세요' />
-            <div className='send-btn'>
+            <div className='send-btn' onClick={sendMessage}>
               <FontAwesomeIcon icon='fa-solid fa-paper-plane' />
             </div>
           </div>

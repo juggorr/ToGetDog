@@ -19,6 +19,9 @@ import React, { useEffect } from "react";
 
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Oauth from "./pages/Oauth";
+import OauthError from "./pages/OauthError";
+import SocialSignup from "./pages/SocialSignup";
 
 import NotFound from "./pages/NotFound";
 import InternalServer from "./pages/InternalServer";
@@ -36,6 +39,7 @@ import Notifications from "./pages/Notifications";
 import Recommend from "./pages/Recommend";
 import EditBoard from "./pages/EditBoard";
 import ChatMsg from "./pages/ChatMsg";
+import SocialTemp from "./pages/SocialTemp";
 
 function App() {
   return (
@@ -58,13 +62,14 @@ function App() {
             <Route path="/followerlist/:dogId" element={<FollowerList />} />
             <Route path="/followinglist/:userId" element={<FollowingList />} />
             <Route path="/notifications" element={<Notifications />} />
+            <Route path="/useredit" element={<UserEdit />} />
           </Route>
           {/* 그 이외 필요없는 컴포넌트 */}
           <Route path="/new" element={<New />} />
-          <Route path="/useredit" element={<UserEdit />} />
           <Route path="/editBoard/:boardId" element={<EditBoard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/socialsignup" element={<SocialSignup />} />
           <Route path="/emailAuth" element={<EmailAuth />} />
           <Route path="/passwordedit" element={<PasswordEdit />} />
           <Route path="/passwordsearch" element={<PasswordSearch />} />
@@ -75,8 +80,11 @@ function App() {
 
           <Route path="/500" element={<InternalServer />} />
           <Route path="/*" element={<NotFound />} />
+          <Route path="/oauth" element={<Oauth />} />
+          <Route path="/oautherror" element={<OauthError />} />
           <Route path="/createAppointment" element={<CreateAppointment />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/socialtemp" element={<SocialTemp />} />
         </Routes>
       </div>
     </BrowserRouter>

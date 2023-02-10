@@ -7,6 +7,7 @@ import { BACKEND_URL, DUMMY_URL } from "../config";
 
 import SignoutConfirmModal from "../components/SignoutConfirmModal";
 import {
+  MainColorLongBtn,
   BlackBtn,
   MainColorShortBtn,
   GreyColorShortBtn,
@@ -139,8 +140,8 @@ function UserEdit() {
       .get(`${BACKEND_URL}/user/nickname`, { params: { nickname } })
       .then((resp) => {
         if (resp.status === 200) {
-          console.log(resp);
-          console.log("사용 가능한 닉네임");
+          // console.log(resp);
+          // console.log("사용 가능한 닉네임");
           nicknameError.current = true;
           setNicknameErrorMsg("사용 가능한 닉네임입니다.");
         }
@@ -212,13 +213,31 @@ function UserEdit() {
           },
         }
       )
-      .then((res) => {
-        console.log(res);
+      // DB에 다시 접근해서 새로운 회원정보 받아서 로컬에 업데이트
+      .then(() => {
+        axios
+        .get(`${BACKEND_URL}/user/${user.userId}`, {
+          headers: {
+            Authorization: auth,
+          },
+        })
+        .then((res) => {
+          const newUser = {
+            address: address,
+            email: user.email,
+            nickName: nickname,
+            userId: user.userId,
+          };
+          setUser(newUser)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       })
       .catch((err) => {
         console.log(err);
       });
-
+      
     navigate(`/feed/${user.userId}`);
   };
 
@@ -309,7 +328,7 @@ function UserEdit() {
                 />
               </div>
             </div>
-            <div className={nicknameError ? "success" : "error"}>
+            <div className={nicknameError.current ? "success" : "error"}>
               {nicknameErrorMsg}
             </div>
           </InputWrapper>
@@ -381,10 +400,10 @@ function UserEdit() {
           </InputWrapper>
           <div className="signup-desc">* 표시는 필수 입력 값입니다.</div>
           <div className="two-btns-wrapper">
-            <GreyColorShortBtn onClick={handleNotEdit}>
+            {/* <GreyColorShortBtn onClick={handleNotEdit}>
               돌아가기
-            </GreyColorShortBtn>
-            <MainColorShortBtn onClick={checkEdit}>변경하기</MainColorShortBtn>
+            </GreyColorShortBtn> */}
+            <MainColorLongBtn onClick={checkEdit}>변경하기</MainColorLongBtn>
           </div>
           <div className="edit-bottom-wrapper">
             <div className="edit-bottom-text" onClick={handleSignout}>

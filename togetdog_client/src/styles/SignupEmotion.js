@@ -46,7 +46,7 @@ export const SignupWrapper = styled.div`
 
   .edit-bottom-wrapper {
     border-top: 0.125rem solid #e2e2e2;
-    margin-top: 5rem;
+    margin-top: 1rem;
     width: 90%;
   }
 
