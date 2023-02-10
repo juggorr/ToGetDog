@@ -1,15 +1,15 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import ConfirmModal from '../components/ConfirmModal';
-import NoDogAlertModal from '../components/AlertModal/NoDogAlertModal';
-import MenuModal from '../components/MenuModal';
-import OrangeCharacterBtn from '../components/OrangeCharacterBtn';
-import YellowCharacterBtn from '../components/YellowCharacterBtn';
-import { BACKEND_URL, DUMMY_URL } from '../config';
-import { authAtom, userState } from '../recoil';
-import { PlusBtn } from '../styles/BtnsEmotion';
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import ConfirmModal from "../components/ConfirmModal";
+import NoDogAlertModal from "../components/AlertModal/NoDogAlertModal";
+import MenuModal from "../components/MenuModal";
+import OrangeCharacterBtn from "../components/OrangeCharacterBtn";
+import YellowCharacterBtn from "../components/YellowCharacterBtn";
+import { BACKEND_URL, DUMMY_URL } from "../config";
+import { authAtom, userState } from "../recoil";
+import { PlusBtn } from "../styles/BtnsEmotion";
 import {
   FeedContainer,
   FeedPhoto,
@@ -19,11 +19,12 @@ import {
   FeedProfileWrapper,
   MainDogImg,
   SubDogImg,
-} from '../styles/FeedEmotion';
-import Boy from '../assets/boy.png';
-import Girl from '../assets/girl.png';
-import MenuIcon from '../assets/menu_icon.png';
-import FollowBtn from '../components/FollowBtn';
+} from "../styles/FeedEmotion";
+import Boy from "../assets/boy.png";
+import Girl from "../assets/girl.png";
+import MenuIcon from "../assets/menu_icon.png";
+import FollowBtn from "../components/FollowBtn";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Feed = () => {
   const auth = useRecoilValue(authAtom);
@@ -37,33 +38,33 @@ const Feed = () => {
   const menuLists = [
     {
       menu_id: 1,
-      text: '내 정보 보기',
-      link: '/',
+      text: "내 정보 보기",
+      link: "/",
     },
     {
       menu_id: 2,
-      text: '프로필 수정',
-      link: '/useredit',
+      text: "프로필 수정",
+      link: "/useredit",
     },
     {
       menu_id: 3,
-      text: '강아지 프로필 수정',
-      link: '/dogedit',
+      text: "강아지 프로필 수정",
+      link: "/dogedit",
     },
     {
       menu_id: 4,
-      text: '강아지 프로필 삭제',
-      link: '/dogdelete',
+      text: "강아지 프로필 삭제",
+      link: "/dogdelete",
     },
     {
       menu_id: 5,
-      text: '계정 비밀번호 변경',
-      link: '/passwordedit',
+      text: "계정 비밀번호 변경",
+      link: "/passwordedit",
     },
     {
       menu_id: 6,
-      text: '로그아웃',
-      link: '/logout',
+      text: "로그아웃",
+      link: "/logout",
     },
   ];
 
@@ -86,7 +87,7 @@ const Feed = () => {
   const [followStatus, setFollowStatus] = useState(false);
 
   const location = useLocation();
-  const feedUserId = location.pathname.split('/').reverse()[0];
+  const feedUserId = location.pathname.split("/").reverse()[0];
   // const pageNo = location.state.pageNo;
   const pageNo = 1;
 
@@ -96,7 +97,9 @@ const Feed = () => {
       if (dog.dogId === targetDogId) {
         setCurrentDog(dog);
         setFollowStatus(dog.following);
-        let filteredPhotos = feedData.filter((feedPhoto) => feedPhoto.dogId === targetDogId);
+        let filteredPhotos = feedData.filter(
+          (feedPhoto) => feedPhoto.dogId === targetDogId
+        );
         setFilteredPhotoData(filteredPhotos);
         setSubDogs(tmpSubDogs);
       } else {
@@ -108,22 +111,22 @@ const Feed = () => {
 
   const handleLogout = () => {
     setUser(null);
-    localStorage.removeItem('user');
+    localStorage.removeItem("user");
     setAuth(null);
-    console.log('로그아웃이 정상적으로 처리되었습니다.');
-    navigate('/login');
+    console.log("로그아웃이 정상적으로 처리되었습니다.");
+    navigate("/login");
   };
 
   useEffect(() => {
-    if (!auth || !localStorage.getItem('recoil-persist')) {
-      navigate('/login');
+    if (!auth || !localStorage.getItem("recoil-persist")) {
+      navigate("/login");
       return;
     }
 
     axios
       .get(`${BACKEND_URL}/feed/${feedUserId}?pageNo=${pageNo}`, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: auth,
         },
       })
@@ -146,24 +149,26 @@ const Feed = () => {
         }
         setSubDogs(tmpSubDogs);
         setFeedPhotoData(resp.data.feed);
-        let filteredPhotos = resp.data.feed.filter((feedPhoto) => feedPhoto.dogId === resp.data.user.dogs[0].dogId);
+        let filteredPhotos = resp.data.feed.filter(
+          (feedPhoto) => feedPhoto.dogId === resp.data.user.dogs[0].dogId
+        );
         setFilteredPhotoData(filteredPhotos);
         setLoading(false);
       })
       .catch((err) => {
         console.log(err);
         if (err.response.status === 404) {
-          navigate('/*');
+          navigate("/*");
         } else if (err.response.status === 401) {
-          alert('토큰이 만료되어 자동 로그아웃되었습니다.');
+          alert("토큰이 만료되어 자동 로그아웃되었습니다.");
           handleLogout();
         }
-        console.log('피드 데이터 불러오기 실패');
+        console.log("피드 데이터 불러오기 실패");
       });
   }, []);
 
   if (isLoading) {
-    return <div className='loading'>Loading...</div>;
+    return <div className="loading">Loading...</div>;
   }
 
   return (
@@ -196,57 +201,70 @@ const Feed = () => {
           {/* 프로필 상단 */}
           <FeedProfileTop>
             {feedDogData.length === 0 ? (
-              <MainDogImg src='https://media.istockphoto.com/id/509962049/vector/cute-puppy-sits.jpg?s=612x612&w=0&k=20&c=hm9wNYwzB2sXwrySGNi83WzH5B7ubDMk1NKJw73W7tg=' />
+              <MainDogImg src="https://media.istockphoto.com/id/509962049/vector/cute-puppy-sits.jpg?s=612x612&w=0&k=20&c=hm9wNYwzB2sXwrySGNi83WzH5B7ubDMk1NKJw73W7tg=" />
             ) : (
-              <MainDogImg src={`https://i8a807.p.ssafy.io/image/dog/` + currentDog.dogProfile} />
+              <MainDogImg
+                src={
+                  `https://i8a807.p.ssafy.io/image/dog/` + currentDog.dogProfile
+                }
+              />
             )}
             {feedDogData.length === 0 ? (
-              <div className='no-dog-info-box'>
-                <div className='no-dogs-txt'>{'등록된 강아지가 없습니다.'}</div>
+              <div className="no-dog-info-box">
+                <div className="no-dogs-txt">{"등록된 강아지가 없습니다."}</div>
               </div>
             ) : (
-              <div className='dog-info-box'>
+              <div className="dog-info-box">
                 <div>
                   {currentDog.dogName}
-                  {currentDog.dogGender === 'male' ? (
-                    <img src={Boy} className='dog-gender' />
+                  {currentDog.dogGender === "male" ? (
+                    <img src={Boy} className="dog-gender" />
                   ) : (
-                    <img src={Girl} className='dog-gender' />
+                    <img src={Girl} className="dog-gender" />
                   )}
                 </div>
-                <div className='dog-info'>
+                <div className="dog-info">
                   {`${currentDog.dogType} / ${
-                    currentDog.dogAge >= 12 ? `${Math.floor(currentDog.dogAge / 12)}살` : `${currentDog.dogAge}개월`
+                    currentDog.dogAge >= 12
+                      ? `${Math.floor(currentDog.dogAge / 12)}살`
+                      : `${currentDog.dogAge}개월`
                   }`}
                 </div>
               </div>
             )}
 
-            <div className='sub-dogs'>
+            <div className="sub-dogs">
               {subDogs.map((subdog) => (
                 <SubDogImg
-                  src={`https://i8a807.p.ssafy.io/image/dog/` + subdog.dogProfile}
+                  src={
+                    `https://i8a807.p.ssafy.io/image/dog/` + subdog.dogProfile
+                  }
                   key={subdog.dogId}
                   onClick={() => swapMainDog(subdog.dogId)}
                 />
               ))}
-              {feedDogData.length === 3 || feedUserData.userId !== user.userId ? null : (
-                <PlusBtn onClick={() => navigate('/dogregister')}>+</PlusBtn>
+              {feedDogData.length === 3 ||
+              feedUserData.userId !== user.userId ? null : (
+                <PlusBtn onClick={() => navigate("/dogregister")}>+</PlusBtn>
               )}
             </div>
             {feedUserData.userId === user.userId ? (
-              <div className='profile-etc-wrapper'>
-                <img src={MenuIcon} className='menu-icon' onClick={() => setMenuBtnClick(true)} alt='menu' />
-                <div className='follow-info flex-column'>
+              <div className="profile-etc-wrapper">
+                <img
+                  src={MenuIcon}
+                  className="menu-icon"
+                  onClick={() => setMenuBtnClick(true)}
+                  alt="menu"
+                />
+                <div className="follow-info flex-column">
                   {currentDog ? (
                     <div
                       onClick={() =>
                         navigate(`/followerlist/${currentDog.dogId}`, {
                           state: { dogId: currentDog.dogId },
                         })
-                      }
-                    >
-                      <span className='follow-text'>팔로워</span>
+                      }>
+                      <span className="follow-text">팔로워</span>
                       {currentDog.dogFollowerCnt}
                     </div>
                   ) : null}
@@ -255,40 +273,72 @@ const Feed = () => {
                       navigate(`/followinglist/${user.userId}`, {
                         state: { userId: user.userId },
                       })
-                    }
-                  >
-                    <span className='follow-text'>팔로잉</span>
+                    }>
+                    <span className="follow-text">팔로잉</span>
                     {feedUserData.followCnt}
                   </div>
                 </div>
               </div>
             ) : currentDog ? (
-              <FollowBtn dogId={currentDog.dogId} followStatus={followStatus} setFollowStatus={setFollowStatus} />
+              <div className="other-user-btns">
+                <FollowBtn
+                  dogId={currentDog.dogId}
+                  followStatus={followStatus}
+                  setFollowStatus={setFollowStatus}
+                />
+                <div
+                  className="make-appointment-btn"
+                  onClick={() =>
+                    navigate("/createAppointment", {
+                      state: {
+                        partnerId: feedUserData.userId,
+                      },
+                    })
+                  }>
+                  <FontAwesomeIcon icon="fa-calendar" />
+                </div>
+              </div>
             ) : null}
           </FeedProfileTop>
           {/* 특이사항, 성격 들어가는 부분 */}
           {currentDog ? (
             <FeedProfileBottom>
-              <div className='special-text'>{currentDog.description}</div>
-              <div className='characters-box'>
-                <OrangeCharacterBtn text={`#${currentDog.dogNeutered ? '중성화' : '중성화 X'}`} />
-                <YellowCharacterBtn text={`#${currentDog.dogCharacter1 === 'obedient' ? '온순함' : '사나움'}`} />
-                <YellowCharacterBtn text={`#${currentDog.dogCharacter2 === 'active' ? '활동적' : '비활동적'}`} />
+              <div className="special-text">{currentDog.description}</div>
+              <div className="characters-box">
+                <OrangeCharacterBtn
+                  text={`#${currentDog.dogNeutered ? "중성화" : "중성화 X"}`}
+                />
+                <YellowCharacterBtn
+                  text={`#${
+                    currentDog.dogCharacter1 === "obedient"
+                      ? "온순함"
+                      : "사나움"
+                  }`}
+                />
+                <YellowCharacterBtn
+                  text={`#${
+                    currentDog.dogCharacter2 === "active"
+                      ? "활동적"
+                      : "비활동적"
+                  }`}
+                />
               </div>
             </FeedProfileBottom>
           ) : (
-            <div className='margin-bottom'></div>
+            <div className="margin-bottom"></div>
           )}
         </FeedProfileWrapper>
         {filteredPhotoData.length === 0 ? (
-          <div className='no-photo'>등록된 사진이 없습니다.</div>
+          <div className="no-photo">등록된 사진이 없습니다.</div>
         ) : (
           <FeedPhotoWrapper>
             {filteredPhotoData.map((filteredPhoto) => (
               <FeedPhoto
                 key={filteredPhoto.boardId}
                 onClick={() => navigate(`/board/${filteredPhoto.boardId}`)}
-                src={`https://i8a807.p.ssafy.io/image/board/` + filteredPhoto.image}
+                src={
+                  `https://i8a807.p.ssafy.io/image/board/` + filteredPhoto.image
+                }
               />
             ))}
           </FeedPhotoWrapper>
