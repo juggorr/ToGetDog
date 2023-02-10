@@ -9,7 +9,7 @@ export const HeaderWrapper = styled.div`
   top: 0;
   justify-content: space-between;
   background-color: #fff;
-  z-index: 999;
+  z-index: 9;
 
   .head-icon-wrapper {
     display: flex;
