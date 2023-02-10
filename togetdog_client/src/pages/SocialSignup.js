@@ -33,12 +33,14 @@ const genderBtnList = [
 function SocialSignup() {
   const navigate = useNavigate();
   const location = useLocation();
+  const params = location.search
 
   
 
   useEffect(() => {
     console.log(location);
-    console.log(location.user);
+    console.log(location.search.slice(29, location.search.length));
+    console.log(params.slice(30, params.length));
   })
 
   const [inputs, setInputs] = useState({
