@@ -36,8 +36,10 @@ function SocialSignup() {
   
 
   useEffect(() => {
-    console.log(socialUser.email);
-    console.log(socialUser.data);
+    console.log(socialUser.user);
+    console.log(socialUser.user.email);
+    console.log(socialUser.user.nickName);
+    console.log(socialUser.user.social);
   })
 
   const [inputs, setInputs] = useState({
