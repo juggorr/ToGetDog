@@ -19,13 +19,19 @@ import { useNavigate, useLocation } from "react-router-dom";
 function Oauth() {
 
   const location = useLocation();
+  const params = decodeURIComponent(location.search);
 
 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log(location.search);
-    console.log(decodeURIComponent(location.search));
+    // console.log(location.search);
+    // console.log(decodeURIComponent(location.search));
+    console.log(params);
+
+    let [token, user] = params.split('&');
+    console.log(token);
+    console.log(user);
   }, [])
   
   return(
