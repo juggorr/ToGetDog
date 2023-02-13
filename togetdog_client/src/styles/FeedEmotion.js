@@ -90,10 +90,14 @@ export const FeedProfileTop = styled.div`
     font-size: 0.85rem;
     padding-top: 1rem;
     padding-right: 1rem;
+    text-align: end;
+  }
+
+  .follow-box {
+    margin-bottom: 0.3rem;
   }
 
   .follow-text {
-    margin-right: 0.5rem;
     color: #777;
   }
 

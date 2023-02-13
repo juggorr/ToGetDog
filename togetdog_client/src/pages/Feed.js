@@ -259,14 +259,15 @@ const Feed = () => {
                 <div className='follow-info flex-column'>
                   {currentDog ? (
                     <div
+                      className='follow-box'
                       onClick={() =>
                         navigate(`/followerlist/${currentDog.dogId}`, {
                           state: { dogId: currentDog.dogId },
                         })
                       }
                     >
-                      <span className='follow-text'>팔로워</span>
-                      {currentDog.dogFollowerCnt}
+                      <div className='follow-text'>팔로워</div>
+                      <div>{currentDog.dogFollowerCnt}</div>
                     </div>
                   ) : null}
                   <div
@@ -276,8 +277,8 @@ const Feed = () => {
                       })
                     }
                   >
-                    <span className='follow-text'>팔로잉</span>
-                    {feedUserData.followCnt}
+                    <div className='follow-text'>팔로잉</div>
+                    <div>{feedUserData.followCnt}</div>
                   </div>
                 </div>
               </div>
