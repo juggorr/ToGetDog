@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import dog_profile from "../assets/dog2.jpg";
+import styled from '@emotion/styled';
+import dog_profile from '../assets/dog2.jpg';
 
 // 홈으로 이동 텍스트 버튼
 export const HomeTextBtn = styled.div`
@@ -99,7 +99,7 @@ export const MainColorShortBtn = styled.button`
   color: #fff;
   font-weight: 700;
   font-size: 0.9rem;
-  font-family: "Lato", sans-serif;
+  font-family: 'Lato', sans-serif;
 `;
 
 export const GreyColorShortBtn = styled.button`
@@ -175,7 +175,7 @@ export const YellowBtn = styled.button`
 export const PlusBtn = styled.button`
   width: 3.5rem;
   height: 3.5rem;
-  border-radius: 50%;
+  border-radius: 1.75rem;
   border: none;
   background-color: #559968;
 
@@ -214,7 +214,7 @@ export const UserIconCircle = styled.div`
     align-items: center;
     justify-content: center;
     border-radius: 70%;
-    font-family: "Noto Sans KR", sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     font-weight: 700;
     color: #ffffff;
     font-size: 1.2rem;
@@ -241,8 +241,7 @@ export const UserIconCircle = styled.div`
   }
 
   .image {
-    background-image: ${(props) =>
-      props.image ? `url(${props.image})` : `url(${dog_profile})`};
+    background-image: ${(props) => (props.image ? `url(${props.image})` : `url(${dog_profile})`)};
     background-size: cover;
   }
 `;
