@@ -57,6 +57,14 @@ export const ConfirmModalWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  .two-btns-wrapper {
+    width: 100%;
+    display: flex;
+    padding-top: 1.5rem;
+    // justify-content: space-between;
+    justify-content: space-around;
+  }
 `;
   
 export const ConfirmModalBody = styled.div`
@@ -70,14 +78,6 @@ export const ConfirmModalBody = styled.div`
 
   .modal-msg {
     font-size: 0.75rem; 
-  }
-
-  .two-btns-wrapper {
-    width: 100%;
-    display: flex;
-    padding-top: 1.5rem;
-    // justify-content: space-between;
-    justify-content: space-around;
   }
 `;
 
