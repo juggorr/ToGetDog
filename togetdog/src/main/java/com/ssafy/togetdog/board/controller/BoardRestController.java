@@ -216,11 +216,11 @@ public class BoardRestController {
 	 */
 	@ApiOperation(value = "게시물 수정", notes = "선택된 단건 게시글을 수정")
 	@PutMapping("/board")
-	public ResponseEntity<?> modifyBoard(/*@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,*/
+	public ResponseEntity<?> modifyBoard(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
 			@RequestBody BoardDTO boardDTO) {
 		logger.info("Board update parameter : {} {}", boardDTO);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-//		jwtService.validateToken(token);
+		jwtService.validateToken(token);
 		
 		BoardDTO newBoardDto = boardService.update(boardDTO);
 		

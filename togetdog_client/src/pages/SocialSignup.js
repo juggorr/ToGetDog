@@ -32,13 +32,16 @@ const nicknameEngRegexp = /^[a-zA-Z]{2,16}$/; // 영문 2~16자
 function SocialSignup() {
   const navigate = useNavigate();
   const location = useLocation();
-  const params = location.search 
+  const params = decodeURIComponent(location.search);
 
   const [email, setEmail] = useState('');
   const [socialNickname, setSocialNickname] = useState('');
   const [social, setSocial] = useState('');
 
   useEffect(() => {
+
+    console.log(params);
+  
 
     let [email, nickname, social] = params.slice(35, params.length - 1).split(',%20');
     nickname = nickname.slice(9, nickname.length);    
