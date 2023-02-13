@@ -155,6 +155,7 @@ export const MainDogImg = styled.img`
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
+  background-color: #fff;
 `;
 
 export const SubDogImg = styled.img`
@@ -163,4 +164,5 @@ export const SubDogImg = styled.img`
   border-radius: 50%;
   margin-right: 0.3rem;
   object-fit: cover;
+  background-color: #fff;
 `;
