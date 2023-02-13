@@ -61,7 +61,7 @@ export const ConfirmModalWrapper = styled.div`
   
 export const ConfirmModalBody = styled.div`
   border-radius: 0.5rem;
-  padding: 0.3rem 0.9rem;
+  padding: 0.5rem 0.9rem;
   background-color: #fff;
   border: 1px solid #e2e2e2;
   display: flex;
@@ -70,7 +70,8 @@ export const ConfirmModalBody = styled.div`
 
   .two-btns-wrapper {
     padding-top: 1.5rem;
-    justify-content: space-around;
+    justify-content: space-between;
+    // justify-content: space-around;
   }
 `;
 
