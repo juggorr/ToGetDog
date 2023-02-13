@@ -1,33 +1,19 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { authAtom, userState } from "../recoil";
 
 import axios from "axios";
-import { BACKEND_URL, DUMMY_URL } from "../config";
+import { BACKEND_URL } from "../config";
 import {
   NotificationsWrapper,
   SingleNotificationWrapper,
 } from "../styles/NotificationsEmotion";
-import { HeaderWrapper } from "../styles/MainHeaderEmotion";
+
 import UserIcon from "../components/UserIcon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import WalkingWithDog from "../assets/walking_with_dog.png";
 import CancelEvent from "../assets/cancel-event.png";
-
-const NotificationsHeader = () => {
-  const navigate = useNavigate();
-
-  return (
-    <HeaderWrapper>
-      <div className="icon-box">
-        <div className="header-icon" onClick={() => navigate(-1)}>
-          <FontAwesomeIcon icon="fa-arrow-left" />
-        </div>
-      </div>
-    </HeaderWrapper>
-  );
-};
 
 const SingleNotification = (data) => {
   const navigate = useNavigate();
@@ -36,7 +22,7 @@ const SingleNotification = (data) => {
     if (data.item.type === "좋아요") {
       navigate(`/board/${data.item.id}`);
     } else if (data.item.type === "팔로우") {
-      navigate(`feed/${data.item.id}`);
+      navigate(`/feed/${data.item.id}`);
     }
   };
 
@@ -59,12 +45,12 @@ const SingleNotification = (data) => {
 
 const Notifications = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useRecoilState(userState);
+  // const [user, setUser] = useRecoilState(userState);
   const [notifications, setNotifications] = useState([]);
   const [canceled, setCanceled] = useState(false);
   const [meetingCnt, setMeetingCnt] = useState();
   const auth = useRecoilValue(authAtom);
-  const setAuth = useSetRecoilState(authAtom);
+  // const setAuth = useSetRecoilState(authAtom);
   const pageNo = 0;
 
   useEffect(() => {
@@ -107,7 +93,6 @@ const Notifications = () => {
 
   return (
     <div>
-      <NotificationsHeader></NotificationsHeader>
       <NotificationsWrapper>
         <div className="walkRequestWrapper" onClick={() => navigate("/walk")}>
           <div className="walkRequest">

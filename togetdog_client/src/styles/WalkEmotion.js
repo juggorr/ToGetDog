@@ -10,7 +10,8 @@ export const TabList = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  z-index: 99;
+  z-index: 5;
+  margin-top: 0.5rem;
 
   .activeTab {
     background-color: #ffd89d;
@@ -35,16 +36,16 @@ export const TabList = styled.div`
 `;
 
 export const MeetingWrapper = styled.div`
-  position: absolute;
+  position: relative;
   width: 100%;
-  top: 1.2rem;
+  top: 1.7rem;
   display: flex;
   justify-content: center;
 
   .walkList {
     width: 95%;
-    height: calc(100vh - 11rem);
-    border-radius: 3%;
+    height: calc(100vh - 12rem);
+    border-radius: 1rem;
     background-color: #f5f0ec;
     padding-top: 2.5rem;
     overflow-y: auto;
@@ -54,8 +55,8 @@ export const MeetingWrapper = styled.div`
     width: 4rem;
     height: 4rem;
     color: white;
-    position: fixed;
-    bottom: 4rem;
+    position: absolute;
+    bottom: 1rem;
     right: 1.2rem;
     border-radius: 70%;
     border: 0.3rem solid white;

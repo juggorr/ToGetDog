@@ -24,6 +24,7 @@ import Boy from '../assets/boy.png';
 import Girl from '../assets/girl.png';
 import MenuIcon from '../assets/menu_icon.png';
 import FollowBtn from '../components/FollowBtn';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Feed = () => {
   const auth = useRecoilValue(authAtom);
@@ -87,7 +88,7 @@ const Feed = () => {
 
   const location = useLocation();
   const feedUserId = location.pathname.split('/').reverse()[0];
-  // const pageNo = location.state.pageNo;
+  // pageNo
   const pageNo = 1;
 
   const swapMainDog = (targetDogId) => {
@@ -96,7 +97,10 @@ const Feed = () => {
       if (dog.dogId === targetDogId) {
         setCurrentDog(dog);
         setFollowStatus(dog.following);
-        let filteredPhotos = feedData.filter((feedPhoto) => feedPhoto.dogId === targetDogId);
+        let filteredPhotos = [];
+        if (feedData) {
+          filteredPhotos = feedData.filter((feedPhoto) => feedPhoto.dogId === targetDogId);
+        }
         setFilteredPhotoData(filteredPhotos);
         setSubDogs(tmpSubDogs);
       } else {
@@ -132,12 +136,18 @@ const Feed = () => {
         console.log(resp.data);
         setFeedData(resp.data.feed);
         setFeedUserData(resp.data.user);
-        setFeedDogData(resp.data.user.dogs);
-        setCurrentDog(resp.data.user.dogs[0]);
-        setFollowStatus(resp.data.user.dogs[0].following);
+        console.log(resp.data.user.dogs);
+        if (resp.data.user.dogs !== []) {
+          setFeedDogData(resp.data.user.dogs);
+          setCurrentDog(resp.data.user.dogs[0]);
+          console.log(resp.data.user.dogs);
+          if (!resp.data.user.dogs) {
+            setFollowStatus(resp.data.user.dogs[0].following);
+          }
+        }
         let tmpSubDogs = [];
 
-        if (resp.data.user.dogs.length > 1) {
+        if (resp.data.user.dogs) {
           resp.data.user.dogs.map((dog) => {
             if (dog.dogId !== resp.data.user.dogs[0].dogId) {
               tmpSubDogs.push(dog);
@@ -146,8 +156,11 @@ const Feed = () => {
         }
         setSubDogs(tmpSubDogs);
         setFeedPhotoData(resp.data.feed);
-        let filteredPhotos = resp.data.feed.filter((feedPhoto) => feedPhoto.dogId === resp.data.user.dogs[0].dogId);
-        setFilteredPhotoData(filteredPhotos);
+        let filteredPhotos = [];
+        if (resp.data.dogs) {
+          filteredPhotos = resp.data.feed.filter((feedPhoto) => feedPhoto.dogId === resp.data.user.dogs[0].dogId);
+          setFilteredPhotoData(filteredPhotos);
+        }
         setLoading(false);
       })
       .catch((err) => {
@@ -169,7 +182,7 @@ const Feed = () => {
   return (
     <>
       <FeedContainer>
-        {feedDogData.length > 0 ? (
+        {!feedDogData ? (
           <ConfirmModal
             confirmBtnClick={confirmBtnClick}
             setConfirmBtnClick={setConfirmBtnClick}
@@ -195,16 +208,16 @@ const Feed = () => {
         <FeedProfileWrapper>
           {/* 프로필 상단 */}
           <FeedProfileTop>
-            {feedDogData.length === 0 ? (
+            {feedDogData ? (
               <MainDogImg src='https://media.istockphoto.com/id/509962049/vector/cute-puppy-sits.jpg?s=612x612&w=0&k=20&c=hm9wNYwzB2sXwrySGNi83WzH5B7ubDMk1NKJw73W7tg=' />
             ) : (
               <MainDogImg src={`https://i8a807.p.ssafy.io/image/dog/` + currentDog.dogProfile} />
             )}
-            {feedDogData.length === 0 ? (
+            {!feedDogData ? (
               <div className='no-dog-info-box'>
                 <div className='no-dogs-txt'>{'등록된 강아지가 없습니다.'}</div>
               </div>
-            ) : (
+            ) : currentDog ? (
               <div className='dog-info-box'>
                 <div>
                   {currentDog.dogName}
@@ -220,16 +233,22 @@ const Feed = () => {
                   }`}
                 </div>
               </div>
+            ) : (
+              <div className='dog-info-box'>
+                <div>{'등록된 강아지가 없습니다.'}</div>
+              </div>
             )}
 
             <div className='sub-dogs'>
-              {subDogs.map((subdog) => (
-                <SubDogImg
-                  src={`https://i8a807.p.ssafy.io/image/dog/` + subdog.dogProfile}
-                  key={subdog.dogId}
-                  onClick={() => swapMainDog(subdog.dogId)}
-                />
-              ))}
+              {subDogs
+                ? subDogs.map((subdog) => (
+                    <SubDogImg
+                      src={`https://i8a807.p.ssafy.io/image/dog/` + subdog.dogProfile}
+                      key={subdog.dogId}
+                      onClick={() => swapMainDog(subdog.dogId)}
+                    />
+                  ))
+                : null}
               {feedDogData.length === 3 || feedUserData.userId !== user.userId ? null : (
                 <PlusBtn onClick={() => navigate('/dogregister')}>+</PlusBtn>
               )}
@@ -263,7 +282,21 @@ const Feed = () => {
                 </div>
               </div>
             ) : currentDog ? (
-              <FollowBtn dogId={currentDog.dogId} followStatus={followStatus} setFollowStatus={setFollowStatus} />
+              <div className='other-user-btns'>
+                <FollowBtn dogId={currentDog.dogId} followStatus={followStatus} setFollowStatus={setFollowStatus} />
+                <div
+                  className='make-appointment-btn'
+                  onClick={() =>
+                    navigate('/createAppointment', {
+                      state: {
+                        partnerId: feedUserData.userId,
+                      },
+                    })
+                  }
+                >
+                  <FontAwesomeIcon icon='fa-calendar' />
+                </div>
+              </div>
             ) : null}
           </FeedProfileTop>
           {/* 특이사항, 성격 들어가는 부분 */}
@@ -280,7 +313,7 @@ const Feed = () => {
             <div className='margin-bottom'></div>
           )}
         </FeedProfileWrapper>
-        {filteredPhotoData.length === 0 ? (
+        {!filteredPhotoData ? (
           <div className='no-photo'>등록된 사진이 없습니다.</div>
         ) : (
           <FeedPhotoWrapper>

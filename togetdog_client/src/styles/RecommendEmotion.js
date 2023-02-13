@@ -1,11 +1,15 @@
 import styled from "@emotion/styled";
 
+export const RecommendWrapper = styled.div`
+  position: relative;
+  margin: 0.5rem 0rem;
+`;
 export const DropdownWrapper = styled.div`
   display: flex;
   align-items: start;
   font-family: "Lato", sans-serif;
   position: absolute;
-  top: 60px;
+  z-index: 1;
 
   .dropdown {
     margin: 0rem;
@@ -59,8 +63,9 @@ export const DropdownWrapper = styled.div`
 `;
 
 export const FriendListWrapper = styled.div`
-  margin-top: 3rem;
+  padding-top: 3rem;
   font-family: "Inter", sans-serif;
+  position: relative;
 
   .singleDog {
     padding: 0.3rem 1rem;
@@ -92,8 +97,8 @@ export const FriendListWrapper = styled.div`
   }
 
   .ownerName {
-    font-size: 0.5rem;
-    margin: 0rem 0.5rem;
+    font-size: 0.7rem;
+    margin: 0.2rem;
     color: #717171;
   }
 
@@ -115,8 +120,8 @@ export const FriendListWrapper = styled.div`
 
   .genderImg {
     object-fit: contain;
-    width: 0.8rem;
-    height: 0.8rem;
+    width: 1rem;
+    height: 1rem;
   }
 
   .noFriends {
@@ -124,6 +129,20 @@ export const FriendListWrapper = styled.div`
     text-align: center;
     color: #717171;
     font-size: 14px;
+  }
+
+  .make-appointment-btn {
+    width: 1.7rem;
+    height: 1.7rem;
+    font-size: 0.8rem;
+    background-color: #7fb77e;
+    text-align: center;
+    line-height: 1.7rem;
+    border-radius: 50%;
+    color: #fff;
+    position: absolute;
+    top: 2.2rem;
+    left: 4rem;
   }
 `;
 

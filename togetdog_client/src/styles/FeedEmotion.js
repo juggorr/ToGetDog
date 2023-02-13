@@ -50,10 +50,11 @@ export const FeedPhoto = styled.img`
 export const FeedProfileTop = styled.div`
   display: flex;
   background-color: #fff;
+  position: relative;
 
   .dog-info-box {
-    width: 45%;
-    padding-left: 1rem;
+    width: 75%;
+    padding-left: 0.7rem;
   }
 
   .no-dog-info-box {
@@ -73,7 +74,7 @@ export const FeedProfileTop = styled.div`
   }
 
   .profile-etc-wrapper {
-    width: 35%;
+    width: 30%;
     display: flex;
     flex-direction: column;
     align-items: end;
@@ -99,12 +100,30 @@ export const FeedProfileTop = styled.div`
   .sub-dogs {
     display: flex;
     position: absolute;
-    top: 8.5rem;
-    padding-left: 4.5rem;
+    top: 3.7rem;
+    left: 4.5rem;
   }
 
   .no-dogs-txt {
     font-size: 0.9rem;
+  }
+
+  .other-user-btns {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+  }
+
+  .make-appointment-btn {
+    width: 1.7rem;
+    height: 1.7rem;
+    font-size: 0.8rem;
+    background-color: #7fb77e;
+    text-align: center;
+    line-height: 1.5rem;
+    border-radius: 50%;
+    color: #fff;
+    margin-top: 2.6rem;
   }
 `;
 
