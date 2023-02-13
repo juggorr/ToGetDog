@@ -172,15 +172,15 @@ export const YellowBtn = styled.button`
   font-size: 0.78rem;
 `;
 
-export const PlusBtn = styled.button`
-  width: 60px;
-  height: 60px;
+export const PlusBtn = styled.div`
+  width: 3.5rem;
+  height: 3.5rem;
   border-radius: 50%;
   border: none;
   background-color: #559968;
 
   font-size: 3rem;
-  line-height: 60px;
+  line-height: 3.5rem;
   text-align: center;
   color: #fff;
 `;
