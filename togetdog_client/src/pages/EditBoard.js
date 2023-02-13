@@ -88,7 +88,8 @@ const EditBoard = () => {
         console.log(resp.data);
         // console.log("게시물 수정이 완료되었습니다.");
         alert("게시물 수정이 완료되었습니다.");
-        navigate(`/board/${boardId}`);
+        // navigate(`/board/${boardId}`);
+        window.location.replace(`/board/${boardId}`);
       })
       .catch((err) => {
         console.log(err);
