@@ -23,7 +23,6 @@ import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.dto.DogRecommendListDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.dog.model.repository.DogRepository;
-import com.ssafy.togetdog.follow.model.repository.FollowRepository;
 import com.ssafy.togetdog.follow.model.service.FollowService;
 import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.repository.UserRepository;
@@ -48,7 +47,7 @@ public class AppointmentService {
 		user.setUserId(userId);
 		
 		
-		List<Appointment> reqlist = appointmentRepository.findAllBySentUserOrReceivedUser(user, user);
+		List<Appointment> reqlist = appointmentRepository.findAllBySentUserOrReceivedUserOrderByRoomIdDesc(user, user);
 		
 		List<AppointmentListDTO> requestList = reqlist.stream()
 				.map(a-> AppointmentListDTO.of(a)).collect(Collectors.toList());
