@@ -10,7 +10,7 @@ export const TabList = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  z-index: 99;
+  z-index: 5;
 
   .activeTab {
     background-color: #ffd89d;

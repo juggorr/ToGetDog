@@ -50,6 +50,7 @@ export const FeedPhoto = styled.img`
 export const FeedProfileTop = styled.div`
   display: flex;
   background-color: #fff;
+  position: relative;
 
   .dog-info-box {
     width: 45%;
@@ -99,8 +100,8 @@ export const FeedProfileTop = styled.div`
   .sub-dogs {
     display: flex;
     position: absolute;
-    top: 8.5rem;
-    left: 5.5rem;
+    top: 3.7rem;
+    left: 4.5rem;
   }
 
   .no-dogs-txt {
