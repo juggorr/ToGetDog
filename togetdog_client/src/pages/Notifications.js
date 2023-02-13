@@ -22,7 +22,7 @@ const SingleNotification = (data) => {
     if (data.item.type === "좋아요") {
       navigate(`/board/${data.item.id}`);
     } else if (data.item.type === "팔로우") {
-      navigate(`feed/${data.item.id}`);
+      navigate(`/feed/${data.item.id}`);
     }
   };
 
