@@ -49,9 +49,11 @@ public class UserOAuth2Service extends DefaultOAuth2UserService {
         } else {
         	// already regist
         	if (user.getSocial() != attributes.getSocial()) {
+        		logger.info("outh disable");
         		return UserPrincipal.disable();
         	}
         	// 이미 가입 처리 되어 있고 로그인만 시켜주면 된다는 의미를 보내야 함.
+        	logger.info("outh login");
         	return UserPrincipal.login(user);
         }
 	}
