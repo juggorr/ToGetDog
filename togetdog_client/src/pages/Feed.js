@@ -7,7 +7,7 @@ import NoDogAlertModal from '../components/AlertModal/NoDogAlertModal';
 import MenuModal from '../components/MenuModal';
 import OrangeCharacterBtn from '../components/OrangeCharacterBtn';
 import YellowCharacterBtn from '../components/YellowCharacterBtn';
-import { BACKEND_URL, DUMMY_URL } from '../config';
+import { BACKEND_URL } from '../config';
 import { authAtom, userState } from '../recoil';
 import { PlusBtn } from '../styles/BtnsEmotion';
 import {
@@ -23,6 +23,7 @@ import {
 import Boy from '../assets/boy.png';
 import Girl from '../assets/girl.png';
 import MenuIcon from '../assets/menu_icon.png';
+import Loading from '../assets/loading.gif';
 import FollowBtn from '../components/FollowBtn';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -30,8 +31,6 @@ const Feed = () => {
   const auth = useRecoilValue(authAtom);
   const setAuth = useSetRecoilState(authAtom);
   const [user, setUser] = useRecoilState(userState);
-
-  // const [nowDog, setNowDog] = useState(null);
 
   const navigate = useNavigate();
 
@@ -91,23 +90,45 @@ const Feed = () => {
   // pageNo
   const pageNo = 1;
 
-  const swapMainDog = (targetDogId) => {
+  const swapMainDog = async (targetDogId) => {
+    setLoading(true);
     let tmpSubDogs = [];
     for (let dog of feedDogData) {
       if (dog.dogId === targetDogId) {
         setCurrentDog(dog);
         setFollowStatus(dog.following);
-        let filteredPhotos = [];
-        if (feedData) {
-          filteredPhotos = feedData.filter((feedPhoto) => feedPhoto.dogId === targetDogId);
-        }
-        setFilteredPhotoData(filteredPhotos);
-        setSubDogs(tmpSubDogs);
+        // let filteredPhotos = [];
+        // filteredPhotos = feedPhotoData.filter((feedPhoto) => feedPhoto.dogId === targetDogId);
+        // console.log(filteredPhotos);
+        // setFilteredPhotoData(filteredPhotos);
+        // setSubDogs(tmpSubDogs);
       } else {
         tmpSubDogs.push(dog);
       }
     }
-    setSubDogs(tmpSubDogs);
+    await setSubDogs(tmpSubDogs);
+    await axios
+      .get(`${BACKEND_URL}/board/list/${targetDogId}`, {
+        params: {
+          pageNo: pageNo,
+        },
+        headers: {
+          Authorization: auth,
+        },
+      })
+      .then((resp) => {
+        console.log(resp);
+        console.log(resp.data);
+        setFeedPhotoData(resp.data.boardList);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response.status === 401) {
+          alert('토큰이 만료되어 자동 로그아웃되었습니다.');
+          handleLogout();
+        }
+      });
   };
 
   const handleLogout = () => {
@@ -137,11 +158,12 @@ const Feed = () => {
         setFeedData(resp.data.feed);
         setFeedUserData(resp.data.user);
         console.log(resp.data.user.dogs);
-        if (resp.data.user.dogs !== []) {
+        if (resp.data.user.dogs) {
           setFeedDogData(resp.data.user.dogs);
           setCurrentDog(resp.data.user.dogs[0]);
           console.log(resp.data.user.dogs);
-          if (!resp.data.user.dogs) {
+          console.log(resp.data.user.dogs);
+          if (resp.data.user.dogs.toString() !== [].toString()) {
             setFollowStatus(resp.data.user.dogs[0].following);
           }
         }
@@ -156,11 +178,11 @@ const Feed = () => {
         }
         setSubDogs(tmpSubDogs);
         setFeedPhotoData(resp.data.feed);
-        let filteredPhotos = [];
-        if (resp.data.dogs) {
-          filteredPhotos = resp.data.feed.filter((feedPhoto) => feedPhoto.dogId === resp.data.user.dogs[0].dogId);
-          setFilteredPhotoData(filteredPhotos);
-        }
+        // let filteredPhotos = [];
+        // if (resp.data.feed) {
+        //   filteredPhotos = resp.data.feed.filter((feedPhoto) => feedPhoto.dogId === resp.data.user.dogs[0].dogId);
+        //   setFilteredPhotoData(filteredPhotos);
+        // }
         setLoading(false);
       })
       .catch((err) => {
@@ -176,13 +198,17 @@ const Feed = () => {
   }, []);
 
   if (isLoading) {
-    return <div className='loading'>Loading...</div>;
+    return (
+      <div className='loading'>
+        <img src={Loading} alt='loading...'></img>
+      </div>
+    );
   }
 
   return (
     <>
       <FeedContainer>
-        {!feedDogData ? (
+        {currentDog ? (
           <ConfirmModal
             confirmBtnClick={confirmBtnClick}
             setConfirmBtnClick={setConfirmBtnClick}
@@ -314,15 +340,15 @@ const Feed = () => {
             <div className='margin-bottom'></div>
           )}
         </FeedProfileWrapper>
-        {!filteredPhotoData ? (
+        {!feedPhotoData ? (
           <div className='no-photo'>등록된 사진이 없습니다.</div>
         ) : (
           <FeedPhotoWrapper>
-            {filteredPhotoData.map((filteredPhoto) => (
+            {feedPhotoData.map((feedPhoto) => (
               <FeedPhoto
-                key={filteredPhoto.boardId}
-                onClick={() => navigate(`/board/${filteredPhoto.boardId}`)}
-                src={`https://i8a807.p.ssafy.io/image/board/` + filteredPhoto.image}
+                key={feedPhoto.boardId}
+                onClick={() => navigate(`/board/${feedPhoto.boardId}`)}
+                src={`https://i8a807.p.ssafy.io/image/board/` + feedPhoto.image}
               />
             ))}
           </FeedPhotoWrapper>

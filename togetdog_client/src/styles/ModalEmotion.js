@@ -41,7 +41,7 @@ export const MenuModalBody = styled.div`
 `;
 
 export const ConfirmModalWrapper = styled.div`
-  z-index: 1;
+  z-index: 9;
   position: fixed;
   top: 0;
   @media (min-width: 650px) {

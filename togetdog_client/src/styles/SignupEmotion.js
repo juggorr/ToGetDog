@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 
 export const SignupContainer = styled.div`
-  height: 100vh;
+  height: calc(100vh - 60px - 3rem);
   display: flex;
-  align-items: center;
+  // align-items: center;
   justify-content: center;
   padding: 1.5rem 0;
 `;
