@@ -95,7 +95,7 @@ const BoardList = (boardList) => {
     }
   } else {
     tempBoardList.push(
-      <NoFriendsWrapper>조회할 게시글이 없어요.</NoFriendsWrapper>
+      <NoFriendsWrapper key={0}>조회할 게시글이 없어요.</NoFriendsWrapper>
     );
   }
 
@@ -197,8 +197,8 @@ const Home = () => {
         },
       })
       .then((response) => {
-        console.log(response.data);
-        console.log(response.data.dogs);
+        // console.log(response.data);
+        // console.log(response.data.dogs);
         setRecommendList(response.data.dogs);
       })
       .catch((error) => {
