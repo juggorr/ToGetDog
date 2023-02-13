@@ -41,7 +41,7 @@ function Oauth() {
     address = address.slice(8, address.length);
     setUserInfos({
       email: email,
-      userId: id,
+      userId: Number(id),
       nickName: nickname,
       address: address,
     });
