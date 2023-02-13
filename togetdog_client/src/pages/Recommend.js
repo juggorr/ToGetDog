@@ -7,6 +7,7 @@ import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  RecommendWrapper,
   DropdownWrapper,
   FriendListWrapper,
   CheckBoxWrapper,
@@ -153,10 +154,18 @@ const FriendsList = ({ friends }) => {
         }
       }
       if (!tempFilter.length) {
-        tempFilter.push(<p className="noFriends">검색 결과가 없습니다.</p>);
+        tempFilter.push(
+          <p className="noFriends" key={0}>
+            검색 결과가 없습니다.
+          </p>
+        );
       }
     } else {
-      tempFilter.push(<p className="noFriends">검색 결과가 없습니다.</p>);
+      tempFilter.push(
+        <p className="noFriends" key={0}>
+          검색 결과가 없습니다.
+        </p>
+      );
     }
     return tempFilter;
   };
@@ -245,7 +254,7 @@ const Recommend = () => {
   };
 
   return (
-    <div>
+    <RecommendWrapper>
       <DropdownWrapper>
         <ul onClick={() => setView(!view)} className="dropdown">
           <div className="dropdownListHeader">
@@ -259,7 +268,7 @@ const Recommend = () => {
         <p className="plainText">의 산책 친구들</p>
       </DropdownWrapper>
       {friends !== [] ? <FriendsList friends={friends}></FriendsList> : null}
-    </div>
+    </RecommendWrapper>
   );
 };
 
