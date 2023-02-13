@@ -105,6 +105,14 @@ export const RecommendBoxWrapper = styled.div`
     font-size: 0.9rem;
     padding-left: 0.3rem;
   }
+
+  .noFriends {
+    text-align: center;
+    margin: 2rem;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    color: #717171;
+  }
 `;
 
 export const DogRecommendWrapper = styled.div`

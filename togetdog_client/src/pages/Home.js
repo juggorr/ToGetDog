@@ -192,7 +192,8 @@ const Home = () => {
         },
       })
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
+        console.log(response.data.dogs);
         setRecommendList(response.data.dogs);
       })
       .catch((error) => {
@@ -244,16 +245,24 @@ const Home = () => {
           </div>
         </div>
       </HomeContainer>
-
-      <RecommendBoxWrapper>
-        <div className="recommend-txt-box">
-          <FontAwesomeIcon icon="fa-solid fa-paw" />
-          <span className="recommend-txt">추천 댕댕이 친구들</span>
-        </div>
-        <div className="recommendBox">{RecommendWrapper(recommendList)}</div>
-      </RecommendBoxWrapper>
+      {recommendList.length ? (
+        <RecommendBoxWrapper>
+          <div className="recommend-txt-box">
+            <FontAwesomeIcon icon="fa-solid fa-paw" />
+            <span className="recommend-txt">추천 댕댕이 친구들</span>
+          </div>
+          <div className="recommendBox">{RecommendWrapper(recommendList)}</div>
+        </RecommendBoxWrapper>
+      ) : (
+        <RecommendBoxWrapper>
+          <div className="recommend-txt-box">
+            <FontAwesomeIcon icon="fa-solid fa-paw" />
+            <span className="recommend-txt">추천 댕댕이 친구들</span>
+          </div>
+          <p className="noFriends">팔로우할 만한 강아지가 없어요.</p>
+        </RecommendBoxWrapper>
+      )}
       {BoardList(boardList)}
-
       {tinyLoading ? (
         <div className="tinyLoading">
           <img src={Loading} alt="loading..."></img>
