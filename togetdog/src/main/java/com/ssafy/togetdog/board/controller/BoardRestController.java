@@ -81,11 +81,11 @@ public class BoardRestController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
 		Long userId = jwtService.getUserId(token);
-//		Long userId = 4L;
+//		Long userId = 38L;
 		
 		// 강아지 (이름, 프로필 이미지랑, 견종, 나이, 성별)
 		List<DogInfoRespDTO> followList = followService.getFollowingList(userId);
-		logger.info("return boardList : {}", followList);
+		logger.info("return followList : {}", followList);
 		List<Long> dogIds = new ArrayList<Long>();
 		for (DogInfoRespDTO follow : followList) {
 			dogIds.add(follow.getDogId());
@@ -222,6 +222,12 @@ public class BoardRestController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
 		
+		if(jwtService.getUserId(token) != boardDTO.getUserId()) {
+			resultMap.put("result", "fail");
+			resultMap.put("msg", "게시물이 수정 권한이 없습니다.");
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+		}
+		
 		BoardDTO newBoardDto = boardService.update(boardDTO);
 		
 		resultMap.put("result", SUCCESS);
@@ -238,11 +244,17 @@ public class BoardRestController {
 	@ApiOperation(value = "게시물 삭제", notes = "선택된 단건 게시글을 삭제")
 	@DeleteMapping("/board")
 	public ResponseEntity<?> deleteBoard(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@RequestBody BoardDTO boardDto) {
+			@RequestBody BoardDTO boardDTO) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
 		
-		boardService.delete(boardDto);
+		if(jwtService.getUserId(token) != boardDTO.getUserId()) {
+			resultMap.put("result", "fail");
+			resultMap.put("msg", "게시물이 삭제 권한이 없습니다.");
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+		}
+		
+		boardService.delete(boardDTO);
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("msg", "게시물이 삭제되었습니다.");

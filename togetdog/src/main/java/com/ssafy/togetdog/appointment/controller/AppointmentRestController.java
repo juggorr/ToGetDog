@@ -43,12 +43,6 @@ public class AppointmentRestController {
 	private static final String SUCCESS = "success";
 	private final Logger logger = LoggerFactory.getLogger(AppointmentRestController.class);
 	
-//	private final UserService userService;
-//	private final DogService dogService;
-//	private final BoardService boardService;
-//	private final CommentService commentService;
-//	private final LikeService likeService;
-//	private final FollowService followService;
 	private final AppointmentService appointmentService;
 	private final JwtService jwtService;
 	private final NotifyService notifyService;
@@ -65,7 +59,7 @@ public class AppointmentRestController {
 		
 		jwtService.validateToken(token);
 		long userId = jwtService.getUserId(token);
-//		long userId = 4L;
+//		long userId = 38L;
 		List<AppointmentListDTO> appointemntInfo = appointmentService.findAllByUserId(userId);
 		
 		resultMap.put("result", SUCCESS);
@@ -193,7 +187,7 @@ public class AppointmentRestController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 	
-	/***
+	/***	
 	 * recommend friends for a dog 
 	 * @param token, roomId
 	 * @return status 200, 401, 500
