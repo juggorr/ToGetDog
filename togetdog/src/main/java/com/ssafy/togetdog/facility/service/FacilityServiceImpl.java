@@ -36,7 +36,7 @@ public class FacilityServiceImpl implements FacilityService{
 		double dist;
 		for (FacilityDTO dto : list) {
 			dist = distance(la , lo  , dto.getLatitude() , dto.getLongitude());
-	        if(dist <= 5) {
+	        if(dist <= 3) {
 	        	dist = Math.round(dist * 100) / 100.0;
 	        	dto.setDistance(dist);
 	        	result.add(dto);
