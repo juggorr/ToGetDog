@@ -216,11 +216,17 @@ public class BoardRestController {
 	 */
 	@ApiOperation(value = "게시물 수정", notes = "선택된 단건 게시글을 수정")
 	@PutMapping("/board")
-	public ResponseEntity<?> modifyBoard(/*@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,*/
+	public ResponseEntity<?> modifyBoard(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
 			@RequestBody BoardDTO boardDTO) {
 		logger.info("Board update parameter : {} {}", boardDTO);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-//		jwtService.validateToken(token);
+		jwtService.validateToken(token);
+		
+		if(jwtService.getUserId(token) != boardDTO.getUserId()) {
+			resultMap.put("result", "fail");
+			resultMap.put("msg", "게시물이 수정 권한이 없습니다.");
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+		}
 		
 		BoardDTO newBoardDto = boardService.update(boardDTO);
 		
@@ -238,11 +244,17 @@ public class BoardRestController {
 	@ApiOperation(value = "게시물 삭제", notes = "선택된 단건 게시글을 삭제")
 	@DeleteMapping("/board")
 	public ResponseEntity<?> deleteBoard(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@RequestBody BoardDTO boardDto) {
+			@RequestBody BoardDTO boardDTO) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
 		
-		boardService.delete(boardDto);
+		if(jwtService.getUserId(token) != boardDTO.getUserId()) {
+			resultMap.put("result", "fail");
+			resultMap.put("msg", "게시물이 삭제 권한이 없습니다.");
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+		}
+		
+		boardService.delete(boardDTO);
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("msg", "게시물이 삭제되었습니다.");
