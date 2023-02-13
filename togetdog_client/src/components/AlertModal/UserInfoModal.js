@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import axios from 'axios';
@@ -12,6 +12,12 @@ import { BACKEND_URL } from '../../config';
 import { ConfirmModalWrapper, ConfirmModalBody, ConfirmModalImage } from '../../styles/ModalEmotion';
 import YellowCharacterBtn from "../YellowCharacterBtn";
 import { MainColorShortBtn } from '../../styles/BtnsEmotion';
+import emotion1 from "../../assets/emotion1.png"
+import emotion2 from "../../assets/emotion2.png"
+import emotion3 from "../../assets/emotion3.png"
+import emotion4 from "../../assets/emotion4.png"
+import emotion5 from "../../assets/emotion5.png"
+
 
 
 function UserInfoModal({ userInfoModal, setUserInfoModal, setMenuBtnClick }) {
@@ -20,6 +26,11 @@ function UserInfoModal({ userInfoModal, setUserInfoModal, setMenuBtnClick }) {
   const auth = useRecoilValue(authAtom);
   const outSection = useRef();
 
+  const [brithYear, setBirthYear] = useState('');
+  const [dong, setDong] = useState('');
+  const [sung, setSung] = useState('');
+  const [rate, setRate] = useState('');
+
   useEffect(() => {
     axios
       .get(`${BACKEND_URL}/user/${user.userId}`, {
@@ -27,13 +38,28 @@ function UserInfoModal({ userInfoModal, setUserInfoModal, setMenuBtnClick }) {
           Authorization: auth,
         }
       })
-      .then((res) => {
-        console.log(res.data);
+      .then((res) => {        
+        setRate(res.data.user.rating);
+        
+        const dongData = res.data.user.address.split(" ");
+        setDong(dongData[dongData.length - 1]);
+
+        const thisYear = new Date().getFullYear();
+        setBirthYear(Math.floor((thisYear - res.data.user.birth + 1) / 10) * 10);
+        
+        if (res.data.user.userGender === 'male') {
+          setSung('남성')
+        } else if (res.data.user.userGender === 'female') {
+          setSung('여성')
+        } else {
+          setSung('기타')
+        }
       })
       .catch((err) => {
         console.log(err);
       })
   }, [])
+
 
   const onClick = () => {
     setUserInfoModal(false);
@@ -53,10 +79,26 @@ function UserInfoModal({ userInfoModal, setUserInfoModal, setMenuBtnClick }) {
           }}
         >
           <ConfirmModalBody>
-            <ConfirmModalImage src={WalkIcon} />
-            <h3>알림</h3>
-            <span className="modal-msg">삭제한 프로필은 복구할 수 없어요.</span>
-            <span className="modal-msg">그래도 삭제하시겠어요?</span>
+            <UserIcon text={user.nickName}></UserIcon>
+            <h3>{user.nickName}</h3>
+            <div className="rating-box">
+              {rate < 1 ? (
+                <img className="rate-img" src={emotion5} alt='최저'/>
+              ) : rate < 2 ? (
+                <img className="rate-img" src={emotion4} alt='저' />
+              ) : rate < 3 ? (
+                <img className="rate-img" src={emotion3} alt='중' />
+              ) : rate < 4 ? (
+                <img className="rate-img" src={emotion2} alt='고' /> 
+              ) : <img className="rate-img" src={emotion1} alt='최고'/>
+              }
+              <p className="rate">{rate}</p>
+            </div>
+            <div className="characters-box">
+              <YellowCharacterBtn text={`#${dong}`} />
+              <YellowCharacterBtn text={`#${brithYear}대`} />
+              <YellowCharacterBtn text={`#${sung}`} />
+            </div>
             <div className="two-btns-wrapper">
               <MainColorShortBtn
                 onClick={onClick}

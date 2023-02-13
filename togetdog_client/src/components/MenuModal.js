@@ -24,7 +24,6 @@ const MenuModal = ({
   const navigate = useNavigate();
 
   const handleUserInfo = () => {
-    console.log('눌럿음');
     setMenuBtnClick(false);
     setUserInfoModal(true);
   }
@@ -68,8 +67,10 @@ const MenuModal = ({
                     return handleLogout();
                   } else if (it.link === '/dogdelete') {
                     if (feedDogData.length > 0) {
+                      console.log(feedDogData.length);
                       return handleDogDelete();
                     } else {
+                      console.log('없서');
                       return handleNoDog();
                     }
                   } else if (it.link === '/dogedit' && feedDogData.length > 0) {

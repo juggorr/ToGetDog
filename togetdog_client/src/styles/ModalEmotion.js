@@ -67,6 +67,7 @@ export const ConfirmModalBody = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  
 
   .modal-msg {
     font-size: 0.75rem;
@@ -78,6 +79,23 @@ export const ConfirmModalBody = styled.div`
     padding-top: 1.5rem;
     // justify-content: space-between;
     justify-content: space-around;
+  }
+
+  .rating-box {
+    display: flex;
+    // padding-bottom: 1rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .rate-img {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 0.8rem;
+  }
+
+  .rate {
+    font-size: 0.8rem;
   }
 `;
 
