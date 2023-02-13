@@ -10,7 +10,7 @@ export const ListContainer = styled.div`
 `;
   
   export const ListWrapper = styled.div`
-  padding: 1.25rem;
+  padding-bottom: 0.5rem;
   
   width: 100&;
   display: flex;
@@ -26,19 +26,20 @@ export const FollowList = styled.ul`
   width: 20rem;
   list-style: none;
   padding: 0;
-  justify-content: space-around;
+  justify-content: flex-start;
   display: flex;
+  align-items: center;
 
   float: left;
 
-  position: relative;
+  // position: relative;
   margin-bottom: -1rem;
 `;
 
 export const UserName = styled.div`
   // 가운데 정렬하기 위함
-  positino: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(10%, 35%);
+  // positino: absolute;
+  // left: 50%;
+  // top: 50%;
+  // transform: translate(10%, 35%);
 `;

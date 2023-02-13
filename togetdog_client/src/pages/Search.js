@@ -12,9 +12,9 @@ import {
   SearchbarWrapper,
   SearchTabWrapper,
   ResultListWrapper,
+  FriendListWrapper,
 } from "../styles/SearchEmotion";
 import { DogImgWrapper } from "../styles/CreateAppointmentEmotion";
-import { FriendListWrapper } from "../styles/RecommendEmotion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import OrangeCharacterBtn from "../components/OrangeCharacterBtn";
 import YellowCharacterBtn from "../components/YellowCharacterBtn";
@@ -52,7 +52,7 @@ const SingleFriend = ({ item }) => {
             {item.dogAge < 12 ? "개월" : "살"}
             <div className="genderWrapper">
               <img
-                src={item.dogGender === "female" ? Boy : Girl}
+                src={item.dogGender === "male" ? Boy : Girl}
                 alt="gender"
                 className="genderImg"
               />

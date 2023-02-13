@@ -1,11 +1,11 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const FeedContainer = styled.div`
   width: 100%;
   height: calc(100vh - 115px);
   display: flex;
   flex-direction: column;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
 
   .no-photo {
     height: 100%;
@@ -50,10 +50,11 @@ export const FeedPhoto = styled.img`
 export const FeedProfileTop = styled.div`
   display: flex;
   background-color: #fff;
+  position: relative;
 
   .dog-info-box {
-    width: 45%;
-    padding-left: 1rem;
+    width: 75%;
+    padding-left: 0.7rem;
   }
 
   .no-dog-info-box {
@@ -73,7 +74,7 @@ export const FeedProfileTop = styled.div`
   }
 
   .profile-etc-wrapper {
-    width: 35%;
+    width: 30%;
     display: flex;
     flex-direction: column;
     align-items: end;
@@ -89,18 +90,22 @@ export const FeedProfileTop = styled.div`
     font-size: 0.85rem;
     padding-top: 1rem;
     padding-right: 1rem;
+    text-align: end;
+  }
+
+  .follow-box {
+    margin-bottom: 0.3rem;
   }
 
   .follow-text {
-    margin-right: 0.5rem;
     color: #777;
   }
 
   .sub-dogs {
     display: flex;
     position: absolute;
-    top: 8.5rem;
-    padding-left: 4.5rem;
+    top: 3.7rem;
+    left: 4.5rem;
   }
 
   .no-dogs-txt {
@@ -150,6 +155,7 @@ export const MainDogImg = styled.img`
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
+  background-color: #fff;
 `;
 
 export const SubDogImg = styled.img`
@@ -158,4 +164,5 @@ export const SubDogImg = styled.img`
   border-radius: 50%;
   margin-right: 0.3rem;
   object-fit: cover;
+  background-color: #fff;
 `;

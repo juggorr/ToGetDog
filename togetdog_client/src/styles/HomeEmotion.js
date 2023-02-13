@@ -49,7 +49,7 @@ export const HomeContainer = styled.div`
     justify-content: space-between;
     align-items: space-between;
     z-index: 2;
-    padding: 1.5rem;
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
     overflow: hidden;
   }
 
@@ -68,13 +68,13 @@ export const HomeContainer = styled.div`
   }
   .btnContainer {
     display: flex;
-    justify-content: end;
+    justify-content: start;
   }
 
   .walk-btn {
     width: 7rem;
     z-index: 2;
-    padding: 0.3rem;
+    padding: 0.4rem 0.3rem;
     border: 1px solid #559968;
     color: #559968;
     font-weight: 700;
@@ -92,6 +92,13 @@ export const RecommendBoxWrapper = styled.div`
     display: flex;
     overflow-x: scroll;
     padding-left: 0.3rem;
+
+    -ms-overflow-style: none; /* 인터넷 익스플로러 */
+    scrollbar-width: none; /* 파이어폭스 */
+  }
+
+  .recommendBox::-webkit-scrollbar {
+    display: none;
   }
 
   .recommend-txt-box {
@@ -104,6 +111,14 @@ export const RecommendBoxWrapper = styled.div`
     font-weight: 700;
     font-size: 0.9rem;
     padding-left: 0.3rem;
+  }
+
+  .noFriends {
+    text-align: center;
+    margin: 2rem;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    color: #717171;
   }
 `;
 
@@ -127,6 +142,14 @@ export const DogName = styled.div`
   font-size: 0.8rem;
   padding-top: 0.3rem;
   font-weight: 600;
+`;
+
+export const NoFriendsWrapper = styled.div`
+  margin: 2rem 0rem;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #717171;
 `;
 
 export const SingleBoardWrapper = styled.div`

@@ -66,6 +66,7 @@ export const DogImgWrapper = styled.div`
     border-radius: 70%;
     overflow: hidden;
     margin: 0.3rem 0rem;
+    background-color: #ffffff;
   }
 
   .disabled {
@@ -76,6 +77,15 @@ export const DogImgWrapper = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .dogFollowCircle{
+    width: 4rem;
+    height: 4rem;
+    border-radius: 70%;
+    overflow: hidden;
+    margin: 0.3rem 0.9rem;
+    background-color: #ffffff;
   }
 `;
 

@@ -148,4 +148,5 @@ export const ContentEditImg = styled.img`
   width: 12rem;
   height: 12rem;
   object-fit: cover;
+  border-radius: 0.5rem;
 `;

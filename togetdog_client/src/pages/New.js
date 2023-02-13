@@ -36,7 +36,11 @@ const New = () => {
       })
       .then((response) => {
         setUserData(response.data.user);
-        setSelectedDog(response.data.user.dogs[0].dogId);
+        if (response.data.user.dogs[0]) {
+          setSelectedDog(response.data.user.dogs[0].dogId);
+        } else {
+          setSelectedDog(-1);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -55,7 +59,8 @@ const New = () => {
           }
           onClick={() => {
             setSelectedDog(item.dogs.dogId);
-          }}>
+          }}
+        >
           <img
             className="dogProfileImg"
             src={`https://i8a807.p.ssafy.io/image/dog/` + item.dogs.dogProfile}
@@ -83,8 +88,10 @@ const New = () => {
   };
 
   const checkValid = async () => {
-    if (selectedDog && imgRef.current.files[0]) {
-      console.log(selectedDog);
+    if (selectedDog === -1) {
+      alert("먼저 강아지를 등록해주세요.");
+    } else if (selectedDog && imgRef.current.files[0]) {
+      // console.log(selectedDog);
       const formData = new FormData();
       const boardContent = { dogId: selectedDog, content: contentText.current };
       formData.append("file", imgRef.current.files[0]);
@@ -122,6 +129,14 @@ const New = () => {
               <DogImages dogs={item} key={item.dogId} idx={idx}></DogImages>
             ))}
         </div>
+        {selectedDog === -1 ? (
+          <>
+            <MainColorShortBtn onClick={() => navigate("/dogregister")}>
+              강아지 등록
+            </MainColorShortBtn>
+            <p className="warningStr">먼저 강아지를 등록하세요.</p>
+          </>
+        ) : null}
         {selectedDog ? null : (
           <p className="warningStr">강아지를 선택해주세요.</p>
         )}
@@ -166,7 +181,8 @@ const New = () => {
         <MainColorShortBtn
           onClick={() => {
             navigate(-1);
-          }}>
+          }}
+        >
           취소
         </MainColorShortBtn>
         <MainColorShortBtn onClick={checkValid}>작성</MainColorShortBtn>
