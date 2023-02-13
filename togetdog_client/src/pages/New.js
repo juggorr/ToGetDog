@@ -88,8 +88,10 @@ const New = () => {
   };
 
   const checkValid = async () => {
-    if (selectedDog && imgRef.current.files[0]) {
-      console.log(selectedDog);
+    if (selectedDog === -1) {
+      alert("먼저 강아지를 등록해주세요.");
+    } else if (selectedDog && imgRef.current.files[0]) {
+      // console.log(selectedDog);
       const formData = new FormData();
       const boardContent = { dogId: selectedDog, content: contentText.current };
       formData.append("file", imgRef.current.files[0]);
