@@ -137,6 +137,7 @@ const Map = () => {
           `${BACKEND_URL}/facility?latitude=${lat}&longitude=${lng}`
         );
         const arr = response.data.storeList;
+        // console.log(response.data);
         arr.sort((a, b) => {
           return a.distance - b.distance;
         });
