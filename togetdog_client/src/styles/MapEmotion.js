@@ -41,6 +41,7 @@ export const PlaceButtonWrapper = styled.div`
 
 export const SinglePlaceWrapper = styled.div`
   font-family: "Lato", sans-serif;
+  margin: 1rem 0rem;
 
   .placeWrapper {
     display: flex;
@@ -63,7 +64,7 @@ export const SinglePlaceWrapper = styled.div`
   }
   .placeName {
     font-weight: bold;
-    margin: 0px;
+    margin: 0.4rem 0rem;
   }
   .placeText {
     font-size: 12px;
