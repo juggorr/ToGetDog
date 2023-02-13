@@ -28,6 +28,7 @@ const EmailAuth = () => {
       .then((resp) => {
         console.log('이메일 인증 성공!');
         window.localStorage.removeItem('signupStatus');
+        alert('이메일 인증 완료! 로그인 페이지로 이동합니다.');
         navigate('/login');
       })
       .catch((err) => {
