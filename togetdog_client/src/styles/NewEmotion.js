@@ -80,13 +80,12 @@ export const BoardContentWrapper = styled.div`
 
 export const DogImgWrapper = styled.div`
   display: flex;
-  flex-direction: row;
   margin: 0rem 0.3rem;
 
   .dogProfileCircle {
+    border-radius: 50%;
     width: 4.2rem;
     height: 4.2rem;
-    border-radius: 70%;
     overflow: hidden;
     margin: 0.3rem 0rem;
   }

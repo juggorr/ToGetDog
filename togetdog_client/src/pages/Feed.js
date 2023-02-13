@@ -24,6 +24,7 @@ import Boy from '../assets/boy.png';
 import Girl from '../assets/girl.png';
 import MenuIcon from '../assets/menu_icon.png';
 import FollowBtn from '../components/FollowBtn';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Feed = () => {
   const auth = useRecoilValue(authAtom);
@@ -263,7 +264,21 @@ const Feed = () => {
                 </div>
               </div>
             ) : currentDog ? (
-              <FollowBtn dogId={currentDog.dogId} followStatus={followStatus} setFollowStatus={setFollowStatus} />
+              <div className='other-user-btns'>
+                <FollowBtn dogId={currentDog.dogId} followStatus={followStatus} setFollowStatus={setFollowStatus} />
+                <div
+                  className='make-appointment-btn'
+                  onClick={() =>
+                    navigate('/createAppointment', {
+                      state: {
+                        partnerId: feedUserData.userId,
+                      },
+                    })
+                  }
+                >
+                  <FontAwesomeIcon icon='fa-calendar' />
+                </div>
+              </div>
             ) : null}
           </FeedProfileTop>
           {/* 특이사항, 성격 들어가는 부분 */}

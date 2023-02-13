@@ -42,17 +42,15 @@ export const WalkRequest = styled.div`
   .inputWrapper {
     display: flex;
     justify-content: center;
-    margin: 1.5rem;
   }
 
   .textInput {
     width: 16rem;
-    margin-right: 1rem;
-    padding: 0.2rem 1rem;
     height: 2rem;
+    padding-left: 0.3rem;
     border: none;
     border-bottom: 1px solid #717171;
-    color: #717171;
+    color: #777;
     font-family: "Noto Sans KR", sans-serif;
   }
 `;
@@ -63,11 +61,12 @@ export const DogImgWrapper = styled.div`
   margin: 0rem 0.3rem;
 
   .dogProfileCircle {
-    width: 5rem;
-    height: 5rem;
+    width: 4rem;
+    height: 4rem;
     border-radius: 70%;
     overflow: hidden;
     margin: 0.3rem 0rem;
+    background-color: #ffffff;
   }
 
   .disabled {

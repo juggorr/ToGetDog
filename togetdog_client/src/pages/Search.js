@@ -52,7 +52,7 @@ const SingleFriend = ({ item }) => {
             {item.dogAge < 12 ? "개월" : "살"}
             <div className="genderWrapper">
               <img
-                src={item.dogGender === "female" ? Boy : Girl}
+                src={item.dogGender === "male" ? Boy : Girl}
                 alt="gender"
                 className="genderImg"
               />
