@@ -61,14 +61,19 @@ export const ConfirmModalWrapper = styled.div`
   
 export const ConfirmModalBody = styled.div`
   border-radius: 0.5rem;
-  padding: 0.7rem 0.9rem;
+  padding: 2rem 1.5rem;
   background-color: #fff;
   border: 1px solid #e2e2e2;
   display: flex;
   flex-direction: column;
   align-items: center;
 
+  .modal-msg {
+    font-size: 0.75rem; 
+  }
+
   .two-btns-wrapper {
+    width: 100%;
     display: flex;
     padding-top: 1.5rem;
     // justify-content: space-between;
