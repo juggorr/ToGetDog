@@ -74,7 +74,7 @@ export const ConfirmModalWrapper = styled.div`
   }
 
   .two-btns-wrapper {
-    width: 100%;
+    width: 17rem;
     display: flex;
     padding-top: 1.5rem;
     // justify-content: space-between;
