@@ -37,8 +37,18 @@ public class AppointmentListDTO {
 	private boolean isUserTwoRated;
 	
 	public static AppointmentListDTO of(Appointment appointment) {
-		double oneRating = Math.ceil((double) appointment.getSentUser().getRatingSum() / (double) appointment.getSentUser().getRatingCount());
-		double twoRating = Math.ceil((double) appointment.getReceivedUser().getRatingSum() / (double) appointment.getReceivedUser().getRatingCount());
+		double oneRating = 0;
+		double twoRating = 0;
+		if(appointment.getSentUser().getRatingSum() <= 0) {
+			oneRating = appointment.getSentUser().getRatingSum();
+		} else {
+			oneRating = Math.ceil((double) appointment.getSentUser().getRatingSum() / (double) appointment.getSentUser().getRatingCount());
+		}
+		if(appointment.getReceivedUser().getRatingSum() <= 0) {
+			twoRating = appointment.getReceivedUser().getRatingSum();
+		} else {
+			twoRating = Math.ceil((double) appointment.getReceivedUser().getRatingSum() / (double) appointment.getReceivedUser().getRatingCount());
+		}
 		
 		return AppointmentListDTO.builder()
 				.roomId(appointment.getRoomId())

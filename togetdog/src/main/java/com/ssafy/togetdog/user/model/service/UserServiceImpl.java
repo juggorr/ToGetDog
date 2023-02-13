@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.togetdog.dog.model.repository.DogRepository;
 import com.ssafy.togetdog.global.exception.DuplicatedInputException;
 import com.ssafy.togetdog.global.exception.InvalidInputException;
 import com.ssafy.togetdog.global.exception.InvalidLoginActingException;
@@ -36,6 +37,7 @@ public class UserServiceImpl implements UserService {
 	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
 	private final WaitUserRepository waitUserRepository;
+	private final DogRepository dogRepository;
 
 	/* 회원 가입을 위한 이메일 전송 */
 	@Override
@@ -148,6 +150,7 @@ public class UserServiceImpl implements UserService {
 	public void withdrawal(long userId) {
 		User user = findUserByUserId(userId);
 		if (user != null) {
+			dogRepository.deleteAllByUser(user);
 			user.setEmail("deletedUser" + userId);
 			user.setNickName("deletedUser" + userId);
 			user.setPassword("deletedUser" + userId);
