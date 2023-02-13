@@ -64,12 +64,96 @@ export const SearchTabWrapper = styled.div`
 `;
 
 export const ResultListWrapper = styled.div`
-  margin-top: -2rem;
+  margin-top: 1rem;
 
   .noResult {
     margin: 4rem 2rem;
     font-family: "Noto Sans KR", sans-serif;
     color: #717171;
     text-align: center;
+  }
+`;
+
+export const FriendListWrapper = styled.div`
+  padding-top: 0.3rem;
+  font-family: "Inter", sans-serif;
+  position: relative;
+
+  .singleDog {
+    padding: 0.3rem 1rem;
+    display: flex;
+    align-items: center;
+    margin: 0.4rem 0rem;
+  }
+
+  .dogInfo {
+    margin: 0rem 0.5rem;
+  }
+
+  .dogNameWrapper {
+    display: flex;
+    align-items: end;
+  }
+
+  .dogName {
+    font-weight: 800;
+    font-size: 1rem;
+    margin: 0rem 0.5rem;
+    margin-left: 0.3rem;
+  }
+
+  .dogTown {
+    font-size: 0.5rem;
+    margin: 0rem;
+    color: #ababab;
+  }
+
+  .ownerName {
+    font-size: 0.7rem;
+    margin: 0.2rem;
+    color: #717171;
+  }
+
+  .dogType {
+    font-size: 0.78rem;
+    color: #717171;
+    margin: 0.4rem 0.3rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .genderWrapper {
+    margin: 0rem 0.2rem;
+    display: flex;
+    align-items: center;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .genderImg {
+    object-fit: contain;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .noFriends {
+    margin: 2rem;
+    text-align: center;
+    color: #717171;
+    font-size: 14px;
+  }
+
+  .make-appointment-btn {
+    width: 1.7rem;
+    height: 1.7rem;
+    font-size: 0.8rem;
+    background-color: #7fb77e;
+    text-align: center;
+    line-height: 1.7rem;
+    border-radius: 50%;
+    color: #fff;
+    position: absolute;
+    top: 2.2rem;
+    left: 4rem;
   }
 `;
