@@ -60,12 +60,12 @@ public class AppointmentRestController {
 	 */
 	@ApiOperation(value = "산책 리스트 조회", notes = "산책 예정된 약속/대기중 요청/종료된 약속 리스트, status가 confirmed/wait/cancelled, done")
 	@GetMapping
-	public ResponseEntity<?> getAppointments(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token){
+	public ResponseEntity<?> getAppointments(/*@RequestHeader(value = "Authorization") @ApiParam(required = true) String token*/){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
-		jwtService.validateToken(token);
-		long userId = jwtService.getUserId(token);
-//		long userId = 33L;
+//		jwtService.validateToken(token);
+//		long userId = jwtService.getUserId(token);
+		long userId = 38L;
 		List<AppointmentListDTO> appointemntInfo = appointmentService.findAllByUserId(userId);
 		
 		resultMap.put("result", SUCCESS);
@@ -193,7 +193,7 @@ public class AppointmentRestController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
 	
-	/***
+	/***	
 	 * recommend friends for a dog 
 	 * @param token, roomId
 	 * @return status 200, 401, 500
