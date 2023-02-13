@@ -5,7 +5,7 @@ import { authAtom, userState } from '../recoil';
 import Select from 'react-select';
 import axios from 'axios';
 
-import { DUMMY_URL, BACKEND_URL } from '../config';
+import { BACKEND_URL } from '../config';
 
 import NoEssentialsModal from '../components/AlertModal/NoEssentialsModal'
 import { MainColorLongBtn } from '../styles/BtnsEmotion';
@@ -138,21 +138,26 @@ function DogEdit() {
 
   // age들어오면 강아지 태어난 년, 월 계산하기
   useEffect(() => {
+    console.log(dog.dogAge);
     const result = parseInt(ageHold / 12);
     const remainder = ageHold % 12;
-    let yearTemp = new Date().getFullYear() - result;
-    let monthTemp = new Date().getMonth() + 1;
+    console.log(remainder);
+    let yearTemp = Number(new Date().getFullYear() - result);
+    let monthTemp = Number(new Date().getMonth() + 1);
+    console.log(monthTemp);
     // 월수 계산 위한 변수
     let x = monthTemp - remainder;
 
     if (x === monthTemp) {
+      console.log(1);
       setYearHold(yearTemp);
       setMonthHold(monthTemp);
       setYear(String(yearTemp));
       setMonth(String(monthTemp));
       return;
     }
-    if (x < 0) {
+    if (x === 0 || x < 0) {
+      console.log(2);
       setYearHold(yearTemp - 1);
       setMonthHold(12 + x);
       setYear(String(yearTemp - 1));
@@ -160,17 +165,11 @@ function DogEdit() {
       return;
     }
     if (0 < x < monthTemp) {
+      console.log(3);
       setYearHold(yearTemp);
       setMonthHold(x);
       setYear(String(yearTemp));
       setMonth(String(x));
-      return;
-    }
-    if (x === 0) {
-      setYearHold(yearTemp - 1);
-      setMonthHold(12);
-      setYear(String(yearTemp - 1));
-      setMonth(12);
       return;
     }
   }, [ageHold])
