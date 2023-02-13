@@ -15,12 +15,19 @@ const MenuModal = ({
   setConfirmBtnClick,
   setNoDogBtnClick,
   dogId,
+  setUserInfoModal,
 }) => {
   const setAuth = useSetRecoilState(authAtom);
   const [user, setUser] = useRecoilState(userState);
 
   const outSection = useRef();
   const navigate = useNavigate();
+
+  const handleUserInfo = () => {
+    console.log('눌럿음');
+    setMenuBtnClick(false);
+    setUserInfoModal(true);
+  }
 
   const handleDogDelete = () => {
     setMenuBtnClick(false);
@@ -69,8 +76,10 @@ const MenuModal = ({
                     navigate(it.link, { state: dogId });
                   } else if (it.link === '/dogedit' && feedDogData.length === 0) {
                     return handleNoDog();
-                  } else {
-                    navigate(it.link);
+                  } else if (it.link === "/profile") {
+                    return handleUserInfo();
+                  } else  {
+                    navigate(it.link)
                   }
                   // it.link === "/logout" ? handleLogout() : navigate(it.link);
                 }}
