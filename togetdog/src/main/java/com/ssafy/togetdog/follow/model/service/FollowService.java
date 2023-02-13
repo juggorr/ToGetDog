@@ -27,8 +27,11 @@ public class FollowService {
 		User user = new User();
 		user.setUserId(userId);
 		List<Follow> followList = followRepository.findAllByUser(user);
+
 		List<DogInfoRespDTO> dogList = new ArrayList<DogInfoRespDTO>();
 		for (Follow follow : followList) {
+			// 삭제된 강아지의 경우, 개  이름이 deleted
+			if(follow.getDog().getDogName().equals("deleted")) continue;
 			dogList.add(DogInfoRespDTO.of(follow.getDog()));
 		}
 
@@ -40,7 +43,10 @@ public class FollowService {
 		dog.setDogId(dogId);
 		List<Follow> followList = followRepository.findAllByDog(dog);
 		List<UserInfoRespDTO> userList = new ArrayList<UserInfoRespDTO>();
+		
 		for (Follow follow : followList) {
+			// 삭제된 유저의 경우, 닉네임과 이메일이 같음
+			if(follow.getUser().getNickName().equals(follow.getUser().getEmail())) continue;
 			userList.add(UserInfoRespDTO.of(follow.getUser()));
 		}
 

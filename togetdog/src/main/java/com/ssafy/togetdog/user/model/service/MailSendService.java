@@ -22,6 +22,10 @@ public class MailSendService {
 	 * 사용자가 메일을 짧은 시간 내 여러 번 보낼 수 있게 되면 트래픽 과부하가 발생해 서비스에 지장을 줄 수가 있습니다.
 	 * 따라서, 이를 방지하기 위해 동일한 메일에 대해서는 해당 계정으로 최근 x분 혹은 x시간 내 보낸 적이 없어야 재전송할 수 있도록 설정을 해주는 것이 안전합니다.
 	 */
+	
+	//private final String serverPath = "https://togetdog.site/emailAuth?email=";
+	private final String devPath = "https://i8a807.p.ssafy.io/emailAuth?email=";
+
 
     private final JavaMailSender mailSender;
     private final UserService userService;
@@ -100,7 +104,7 @@ public class MailSendService {
         		new StringBuffer()
         		.append("[Togetdog] 이메일 인증 \n")
         		.append("아래 링크를 클릭하시면 이메일 인증이 완료됩니다. \n")
-        		.append("https://togetdog.site/emailAuth?email=").append(email).append("&authKey=").append(authKey)
+        		.append(devPath).append(email).append("&authKey=").append(authKey)
         		.toString());
         mail.setFrom(new InternetAddress("togetdog@gmail.com"));
         mail.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(email));
