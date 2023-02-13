@@ -66,6 +66,7 @@ export const DogImgWrapper = styled.div`
     border-radius: 70%;
     overflow: hidden;
     margin: 0.3rem 0rem;
+    background-color: #ffffff;
   }
 
   .disabled {
