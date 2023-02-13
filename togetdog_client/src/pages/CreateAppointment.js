@@ -14,7 +14,7 @@ import getDate from "date-fns/getDate";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 
-import { BACKEND_URL, DUMMY_URL } from "../config";
+import { BACKEND_URL } from "../config";
 import {
   CreateAppointmentWrapper,
   WalkRequest,
