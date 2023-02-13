@@ -29,9 +29,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const CreateAppointment = () => {
   const navigate = useNavigate();
-  // 임시 아이디값
-  // const userId = 1;
-  // const partnerId = 1;
+
   const auth = useRecoilValue(authAtom);
   const [user, setUser] = useRecoilState(userState);
   const location = useLocation();
