@@ -168,7 +168,7 @@ const Home = () => {
         setBoardList([...boardList, ...response.data.boardList]);
         setLoading(false);
         setTinyLoading(false);
-        setHasNextPage(response.data.boardList.length === 30);
+        setHasNextPage(response.data.boardList.length === 9);
         if (response.data.boardList.length) {
           pageNo.current += 1;
         }
