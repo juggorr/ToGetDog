@@ -113,14 +113,14 @@ public class BoardService {
 	}
 
 	public Page<BoardDTO> findAll(int page) {
-		Pageable pageable = PageRequest.of(page, 96);
+		Pageable pageable = PageRequest.of(page, 27);
 		Page<Board> bList = boardRepository.findAllOrderByBoardIdDesc(pageable);
 		Page<BoardDTO> boardList = bList.map(b -> new BoardDTO(b));
 		return boardList;
 	}
 
 	public Page<BoardHomeDTO> getAllInDogIds(List<Long> dogIds, int page) {
-		Pageable pageable = PageRequest.of(page, 30);
+		Pageable pageable = PageRequest.of(page, 9);
 		List<Dog> dogList = new ArrayList<Dog>();
 		for (Long id : dogIds) {
 			Dog dog = dogRepository.findByDogId(id);
