@@ -16,6 +16,7 @@ import com.ssafy.togetdog.appointment.model.entity.Appointment;
 import com.ssafy.togetdog.appointment.model.entity.SentAppointment;
 import com.ssafy.togetdog.appointment.model.repository.AppointmentRepository;
 import com.ssafy.togetdog.appointment.model.repository.SentAppointmentRepository;
+import com.ssafy.togetdog.board.model.entity.Board;
 import com.ssafy.togetdog.board.model.repository.BoardRepository;
 import com.ssafy.togetdog.dog.model.dto.DogInfoForUserDTO;
 import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
@@ -52,6 +53,9 @@ public class DogServiceImpl implements DogService {
 
 	@Value("${file.path.upload-images-dogs}")
 	private String dogImageFilePath;
+	
+	@Value("${file.path.upload-images-boards}")
+	private String BoardImageFilePath;
 
 	/* 강아지 정보 조회하기 */
 	@Override
@@ -127,6 +131,10 @@ public class DogServiceImpl implements DogService {
 	}
 	
 	private void deleteBoardByDog(Dog dog) {
+		List<Board> boards = boardRepository.findAllByDog(dog);
+		for (Board board : boards) {
+			fileUtil.fileDelete(board.getImage(), BoardImageFilePath);
+		}
 		boardRepository.deleteAllByDog(dog);
 	}
 

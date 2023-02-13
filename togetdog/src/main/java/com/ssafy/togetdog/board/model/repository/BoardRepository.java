@@ -16,4 +16,5 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 	Page<Board> findAllByDog(Dog dog, Pageable pageable);
 	Page<BoardHomeDTO> findAllByDogIn(List<Dog> dogList, Pageable pageable);
 	void deleteAllByDog(Dog dog);
+	List<Board> findAllByDog(Dog dog);
 }
