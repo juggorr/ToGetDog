@@ -134,4 +134,9 @@ export const ContentImgWrapper = styled.div`
     width: 100%;
     object-fit: cover;
   }
+
+  .contentImg > img {
+    width: 100%;
+    object-fit: cover;
+  }
 `;
