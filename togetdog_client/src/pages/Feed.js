@@ -1,13 +1,16 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
-import MenuModal from "../components/MenuModal";
-import OrangeCharacterBtn from "../components/OrangeCharacterBtn";
-import YellowCharacterBtn from "../components/YellowCharacterBtn";
-import { BACKEND_URL, DUMMY_URL } from "../config";
-import { authAtom, userState } from "../recoil";
-import { PlusBtn } from "../styles/BtnsEmotion";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import UserInfoModal from '../components/AlertModal/UserInfoModal';
+import ConfirmModal from '../components/ConfirmModal';
+import NoDogAlertModal from '../components/AlertModal/NoDogAlertModal';
+import MenuModal from '../components/MenuModal';
+import OrangeCharacterBtn from '../components/OrangeCharacterBtn';
+import YellowCharacterBtn from '../components/YellowCharacterBtn';
+import { BACKEND_URL } from '../config';
+import { authAtom, userState } from '../recoil';
+import { PlusBtn } from '../styles/BtnsEmotion';
 import {
   FeedContainer,
   FeedPhoto,
@@ -17,171 +20,160 @@ import {
   FeedProfileWrapper,
   MainDogImg,
   SubDogImg,
-} from "../styles/FeedEmotion";
-import Boy from "../assets/boy.png";
-import Girl from "../assets/girl.png";
-import MenuIcon from "../assets/menu_icon.png";
-import FollowBtn from "../components/FollowBtn";
+} from '../styles/FeedEmotion';
+import Boy from '../assets/boy.png';
+import Girl from '../assets/girl.png';
+import MenuIcon from '../assets/menu_icon.png';
+import Loading from '../assets/loading.gif';
+import FollowBtn from '../components/FollowBtn';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Feed = () => {
+  const auth = useRecoilValue(authAtom);
+  const setAuth = useSetRecoilState(authAtom);
   const [user, setUser] = useRecoilState(userState);
+
+  const navigate = useNavigate();
 
   const menuLists = [
     {
       menu_id: 1,
-      text: "내 정보 보기",
-      link: "/",
+      text: '내 정보 보기',
+      link: '/profile',
     },
     {
       menu_id: 2,
-      text: "프로필 수정",
-      link: "/",
+      text: '프로필 수정',
+      link: '/useredit',
     },
     {
       menu_id: 3,
-      text: "강아지 프로필 수정",
-      link: "/",
+      text: '강아지 프로필 수정',
+      link: '/dogedit',
     },
     {
       menu_id: 4,
-      text: "강아지 프로필 삭제",
-      link: "/",
+      text: '강아지 프로필 삭제',
+      link: '/dogdelete',
     },
     {
       menu_id: 5,
-      text: "계정 비밀번호 변경",
-      link: "/",
+      text: '계정 비밀번호 변경',
+      link: '/passwordedit',
     },
     {
       menu_id: 6,
-      text: "로그아웃",
-      link: "/logout",
+      text: '로그아웃',
+      link: '/logout',
     },
   ];
 
+  // 유저 정보 모달 띄우기
+  const [userInfoModal, setUserInfoModal] = useState(false);
+
+  // 강아지 정보 삭제 모달 띄우기
+  const [confirmBtnClick, setConfirmBtnClick] = useState(false);
+  // 등록된 강아지 없으면 등록된 강아지가 없다는 경고 모달 띄우기
+  const [noDogBtnClick, setNoDogBtnClick] = useState(false);
+
   const [menuBtnClick, setMenuBtnClick] = useState(false);
   const [feedData, setFeedData] = useState();
-  // const [feedData, setFeedData] = useState({
-  //   result: "success",
-  //   feed: [
-  //     {
-  //       dog: {
-  //         dogId: 114,
-  //         dogName: "뽀삐",
-  //         userId: 123,
-  //         nickName: null,
-  //         address: null,
-  //         dogGender: "female",
-  //         dogType: "말티즈",
-  //         dogAge: 72,
-  //         dogWeight: 3.4,
-  //         dogNeutered: true,
-  //         dogCharacter1: "obedient",
-  //         dogCharacter2: "active",
-  //         description: "활동적이고 순해요",
-  //         dogProfile:
-  //           "https://mblogthumb-phinf.pstatic.net/MjAxOTA1MDhfMTQ2/MDAxNTU3MzAxNzQ4NDIw.MWkemnXiB57Tbm2kNMrDNj4uVImaujgUayV8GSKWA9Mg._lcDUVLNrYzYR9M36qGCdD1Kp0qLNxoZaqqkj-5-tswg.JPEG.hellohappypet/1.jpg?type=w800",
-  //         followCnt: 214,
-  //       },
-  //       boardId: 123,
-  //       image:
-  //         "https://mblogthumb-phinf.pstatic.net/MjAxOTA1MDhfMTQ2/MDAxNTU3MzAxNzQ4NDIw.MWkemnXiB57Tbm2kNMrDNj4uVImaujgUayV8GSKWA9Mg._lcDUVLNrYzYR9M36qGCdD1Kp0qLNxoZaqqkj-5-tswg.JPEG.hellohappypet/1.jpg?type=w800",
-  //     },
-  //   ],
-  //   user: {
-  //     userId: 3,
-  //     nickName: "뽀삐엄마",
-  //     userAge: 28,
-  //     userGender: null,
-  //     address: "서울시 동작구 흑석동",
-  //     regionCode: "11455",
-  //     social: "naver",
-  //     rating: 3.41,
-  //     dogs: [
-  //       {
-  //         dogId: 114,
-  //         dogName: "뽀삐",
-  //         userId: 123,
-  //         nickName: null,
-  //         address: null,
-  //         dogGender: "female",
-  //         dogType: "말티즈",
-  //         dogAge: 72,
-  //         dogWeight: 3.4,
-  //         dogNeutered: true,
-  //         dogCharacter1: "obedient",
-  //         dogCharacter2: "active",
-  //         description: "활동적이고 순해요",
-  //         dogProfile:
-  //           "https://mblogthumb-phinf.pstatic.net/MjAxOTA1MDhfMTQ2/MDAxNTU3MzAxNzQ4NDIw.MWkemnXiB57Tbm2kNMrDNj4uVImaujgUayV8GSKWA9Mg._lcDUVLNrYzYR9M36qGCdD1Kp0qLNxoZaqqkj-5-tswg.JPEG.hellohappypet/1.jpg?type=w800",
-  //         followCnt: 214,
-  //       },
-  //       {
-  //         dogId: 115,
-  //         dogName: "초코",
-  //         userId: 123,
-  //         nickName: null,
-  //         address: null,
-  //         dogGender: "male",
-  //         dogType: "비숑",
-  //         dogAge: 84,
-  //         dogWeight: 4.5,
-  //         dogNeutered: false,
-  //         dogCharacter1: "disobedient",
-  //         dogCharacter2: "active",
-  //         description: "활동적이고 순해요",
-  //         dogProfile:
-  //           "https://mblogthumb-phinf.pstatic.net/MjAxOTA1MDhfMTQ2/MDAxNTU3MzAxNzQ4NDIw.MWkemnXiB57Tbm2kNMrDNj4uVImaujgUayV8GSKWA9Mg._lcDUVLNrYzYR9M36qGCdD1Kp0qLNxoZaqqkj-5-tswg.JPEG.hellohappypet/1.jpg?type=w800",
-  //         followCnt: 333,
-  //       },
-  //     ],
-  //     followCnt: 300,
-  //     follow: true,
-  //   },
-  // });
+
   const [feedUserData, setFeedUserData] = useState();
   const [feedDogData, setFeedDogData] = useState();
   const [feedPhotoData, setFeedPhotoData] = useState();
+  const [filteredPhotoData, setFilteredPhotoData] = useState();
   const [currentDog, setCurrentDog] = useState();
-  // let tmpSubDogs = [];
-  // if (feedDogData.length > 1) {
-  //   feedDogData.map((dog) => {
-  //     if (dog.dogId !== currentDog.dogId) {
-  //       tmpSubDogs.push(dog);
-  //     }
-  //   });
-  // }
+
   const [subDogs, setSubDogs] = useState();
   const [isLoading, setLoading] = useState(true);
-  const [followStatus, setFollowStatus] = useState();
+  const [followStatus, setFollowStatus] = useState(false);
 
-  const navigate = useNavigate();
-  const auth = useRecoilValue(authAtom);
+  const location = useLocation();
+  const feedUserId = location.pathname.split('/').reverse()[0];
+  // pageNo
+  const pageNo = 1;
 
-  useEffect(() => {
-    axios
-      .get(
-        `${DUMMY_URL}/feed/${user.userId}`,
-        { params: { pageNo: 1 } },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: auth,
-          },
-        }
-      )
+  const swapMainDog = async (targetDogId) => {
+    setLoading(true);
+    let tmpSubDogs = [];
+    for (let dog of feedDogData) {
+      if (dog.dogId === targetDogId) {
+        setCurrentDog(dog);
+        setFollowStatus(dog.following);
+        // let filteredPhotos = [];
+        // filteredPhotos = feedPhotoData.filter((feedPhoto) => feedPhoto.dogId === targetDogId);
+        // console.log(filteredPhotos);
+        // setFilteredPhotoData(filteredPhotos);
+        // setSubDogs(tmpSubDogs);
+      } else {
+        tmpSubDogs.push(dog);
+      }
+    }
+    await setSubDogs(tmpSubDogs);
+    await axios
+      .get(`${BACKEND_URL}/board/list/${targetDogId}`, {
+        params: {
+          pageNo: pageNo,
+        },
+        headers: {
+          Authorization: auth,
+        },
+      })
       .then((resp) => {
         console.log(resp);
         console.log(resp.data);
-        console.log(resp.data + "data");
-        setFeedData(resp.data);
+        setFeedPhotoData(resp.data.boardList);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response.status === 401) {
+          alert('토큰이 만료되어 자동 로그아웃되었습니다.');
+          handleLogout();
+        }
+      });
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('user');
+    setAuth(null);
+    console.log('로그아웃이 정상적으로 처리되었습니다.');
+    navigate('/login');
+  };
+
+  useEffect(() => {
+    if (!auth || !localStorage.getItem('recoil-persist')) {
+      navigate('/login');
+      return;
+    }
+
+    axios
+      .get(`${BACKEND_URL}/feed/${feedUserId}?pageNo=${pageNo}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: auth,
+        },
+      })
+      .then((resp) => {
+        console.log(resp);
+        console.log(resp.data);
+        setFeedData(resp.data.feed);
         setFeedUserData(resp.data.user);
-        setFeedDogData(resp.data.user.dogs);
-        setFeedPhotoData(resp.data.feed);
-        setCurrentDog(resp.data.user.dogs[0]);
+        console.log(resp.data.user.dogs);
+        if (resp.data.user.dogs) {
+          setFeedDogData(resp.data.user.dogs);
+          setCurrentDog(resp.data.user.dogs[0]);
+          console.log(resp.data.user.dogs);
+          console.log(resp.data.user.dogs);
+          if (resp.data.user.dogs.toString() !== [].toString()) {
+            setFollowStatus(resp.data.user.dogs[0].following);
+          }
+        }
         let tmpSubDogs = [];
 
-        if (resp.data.user.dogs.length > 1) {
+        if (resp.data.user.dogs) {
           resp.data.user.dogs.map((dog) => {
             if (dog.dogId !== resp.data.user.dogs[0].dogId) {
               tmpSubDogs.push(dog);
@@ -189,175 +181,188 @@ const Feed = () => {
           });
         }
         setSubDogs(tmpSubDogs);
+        setFeedPhotoData(resp.data.feed);
+        // let filteredPhotos = [];
+        // if (resp.data.feed) {
+        //   filteredPhotos = resp.data.feed.filter((feedPhoto) => feedPhoto.dogId === resp.data.user.dogs[0].dogId);
+        //   setFilteredPhotoData(filteredPhotos);
+        // }
         setLoading(false);
       })
       .catch((err) => {
-        console.log("피드 데이터 불러오기 실패");
+        console.log(err);
+        if (err.response.status === 404) {
+          navigate('/*');
+        } else if (err.response.status === 401) {
+          alert('토큰이 만료되어 자동 로그아웃되었습니다.');
+          handleLogout();
+        }
+        console.log('피드 데이터 불러오기 실패');
       });
-    console.log(feedData);
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className='loading'>
+        <img src={Loading} alt='loading...'></img>
+      </div>
+    );
   }
 
   return (
     <>
       <FeedContainer>
+        {currentDog ? (
+          <ConfirmModal
+            confirmBtnClick={confirmBtnClick}
+            setConfirmBtnClick={setConfirmBtnClick}
+            setMenuBtnClick={setMenuBtnClick}
+            dogId={currentDog.dogId}
+          />
+        ) : (
+          <NoDogAlertModal
+            noDogBtnClick={noDogBtnClick}
+            setNoDogBtnClick={setNoDogBtnClick}
+            setMenuBtnClick={setMenuBtnClick}
+          />
+        )}
+        <UserInfoModal 
+          userInfoModal={userInfoModal}
+          setUserInfoModal={setUserInfoModal}
+          setMenuBtnClick={setMenuBtnClick}
+        />
         <MenuModal
           menuLists={menuLists}
           menuBtnClick={menuBtnClick}
           setMenuBtnClick={setMenuBtnClick}
+          setConfirmBtnClick={setConfirmBtnClick}
+          setNoDogBtnClick={setNoDogBtnClick}
+          setUserInfoModal={setUserInfoModal}
+          feedDogData={feedDogData}
+          dogId={currentDog?.dogId}
         />
         <FeedProfileWrapper>
           {/* 프로필 상단 */}
           <FeedProfileTop>
-            <MainDogImg src={currentDog.dogProfile}></MainDogImg>
-            <div className="dog-info-box">
-              <div>{currentDog.dogName}</div>
-              <div className="dog-info">
-                {`${currentDog.dogType} / ${
-                  currentDog.dogAge >= 12
-                    ? `${Math.floor(currentDog.dogAge / 12)}살`
-                    : `${currentDog.dogAge}개월`
-                }`}
-                {currentDog.dogGender === "male" ? (
-                  <img src={Boy} className="dog-gender" />
-                ) : (
-                  <img src={Girl} className="dog-gender" />
-                )}
+            {!currentDog ? (
+              <MainDogImg src='https://media.istockphoto.com/id/509962049/vector/cute-puppy-sits.jpg?s=612x612&w=0&k=20&c=hm9wNYwzB2sXwrySGNi83WzH5B7ubDMk1NKJw73W7tg=' />
+            ) : (
+              <MainDogImg src={`https://i8a807.p.ssafy.io/image/dog/` + currentDog.dogProfile} />
+            )}
+            {!feedDogData ? (
+              <div className='no-dog-info-box'>
+                <div className='no-dogs-txt'>{'등록된 강아지가 없습니다.'}</div>
               </div>
-            </div>
-            <div className="sub-dogs">
-              {subDogs.map((subdog) => (
-                <SubDogImg src={subdog.dogProfile} key={subdog.dogId} />
-              ))}
-              {feedDogData.length === 3 ? null : (
-                <PlusBtn onClick={() => navigate("/dogregister")}>+</PlusBtn>
-              )}
-            </div>
-            {feedUserData.userId === user.userId ? (
-              <div className="profile-etc-wrapper">
-                <img
-                  src={MenuIcon}
-                  className="menu-icon"
-                  onClick={() => setMenuBtnClick(true)}
-                  alt="menu"
-                />
-                <div className="follow-info flex-column">
-                  <div>
-                    <span className="follow-text">팔로워</span>
-                    {currentDog.followCnt}
-                  </div>
-                  <div>
-                    <span className="follow-text">팔로잉</span>
-                    {feedUserData.followCnt}
-                  </div>
+            ) : currentDog ? (
+              <div className='dog-info-box'>
+                <div>
+                  {currentDog.dogName}
+                  {currentDog.dogGender === 'male' ? (
+                    <img src={Boy} className='dog-gender' />
+                  ) : (
+                    <img src={Girl} className='dog-gender' />
+                  )}
+                </div>
+                <div className='dog-info'>
+                  {`${currentDog.dogType} / ${
+                    currentDog.dogAge >= 12 ? `${Math.floor(currentDog.dogAge / 12)}살` : `${currentDog.dogAge}개월`
+                  }`}
                 </div>
               </div>
             ) : (
-              <FollowBtn
-                followStatus={followStatus}
-                setFollowStatus={setFollowStatus}
-              />
+              <div className='dog-info-box'>
+                <div>{'등록된 강아지가 없습니다.'}</div>
+              </div>
             )}
+
+            <div className='sub-dogs'>
+              {subDogs
+                ? subDogs.map((subdog) => (
+                    <SubDogImg
+                      src={`https://i8a807.p.ssafy.io/image/dog/` + subdog.dogProfile}
+                      key={subdog.dogId}
+                      onClick={() => swapMainDog(subdog.dogId)}
+                    />
+                  ))
+                : null}
+              {feedDogData.length === 3 || feedUserData.userId !== user.userId ? null : (
+                <PlusBtn onClick={() => navigate('/dogregister')}>+</PlusBtn>
+              )}
+            </div>
+            {feedUserData.userId === user.userId ? (
+              <div className='profile-etc-wrapper'>
+                <img src={MenuIcon} className='menu-icon' onClick={() => setMenuBtnClick(true)} alt='menu' />
+                <div className='follow-info flex-column'>
+                  {currentDog ? (
+                    <div
+                      className='follow-box'
+                      onClick={() =>
+                        navigate(`/followerlist/${currentDog.dogId}`, {
+                          state: { dogId: currentDog.dogId },
+                        })
+                      }
+                    >
+                      <div className='follow-text'>팔로워</div>
+                      <div>{currentDog.dogFollowerCnt}</div>
+                    </div>
+                  ) : null}
+                  <div
+                    onClick={() =>
+                      navigate(`/followinglist/${user.userId}`, {
+                        state: { userId: user.userId },
+                      })
+                    }
+                  >
+                    <div className='follow-text'>팔로잉</div>
+                    <div>{feedUserData.followCnt}</div>
+                  </div>
+                </div>
+              </div>
+            ) : currentDog ? (
+              <div className='other-user-btns'>
+                <FollowBtn dogId={currentDog.dogId} followStatus={followStatus} setFollowStatus={setFollowStatus} />
+                <div
+                  className='make-appointment-btn'
+                  onClick={() =>
+                    navigate('/createAppointment', {
+                      state: {
+                        partnerId: feedUserData.userId,
+                      },
+                    })
+                  }
+                >
+                  <FontAwesomeIcon icon='fa-calendar' />
+                </div>
+              </div>
+            ) : null}
           </FeedProfileTop>
           {/* 특이사항, 성격 들어가는 부분 */}
-          <FeedProfileBottom>
-            <div className="special-text">{currentDog.description}</div>
-            <div className="characters-box">
-              <OrangeCharacterBtn
-                text={`#${currentDog.dogNeutered ? "중성화" : "중성화 X"}`}
-              />
-              <YellowCharacterBtn
-                text={`#${
-                  currentDog.dogCharacter1 === "obedient"
-                    ? "순종적"
-                    : "비순종적"
-                }`}
-              />
-              <YellowCharacterBtn
-                text={`#${
-                  currentDog.dogCharacter2 === "active" ? "활동적" : "비활동적"
-                }`}
-              />
-            </div>
-          </FeedProfileBottom>
+          {currentDog ? (
+            <FeedProfileBottom>
+              <div className='special-text'>{currentDog.description}</div>
+              <div className='characters-box'>
+                <OrangeCharacterBtn text={`#${currentDog.dogNeutered ? '중성화' : '중성화 X'}`} />
+                <YellowCharacterBtn text={`#${currentDog.dogCharacter1 === 'obedient' ? '온순함' : '사나움'}`} />
+                <YellowCharacterBtn text={`#${currentDog.dogCharacter2 === 'active' ? '활동적' : '비활동적'}`} />
+              </div>
+            </FeedProfileBottom>
+          ) : (
+            <div className='margin-bottom'></div>
+          )}
         </FeedProfileWrapper>
-        <FeedPhotoWrapper>
-          <FeedPhoto
-            onClick={() => navigate(`/board/1`)}
-            src="https://mblogthumb-phinf.pstatic.net/MjAxODA0MTVfMjY2/MDAxNTIzNzgzNTMyMTk5.XluZh00E4Hzkl1Oif19d5UPPXJqzFisXFa_3BT6sTJgg.dOueWfo5LscEpJSYAi56N7p91H_PJLM4IjOvVSexYzYg.JPEG.jjingjjing92/20180410_215717.jpg?type=w800"
-          />
-          <FeedPhoto
-            onClick={() => navigate(`/board/1`)}
-            src="https://mypetlife.co.kr/9989/kakaotalk_20180720_165306084/"
-          />
-          <FeedPhoto
-            onClick={() => navigate(`/board/1`)}
-            src="https://t1.daumcdn.net/cfile/tistory/9952D14D5ACEAB8831"
-          />
-          <FeedPhoto
-            onClick={() => navigate(`/board/1`)}
-            src="https://cdn.imweb.me/thumbnail/20220105/8042079a902c2.jpg"
-          />
-          <FeedPhoto
-            onClick={() => navigate(`/board/1`)}
-            src="https://cdn.imweb.me/thumbnail/20210512/392868a89e970.jpg"
-          />
-          <FeedPhoto
-            onClick={() => navigate(`/board/1`)}
-            src="https://www.zooseyo.com/dog_sale/photo_free/202212/1671631945_03712600.jpg"
-          />
-          <FeedPhoto
-            onClick={() => navigate(`/board/1`)}
-            src="https://joubebe.com/wys2/swf_upload/2017/09/27/15064845361006.png"
-          />
-          <FeedPhoto
-            onClick={() => navigate(`/board/1`)}
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTLeBn4MEtb_AqR0cj2JjQIFicoJy-tZLBdA&usqp=CAU"
-          />
-          <FeedPhoto
-            onClick={() => navigate(`/board/1`)}
-            src="https://cdn.imweb.me/upload/S201806265b31e9f9b9a03/59074608a6b12.jpg"
-          />
-          <FeedPhoto
-            onClick={() => navigate(`/board/1`)}
-            src="https://mblogthumb-phinf.pstatic.net/MjAxODA0MTVfMjY2/MDAxNTIzNzgzNTMyMTk5.XluZh00E4Hzkl1Oif19d5UPPXJqzFisXFa_3BT6sTJgg.dOueWfo5LscEpJSYAi56N7p91H_PJLM4IjOvVSexYzYg.JPEG.jjingjjing92/20180410_215717.jpg?type=w800"
-          />
-          <FeedPhoto
-            onClick={() => navigate(`/board/1`)}
-            src="https://mypetlife.co.kr/9989/kakaotalk_20180720_165306084/"
-          />
-          <FeedPhoto
-            onClick={() => navigate(`/board/1`)}
-            src="https://t1.daumcdn.net/cfile/tistory/9952D14D5ACEAB8831"
-          />
-          <FeedPhoto
-            onClick={() => navigate(`/board/1`)}
-            src="https://cdn.imweb.me/thumbnail/20220105/8042079a902c2.jpg"
-          />
-          <FeedPhoto
-            onClick={() => navigate(`/board/1`)}
-            src="https://cdn.imweb.me/thumbnail/20210512/392868a89e970.jpg"
-          />
-          <FeedPhoto
-            onClick={() => navigate(`/board/1`)}
-            src="https://www.zooseyo.com/dog_sale/photo_free/202212/1671631945_03712600.jpg"
-          />
-          <FeedPhoto
-            onClick={() => navigate(`/board/1`)}
-            src="https://joubebe.com/wys2/swf_upload/2017/09/27/15064845361006.png"
-          />
-          <FeedPhoto
-            onClick={() => navigate(`/board/1`)}
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTLeBn4MEtb_AqR0cj2JjQIFicoJy-tZLBdA&usqp=CAU"
-          />
-          <FeedPhoto
-            onClick={() => navigate(`/board/1`)}
-            src="https://cdn.imweb.me/upload/S201806265b31e9f9b9a03/59074608a6b12.jpg"
-          />
-        </FeedPhotoWrapper>
+        {!feedPhotoData ? (
+          <div className='no-photo'>등록된 사진이 없습니다.</div>
+        ) : (
+          <FeedPhotoWrapper>
+            {feedPhotoData.map((feedPhoto) => (
+              <FeedPhoto
+                key={feedPhoto.boardId}
+                onClick={() => navigate(`/board/${feedPhoto.boardId}`)}
+                src={`https://i8a807.p.ssafy.io/image/board/` + feedPhoto.image}
+              />
+            ))}
+          </FeedPhotoWrapper>
+        )}
       </FeedContainer>
     </>
   );

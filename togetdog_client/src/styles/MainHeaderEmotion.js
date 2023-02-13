@@ -5,8 +5,11 @@ export const HeaderWrapper = styled.div`
   width: inherit;
   height: 60px;
 
-  display: flex;
+  position: fixed;
+  top: 0;
   justify-content: space-between;
+  background-color: #fff;
+  z-index: 9;
 
   .head-icon-wrapper {
     display: flex;
@@ -52,6 +55,7 @@ export const HeaderWrapper = styled.div`
 export const BackHeaderWrapper = styled.div`
   width: 100%;
   height: 60px;
+  display: flex;
 
   .back-arrow {
     color: black;
@@ -61,13 +65,22 @@ export const BackHeaderWrapper = styled.div`
 `;
 
 export const SearchModal = styled.div`
-  width: 100%;
-  position: absolute;
+  position: fixed;
+  top: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 999;
+  @media (min-width: 650px) {
+    width: 360px;
+  }
+
+  @media (max-width: 650px) {
+    /* 650px 이하일 때 */
+    width: 100vw;
+  }
 
   .inside {
     display: flex;
+    justify-content: space-around;
     align-items: center;
     height: 5rem;
     background-color: #ffffff;
@@ -85,7 +98,15 @@ export const SearchModal = styled.div`
   .searchInput {
     margin: 0.7rem 0rem;
     padding: 0rem 0.7rem;
-    width: 14.5rem;
+    @media (min-width: 650px) {
+      width: 14.5rem;
+    }
+
+    @media (max-width: 650px) {
+      /* 650px 이하일 때 */
+      width: 80vw;
+    }
+    // width: 14.5rem;
     height: 2.5rem;
     border: 2px solid #6eb175;
     border-radius: 1rem;
@@ -104,4 +125,8 @@ export const SearchModal = styled.div`
     background-color: #6eb175;
     border-radius: 0.8rem;
   }
+`;
+
+export const PositionDiv = styled.div`
+  height: 60px;
 `;

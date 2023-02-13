@@ -19,10 +19,10 @@ const Login = () => {
   const navigate = useNavigate();
 
   // 추후 주석 해제 예정 (개발용)
-  // useEffect(() => {
-  //   if (auth !== null && auth === JSON.parse(localStorage.getItem('user')) && localStorage.getItem('recoil-persist'))
-  //     navigate('/');
-  // }, []);
+  useEffect(() => {
+    if (auth !== null && auth === JSON.parse(localStorage.getItem('user')) && localStorage.getItem('recoil-persist'))
+      navigate('/');
+  }, []);
 
   const setAuth = useSetRecoilState(authAtom);
 
@@ -64,6 +64,12 @@ const Login = () => {
     }
   };
 
+  const onKeyPress = (e) => {
+    if (e.key == 'Enter') {
+      checkInput();
+    }
+  };
+
   const handleLogin = async () => {
     // e.preventDefault();
     await axios
@@ -92,8 +98,15 @@ const Login = () => {
       })
       .catch((err) => {
         console.log('로그인 실패');
+        console.log(err)
       });
   };
+
+  // 소셜 로그인 주소
+  // const naverURL = 'http://70.12.247.230:8080/oauth2/authorization/naver'
+  // const kakaoURL = 'http://70.12.247.230:8080/oauth2/authorization/kakao'
+  // const googleURL = 'http://70.12.247.230:8080/oauth2/authorization/google'
+
 
   return (
     <>
@@ -109,6 +122,7 @@ const Login = () => {
                 ref={emailRef}
                 placeholder='이메일을 입력해주세요'
                 onChange={onChangeEmail}
+                onKeyPress={onKeyPress}
               />
             </div>
             <div className='error-msg'>{emailError}</div>
@@ -119,21 +133,28 @@ const Login = () => {
                 ref={passwordRef}
                 placeholder='비밀번호를 입력해주세요'
                 onChange={onChangePassword}
+                onKeyPress={onKeyPress}
               />
             </div>
             <div className='error-msg'>{passwordError}</div>
           </InputWrapper>
           <BlackLongBtn onClick={checkInput}>로그인</BlackLongBtn>
           <div className='social-login-wrapper'>
-            <SocialLoginLogo src={naverLogo}></SocialLoginLogo>
-            <SocialLoginLogo src={googleLogo}></SocialLoginLogo>
-            <SocialLoginLogo src={kakaoLogo}></SocialLoginLogo>
+            <a href='https://i8a807.p.ssafy.io/oauth2/authorization/naver'>
+              <SocialLoginLogo src={naverLogo}></SocialLoginLogo>
+            </a>
+            <a href='https://i8a807.p.ssafy.io/oauth2/authorization/google'>
+              <SocialLoginLogo src={googleLogo}></SocialLoginLogo>
+            </a>
+            <a href='https://i8a807.p.ssafy.io/oauth2/authorization/kakao'>
+              <SocialLoginLogo src={kakaoLogo}></SocialLoginLogo>
+            </a>
           </div>
           <div className='login-bottom-wrapper'>
             <div onClick={() => navigate('/signup')} className='login-bottom-text'>
               회원가입
             </div>
-            <div className='login-bottom-text'>비밀번호 찾기</div>
+            <div onClick={() => navigate('/passwordsearch')}className='login-bottom-text'>비밀번호 찾기</div>
           </div>
         </LoginWrapper>
       </LoginContainer>

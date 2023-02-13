@@ -55,19 +55,40 @@ export const BoardContentWrapper = styled.div`
     padding: 1rem;
     font-family: "Noto Sans KR", sans-serif;
   }
+
+  .photo-desc {
+    padding-bottom: 1rem;
+  }
+
+  .edit-info {
+    font-size: 0.7rem;
+    color: #777;
+  }
+
+  .red-dot {
+    color: red;
+    margin-right: 3px;
+    font-weight: 700;
+  }
+
+  .error-msg {
+    color: red;
+    font-size: 0.75rem;
+    padding-left: 0.3rem;
+  }
 `;
 
 export const DogImgWrapper = styled.div`
   display: flex;
-  flex-direction: row;
   margin: 0rem 0.3rem;
 
   .dogProfileCircle {
+    border-radius: 50%;
     width: 4.2rem;
     height: 4.2rem;
-    border-radius: 70%;
     overflow: hidden;
     margin: 0.3rem 0rem;
+    background-color: #ffffff;
   }
 
   .disabled {

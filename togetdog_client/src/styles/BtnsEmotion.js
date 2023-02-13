@@ -1,4 +1,5 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
+import dog_profile from '../assets/dog2.jpg';
 
 // 홈으로 이동 텍스트 버튼
 export const HomeTextBtn = styled.div`
@@ -93,13 +94,62 @@ export const MainColorShortBtn = styled.button`
   height: 2.3rem;
   border-radius: 2rem;
   border: none;
-  margin: 0.2rem;
 
   background-color: #559968;
   color: #fff;
   font-weight: 700;
   font-size: 0.9rem;
-  font-family: "Lato", sans-serif;
+  font-family: 'Lato', sans-serif;
+`;
+
+export const GreyColorShortBtn = styled.button`
+  width: 6rem;
+  height: 2.3rem;
+  border-radius: 2rem;
+  border: none;
+  background-color: #717171;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  // font-family: Noto Sans KR', sans-serif;
+`;
+
+export const SkyColorShortBtn = styled.button`
+  width: 6rem;
+  height: 2.3rem;
+  border-radius: 2rem;
+  border: none;
+
+  background-color: #699bf7;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  // font-family: Noto Sans KR', sans-serif;
+`;
+
+export const RedColorShortBtn = styled.button`
+  width: 6rem;
+  height: 2.3rem;
+  border-radius: 2rem;
+  border: none;
+
+  background-color: #ff6565;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  // font-family: Noto Sans KR', sans-serif;
+`;
+
+export const LightColorLongBtn = styled.button`
+  width: 9rem;
+  height: 2.7rem;
+  border-radius: 2rem;
+  border: none;
+  background-color: #6eb175;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  // font-family: Noto Sans KR', sans-serif;
 `;
 
 export const OrangeBtn = styled.button`
@@ -107,7 +157,9 @@ export const OrangeBtn = styled.button`
   border: none;
   padding: 0.3rem 0.5rem;
   border-radius: 0.6rem;
+  margin: 0.1rem 0rem;
   margin-right: 0.5rem;
+  font-size: 0.78rem;
 `;
 
 export const YellowBtn = styled.button`
@@ -115,10 +167,12 @@ export const YellowBtn = styled.button`
   border: none;
   padding: 0.3rem 0.5rem;
   border-radius: 0.6rem;
+  margin: 0.1rem 0rem;
   margin-right: 0.5rem;
+  font-size: 0.78rem;
 `;
 
-export const PlusBtn = styled.button`
+export const PlusBtn = styled.div`
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;
@@ -126,7 +180,7 @@ export const PlusBtn = styled.button`
   background-color: #559968;
 
   font-size: 3rem;
-  line-height: 3.5rem;
+  line-height: 3.2rem;
   text-align: center;
   color: #fff;
 `;
@@ -153,14 +207,14 @@ export const FollowBtnOff = styled.button`
 
 export const UserIconCircle = styled.div`
   .circle {
-    width: 4rem;
-    height: 4rem;
+    width: 5rem;
+    height: 5rem;
     margin: 0.5rem 0.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 70%;
-    font-family: "Noto Sans KR", sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     font-weight: 700;
     color: #ffffff;
     font-size: 1.2rem;
@@ -184,5 +238,29 @@ export const UserIconCircle = styled.div`
 
   .five {
     background-color: #81b4be;
+  }
+
+  .image {
+    background-image: ${(props) => (props.image ? `url(${props.image})` : `url(${dog_profile})`)};
+    background-size: cover;
+  }
+`;
+
+export const SmallCharacterBtn = styled.div`
+  .btn {
+    border: none;
+    padding: 0.3rem 0.5rem;
+    border-radius: 0.6rem;
+    margin: 0.1rem 0rem;
+    margin-right: 0.5rem;
+    font-size: 0.5rem;
+  }
+
+  .orange {
+    background-color: #ffd89d;
+  }
+
+  .yellow {
+    background-color: #fff0cb;
   }
 `;

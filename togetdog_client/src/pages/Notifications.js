@@ -1,33 +1,19 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { useRecoilState } from "recoil";
-// import { userState } from "../recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { authAtom, userState } from "../recoil";
 
 import axios from "axios";
-import { BACKEND_URL, DUMMY_URL } from "../config";
+import { BACKEND_URL } from "../config";
 import {
   NotificationsWrapper,
   SingleNotificationWrapper,
 } from "../styles/NotificationsEmotion";
-import { HeaderWrapper } from "../styles/MainHeaderEmotion";
+
 import UserIcon from "../components/UserIcon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import WalkingWithDog from "../assets/walking_with_dog.png";
 import CancelEvent from "../assets/cancel-event.png";
-
-const NotificationsHeader = () => {
-  const navigate = useNavigate();
-
-  return (
-    <HeaderWrapper>
-      <div className="icon-box">
-        <div className="header-icon" onClick={() => navigate(-1)}>
-          <FontAwesomeIcon icon="fa-arrow-left" />
-        </div>
-      </div>
-    </HeaderWrapper>
-  );
-};
 
 const SingleNotification = (data) => {
   const navigate = useNavigate();
@@ -36,13 +22,13 @@ const SingleNotification = (data) => {
     if (data.item.type === "좋아요") {
       navigate(`/board/${data.item.id}`);
     } else if (data.item.type === "팔로우") {
-      navigate(`feed/${data.item.id}`);
+      navigate(`/feed/${data.item.id}`);
     }
   };
 
   return (
     <SingleNotificationWrapper onClick={() => onClick()}>
-      <UserIcon text={data.item.nickName} idx={data.idx}></UserIcon>
+      <UserIcon text={data.item.nickName}></UserIcon>
       {data.item.type === "좋아요" ? (
         <div className="textWrapper">
           {data.item.nickName}님이 {data.item.dogName}님의 게시물을 좋아합니다.
@@ -63,18 +49,23 @@ const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [canceled, setCanceled] = useState(false);
   const [meetingCnt, setMeetingCnt] = useState();
+  const auth = useRecoilValue(authAtom);
+  // const setAuth = useSetRecoilState(authAtom);
+  const pageNo = 0;
 
   useEffect(() => {
     const getNotifications = async () => {
       await axios
-        .get(`${DUMMY_URL}/notify`, {})
+        .get(`${BACKEND_URL}/notify?pageNo=${pageNo}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: auth,
+          },
+        })
         .then((response) => {
-          setNotifications([
-            ...response.data.notifyInfo.notice,
-            ...response.data.notifyInfo.notice,
-          ]);
-          setCanceled(response.data.notifyInfo.meetingCancel);
-          setMeetingCnt(response.data.notifyInfo.meetingCnt);
+          setNotifications(response.data.notice.noticeList);
+          setCanceled(response.data.notice.meetingCancel);
+          setMeetingCnt(response.data.notice.meetingCnt);
         })
         .catch((error) => {
           console.log(error);
@@ -86,7 +77,12 @@ const Notifications = () => {
 
   const cancelClick = () => {
     axios
-      .put(`${DUMMY_URL}/notify/cancel`, {})
+      .put(`${BACKEND_URL}/notify/cancel`, null, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: auth,
+        },
+      })
       .then((response) => {
         navigate("/walk");
       })
@@ -97,7 +93,6 @@ const Notifications = () => {
 
   return (
     <div>
-      <NotificationsHeader></NotificationsHeader>
       <NotificationsWrapper>
         <div className="walkRequestWrapper" onClick={() => navigate("/walk")}>
           <div className="walkRequest">

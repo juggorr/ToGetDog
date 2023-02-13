@@ -87,6 +87,7 @@ export const ProfileImage = styled.div`
   background-image: ${(props) =>
     props.image ? `url(${props.image})` : `url(${dog_profile})`};
   background-size: cover;
+  background-position: center;
 
   position: relative;
 
@@ -94,6 +95,16 @@ export const ProfileImage = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .success {
+    color: #0052ff;
+    font-size: 0.8rem;
+  }
+
+  .error {
+    color: red;
+    font-size: 0.8rem;
   }
 `;
 

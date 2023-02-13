@@ -1,8 +1,7 @@
-import { useEffect, useState, useRef } from "react";
-import { useLocation } from "react-router";
-import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { userState } from "../recoil";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { authAtom, userState } from "../recoil";
 import axios from "axios";
 import {
   CreateBoardWrapper,
@@ -13,60 +12,82 @@ import { MainColorShortBtn } from "../styles/BtnsEmotion";
 
 import { BACKEND_URL, DUMMY_URL } from "../config";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ContentEditImg } from "../styles/BoardEmotion";
 
 const EditBoard = () => {
   const navigate = useNavigate();
+  const auth = useRecoilValue(authAtom);
+  const setAuth = useSetRecoilState(authAtom);
 
   const [user, setUser] = useRecoilState(userState);
-  const [board, setBoard] = useState();
 
-  // const { boardId, pageNo } = useLocation();
-  const boardId = 1;
-  const pageNo = 1;
-  // 다른 파일에서 useNavigate 쓸때 이런식으로
-  // const handleClick = (e) => {
-  //     const navigate = useNavigate();
-  //     navigate('/edit', { boardId: e.target.value, pageNo: e.target.value });
-  // }
+  const [boardData, setBoardData] = useState();
+  const [dogId, setDogId] = useState();
+  const [content, setContent] = useState();
+  const [isLoading, setLoading] = useState(true);
+  const contentRef = useRef();
 
-  const [contentText, setContentText] = useState();
+  const location = useLocation();
+  const boardId = location.pathname.split("/").reverse()[0];
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+    setAuth(null);
+    console.log("로그아웃이 정상적으로 처리되었습니다.");
+    navigate("/login");
+  };
 
   useEffect(() => {
+    if (!auth || !localStorage.getItem("recoil-persist")) {
+      navigate("/login");
+      return;
+    }
+
     axios
-      .get(
-        `${DUMMY_URL}/board/${boardId}?pageNo=${pageNo}`,
-        {},
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        setBoard(response.data.board);
-        setContentText(response.data.board.content);
+      .get(`${BACKEND_URL}/board/${boardId}`, {
+        headers: {
+          Authorization: auth,
+        },
       })
-      .catch((error) => {
-        console.log(error);
+      .then((resp) => {
+        console.log(resp);
+        console.log(resp.data);
+        setBoardData(resp.data.board);
+        // 본인의 게시물이 아닌 경우
+        if (user.userId !== resp.data.board.userId) {
+          alert("게시물 수정 권한이 없습니다.");
+          navigate(`/feed/${user.userId}`);
+        }
+        setContent(resp.data.board.content);
+        setDogId(resp.data.board.dog.dogId);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response.status === 401) {
+          alert("토큰이 만료되어 자동 로그아웃되었습니다.");
+          handleLogout();
+        }
       });
   }, []);
 
-  const saveText = (e) => {
-    setContentText(e.target.value);
-  };
-
-  const checkValid = async () => {
-    const dataObj = { pageNo: pageNo, boardId: boardId, content: contentText };
-    // console.log(dataObj);
-    await axios
-      .put(`${DUMMY_URL}/board`, null, {
-        params: dataObj,
+  const onClickEdit = () => {
+    axios
+      .put(`${BACKEND_URL}/board`, null, {
+        params: {
+          boardId: boardId,
+          content: content,
+        },
         headers: {
-          "Content-Type": "application/json",
+          Authorization: auth,
         },
       })
-      .then((response) => {
-        // console.log(response);
+      .then((resp) => {
+        // console.log(resp);
+        console.log(resp.data);
+        // console.log("게시물 수정이 완료되었습니다.");
+        alert("게시물 수정이 완료되었습니다.");
         navigate(`/board/${boardId}`);
       })
       .catch((err) => {
@@ -74,18 +95,31 @@ const EditBoard = () => {
       });
   };
 
+  const onChangeContent = (e) => {
+    setContent(e.target.value);
+  };
+
+  if (isLoading) {
+    return <div className="loading">Loading...</div>;
+  }
+
   return (
     <CreateBoardWrapper>
       <div className="boardHeader">게시글 수정</div>
       <BoardContentWrapper>
-        <p className="queryStr">
-          <FontAwesomeIcon icon="fa-image" />
-          {"  "}사진
-        </p>
-        <ContentImgWrapper>
-          <div className="contentImg">
-            {board ? <img src={board.boardImage} alt="content_img" /> : null}
+        <div className="flex space-around photo-desc">
+          <div className="queryStr">
+            <FontAwesomeIcon icon="fa-image" />
+            {"  "}사진
           </div>
+          <div className="edit-info">
+            <span className="red-dot">*</span>사진은 수정할 수 없습니다.
+          </div>
+        </div>
+        <ContentImgWrapper>
+          <ContentEditImg
+            src={`https://i8a807.p.ssafy.io/image/board/` + boardData.image}
+          />
         </ContentImgWrapper>
 
         <p className="queryStr">
@@ -95,22 +129,21 @@ const EditBoard = () => {
         <div className="textInputWrapper">
           <textarea
             className="textInput"
-            onChange={saveText}
-            value={contentText}
-          >
-            {contentText}
-          </textarea>
+            onChange={onChangeContent}
+            defaultValue={content}
+            ref={contentRef}
+          />
         </div>
       </BoardContentWrapper>
       <div className="btnWrapper">
         <MainColorShortBtn
           onClick={() => {
-            navigate(-1);
+            navigate(`/board/${boardId}`);
           }}
         >
           취소
         </MainColorShortBtn>
-        <MainColorShortBtn onClick={checkValid}>수정</MainColorShortBtn>
+        <MainColorShortBtn onClick={onClickEdit}>수정</MainColorShortBtn>
       </div>
     </CreateBoardWrapper>
   );

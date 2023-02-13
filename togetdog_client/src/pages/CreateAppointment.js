@@ -2,8 +2,8 @@ import { useEffect, useState, forwardRef, useRef } from "react";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useRecoilState } from "recoil";
-import { userState } from "../recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { authAtom, userState } from "../recoil";
 
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -14,7 +14,7 @@ import getDate from "date-fns/getDate";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 
-import { BACKEND_URL, DUMMY_URL } from "../config";
+import { BACKEND_URL } from "../config";
 import {
   CreateAppointmentWrapper,
   WalkRequest,
@@ -29,11 +29,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const CreateAppointment = () => {
   const navigate = useNavigate();
-  // 임시 아이디값
-  // const userId = 1;
-  // const partnerId = 1;
+
+  const auth = useRecoilValue(authAtom);
   const [user, setUser] = useRecoilState(userState);
-  const { partnerId } = useLocation();
+  const location = useLocation();
+  const partnerId = location.state.partnerId;
 
   // 다른 파일에서 useNavigate 쓸때 이런식으로
   // const handleClick = (e) => {
@@ -58,18 +58,26 @@ const CreateAppointment = () => {
 
   useEffect(() => {
     axios
-      .get(`${DUMMY_URL}/user/includesDog/${user.userId}`, {})
+      .get(`${BACKEND_URL}/user/includesDog/${user.userId}`, {
+        headers: {
+          Authorization: auth,
+        },
+      })
       .then(function (response) {
-        setUserData(response.data);
+        setUserData(response.data.user);
       })
       .catch(function (error) {
         // 오류발생시 실행
       });
 
     axios
-      .get(`${DUMMY_URL}/user/includesDog/${partnerId}`, {})
+      .get(`${BACKEND_URL}/user/includesDog/${partnerId}`, {
+        headers: {
+          Authorization: auth,
+        },
+      })
       .then(function (response) {
-        setPartnerData(response.data);
+        setPartnerData(response.data.user);
       })
       .catch(function (error) {
         // 오류발생시 실행
@@ -138,7 +146,7 @@ const CreateAppointment = () => {
         >
           <img
             className="dogProfileImg"
-            src={item.dog.dogProfile}
+            src={`https://i8a807.p.ssafy.io/image/dog/` + item.dog.dogProfile}
             alt={item.dog.dogName}
           />
         </div>
@@ -158,9 +166,9 @@ const CreateAppointment = () => {
     };
 
     const CustomInput = forwardRef(({ value, onClick }, ref) => (
-      <TimeWrapper className="example-custom-input" ref={ref}>
+      <TimeWrapper className="example-custom-input" ref={ref} onClick={onClick}>
         <div className="dateDiv">{value}</div>
-        <div className="calendarDiv" onClick={onClick}>
+        <div className="calendarDiv">
           <FontAwesomeIcon
             icon={type === "Date" ? "fa-calendar" : "fa-clock"}
           />
@@ -267,26 +275,24 @@ const CreateAppointment = () => {
   };
 
   const handleCreateAppointment = async (myDogList, partnerDogList) => {
-    console.log({
-      userId: user.userId,
-      myDogs: myDogList,
-      partnerDogs: partnerDogList,
-      date: dateResult,
-      place: placeInput.current,
-    });
     await axios
       .post(
-        `${DUMMY_URL}/dummy/meeting`,
+        `${BACKEND_URL}/meeting`,
         {
-          date: dateResult,
-          myDogs: myDogList,
-          partnerDogs: partnerDogList,
+          dateTime: dateResult,
+          sentUserId: user.userId,
+          sentDogs: myDogList,
+          senderRate: false,
+          receivedUserId: partnerId,
+          receivedDogs: partnerDogList,
+          receiverRate: false,
           place: placeInput.current,
-          userId: user.userId,
+          status: "wait",
         },
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: auth,
           },
         }
       )
@@ -303,12 +309,20 @@ const CreateAppointment = () => {
       <div className="appointmentHeader">산책 요청하기</div>
       <WalkRequest>
         <p className="queryStr">
+          <FontAwesomeIcon icon="fa-clock" />
+          {"   "}언제 산책할까요?
+        </p>
+        <DateModalWrapper>
+          <DateModal type="Date"></DateModal>
+          <DateModal type="Time"></DateModal>
+        </DateModalWrapper>
+        <p className="queryStr">
           <FontAwesomeIcon icon="fa-user-group" />
           {"   "}나의 강아지를 선택해주세요.
         </p>
         <div className="dogImageWrapper">
-          {userData.dog &&
-            userData.dog.map((item, idx) => (
+          {userData.dogs &&
+            userData.dogs.map((item, idx) => (
               <DogImages
                 dog={item}
                 userKey={1}
@@ -322,8 +336,8 @@ const CreateAppointment = () => {
           {"   "}상대방의 강아지를 선택해주세요.
         </p>
         <div className="dogImageWrapper">
-          {partnerData.dog &&
-            partnerData.dog.map((item, idx) => (
+          {partnerData.dogs &&
+            partnerData.dogs.map((item, idx) => (
               <DogImages
                 dog={item}
                 userKey={2}
@@ -332,14 +346,7 @@ const CreateAppointment = () => {
               ></DogImages>
             ))}
         </div>
-        <p className="queryStr">
-          <FontAwesomeIcon icon="fa-clock" />
-          {"   "}언제 산책할까요?
-        </p>
-        <DateModalWrapper>
-          <DateModal type="Date"></DateModal>
-          <DateModal type="Time"></DateModal>
-        </DateModalWrapper>
+
         <p className="queryStr">
           <FontAwesomeIcon icon="fa-location-dot" />
           {"   "}어디서 산책할까요?
