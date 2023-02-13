@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export const MenuModalWrapper = styled.div`
-  z-index: 1;
+  z-index: 999;
   position: fixed;
   top: 0;
   @media (min-width: 650px) {
@@ -57,10 +57,9 @@ export const ConfirmModalWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
 
-  `;
-  
-  export const ConfirmModalBody = styled.div`
+export const ConfirmModalBody = styled.div`
   border-radius: 0.5rem;
   padding: 2rem 0.9rem;
   background-color: #fff;
@@ -68,9 +67,9 @@ export const ConfirmModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+
   .modal-msg {
-    font-size: 0.75rem; 
+    font-size: 0.75rem;
   }
 
   .two-btns-wrapper {
@@ -80,9 +79,9 @@ export const ConfirmModalWrapper = styled.div`
     // justify-content: space-between;
     justify-content: space-around;
   }
-  `;
+`;
 
 export const ConfirmModalImage = styled.img`
   width: 4rem;
   // height: 1rem;
-`
+`;

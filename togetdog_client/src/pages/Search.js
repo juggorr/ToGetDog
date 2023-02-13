@@ -12,9 +12,9 @@ import {
   SearchbarWrapper,
   SearchTabWrapper,
   ResultListWrapper,
+  FriendListWrapper,
 } from "../styles/SearchEmotion";
 import { DogImgWrapper } from "../styles/CreateAppointmentEmotion";
-import { FriendListWrapper } from "../styles/RecommendEmotion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import OrangeCharacterBtn from "../components/OrangeCharacterBtn";
 import YellowCharacterBtn from "../components/YellowCharacterBtn";

@@ -1,10 +1,11 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const SignupContainer = styled.div`
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 1.5rem 0;
 `;
 
 export const SignupWrapper = styled.div`
@@ -147,7 +148,7 @@ export const InputWrapper = styled.div`
 
   .boardHeader {
     text-align: center;
-    font-family: "Noto Sans KR", sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     font-size: 1.2rem;
     font-weight: 600;
     margin: 2rem 0rem;
@@ -169,7 +170,7 @@ export const EmailWrapper = styled.div`
   align-items: center;
 
   .email-desc {
-    font-family: "Noto Sans KR", sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
   }
 `;
 

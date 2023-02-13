@@ -53,8 +53,8 @@ export const FeedProfileTop = styled.div`
   position: relative;
 
   .dog-info-box {
-    width: 45%;
-    padding-left: 1rem;
+    width: 75%;
+    padding-left: 0.7rem;
   }
 
   .no-dog-info-box {
@@ -74,7 +74,7 @@ export const FeedProfileTop = styled.div`
   }
 
   .profile-etc-wrapper {
-    width: 35%;
+    width: 30%;
     display: flex;
     flex-direction: column;
     align-items: end;
@@ -90,10 +90,14 @@ export const FeedProfileTop = styled.div`
     font-size: 0.85rem;
     padding-top: 1rem;
     padding-right: 1rem;
+    text-align: end;
+  }
+
+  .follow-box {
+    margin-bottom: 0.3rem;
   }
 
   .follow-text {
-    margin-right: 0.5rem;
     color: #777;
   }
 
@@ -151,6 +155,7 @@ export const MainDogImg = styled.img`
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
+  background-color: #fff;
 `;
 
 export const SubDogImg = styled.img`
@@ -159,4 +164,5 @@ export const SubDogImg = styled.img`
   border-radius: 50%;
   margin-right: 0.3rem;
   object-fit: cover;
+  background-color: #fff;
 `;
