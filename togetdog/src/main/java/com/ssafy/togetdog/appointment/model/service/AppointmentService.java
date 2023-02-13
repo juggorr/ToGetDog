@@ -281,6 +281,10 @@ public class AppointmentService {
 		List<Object[]> recList = new ArrayList<Object[]>();
 		List<DogRecommendListDTO> reclist = new ArrayList<DogRecommendListDTO>();
 		
+		if (followDogIds.size() == 0) {
+			followDogIds.add(0L);
+		}
+		logger.info("followDogIds ============== : {}", followDogIds);
 		recList = appointmentRepository.getDogAllList(userId, followDogIds);
 		logger.info("recommendedList ============== : {}", recList);
 		reclist  = recList.stream().map(r -> DogRecommendListDTO.of(r)).collect(Collectors.toList());
