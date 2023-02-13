@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import UserInfoModal from '../components/AlertModal/UserInfoModal';
 import ConfirmModal from '../components/ConfirmModal';
 import NoDogAlertModal from '../components/AlertModal/NoDogAlertModal';
 import MenuModal from '../components/MenuModal';
@@ -39,7 +40,7 @@ const Feed = () => {
     {
       menu_id: 1,
       text: '내 정보 보기',
-      link: '/',
+      link: '/profile',
     },
     {
       menu_id: 2,
@@ -67,6 +68,9 @@ const Feed = () => {
       link: '/logout',
     },
   ];
+
+  // 유저 정보 모달 띄우기
+  const [userInfoModal, setUserInfoModal] = useState(false);
 
   // 강아지 정보 삭제 모달 띄우기
   const [confirmBtnClick, setConfirmBtnClick] = useState(false);
@@ -184,12 +188,18 @@ const Feed = () => {
             setMenuBtnClick={setMenuBtnClick}
           />
         )}
+        <UserInfoModal 
+          userInfoModal={userInfoModal}
+          setUserInfoModal={setUserInfoModal}
+          setMenuBtnClick={setMenuBtnClick}
+        />
         <MenuModal
           menuLists={menuLists}
           menuBtnClick={menuBtnClick}
           setMenuBtnClick={setMenuBtnClick}
           setConfirmBtnClick={setConfirmBtnClick}
           setNoDogBtnClick={setNoDogBtnClick}
+          setUserInfoModal={setUserInfoModal}
           feedDogData={feedDogData}
           dogId={currentDog?.dogId}
         />
