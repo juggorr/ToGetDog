@@ -1,6 +1,3 @@
-chmod 755 gradlew
-./gradlew build
-
 CONTAINER_NAME=back-server
 
 if [ $( docker ps -a | grep ${CONTAINER_NAME} | wc -l ) -gt 0 ]; then
