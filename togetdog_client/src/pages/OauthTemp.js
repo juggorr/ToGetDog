@@ -44,9 +44,9 @@ function OauthTemp() {
 
   }, [])
   
-  // 유저 정보가 입력되면 로컬스토리지에 유저 정보 저장
+  // 유저 정보가 입력되면 로컬스토리지에 유저 정보, 토큰 저장
   useEffect(() => {
-    const setLocalStore = () => {
+    function setLocalStore() {
       console.log(userInfos);
       setUser(userInfos);
 
@@ -57,22 +57,16 @@ function OauthTemp() {
       setIsLoading(false);
     };
 
-    setLocalStore();
+    function logIn() {
+      navigate('/');
+    };
 
-    // const socialLogin = async () => {
-    //   const res = await setLocalStore();
-    //   console.log(res);
-    //   navigate('/');
-      
-    // }
+    setLocalStore();
+    if (!isLoading) {
+      logIn();
+    }
 
   }, [userInfos]);
-
-  // 위 코드가 실행된 후에 navigate되도록 해야함
-
-  const onClick = () => {
-    navigate('/');
-  }
 
   return (
     <>
@@ -81,7 +75,6 @@ function OauthTemp() {
       ) : (
         <div>
           로그인 성공!
-          <button onClick={onClick}>홈으로</button>
         </div>
       )}
     </>

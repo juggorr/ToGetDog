@@ -20,7 +20,6 @@ function Oauth() {
     address: '',
   })
 
-  const canNavigate = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const location = useLocation();
@@ -50,22 +49,27 @@ function Oauth() {
 
 // 유저 정보가 입력되면 로컬스토리지에 유저 정보 저장
 useEffect(() => {
-  console.log(userInfos);
-  setUser(userInfos);
+  function setLocalStore() {
+    console.log(userInfos);
+    setUser(userInfos);
+  
+    localStorage.setItem('user', JSON.stringify(token));
+    setAuth(token);
+    setIsLoading(false);
+  }
 
-  localStorage.setItem('user', JSON.stringify(token));
-  setAuth(token);
+  function logIn() {
+    navigate('/');
+  }
 
-  canNavigate.current = true;
-  setIsLoading(false);
+  setLocalStore();
+  if (!isLoading) {
+    logIn();
+  }
+
 }, [userInfos]);
 
 // 위 코드가 실행된 후에 navigate되도록 해야함
-
-const onClick = () => {
-  navigate('/');
-}
-  
   return(
     <>
     {isLoading ? (
@@ -73,7 +77,6 @@ const onClick = () => {
     ) :(
       <div>
         소셜 로그인 성공!
-        <button onClick={onClick}>홈으로</button>
       </div>
     )}
     </>

@@ -31,7 +31,8 @@ const nicknameEngRegexp = /^[a-zA-Z]{2,16}$/; // 영문 2~16자
 function SocialTemp() {
   
   const navigate = useNavigate();
-  const params = "?user=UserSocialLoginRespDTO(email=pincele@gmail.com,%20nickName=abcdefg,%20social=K)"
+  // const params = "?user=UserSocialLoginRespDTO(email=juggorr@gmail.com, nickName=Djungho Park, social=G)"
+  const params = "?user=UserSocialLog/inRespDTO(email=pincelephant@gmail.com, nickName=박정호, social=K)"
 
   const [email, setEmail] = useState('');
   const [socialNickname, setSocialNickname] = useState('');
@@ -39,7 +40,7 @@ function SocialTemp() {
 
   useEffect(() => {
 
-    let [email, nickname, social] = params.slice(35, params.length - 1).split(',%20');
+    let [email, nickname, social] = params.slice(35, params.length - 1).split(', ');
     nickname = nickname.slice(9, nickname.length);    
     social = social.substring(social.length -1);
 
@@ -70,8 +71,7 @@ function SocialTemp() {
         console.log('증복되는 닉네임')
         console.log(err);
         setSocialNicknameErr(false);
-      }
-
+      };
     }
 
     checkNickname(socialNickname);
