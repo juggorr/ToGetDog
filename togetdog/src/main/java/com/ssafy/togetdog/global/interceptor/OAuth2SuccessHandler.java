@@ -46,11 +46,11 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 	protected String getTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         UserPrincipal userPrincipal = ((UserPrincipal) authentication.getPrincipal());
         if (authentication.getName().equals("disable")) {
-        	// 이미 이 이메일로 해당 social이 아닌 경로로 가입이 이루어진 유저
+        	logger.debug("이미 이 이메일로 해당 social이 아닌 경로로 가입이 이루어진 유저의 접근");
         	return UriComponentsBuilder.fromUriString("/oautherror")
 	                .build().toUriString();
-		} else if ((boolean)userPrincipal.getAttribute("login")) {
-			// 해당 소셜 회원의 로그인 시도
+		} else if ((boolean) userPrincipal.getAttribute("login")) {
+			logger.debug("소셜 회원의 로그인 시도 입니다.");
 			User user = userRepository.findByEmail(authentication.getName()).orElse(null);
 			String accessToken = jwtService.createAccessToken(user.getUserId());
 			return UriComponentsBuilder.fromUriString("/oauth")
@@ -60,7 +60,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 	                .encode()
 	                .toUriString();
 		} else {
-			// 새로운 소셜 가입 시도
+			logger.debug("새로운 소셜 가입 시도입니다.");
 			User user = User.builder()
 					.email(authentication.getName())
 					.nickName(userPrincipal.getAttribute("nickname"))
