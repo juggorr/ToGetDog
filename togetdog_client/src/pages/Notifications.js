@@ -1,10 +1,10 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { authAtom, userState } from "../recoil";
 
 import axios from "axios";
-import { BACKEND_URL, DUMMY_URL } from "../config";
+import { BACKEND_URL } from "../config";
 import {
   NotificationsWrapper,
   SingleNotificationWrapper,
@@ -22,7 +22,7 @@ const SingleNotification = (data) => {
     if (data.item.type === "좋아요") {
       navigate(`/board/${data.item.id}`);
     } else if (data.item.type === "팔로우") {
-      navigate(`feed/${data.item.id}`);
+      navigate(`/feed/${data.item.id}`);
     }
   };
 
@@ -45,12 +45,12 @@ const SingleNotification = (data) => {
 
 const Notifications = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useRecoilState(userState);
+  // const [user, setUser] = useRecoilState(userState);
   const [notifications, setNotifications] = useState([]);
   const [canceled, setCanceled] = useState(false);
   const [meetingCnt, setMeetingCnt] = useState();
   const auth = useRecoilValue(authAtom);
-  const setAuth = useSetRecoilState(authAtom);
+  // const setAuth = useSetRecoilState(authAtom);
   const pageNo = 0;
 
   useEffect(() => {
