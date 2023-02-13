@@ -58,6 +58,21 @@ export const ConfirmModalWrapper = styled.div`
   justify-content: center;
   align-items: center;
 
+  `;
+  
+  export const ConfirmModalBody = styled.div`
+  border-radius: 0.5rem;
+  padding: 2rem 0.9rem;
+  background-color: #fff;
+  border: 1px solid #e2e2e2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  .modal-msg {
+    font-size: 0.75rem; 
+  }
+
   .two-btns-wrapper {
     width: 100%;
     display: flex;
@@ -65,21 +80,7 @@ export const ConfirmModalWrapper = styled.div`
     // justify-content: space-between;
     justify-content: space-around;
   }
-`;
-  
-export const ConfirmModalBody = styled.div`
-  border-radius: 0.5rem;
-  padding: 2rem 1.5rem;
-  background-color: #fff;
-  border: 1px solid #e2e2e2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  .modal-msg {
-    font-size: 0.75rem; 
-  }
-`;
+  `;
 
 export const ConfirmModalImage = styled.img`
   width: 4rem;
