@@ -180,7 +180,7 @@ export const PlusBtn = styled.div`
   background-color: #559968;
 
   font-size: 3rem;
-  line-height: 3.5rem;
+  line-height: 3.2rem;
   text-align: center;
   color: #fff;
 `;
