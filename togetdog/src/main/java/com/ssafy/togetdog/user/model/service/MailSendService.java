@@ -92,24 +92,19 @@ public class MailSendService {
      * @param email
      * @return
      */
-    public String registMailSender(String email) {
+    public String registMailSender(String email) throws MessagingException{
         String authKey = getKey(6);
         MimeMessage mail = mailSender.createMimeMessage();
-        try {
-        	mail.setSubject("안녕하세요. Togetdog입니다. 회원가입을 위한 이메일 인증을 진행해주세요.");
-        	mail.setText(
-        			new StringBuffer()
-        			.append("[Togetdog] 이메일 인증 \n")
-        			.append("아래 링크를 클릭하시면 이메일 인증이 완료됩니다. \n")
-        			.append("https://togetdog.site/signup?email=").append(email).append("&authKey=").append(authKey)
-        			.toString());
-        	mail.setFrom(new InternetAddress("togetdog@gmail.com"));
-        	mail.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(email));
-        	
-        	mailSender.send(mail);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
+        mail.setSubject("안녕하세요. Togetdog입니다. 회원가입을 위한 이메일 인증을 진행해주세요.");
+        mail.setText(
+        		new StringBuffer()
+        		.append("[Togetdog] 이메일 인증 \n")
+        		.append("아래 링크를 클릭하시면 이메일 인증이 완료됩니다. \n")
+        		.append("https://togetdog.site/emailAuth?email=").append(email).append("&authKey=").append(authKey)
+        		.toString());
+        mail.setFrom(new InternetAddress("togetdog@gmail.com"));
+        mail.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(email));
+        mailSender.send(mail);
         return authKey;
     }
 
@@ -135,7 +130,6 @@ public class MailSendService {
         			.toString());
         	mail.setFrom(new InternetAddress("togetdog@gmail.com"));
         	mail.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(email));
-        	
         	mailSender.send(mail);
             userService.updateTmpPassword(userId, tmpPassword);
         } catch (MessagingException e) {

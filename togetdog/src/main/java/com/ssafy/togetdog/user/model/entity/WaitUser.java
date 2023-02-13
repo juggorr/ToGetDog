@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.togetdog.user.model.vo.ProviderType;
+import com.ssafy.togetdog.user.model.vo.RoleType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -77,6 +78,7 @@ public class WaitUser {
 				.address(this.address)
 				.regionCode(this.regionCode)
 				.social(ProviderType.O)
+				.roleType(RoleType.USER)
 				.ratingSum(0)
 				.ratingCount(0)
 				.build();
