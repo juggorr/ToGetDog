@@ -16,6 +16,7 @@ import com.ssafy.togetdog.appointment.model.entity.Appointment;
 import com.ssafy.togetdog.appointment.model.entity.SentAppointment;
 import com.ssafy.togetdog.appointment.model.repository.AppointmentRepository;
 import com.ssafy.togetdog.appointment.model.repository.SentAppointmentRepository;
+import com.ssafy.togetdog.board.model.repository.BoardRepository;
 import com.ssafy.togetdog.dog.model.dto.DogInfoForUserDTO;
 import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.dto.DogRegistParamDTO;
@@ -43,6 +44,7 @@ public class DogServiceImpl implements DogService {
 	private final AppointmentRepository appointmentRepository;
 	private final SentAppointmentRepository sentAppointmentRepository;
 	private final NotifyRepository notifyRepository;
+	private final BoardRepository boardRepository;
 
 	private final NotifyService notifyService;
 
@@ -98,6 +100,7 @@ public class DogServiceImpl implements DogService {
 		}
 		cancelAppointments(user, dog);
 		deleteNotifications(dog);
+		deleteBoardByDog(dog);
 		fileUtil.fileDelete(dog.getDogImage(), dogImageFilePath);
 		nullifyDogInformation(dog);
 		dogRepository.save(dog);
@@ -121,6 +124,10 @@ public class DogServiceImpl implements DogService {
 
 	private void deleteNotifications(Dog dog) {
 		notifyRepository.deleteAllByDogId(dog.getDogId());
+	}
+	
+	private void deleteBoardByDog(Dog dog) {
+		boardRepository.deleteAllByDog(dog);
 	}
 
 	private void nullifyDogInformation(Dog dog) {
