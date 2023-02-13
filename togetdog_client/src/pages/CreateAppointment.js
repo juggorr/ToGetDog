@@ -309,6 +309,14 @@ const CreateAppointment = () => {
       <div className="appointmentHeader">산책 요청하기</div>
       <WalkRequest>
         <p className="queryStr">
+          <FontAwesomeIcon icon="fa-clock" />
+          {"   "}언제 산책할까요?
+        </p>
+        <DateModalWrapper>
+          <DateModal type="Date"></DateModal>
+          <DateModal type="Time"></DateModal>
+        </DateModalWrapper>
+        <p className="queryStr">
           <FontAwesomeIcon icon="fa-user-group" />
           {"   "}나의 강아지를 선택해주세요.
         </p>
@@ -338,14 +346,7 @@ const CreateAppointment = () => {
               ></DogImages>
             ))}
         </div>
-        <p className="queryStr">
-          <FontAwesomeIcon icon="fa-clock" />
-          {"   "}언제 산책할까요?
-        </p>
-        <DateModalWrapper>
-          <DateModal type="Date"></DateModal>
-          <DateModal type="Time"></DateModal>
-        </DateModalWrapper>
+
         <p className="queryStr">
           <FontAwesomeIcon icon="fa-location-dot" />
           {"   "}어디서 산책할까요?
