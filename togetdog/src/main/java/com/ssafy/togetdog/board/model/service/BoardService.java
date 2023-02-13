@@ -71,10 +71,10 @@ public class BoardService {
 		if (boardId < 0) {
 			throw new InvalidInputException();
 		}
-		Board board = boardRepository.getByBoardId(boardId);
+		Board board = boardRepository.getByBoardIdOrderByBoardIdDesc(boardId);
 		board.setContent(boardDto.getContent());
 		boardRepository.save(board);
-		Board newBoard = boardRepository.getByBoardId(boardId);
+		Board newBoard = boardRepository.getByBoardIdOrderByBoardIdDesc(boardId);
 		BoardDTO newBoardDto = new BoardDTO(newBoard);
 		return newBoardDto;
 	}
@@ -83,7 +83,7 @@ public class BoardService {
 	public BoardShowDTO getOne(long userId, long boardId) {
 		User user = new User();
 		user.setUserId(userId);
-		Board board = boardRepository.getByBoardId(boardId);
+		Board board = boardRepository.getByBoardIdOrderByBoardIdDesc(boardId);
 		logger.info("return found board Content : {}", board.getContent());
 		BoardShowDTO boardDTO = new BoardShowDTO(board);
 		Dog dog = dogRepository.findByDogId(board.getDog().getDogId());
@@ -102,7 +102,7 @@ public class BoardService {
 		Pageable pageable = PageRequest.of(page, 96);
 		Dog dog = new Dog();
 		dog.setDogId(dogId);
-		Page<Board> bList = boardRepository.findAllByDog(dog, pageable);
+		Page<Board> bList = boardRepository.findAllByDogOrderByBoardIdDesc(dog, pageable);
 		logger.debug("return found bList : {}", bList);
 
 		Page<BoardDTO> boardList = bList.map(b -> new BoardDTO(b));
@@ -114,7 +114,7 @@ public class BoardService {
 
 	public Page<BoardDTO> findAll(int page) {
 		Pageable pageable = PageRequest.of(page, 96);
-		Page<Board> bList = boardRepository.findAll(pageable);
+		Page<Board> bList = boardRepository.findAllOrderByBoardIdDesc(pageable);
 		Page<BoardDTO> boardList = bList.map(b -> new BoardDTO(b));
 		return boardList;
 	}
@@ -127,7 +127,7 @@ public class BoardService {
 			logger.debug("======= dog : {}", dog);
 			dogList.add(dog);
 		}
-		Page<BoardHomeDTO> fbList = boardRepository.findAllByDogIn(dogList, pageable);
+		Page<BoardHomeDTO> fbList = boardRepository.findAllByDogInOrderByBoardIdDesc(dogList, pageable);
 		for (int i = 0; i < fbList.getNumberOfElements(); i++) {
 			long dogId = fbList.getContent().get(i).getDogId();
 			fbList.getContent().get(i).setDog(DogInfoRespDTO.of(dogRepository.findByDogId(dogId)));

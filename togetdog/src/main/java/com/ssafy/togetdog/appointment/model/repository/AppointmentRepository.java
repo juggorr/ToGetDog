@@ -15,7 +15,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
 	List<Appointment> findAllByReceivedUser(User user);
 
-	List<Appointment> findAllBySentUserOrReceivedUser(User userOne, User userTwo);
+	List<Appointment> findAllBySentUserOrReceivedUserOrderByRoomIdDesc(User userOne, User userTwo);
 	
 	Long countByReceivedUserAndStatus(User user, String status);
 	
