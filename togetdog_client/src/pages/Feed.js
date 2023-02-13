@@ -208,7 +208,7 @@ const Feed = () => {
         <FeedProfileWrapper>
           {/* 프로필 상단 */}
           <FeedProfileTop>
-            {feedDogData ? (
+            {!feedDogData ? (
               <MainDogImg src='https://media.istockphoto.com/id/509962049/vector/cute-puppy-sits.jpg?s=612x612&w=0&k=20&c=hm9wNYwzB2sXwrySGNi83WzH5B7ubDMk1NKJw73W7tg=' />
             ) : (
               <MainDogImg src={`https://i8a807.p.ssafy.io/image/dog/` + currentDog.dogProfile} />
