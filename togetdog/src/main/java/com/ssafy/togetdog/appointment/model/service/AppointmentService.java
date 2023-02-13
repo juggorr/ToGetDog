@@ -47,7 +47,7 @@ public class AppointmentService {
 		user.setUserId(userId);
 		
 		
-		List<Appointment> reqlist = appointmentRepository.findAllBySentUserOrReceivedUserOrderByRoomIdDesc(user, user);
+		List<Appointment> reqlist = appointmentRepository.findAllBySentUserOrReceivedUser(user, user);
 		
 		List<AppointmentListDTO> requestList = reqlist.stream()
 				.map(a-> AppointmentListDTO.of(a)).collect(Collectors.toList());
