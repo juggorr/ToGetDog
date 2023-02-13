@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export const MenuModalWrapper = styled.div`
-  z-index: 1;
+  z-index: 999;
   position: fixed;
   top: 0;
   @media (min-width: 650px) {
@@ -41,7 +41,7 @@ export const MenuModalBody = styled.div`
 `;
 
 export const ConfirmModalWrapper = styled.div`
-  z-index: 1;
+  z-index: 9;
   position: fixed;
   top: 0;
   @media (min-width: 650px) {
@@ -58,23 +58,48 @@ export const ConfirmModalWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
-  
+
 export const ConfirmModalBody = styled.div`
   border-radius: 0.5rem;
-  padding: 0.3rem 0.9rem;
+  padding: 2rem 0.9rem;
   background-color: #fff;
   border: 1px solid #e2e2e2;
   display: flex;
   flex-direction: column;
   align-items: center;
+  
+
+  .modal-msg {
+    font-size: 0.75rem;
+  }
 
   .two-btns-wrapper {
+    width: 17rem;
+    display: flex;
     padding-top: 1.5rem;
+    // justify-content: space-between;
     justify-content: space-around;
+  }
+
+  .rating-box {
+    display: flex;
+    // padding-bottom: 1rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .rate-img {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 0.8rem;
+  }
+
+  .rate {
+    font-size: 0.8rem;
   }
 `;
 
 export const ConfirmModalImage = styled.img`
   width: 4rem;
   // height: 1rem;
-`
+`;

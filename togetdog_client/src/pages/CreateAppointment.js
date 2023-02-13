@@ -14,7 +14,7 @@ import getDate from "date-fns/getDate";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 
-import { BACKEND_URL, DUMMY_URL } from "../config";
+import { BACKEND_URL } from "../config";
 import {
   CreateAppointmentWrapper,
   WalkRequest,
@@ -29,9 +29,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const CreateAppointment = () => {
   const navigate = useNavigate();
-  // 임시 아이디값
-  // const userId = 1;
-  // const partnerId = 1;
+
   const auth = useRecoilValue(authAtom);
   const [user, setUser] = useRecoilState(userState);
   const location = useLocation();
@@ -144,7 +142,8 @@ const CreateAppointment = () => {
           className={
             activeDog ? "dogProfileCircle" : "dogProfileCircle disabled"
           }
-          onClick={() => setActiveDog(!activeDog)}>
+          onClick={() => setActiveDog(!activeDog)}
+        >
           <img
             className="dogProfileImg"
             src={`https://i8a807.p.ssafy.io/image/dog/` + item.dog.dogProfile}
@@ -215,7 +214,8 @@ const CreateAppointment = () => {
             <div
               className="btn_month btn_month-prev"
               onClick={decreaseMonth}
-              disabled={prevMonthButtonDisabled}>
+              disabled={prevMonthButtonDisabled}
+            >
               <FontAwesomeIcon icon="fa-chevron-left" />
             </div>
             <div className="calendarHeader">
@@ -224,11 +224,13 @@ const CreateAppointment = () => {
             <div
               className="btn_month btn_month-next"
               onClick={increaseMonth}
-              disabled={nextMonthButtonDisabled}>
+              disabled={nextMonthButtonDisabled}
+            >
               <FontAwesomeIcon icon="fa-chevron-right" />
             </div>
           </DatePickerWrapper>
-        )}></DatePicker>
+        )}
+      ></DatePicker>
     ) : (
       <DatePicker
         withPortal
@@ -273,26 +275,24 @@ const CreateAppointment = () => {
   };
 
   const handleCreateAppointment = async (myDogList, partnerDogList) => {
-    console.log({
-      userId: user.userId,
-      myDogs: myDogList,
-      partnerDogs: partnerDogList,
-      date: dateResult,
-      place: placeInput.current,
-    });
     await axios
       .post(
-        `${DUMMY_URL}/dummy/meeting`,
+        `${BACKEND_URL}/meeting`,
         {
-          date: dateResult,
-          myDogs: myDogList,
-          partnerDogs: partnerDogList,
+          dateTime: dateResult,
+          sentUserId: user.userId,
+          sentDogs: myDogList,
+          senderRate: false,
+          receivedUserId: partnerId,
+          receivedDogs: partnerDogList,
+          receiverRate: false,
           place: placeInput.current,
-          userId: user.userId,
+          status: "wait",
         },
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: auth,
           },
         }
       )
@@ -309,6 +309,14 @@ const CreateAppointment = () => {
       <div className="appointmentHeader">산책 요청하기</div>
       <WalkRequest>
         <p className="queryStr">
+          <FontAwesomeIcon icon="fa-clock" />
+          {"   "}언제 산책할까요?
+        </p>
+        <DateModalWrapper>
+          <DateModal type="Date"></DateModal>
+          <DateModal type="Time"></DateModal>
+        </DateModalWrapper>
+        <p className="queryStr">
           <FontAwesomeIcon icon="fa-user-group" />
           {"   "}나의 강아지를 선택해주세요.
         </p>
@@ -319,7 +327,8 @@ const CreateAppointment = () => {
                 dog={item}
                 userKey={1}
                 idx={idx}
-                key={item.dogId}></DogImages>
+                key={item.dogId}
+              ></DogImages>
             ))}
         </div>
         <p className="queryStr">
@@ -333,17 +342,11 @@ const CreateAppointment = () => {
                 dog={item}
                 userKey={2}
                 idx={idx}
-                key={item.dogId}></DogImages>
+                key={item.dogId}
+              ></DogImages>
             ))}
         </div>
-        <p className="queryStr">
-          <FontAwesomeIcon icon="fa-clock" />
-          {"   "}언제 산책할까요?
-        </p>
-        <DateModalWrapper>
-          <DateModal type="Date"></DateModal>
-          <DateModal type="Time"></DateModal>
-        </DateModalWrapper>
+
         <p className="queryStr">
           <FontAwesomeIcon icon="fa-location-dot" />
           {"   "}어디서 산책할까요?
@@ -363,7 +366,8 @@ const CreateAppointment = () => {
         <MainColorShortBtn
           onClick={() => {
             navigate(-1);
-          }}>
+          }}
+        >
           취소하기
         </MainColorShortBtn>
         <MainColorShortBtn onClick={isValid}>요청하기</MainColorShortBtn>

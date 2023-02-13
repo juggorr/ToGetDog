@@ -43,7 +43,7 @@ function SocialSignup() {
     console.log(params);
   
 
-    let [email, nickname, social] = params.slice(35, params.length - 1).split(',%20');
+    let [email, nickname, social] = params.slice(35, params.length - 1).split(', ');
     nickname = nickname.slice(9, nickname.length);    
     social = social.substring(social.length -1);
 
@@ -95,29 +95,32 @@ function SocialSignup() {
     });
   };
 
-  // 소셜로 받아온 닉네임 핸들러 메소드
-  // const handleSocialNickname = async (val) => {
-  //   console.log(val);
-  //   if (!nicknameKorRegexp.test(val) && !nicknameEngRegexp.test(val)) {
-  //     setInputs({
-  //       ...inputs,
-  //       nickname: socialNickname,
-  //     })
-  //     return;
-  //   }
-    // await axios
-    //   .get(`${BACKEND_URL}/user/nickname`, { params: { val } })
-    //   .then((res) => {
-    //     if (res.status === 200) {
-    //       console.log(res);
-    //       setSocialNicknameErr(true);
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     setSocialNicknameErr(false);
-    //   });
-  // };
+  // 소셜 닉네임 확인하는 함수
+  useEffect(() => {
+    const checkNickname = async (val) => {
+      if (!nicknameKorRegexp.test(val) && !nicknameEngRegexp.test(val)) {
+        console.log('소셜 닉네임이 형식에 맞지 않음');
+        setSocialNicknameErr(false);
+        // setNicknameErrorMsg('닉네임은 한글 1~8자 혹은 영문 2~16자');
+        return;
+      }
+      try {
+        const res = await axios.get(`${BACKEND_URL}/user/nickname`, { params: { val } })
+        if (res.status === 200) {
+          console.log('사용할 수 있는 닉네임')
+          console.log(res);
+          setSocialNicknameErr(true);
+        }
+      }
+      catch(err){
+        console.log('증복되는 닉네임')
+        console.log(err);
+        setSocialNicknameErr(false);
+      };
+    }
 
+    checkNickname(socialNickname);
+  }, [socialNickname])
 
   // 닉네임 핸들러 메소드
   const handleNickname = async (e) => {
@@ -266,7 +269,7 @@ function SocialSignup() {
             Create a <span className='togetdog'>ToGetDog</span> Account!
           </div>
           {/* 소셜 닉네임이 유효하지 않으면 닉네임 입력하기 활성화 */}
-          {socialNicknameErr? (
+          {!socialNicknameErr? (
           <InputWrapper>
               <div className='input-title'>
                 닉네임<span className='red-dot'>*</span>
