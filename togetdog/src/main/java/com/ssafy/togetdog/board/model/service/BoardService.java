@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -99,7 +100,7 @@ public class BoardService {
 	}
 
 	public Page<BoardDTO> getAllByDogId(long dogId, int page) {
-		Pageable pageable = PageRequest.of(page, 96);
+		Pageable pageable = PageRequest.of(page, 27, Sort.by("boardId").descending());
 		Dog dog = new Dog();
 		dog.setDogId(dogId);
 		Page<Board> bList = boardRepository.findAllByDogOrderByBoardIdDesc(dog, pageable);
@@ -113,14 +114,14 @@ public class BoardService {
 	}
 
 	public Page<BoardDTO> findAll(int page) {
-		Pageable pageable = PageRequest.of(page, 27);
-		Page<Board> bList = boardRepository.findAllOrderByBoardIdDesc(pageable);
+		Pageable pageable = PageRequest.of(page, 27, Sort.by("boardId").descending());
+		Page<Board> bList = boardRepository.findAll(pageable);
 		Page<BoardDTO> boardList = bList.map(b -> new BoardDTO(b));
 		return boardList;
 	}
 
 	public Page<BoardHomeDTO> getAllInDogIds(List<Long> dogIds, int page) {
-		Pageable pageable = PageRequest.of(page, 9);
+		Pageable pageable = PageRequest.of(page, 9, Sort.by("boardId").descending());
 		List<Dog> dogList = new ArrayList<Dog>();
 		for (Long id : dogIds) {
 			Dog dog = dogRepository.findByDogId(id);

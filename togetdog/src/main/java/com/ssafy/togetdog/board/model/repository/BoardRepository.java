@@ -11,10 +11,10 @@ import com.ssafy.togetdog.board.model.entity.Board;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
-
-	Board getByBoardIdOrderByBoardIdDesc(long boardId);
-	Page<Board> findAllByDogOrderByBoardIdDesc(Dog dog, Pageable pageable);
-	Page<BoardHomeDTO> findAllByDogInOrderByBoardIdDesc(List<Dog> dogList, Pageable pageable);
-	Page<Board> findAllOrderByBoardIdDesc(Pageable pageable);
-	
+	Board getByBoardId(long boardId);
+	Page<Board> findAllByDog(Dog dog, Pageable pageable);
+	Page<BoardHomeDTO> findAllByDogIn(List<Dog> dogList, Pageable pageable);
+	void deleteAllByDog(Dog dog);
+	List<Board> findAllByDog(Dog dog);
+	Page<Board> findAll(Pageable pageable);
 }
