@@ -32,7 +32,7 @@ const nicknameEngRegexp = /^[a-zA-Z]{2,16}$/; // 영문 2~16자
 function SocialSignup() {
   const navigate = useNavigate();
   const location = useLocation();
-  const params = location.search 
+  const params = decodeURIComponent(location.search);
 
   const [email, setEmail] = useState('');
   const [socialNickname, setSocialNickname] = useState('');
@@ -40,14 +40,17 @@ function SocialSignup() {
 
   useEffect(() => {
 
-    let [email, nickname, social] = params.slice(35, params.length - 1).split(',%20');
-    nickname = nickname.slice(9, nickname.length);    
-    social = social.substring(social.length -1);
+    console.log(params);
+  
 
-    setEmail(email);
-    setSocialNickname(nickname);
-    setSocial(social);
-    console.log(email, nickname, social);
+    // let [email, nickname, social] = params.slice(35, params.length - 1).split(',%20');
+    // nickname = nickname.slice(9, nickname.length);    
+    // social = social.substring(social.length -1);
+
+    // setEmail(email);
+    // setSocialNickname(nickname);
+    // setSocial(social);
+    // console.log(email, nickname, social);
   }, [])
 
   // 닉네임을 설정하는 함수

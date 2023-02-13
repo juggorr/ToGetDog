@@ -46,6 +46,7 @@ function OauthTemp() {
   
   // 유저 정보가 입력되면 로컬스토리지에 유저 정보 저장
   useEffect(() => {
+    const setLocalStore = () => {
       console.log(userInfos);
       setUser(userInfos);
 
@@ -54,6 +55,17 @@ function OauthTemp() {
 
       canNavigate.current = true;
       setIsLoading(false);
+    };
+
+    setLocalStore();
+
+    // const socialLogin = async () => {
+    //   const res = await setLocalStore();
+    //   console.log(res);
+    //   navigate('/');
+      
+    // }
+
   }, [userInfos]);
 
   // 위 코드가 실행된 후에 navigate되도록 해야함
