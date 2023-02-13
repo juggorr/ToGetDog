@@ -175,7 +175,7 @@ export const YellowBtn = styled.button`
 export const PlusBtn = styled.button`
   width: 3.5rem;
   height: 3.5rem;
-  border-radius: 1.75rem;
+  border-radius: 50%;
   border: none;
   background-color: #559968;
 

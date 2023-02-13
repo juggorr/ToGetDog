@@ -1,11 +1,11 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const FeedContainer = styled.div`
   width: 100%;
   height: calc(100vh - 115px);
   display: flex;
   flex-direction: column;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
 
   .no-photo {
     height: 100%;
@@ -100,7 +100,7 @@ export const FeedProfileTop = styled.div`
     display: flex;
     position: absolute;
     top: 8.5rem;
-    padding-left: 4.5rem;
+    left: 5.5rem;
   }
 
   .no-dogs-txt {
