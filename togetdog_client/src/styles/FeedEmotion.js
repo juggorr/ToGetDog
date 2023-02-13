@@ -53,8 +53,8 @@ export const FeedProfileTop = styled.div`
   position: relative;
 
   .dog-info-box {
-    width: 45%;
-    padding-left: 1rem;
+    width: 75%;
+    padding-left: 0.7rem;
   }
 
   .no-dog-info-box {
@@ -74,7 +74,7 @@ export const FeedProfileTop = styled.div`
   }
 
   .profile-etc-wrapper {
-    width: 35%;
+    width: 30%;
     display: flex;
     flex-direction: column;
     align-items: end;
