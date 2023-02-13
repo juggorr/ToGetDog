@@ -1,11 +1,14 @@
 import styled from "@emotion/styled";
 
+export const RecommendWrapper = styled.div`
+  position: relative;
+  margin: 0.5rem 0rem;
+`;
 export const DropdownWrapper = styled.div`
   display: flex;
   align-items: start;
   font-family: "Lato", sans-serif;
   position: absolute;
-  top: 60px;
   z-index: 1;
 
   .dropdown {
@@ -60,7 +63,7 @@ export const DropdownWrapper = styled.div`
 `;
 
 export const FriendListWrapper = styled.div`
-  margin-top: 3rem;
+  padding-top: 3rem;
   font-family: "Inter", sans-serif;
   position: relative;
 
