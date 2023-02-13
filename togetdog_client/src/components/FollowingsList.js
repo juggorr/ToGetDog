@@ -1,7 +1,12 @@
 import DogFollow from "./DogFollow";
 import { FollowList } from "../styles/FollowerListEmotion";
+import { useEffect } from "react";
 
 const FollowingsList = ({ followings }) => {
+
+  // useEffect(() => {
+  //   console.log(followings);
+  // }, [])
 
   return followings.length > 0 ? (
     <div className="list-div">

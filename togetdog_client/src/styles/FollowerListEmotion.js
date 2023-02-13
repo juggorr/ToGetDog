@@ -10,7 +10,7 @@ export const ListContainer = styled.div`
 `;
   
   export const ListWrapper = styled.div`
-  padding: 1.25rem;
+  padding-bottom: 1.25rem;
   
   width: 100&;
   display: flex;
