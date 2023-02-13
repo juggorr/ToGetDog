@@ -24,7 +24,7 @@ public class CommentService {
 		BoardDTO boardDto = new BoardDTO();
 		boardDto.setBoardId(boardId);
 		boardDto.setImage("");
-		List<Comment> comments = commentRepository.findAllByBoard(boardDto.toEntity()).orElse(null);
+		List<Comment> comments = commentRepository.findAllByBoardOrderByCommentIdDesc(boardDto.toEntity()).orElse(null);
 
 		//stream 써서 코드 발전 시킬 수 있음
 		List<CommentDTO> cmts = new ArrayList<CommentDTO>();
