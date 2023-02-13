@@ -15,6 +15,7 @@ import {
   SingleBoardWrapper,
   DogInfoWrapper,
   DogImgWrapper,
+  NoFriendsWrapper,
 } from "../styles/HomeEmotion";
 import Banner1 from "../assets/banner1.svg";
 import Banner2 from "../assets/banner2.svg";
@@ -86,12 +87,16 @@ const SingleBoard = ({ board }) => {
 const BoardList = (boardList) => {
   let tempBoardList = [];
 
-  if (boardList) {
+  if (boardList.length) {
     for (let i = 0; i < boardList.length; i++) {
       tempBoardList.push(
         <SingleBoard key={i} board={boardList[i]}></SingleBoard>
       );
     }
+  } else {
+    tempBoardList.push(
+      <NoFriendsWrapper>조회할 게시글이 없어요.</NoFriendsWrapper>
+    );
   }
 
   return tempBoardList;
