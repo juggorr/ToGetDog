@@ -36,12 +36,12 @@ function Oauth() {
     setToken(token);
 
     let [email, id, nickname, address] = user.slice(28 ,user.length - 1).split(', ');
-    id = Number(id.slice(7, id.length));
+    id = id.slice(7, id.length);
     nickname = nickname.slice(9, nickname.length);
     address = address.slice(8, address.length);
     setUserInfos({
       email: email,
-      userId: id,
+      userId: Number(id),
       nickName: nickname,
       address: address,
     });

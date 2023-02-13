@@ -88,6 +88,7 @@ export const DogImgWrapper = styled.div`
     height: 4.2rem;
     overflow: hidden;
     margin: 0.3rem 0rem;
+    background-color: #ffffff;
   }
 
   .disabled {
