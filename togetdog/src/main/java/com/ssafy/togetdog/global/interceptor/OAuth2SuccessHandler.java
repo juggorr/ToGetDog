@@ -68,7 +68,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 					.build();
 			return UriComponentsBuilder.fromUriString("/socialsignup")
 	                .queryParam("user", UserSocialLoginRespDTO.of(user))
-	                .build().toUriString();
+	                .build()
+	                .encode()
+	                .toUriString();
 		}
     }
 	
