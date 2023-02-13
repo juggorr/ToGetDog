@@ -40,6 +40,7 @@ import Recommend from "./pages/Recommend";
 import EditBoard from "./pages/EditBoard";
 import ChatMsg from "./pages/ChatMsg";
 import SocialTemp from "./pages/SocialTemp";
+import OauthTemp from "./pages/OauthTemp";
 
 function App() {
   return (
@@ -85,6 +86,7 @@ function App() {
           <Route path="/createAppointment" element={<CreateAppointment />} />
           <Route path="/search" element={<Search />} />
           <Route path="/socialtemp" element={<SocialTemp />} />
+          <Route path="/oauthtemp" element={<OauthTemp />} />
         </Routes>
       </div>
     </BrowserRouter>
