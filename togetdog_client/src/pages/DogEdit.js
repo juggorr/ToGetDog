@@ -166,6 +166,13 @@ function DogEdit() {
       setMonth(String(x));
       return;
     }
+    if (x === 0) {
+      setYearHold(yearTemp - 1);
+      setMonthHold(12);
+      setYear(String(yearTemp - 1));
+      setMonth(12);
+      return;
+    }
   }, [ageHold])
 
 
