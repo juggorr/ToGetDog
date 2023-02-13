@@ -81,11 +81,11 @@ public class BoardRestController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
 		Long userId = jwtService.getUserId(token);
-//		Long userId = 4L;
+//		Long userId = 38L;
 		
 		// 강아지 (이름, 프로필 이미지랑, 견종, 나이, 성별)
 		List<DogInfoRespDTO> followList = followService.getFollowingList(userId);
-		logger.info("return boardList : {}", followList);
+		logger.info("return followList : {}", followList);
 		List<Long> dogIds = new ArrayList<Long>();
 		for (DogInfoRespDTO follow : followList) {
 			dogIds.add(follow.getDogId());

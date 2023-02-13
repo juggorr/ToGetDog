@@ -125,7 +125,6 @@ public class BoardService {
 		List<Dog> dogList = new ArrayList<Dog>();
 		for (Long id : dogIds) {
 			Dog dog = dogRepository.findByDogId(id);
-			logger.debug("======= dog : {}", dog);
 			dogList.add(dog);
 		}
 		Page<BoardHomeDTO> fbList = boardRepository.findAllByDogIn(dogList, pageable);
