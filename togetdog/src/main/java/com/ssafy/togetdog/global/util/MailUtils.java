@@ -1,12 +1,13 @@
 package com.ssafy.togetdog.global.util;
 
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import java.io.UnsupportedEncodingException;
 
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.UnsupportedEncodingException;
+
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
 public class MailUtils {
     private JavaMailSender mailSender;

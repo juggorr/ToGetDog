@@ -25,9 +25,8 @@ public class UserRegistParamDTO {
 	private String birth;
 	private String address;
 	private String regionCode;
-	private String social;
 	
-	public WaitUser toUser(String authKey) {
+	public WaitUser of(String authKey) {
 		String gender = this.gender;
 		if (gender.equals("female")) {
 			gender = "f";

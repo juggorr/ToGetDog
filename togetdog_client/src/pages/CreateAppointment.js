@@ -2,8 +2,8 @@ import { useEffect, useState, forwardRef, useRef } from 'react';
 import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useRecoilState } from 'recoil';
-import { userState } from '../recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { authAtom, userState } from '../recoil';
 
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -14,7 +14,7 @@ import getDate from 'date-fns/getDate';
 import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
 
-import { BACKEND_URL, DUMMY_URL } from '../config';
+import { BACKEND_URL } from '../config';
 import {
   CreateAppointmentWrapper,
   WalkRequest,
@@ -32,11 +32,11 @@ const CreateAppointment = () => {
   // 임시 아이디값
   // const userId = 1;
   // const partnerId = 1;
+  const auth = useRecoilValue(authAtom);
   const [user, setUser] = useRecoilState(userState);
   const location = useLocation();
   const partnerId = location.state.partnerId;
 
-  console.log(partnerId);
   // 다른 파일에서 useNavigate 쓸때 이런식으로
   // const handleClick = (e) => {
   //     const navigate = useNavigate();
@@ -60,18 +60,26 @@ const CreateAppointment = () => {
 
   useEffect(() => {
     axios
-      .get(`${DUMMY_URL}/user/includesDog/${user.userId}`, {})
+      .get(`${BACKEND_URL}/user/includesDog/${user.userId}`, {
+        headers: {
+          Authorization: auth,
+        },
+      })
       .then(function (response) {
-        setUserData(response.data);
+        setUserData(response.data.user);
       })
       .catch(function (error) {
         // 오류발생시 실행
       });
 
     axios
-      .get(`${DUMMY_URL}/user/includesDog/${partnerId}`, {})
+      .get(`${BACKEND_URL}/user/includesDog/${partnerId}`, {
+        headers: {
+          Authorization: auth,
+        },
+      })
       .then(function (response) {
-        setPartnerData(response.data);
+        setPartnerData(response.data.user);
       })
       .catch(function (error) {
         // 오류발생시 실행
@@ -133,7 +141,11 @@ const CreateAppointment = () => {
           className={activeDog ? 'dogProfileCircle' : 'dogProfileCircle disabled'}
           onClick={() => setActiveDog(!activeDog)}
         >
-          <img className='dogProfileImg' src={item.dog.dogProfile} alt={item.dog.dogName} />
+          <img
+            className='dogProfileImg'
+            src={`https://i8a807.p.ssafy.io/image/dog/` + item.dog.dogProfile}
+            alt={item.dog.dogName}
+          />
         </div>
       </DogImgWrapper>
     );
@@ -151,9 +163,9 @@ const CreateAppointment = () => {
     };
 
     const CustomInput = forwardRef(({ value, onClick }, ref) => (
-      <TimeWrapper className='example-custom-input' ref={ref}>
+      <TimeWrapper className='example-custom-input' ref={ref} onClick={onClick}>
         <div className='dateDiv'>{value}</div>
-        <div className='calendarDiv' onClick={onClick}>
+        <div className='calendarDiv'>
           <FontAwesomeIcon icon={type === 'Date' ? 'fa-calendar' : 'fa-clock'} />
         </div>
       </TimeWrapper>
@@ -259,7 +271,7 @@ const CreateAppointment = () => {
     });
     await axios
       .post(
-        `${DUMMY_URL}/dummy/meeting`,
+        `${BACKEND_URL}/meeting`,
         {
           date: dateResult,
           myDogs: myDogList,
@@ -290,16 +302,16 @@ const CreateAppointment = () => {
           {'   '}나의 강아지를 선택해주세요.
         </p>
         <div className='dogImageWrapper'>
-          {userData.dog &&
-            userData.dog.map((item, idx) => <DogImages dog={item} userKey={1} idx={idx} key={item.dogId}></DogImages>)}
+          {userData.dogs &&
+            userData.dogs.map((item, idx) => <DogImages dog={item} userKey={1} idx={idx} key={item.dogId}></DogImages>)}
         </div>
         <p className='queryStr'>
           <FontAwesomeIcon icon='fa-user-group' />
           {'   '}상대방의 강아지를 선택해주세요.
         </p>
         <div className='dogImageWrapper'>
-          {partnerData.dog &&
-            partnerData.dog.map((item, idx) => (
+          {partnerData.dogs &&
+            partnerData.dogs.map((item, idx) => (
               <DogImages dog={item} userKey={2} idx={idx} key={item.dogId}></DogImages>
             ))}
         </div>
