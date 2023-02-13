@@ -23,7 +23,7 @@ function DogFollow({ dog }) {
   return(
     <>
       <DogImgWrapper>
-        <div className="dogProfileCircle">
+        <div className="dogFollowCircle">
           <img 
             src={"https://i8a807.p.ssafy.io/image/dog/" + dog.dogProfile}
             alt="dog_img"
