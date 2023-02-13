@@ -122,6 +122,7 @@ export const BoardCommentBox = styled.div`
     display: flex;
     flex-direction: column;
     padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     overflow-y: scroll;
     margin-top: 0.5rem;
     height: calc(100vh - 550px);
