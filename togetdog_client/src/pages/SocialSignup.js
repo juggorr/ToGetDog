@@ -43,14 +43,14 @@ function SocialSignup() {
     console.log(params);
   
 
-    // let [email, nickname, social] = params.slice(35, params.length - 1).split(',%20');
-    // nickname = nickname.slice(9, nickname.length);    
-    // social = social.substring(social.length -1);
+    let [email, nickname, social] = params.slice(35, params.length - 1).split(',%20');
+    nickname = nickname.slice(9, nickname.length);    
+    social = social.substring(social.length -1);
 
-    // setEmail(email);
-    // setSocialNickname(nickname);
-    // setSocial(social);
-    // console.log(email, nickname, social);
+    setEmail(email);
+    setSocialNickname(nickname);
+    setSocial(social);
+    console.log(email, nickname, social);
   }, [])
 
   // 닉네임을 설정하는 함수
