@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -71,10 +72,10 @@ public class BoardService {
 		if (boardId < 0) {
 			throw new InvalidInputException();
 		}
-		Board board = boardRepository.getByBoardIdOrderByBoardIdDesc(boardId);
+		Board board = boardRepository.getByBoardId(boardId);
 		board.setContent(boardDto.getContent());
 		boardRepository.save(board);
-		Board newBoard = boardRepository.getByBoardIdOrderByBoardIdDesc(boardId);
+		Board newBoard = boardRepository.getByBoardId(boardId);
 		BoardDTO newBoardDto = new BoardDTO(newBoard);
 		return newBoardDto;
 	}
@@ -83,7 +84,7 @@ public class BoardService {
 	public BoardShowDTO getOne(long userId, long boardId) {
 		User user = new User();
 		user.setUserId(userId);
-		Board board = boardRepository.getByBoardIdOrderByBoardIdDesc(boardId);
+		Board board = boardRepository.getByBoardId(boardId);
 		logger.info("return found board Content : {}", board.getContent());
 		BoardShowDTO boardDTO = new BoardShowDTO(board);
 		Dog dog = dogRepository.findByDogId(board.getDog().getDogId());
@@ -99,10 +100,10 @@ public class BoardService {
 	}
 
 	public Page<BoardDTO> getAllByDogId(long dogId, int page) {
-		Pageable pageable = PageRequest.of(page, 96);
+		Pageable pageable = PageRequest.of(page, 27, Sort.by("boardId").descending());
 		Dog dog = new Dog();
 		dog.setDogId(dogId);
-		Page<Board> bList = boardRepository.findAllByDogOrderByBoardIdDesc(dog, pageable);
+		Page<Board> bList = boardRepository.findAllByDog(dog, pageable);
 		logger.debug("return found bList : {}", bList);
 
 		Page<BoardDTO> boardList = bList.map(b -> new BoardDTO(b));
@@ -113,21 +114,20 @@ public class BoardService {
 	}
 
 	public Page<BoardDTO> findAll(int page) {
-		Pageable pageable = PageRequest.of(page, 27);
-		Page<Board> bList = boardRepository.findAllOrderByBoardIdDesc(pageable);
+		Pageable pageable = PageRequest.of(page, 27, Sort.by("boardId").descending());
+		Page<Board> bList = boardRepository.findAll(pageable);
 		Page<BoardDTO> boardList = bList.map(b -> new BoardDTO(b));
 		return boardList;
 	}
 
 	public Page<BoardHomeDTO> getAllInDogIds(List<Long> dogIds, int page) {
-		Pageable pageable = PageRequest.of(page, 9);
+		Pageable pageable = PageRequest.of(page, 9, Sort.by("boardId").descending());
 		List<Dog> dogList = new ArrayList<Dog>();
 		for (Long id : dogIds) {
 			Dog dog = dogRepository.findByDogId(id);
-			logger.debug("======= dog : {}", dog);
 			dogList.add(dog);
 		}
-		Page<BoardHomeDTO> fbList = boardRepository.findAllByDogInOrderByBoardIdDesc(dogList, pageable);
+		Page<BoardHomeDTO> fbList = boardRepository.findAllByDogIn(dogList, pageable);
 		for (int i = 0; i < fbList.getNumberOfElements(); i++) {
 			long dogId = fbList.getContent().get(i).getDogId();
 			fbList.getContent().get(i).setDog(DogInfoRespDTO.of(dogRepository.findByDogId(dogId)));
