@@ -173,14 +173,14 @@ export const YellowBtn = styled.button`
 `;
 
 export const PlusBtn = styled.button`
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   border: none;
   background-color: #559968;
 
   font-size: 3rem;
-  line-height: 3.5rem;
+  line-height: 60px;
   text-align: center;
   color: #fff;
 `;
