@@ -24,8 +24,8 @@ function OauthTemp() {
     address: '',
   })
 
-  const tokenErr = useRef(false);
-  const userErr = useRef(false);
+  const canNavigate = useRef(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const tmpToken = ttoken.slice(14, ttoken.length);
@@ -44,26 +44,35 @@ function OauthTemp() {
 
   }, [])
   
+  // 유저 정보가 입력되면 로컬스토리지에 유저 정보 저장
   useEffect(() => {
-    console.log(userInfos);
-    setUser(userInfos);
-    userErr.current = true;
+      console.log(userInfos);
+      setUser(userInfos);
+
+      localStorage.setItem('user', JSON.stringify(token));
+      setAuth(token);
+
+      canNavigate.current = true;
+      setIsLoading(false);
   }, [userInfos]);
-  
-  useEffect(() => {
-    console.log(token);
-    localStorage.setItem('user', JSON.stringify(token));
-    setAuth(token);
-    tokenErr.current = true;
-  }, [userErr.current]);
 
-  
+  // 위 코드가 실행된 후에 navigate되도록 해야함
 
+  const onClick = () => {
+    navigate('/');
+  }
 
   return (
-    <div>
-      문자열 나누기 테스트
-    </div>
+    <>
+      {isLoading ? (
+        <div>로그인 중...</div>
+      ) : (
+        <div>
+          로그인 성공!
+          <button onClick={onClick}>홈으로</button>
+        </div>
+      )}
+    </>
   );
 }
 
