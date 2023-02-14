@@ -34,6 +34,7 @@ function FollowerList() {
         })
         .then((res) => {
           console.log(res);
+          console.log(res.data.users);
           setFollowers(res.data.users);
         })
         .catch((err) => {

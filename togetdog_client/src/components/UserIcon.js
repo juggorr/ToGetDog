@@ -6,11 +6,7 @@ const UserIcon = (props) => {
   // feed 작업내용 올라오면 해당 url로 수정
   const navigate = useNavigate();
   const onClick = () => {
-    navigate("/", {
-      state: {
-        userId: props.idx,
-      },
-    });
+    navigate(`/feed/${props.idx}`);
   };
   const iconId = props.text.charCodeAt(0);
 
