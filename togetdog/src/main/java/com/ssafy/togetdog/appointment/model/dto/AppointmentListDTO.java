@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.ssafy.togetdog.appointment.model.entity.Appointment;
 import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
-import com.ssafy.togetdog.dog.model.entity.Dog;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

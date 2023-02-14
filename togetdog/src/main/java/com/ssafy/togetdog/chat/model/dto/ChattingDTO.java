@@ -1,7 +1,5 @@
 package com.ssafy.togetdog.chat.model.dto;
 
-import java.time.LocalDateTime;
-
 import com.ssafy.togetdog.chat.model.entity.ChatMsg;
 
 import lombok.AllArgsConstructor;
