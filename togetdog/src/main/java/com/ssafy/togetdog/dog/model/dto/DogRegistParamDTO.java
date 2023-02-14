@@ -36,7 +36,7 @@ public class DogRegistParamDTO {
 				.user(user)
 				.dogName(dogDTO.getDogName())
 				.dogGender(gender)
-				.dogType(dogDTO.getDogType())
+				.dogType(dogDTO.getDogType().replace("\r", ""))
 				.dogBirth(dogDTO.getDogBirth())
 				.dogWeight(dogDTO.getDogWeight())
 				.dogNeutered(dogDTO.isDogNeutered())
