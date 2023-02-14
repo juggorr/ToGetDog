@@ -63,6 +63,12 @@ const ChatMsg = () => {
     setMsgInput(e.target.value);
   };
 
+  const onKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
+  };
+
   const gotoBottom = () => {
     let element = document.getElementById('chatContent');
     element.scrollTop = element.scrollHeight - element.clientHeight;
@@ -257,7 +263,13 @@ const ChatMsg = () => {
         </ChatMsgBoxWrapper>
         <ChatInputWrapper>
           <div className='chat-input-box'>
-            <input className='chat-input' onChange={onChangeMsg} maxLength='100' placeholder='메시지를 입력하세요' />
+            <input
+              className='chat-input'
+              onChange={onChangeMsg}
+              onKeyPress={onKeyPress}
+              maxLength='100'
+              placeholder='메시지를 입력하세요'
+            />
             <div className='send-btn' onClick={sendMessage}>
               <FontAwesomeIcon icon='fa-solid fa-paper-plane' />
             </div>
