@@ -39,7 +39,7 @@ public class ChatInfoServiceImpl implements ChatInfoService{
 		if(list == null)
 			return;
 		for(ChatInfo user : list) {
-			if(user.getActivation() == 2) {
+			if(user.getActivation() == 2L) {
 				user.updateAct(1);
 			}
 			user.updateLast(cm);
