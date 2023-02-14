@@ -316,8 +316,11 @@ public class BoardRestController {
 		// notify 전송
 		User sender = userService.findUserByUserId(jwtService.getUserId(token));
 		User receiver = boardService.findBoardByBoardId(likeDTO.getBoardId()).getUser();
-		Board board = boardService.findBoardByBoardId(likeDTO.getBoardId());
-		notifyService.insertLikeNotify(receiver, sender, board.getDog().getDogId(), likeDTO.getBoardId());
+		// 자기 자신에게는 알림을 전송하지 않는다.
+		if (sender.getUserId() != receiver.getUserId()) {
+			Board board = boardService.findBoardByBoardId(likeDTO.getBoardId());
+			notifyService.insertLikeNotify(receiver, sender, board.getDog().getDogId(), likeDTO.getBoardId());
+		}
 
 		resultMap.put("result", SUCCESS);
 		resultMap.put("likeCnt", likeService.getLikes(likeDTO.getBoardId()));
