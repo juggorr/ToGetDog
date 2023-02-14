@@ -264,39 +264,42 @@ public class AppointmentService {
 
 		if (neutured) { // 중성화 한 강아지 true = 1, false = 0
 			if (age < 1) { // 1살 미만
-				logger.info("11111111111111111111 ============== : {},{}", startWeight, endWeight);
+				logger.info("1살 미만 중성화o ============== : {},{}", startWeight, endWeight);
 				recList = appointmentRepository.getNeuturedList(userId, regionCode, oneYearBefore, thisYear,
 						startWeight, endWeight);
 			} else if (age < 5) { // 1~5살
-				logger.info("2222222 ============== : {},{}", startWeight, endWeight);
+				logger.info("5살 미만 중성화o ============== : {},{}", startWeight, endWeight);
 				recList = appointmentRepository.getNeuturedList(userId, regionCode, fiveYearBefore, oneYearBefore,
 						startWeight, endWeight);
 			} else if (age < 10) { // 5~10살
-				logger.info("333333333 ============== : {},{}", startWeight, endWeight);
+				logger.info("10살 미만 중성화o ============== : {},{}", startWeight, endWeight);
 				recList = appointmentRepository.getNeuturedList(userId, regionCode, tenYearBefore, fiveYearBefore,
 						startWeight, endWeight);
 			} else { // 10살 이상
-				logger.info("44444444 ============== : {},{}", startWeight, endWeight);
+				logger.info("10살 초과 중성화o ============== : {},{}", startWeight, endWeight);
 				recList = appointmentRepository.getNeuturedList(userId, regionCode, "190001", tenYearBefore,
 						startWeight, endWeight);
 			}
 		} else { // 중성화 안한 강아지, 쿼리 문 뒤에 dogGender 붙여야함
 			if (age < 1) { // 1살 미만
+				logger.info("1살 미만 중성화x ============== : {},{}", startWeight, endWeight);
 				recList = appointmentRepository.getGenderList(userId, regionCode, oneYearBefore, thisYear, startWeight,
 						endWeight, gender);
 			} else if (age < 5) { // 1~5살
+				logger.info("5살 미만 중성화x ============== : {},{}", startWeight, endWeight);
 				recList = appointmentRepository.getGenderList(userId, regionCode, fiveYearBefore, oneYearBefore,
 						startWeight, endWeight, gender);
 			} else if (age < 10) { // 5~10살
+				logger.info("10살 미만 중성화x ============== : {},{}", startWeight, endWeight);
 				recList = appointmentRepository.getGenderList(userId, regionCode, tenYearBefore, fiveYearBefore,
 						startWeight, endWeight, gender);
 			} else { // 10살 이상
+				logger.info("10살 초과 중성화x ============== : {},{}", startWeight, endWeight);
 				recList = appointmentRepository.getGenderList(userId, regionCode, "190001", tenYearBefore, startWeight,
 						endWeight, gender);
 			}
 		}
-		logger.info("11111111111111111111 ============== : {},{}", oneYearBefore, thisYear);
-		logger.info("11111111111111111111 ============== : {},{}", userId, regionCode);
+		logger.info("유저 아이디, 지역코드 ============== : {},{}", userId, regionCode);
 		logger.info("recommendedList ============== : {}", recList);
 		reclist = recList.stream().map(r -> DogRecommendListDTO.of(r)).collect(Collectors.toList());
 		return reclist;
