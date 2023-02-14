@@ -129,7 +129,7 @@ function DogRegister() {
   // 이름, 5글자 이상 입력 불가
   const [name, setName] = useState('');
   const handleName = (e) => {
-    const name = e.target.value;
+    const name = e.target.value.slice(0, 5);
     if (!nameRegexp.test(name)) { // 정규식 통과못하면 !false = >true
       setNameError(true);
       setNameErrorMsg('이름은 한글1~5자');

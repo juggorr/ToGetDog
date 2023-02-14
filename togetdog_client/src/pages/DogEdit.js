@@ -104,7 +104,7 @@ function DogEdit() {
 
   // placeholder들 받아오기
   const [imageHold, setImageHold] = useState('');
-  const [imageHoldURL, setImageHoldURL] = useState('');
+  // const [imageHoldURL, setImageHoldURL] = useState('');
   const [nameHold, setNameHold] = useState('');
   const [breedHold, setBreedHold] = useState('');
   const [ageHold, setAgeHold] = useState('');
@@ -220,7 +220,9 @@ function DogEdit() {
   // 이름, 5글자 이상 입력 불가
   const [name, setName] = useState('');
   const handleName = (e) => {
-    const name = e.target.value;
+    // 입력한 순간 저장된 이름을 없애야 오류 처리 가능
+    setNameHold('');
+    const name = e.target.value.slice(0, 5);
     if (!nameRegexp.test(name)) { // 정규식 통과못하면 !false = >true
       setNameError(true);
       setNameErrorMsg('이름은 한글1~5자');
@@ -245,6 +247,7 @@ function DogEdit() {
   // 태어난 해
   const [year, setYear] = useState('');
   const handleYear = (e) => {
+    setYearHold('');
     // 4글자만 입력되도록 슬라이싱
     const year = e.target.value.slice(0, 4);
     // 기네스기록 + 3년 출생년도 등록 기준
@@ -261,6 +264,7 @@ function DogEdit() {
   // 태어난 달, 2글자 이상 입력 불가
   const [month, setMonth] = useState('');
   const handleMonth = (e) => {
+    setMonthHold('');
     const month = e.target.value.slice(0, 2);
     if (month < 1 || month > 12) {
       setMonthError(true);
@@ -292,6 +296,7 @@ function DogEdit() {
   // 몸무게, 4글자 이상 입력 불가
   const [weight, setWeight] = useState('');
   const handleWeight = (e) => {
+    setWeightHold('');
     const weight = e.target.value.slice(0, 4);
     if (weight < 0 || weight > 90) {
       setWeightError(true);
@@ -321,6 +326,7 @@ function DogEdit() {
   // 특이사항, 20글자 이상 입력 불가
   const [perk, setPerk] = useState('');
   const handlePerk = ({ target: { value } }) => {
+    setPerkHold('');
     setPerk(value.slice(0, 20));
   };
 
@@ -438,7 +444,7 @@ function DogEdit() {
               onChange={handleImage}
             />
           </ProfileImage>
-          <div className={imageError? 'profile-error' : 'success'}>{imageErrorMsg}</div>
+          <div className='profile-error'>{imageErrorMsg}</div>
         </InputWrapper>
         {/* 이름 입력 */}
         <InputWrapper>
@@ -458,7 +464,7 @@ function DogEdit() {
               />
             </div>
           </div>
-          <div className={nameError ? 'success' : 'error'}>{nameErrorMsg}</div>
+          <div className='error'>{nameErrorMsg}</div>
         </InputWrapper>
         {/* 성별 입력 */}
         <InputWrapper>
@@ -517,8 +523,9 @@ function DogEdit() {
               <div className='month'>월</div>
             </div>
           </div>
-          <div className={yearError ? 'success' : 'error'}>{yearErrorMsg}</div>
-          <div className={monthError ? 'success' : 'error'}>{monthErrorMsg}</div>
+          <div className='error'>{yearErrorMsg}</div>
+          <div className='error'>{monthErrorMsg}</div>
+          <div className='error'>{ageErrorMsg}</div>
           <p className='small-font'>정확한 나이를 모르신다면 추정 나이를 입력해 주세요</p>
         </InputWrapper>
         {/* 몸무게 입력 */}
@@ -542,7 +549,7 @@ function DogEdit() {
             </div>
             <div className='kilogram'>kg</div>
           </div>
-          <div className={weightError ? 'success' : 'error'}>{weightErrorMsg}</div>
+          <div className='error'>{weightErrorMsg}</div>
         </InputWrapper>
         {/* 중성화 여부 */}
         <InputWrapper>
