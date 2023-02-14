@@ -201,7 +201,7 @@ public class AppointmentRestController {
 //		appointmentService.test();
 		
 		long userId = jwtService.getUserId(token);
-//		long userId = 4L;
+//		long userId = 41L;
 		List<DogRecommendListDTO> dogList = appointmentService.recommendFriendsForDog(userId, dogId);
 		
 		resultMap.put("result", SUCCESS);
