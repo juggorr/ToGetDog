@@ -21,7 +21,7 @@ const MainFooter = () => {
   useEffect(() => {
     console.log('하단 바 작업용 url');
     console.log(window.location.href);
-    let currentURL = window.location.href.slice(7,).split('/');
+    let currentURL = window.location.href.slice(10,).split('/');
     
     const page = currentURL[1];
     const userId = currentURL[2];
