@@ -52,12 +52,12 @@ public class OAuthAttributes {
     	Map<String, Object> response = (Map<String, Object>)attributes.get("kakao_account");
     	Map<String, Object> profile = (Map<String, Object>) response.get("profile");
         
-    	Optional<String> email = Optional.ofNullable(((String) response.get("email")));
+    	Optional<String> email = Optional.ofNullable((String) response.get("email"));
     	String emailStr;
-    	if (email == null) {
-    		emailStr = "none";
-    	} else {
+    	if (email.isPresent()) {
     		emailStr = email.orElse(null);
+    	} else {
+    		emailStr = "none";
     	}
         return OAuthAttributes.builder()
                 .name((String) profile.get("nickname"))

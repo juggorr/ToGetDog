@@ -46,7 +46,7 @@ public class UserInfoRespDTO {
 
 		double rating = 0;
 		if (user.getRatingCount() != 0) {
-			rating = user.getRatingSum() / user.getRatingCount();
+			rating = (int) user.getRatingSum() / user.getRatingCount();
 		}
 		return UserInfoRespDTO.builder()
 				.email(user.getEmail())
