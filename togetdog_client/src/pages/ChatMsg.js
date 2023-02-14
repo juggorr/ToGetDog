@@ -65,7 +65,7 @@ const ChatMsg = () => {
 
   const gotoBottom = () => {
     let element = document.getElementById('chatContent');
-    // element.scrollTop = element.scrollHeight - element.clientHeight;
+    element.scrollTop = element.scrollHeight - element.clientHeight;
   };
 
   const sendMessage = () => {
