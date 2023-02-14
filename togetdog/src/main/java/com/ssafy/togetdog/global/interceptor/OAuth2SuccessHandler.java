@@ -52,10 +52,17 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		} else if ((boolean) userPrincipal.getAttribute("login")) {
 			logger.debug("소셜 회원의 로그인 시도 입니다.");
 			User user = userRepository.findByEmail(authentication.getName()).orElse(null);
-			String accessToken = jwtService.createAccessToken(user.getUserId());
-			return UriComponentsBuilder.fromUriString("/oauth")
-	                .queryParam("access-token", accessToken)
-	                .queryParam("user", UserLoginRespDTO.of(user))
+			if (user != null) {
+				String accessToken = jwtService.createAccessToken(user.getUserId());
+				return UriComponentsBuilder.fromUriString("/oauth")
+		                .queryParam("access-token", accessToken)
+		                .queryParam("user", UserLoginRespDTO.of(user))
+		                .build()
+		                .encode()
+		                .toUriString();
+			}
+			// user를 찾을 수 없으면 login으로 튕기게 처리
+			return UriComponentsBuilder.fromUriString("/login")
 	                .build()
 	                .encode()
 	                .toUriString();
