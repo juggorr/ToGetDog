@@ -118,16 +118,29 @@ export const FeedProfileTop = styled.div`
     align-items: end;
   }
 
-  .make-appointment-btn {
+  .feed-btn-box {
+    display: flex;
+  }
+
+  .make-appointment-btn,
+  .dm-btn {
     width: 1.7rem;
     height: 1.7rem;
     font-size: 0.8rem;
-    background-color: #7fb77e;
     text-align: center;
     line-height: 1.5rem;
     border-radius: 50%;
     color: #fff;
     margin-top: 2.6rem;
+  }
+
+  .make-appointment-btn {
+    background-color: #7fb77e;
+  }
+
+  .dm-btn {
+    background-color: #699bf7;
+    margin-right: 0.3rem;
   }
 `;
 

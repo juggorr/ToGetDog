@@ -308,17 +308,22 @@ const Feed = () => {
             ) : currentDog ? (
               <div className='other-user-btns'>
                 <FollowBtn dogId={currentDog.dogId} followStatus={followStatus} setFollowStatus={setFollowStatus} />
-                <div
-                  className='make-appointment-btn'
-                  onClick={() =>
-                    navigate('/createAppointment', {
-                      state: {
-                        partnerId: feedUserData.userId,
-                      },
-                    })
-                  }
-                >
-                  <FontAwesomeIcon icon='fa-calendar' />
+                <div className='feed-btn-box'>
+                  <div className='dm-btn' onClick={() => navigate('/')}>
+                    <FontAwesomeIcon icon='fa-solid fa-message' />
+                  </div>
+                  <div
+                    className='make-appointment-btn'
+                    onClick={() =>
+                      navigate('/createAppointment', {
+                        state: {
+                          partnerId: feedUserData.userId,
+                        },
+                      })
+                    }
+                  >
+                    <FontAwesomeIcon icon='fa-calendar' />
+                  </div>
                 </div>
               </div>
             ) : null}
