@@ -198,9 +198,9 @@ const ChatMsg = () => {
         stompClient.connected = false;
       },
     );
-    socket.onclose = () => {
-      connect(roomId);
-    };
+    // socket.onclose = () => {
+    //   connect(roomId);
+    // };
   };
 
   useEffect(() => {
