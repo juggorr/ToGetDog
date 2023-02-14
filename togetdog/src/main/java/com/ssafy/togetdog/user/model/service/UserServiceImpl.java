@@ -312,6 +312,11 @@ public class UserServiceImpl implements UserService {
 		String genderRegexp = "^female$|^male$|^none$";
 		String regionCodeRegexp = "(^[0-9]{5}$)";
 		
+		User user = userRepository.findByEmail(userDTO.getEmail()).orElse(null);
+		if (user != null) {
+			throw new DuplicatedInputException("이미 가입된 이메일입니다.");
+		}
+		
 		// null check
 		if (userDTO.getEmail() == null) {
 			throw new InvalidInputException("이메일이 null입니다.");
