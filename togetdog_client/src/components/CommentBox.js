@@ -105,9 +105,11 @@ const CommentBox = ({ boardData, setBoardData }) => {
                 </div>
                 <div>{comment.commentContent}</div>
               </div>
-              <div className='comment-delete-btn' onClick={() => deleteComment(comment.commentId)}>
-                <FontAwesomeIcon icon='fa-solid fa-trash' />
-              </div>
+              {comment.userId === user.userId ? (
+                <div className='comment-delete-btn' onClick={() => deleteComment(comment.commentId)}>
+                  <FontAwesomeIcon icon='fa-solid fa-trash' />
+                </div>
+              ) : null}
             </div>
           ))}
         </div>
