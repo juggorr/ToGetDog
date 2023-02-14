@@ -67,6 +67,7 @@ public class UserServiceImpl implements UserService {
 	/* 소셜회원 가입처리*/
 	@Override
 	public void socialRegist(UserSocialRegistParamDTO userDTO) {
+		checkSocialRegistrationValidation(userDTO);
 		userRepository.save(UserSocialRegistParamDTO.of(userDTO));
 	}
 	
@@ -275,6 +276,65 @@ public class UserServiceImpl implements UserService {
 		// password regexp check
 		if (!Pattern.matches(passwordRegexp, userDTO.getPassword())) {
 			throw new InvalidInputException("비밀번호 입력값이 올바르지 않습니다.");
+		}
+		// nickname regexp check
+		if (!Pattern.matches(nicknameRegexp, userDTO.getNickname())) {
+			throw new InvalidInputException("닉네임 입력값이 올바르지 않습니다.");
+		}
+		// gender regexp check
+		if (!Pattern.matches(genderRegexp, userDTO.getGender())) {
+			throw new InvalidInputException("성별 입력값이 올바르지 않습니다.");
+		}
+		// regionCode regexp check
+		if (!Pattern.matches(regionCodeRegexp, userDTO.getRegionCode())) {
+			throw new InvalidInputException("지역번호 값이 올바르지 않습니다.");
+		}
+		// birth check
+		try {
+			int birth = Integer.parseInt(userDTO.getBirth());
+			LocalDate now = LocalDate.now();
+			if (birth > now.getYear() || birth < 1900) {
+				throw new InvalidInputException("생년월일 값이 올바르지 않습니다.");
+			}
+		} catch (NumberFormatException e) {
+			throw new InvalidInputException("생년월일 값이 숫자가 아닙니다.");
+		}
+	}
+	
+	/***
+	 * Validation for User SocialRegistration
+	 * 
+	 * @param userRegistParamDTO
+	 */
+	public void checkSocialRegistrationValidation(UserSocialRegistParamDTO userDTO) {
+		String emailRegexp = "^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
+		String nicknameRegexp = "^[a-zA-Z가-힇0-9]{2,16}$";
+		String genderRegexp = "^female$|^male$|^none$";
+		String regionCodeRegexp = "(^[0-9]{5}$)";
+		
+		// null check
+		if (userDTO.getEmail() == null) {
+			throw new InvalidInputException("이메일이 null입니다.");
+		}
+		if (userDTO.getNickname() == null) {
+			throw new InvalidInputException("닉네임이 null입니다.");
+		}
+		if (userDTO.getGender() == null) {
+			throw new InvalidInputException("성별이 null입니다.");
+		}
+		if (userDTO.getAddress() == null) {
+			throw new InvalidInputException("주소 값이 null입니다.");
+		}
+		if (userDTO.getRegionCode() == null) {
+			throw new InvalidInputException("지역코드 값이 null입니다.");
+		}
+		if (userDTO.getBirth() == null) {
+			throw new InvalidInputException("생년월일 값이 null입니다.");
+		}
+		
+		// email regexp check
+		if (!Pattern.matches(emailRegexp, userDTO.getEmail())) {
+			throw new InvalidInputException("이메일 입력값이 올바르지 않습니다.");
 		}
 		// nickname regexp check
 		if (!Pattern.matches(nicknameRegexp, userDTO.getNickname())) {
