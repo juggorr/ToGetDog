@@ -56,6 +56,10 @@ export const BackHeaderWrapper = styled.div`
   width: 100%;
   height: 60px;
   display: flex;
+  position: fixed;
+  top: 0;
+  background-color: #fff;
+  z-index: 9;
 
   .back-arrow {
     color: black;
