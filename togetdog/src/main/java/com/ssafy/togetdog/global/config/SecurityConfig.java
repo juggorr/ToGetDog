@@ -32,7 +32,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
         		.httpBasic().disable() // rest api만 가능
-        		.csrf().disable()
+        		.csrf().disable() // rest api만 가능한 jwt인증 기반의 사이트이므로 csrf는 disable처리 합니다.
         		.cors().configurationSource(corsConfigurationSource())
         		.and()
                 .authorizeRequests()
