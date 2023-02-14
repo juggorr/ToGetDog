@@ -16,10 +16,8 @@ const CommentBox = ({ boardData, setBoardData }) => {
 
   const [comments, setComments] = useState(boardData.comments);
   const [commentInput, setCommentInput] = useState();
-  const [commentMenuBtnClick, setCommentMenuBtnClick] = useState(false);
 
   const commentRef = useRef();
-  const outSection = useRef();
 
   const onChangeComment = (e) => {
     setCommentInput(e.target.value);
@@ -31,8 +29,9 @@ const CommentBox = ({ boardData, setBoardData }) => {
     }
   };
 
-  const deleteComment = (commentId) => {
-    if (window.confirm('댓글을 삭제하시겠습니까?')) {
+  const deleteComment = ({ commentId }) => {
+    const bool = window.confirm('댓글을 삭제하시겠습니까?');
+    if (bool) {
       axios
         .delete(`${BACKEND_URL}/board/comment`, {
           params: {
@@ -106,7 +105,7 @@ const CommentBox = ({ boardData, setBoardData }) => {
                 </div>
                 <div>{comment.commentContent}</div>
               </div>
-              <div className='comment-delete-btn' onClick={deleteComment(comment.commentId)}>
+              <div className='comment-delete-btn' onClick={() => deleteComment(comment.commentId)}>
                 <FontAwesomeIcon icon='fa-solid fa-trash' />
               </div>
             </div>
