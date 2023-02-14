@@ -6,7 +6,7 @@ import {
   ChatUserContainer,
 } from '../styles/ChatEmotion';
 import MenuIcon from '../assets/menu_icon.png';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import UserIcon from '../components/UserIcon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MyChat from '../components/MyChat';
@@ -19,6 +19,8 @@ import { BACKEND_URL } from '../config';
 
 import Stomp from 'webstomp-client';
 import SockJS from 'sockjs-client';
+import Loading from '../assets/loading.gif';
+import { MenuModalWrapper } from '../styles/ModalEmotion';
 
 const ChatMsg = () => {
   const auth = useRecoilValue(authAtom);
@@ -37,8 +39,30 @@ const ChatMsg = () => {
   const [sessionId, setSessionId] = useState();
   const [stompClient, setStompClient] = useState();
 
+  const outSection = useRef();
   const location = useLocation();
   let otherId = location.pathname.split('/').reverse()[0];
+
+  const exitChat = () => {
+    axios
+      .put(`${BACKEND_URL}/chat`, null, {
+        params: {
+          roomId: roomId,
+        },
+        headers: {
+          Authorization: auth,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        console.log('채팅방 나가기 완료');
+        navigate(`/chat`);
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log('채팅방을 나가는 도중에 에러가 발생하였습니다.');
+      });
+  };
 
   const handleLogout = () => {
     setUser(null);
@@ -198,7 +222,6 @@ const ChatMsg = () => {
       })
       .then((resp) => {
         console.log(resp);
-        console.log(resp.data.chats);
         setChatTarget(resp.data.other);
         setChats(resp.data.chats);
         setRoomId(resp.data.other.roomId);
@@ -216,17 +239,37 @@ const ChatMsg = () => {
 
     setTimeout(() => {
       gotoBottom();
-    }, 100);
+    }, 1000);
   }, []);
 
   if (isLoading) {
-    return <div className='loading'>Loading...</div>;
+    return (
+      <div className='loading'>
+        <img src={Loading} alt='loading...'></img>
+      </div>
+    );
   }
 
   return (
     <>
       <ChatMsgContainer>
         <img src={MenuIcon} className='chat-menu-icon' onClick={() => setMenuBtnClick(true)} alt='menu' />
+        {menuBtnClick === true ? (
+          <MenuModalWrapper
+            ref={outSection}
+            onClick={(e) => {
+              if (outSection.current === e.target) {
+                setMenuBtnClick(false);
+              }
+            }}
+          >
+            <div className='modal-body'>
+              <div className='single-menu' onClick={exitChat}>
+                {'채팅방 나가기'}
+              </div>
+            </div>
+          </MenuModalWrapper>
+        ) : null}
         <ChatUserContainer>
           <UserIcon text={chatTarget.nickName} idx={chatTarget.userId} />
           <div className='nickname'>{chatTarget.nickName}</div>
