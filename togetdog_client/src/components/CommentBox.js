@@ -29,9 +29,11 @@ const CommentBox = ({ boardData, setBoardData }) => {
     }
   };
 
-  const deleteComment = ({ commentId }) => {
+  const deleteComment = (commentId) => {
     const bool = window.confirm('댓글을 삭제하시겠습니까?');
+    console.log(bool);
     if (bool) {
+      console.log(commentId);
       axios
         .delete(`${BACKEND_URL}/board/comment`, {
           params: {
@@ -45,6 +47,7 @@ const CommentBox = ({ boardData, setBoardData }) => {
           console.log(res);
           console.log(res.data);
           console.log('댓글 삭제가 완료되었습니다.');
+          setComments(res.data.comments);
         })
         .catch((err) => {
           console.log(err);
@@ -105,6 +108,7 @@ const CommentBox = ({ boardData, setBoardData }) => {
                 </div>
                 <div>{comment.commentContent}</div>
               </div>
+              {console.log(comment.commentId)}
               {comment.userId === user.userId ? (
                 <div className='comment-delete-btn' onClick={() => deleteComment(comment.commentId)}>
                   <FontAwesomeIcon icon='fa-solid fa-trash' />
