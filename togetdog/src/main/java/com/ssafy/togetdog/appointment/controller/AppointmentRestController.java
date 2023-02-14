@@ -97,6 +97,11 @@ public class AppointmentRestController {
 			dog.setDogId(pDog);
 			partnerDogList.add(dog);
 		}
+		if(myDogList.size() <= 0 || partnerDogList.size() <= 0) {
+			resultMap.put("result", "fail");
+			resultMap.put("msg", "강아지가 비어있습니다!");
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.BAD_REQUEST);
+		}
 		appointmentService.addAppointment(myId, registDTO.getReceivedUserId(), myDogList, partnerDogList, registDTO.getDateTime(), registDTO.getPlace());
 //		appointmentService.addAppointment(myId, 1L, myDogList, partnerDogList, now, "멀티캠퍼스");
 		
