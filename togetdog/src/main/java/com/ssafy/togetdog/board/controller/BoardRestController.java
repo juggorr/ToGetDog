@@ -266,7 +266,7 @@ public class BoardRestController {
 			@RequestBody CommentDTO commentDto) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
-		logger.info("comment comment comment parameter : {} {}", commentDto);
+		logger.info("comment regist parameter : {}", commentDto);
 		commentService.save(commentDto);
 		List<CommentDTO> comments = commentService.findAllCommentsInBoard(commentDto.getBoardId());
 		
@@ -283,13 +283,15 @@ public class BoardRestController {
 	 */
 	@ApiOperation(value = "댓글 삭제", notes = "선택된 단건 댓글을 삭제")
 	@DeleteMapping("/board/comment")
-	public ResponseEntity<?> deleteComment(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@RequestBody CommentDTO commentDto) {
+	public ResponseEntity<?> deleteComment(
+			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@RequestParam long commentId) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
 		
-		commentService.delete(commentDto.getCommentId());
-		List<CommentDTO> comments = commentService.findAllCommentsInBoard(commentDto.getBoardId());
+		logger.info("comment delete parameter : {}", commentId);
+		Board board = commentService.deleteAndReturn(commentId, jwtService.getUserId(token));
+		List<CommentDTO> comments = commentService.findAllCommentsInBoard(board);
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("comments", comments);
