@@ -165,8 +165,9 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 	
-	//////////////////////////////////////////////
-	// 범용 method
+	////////////////
+	// 범용 method //
+	///////////////
 
 	@Override
 	public User findUserByEmailAndPassword(String email, String password) {
@@ -231,7 +232,9 @@ public class UserServiceImpl implements UserService {
 		return waitUserRepository.findByNickName(nickname).orElse(null);
 	}
 	
-	///////////////////////////////
+	/////////////////
+	// 유효성 method //
+	////////////////
 
 	/***
 	 * Validation for User Registration

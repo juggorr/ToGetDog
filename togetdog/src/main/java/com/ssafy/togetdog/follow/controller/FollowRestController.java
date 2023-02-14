@@ -16,13 +16,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.togetdog.appointment.model.service.AppointmentService;
 import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.service.DogService;
 import com.ssafy.togetdog.follow.model.dto.FollowDTO;
+import com.ssafy.togetdog.follow.model.dto.FollowerInfoRespDTO;
 import com.ssafy.togetdog.follow.model.service.FollowService;
 import com.ssafy.togetdog.notify.model.service.NotifyService;
-import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
 import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.service.JwtService;
 import com.ssafy.togetdog.user.model.service.UserService;
@@ -77,10 +76,12 @@ public class FollowRestController {
 	 */
 	@ApiOperation(value = "팔로워 조회", notes = "해당 강아지를 팔로우하는 유저 조회")
 	@GetMapping("/follower")
-	public ResponseEntity<?> getFollwerList(@RequestBody long dogId) {
+	public ResponseEntity<?> getFollwerList(
+			@RequestBody long dogId
+			) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
-		List<UserInfoRespDTO> userInfo = followService.getFollowerList(dogId);
+		List<FollowerInfoRespDTO> userInfo = followService.getFollowerList(dogId);
 
 		resultMap.put("result", SUCCESS);
 		resultMap.put("users", userInfo);
