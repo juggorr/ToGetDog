@@ -2,6 +2,7 @@ package com.ssafy.togetdog.follow.model.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.follow.model.dto.FollowDTO;
+import com.ssafy.togetdog.follow.model.dto.FollowerInfoRespDTO;
 import com.ssafy.togetdog.follow.model.entity.Follow;
 import com.ssafy.togetdog.follow.model.repository.FollowRepository;
-import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
 import com.ssafy.togetdog.user.model.entity.User;
 
 import lombok.RequiredArgsConstructor;
@@ -35,16 +36,13 @@ public class FollowService {
 		return dogList;
 	}
 
-	public List<UserInfoRespDTO> getFollowerList(long dogId) {
+	public List<FollowerInfoRespDTO> getFollowerList(long dogId) {
 		Dog dog = new Dog();
 		dog.setDogId(dogId);
 		List<Follow> followList = followRepository.findAllByDog(dog);
-		List<UserInfoRespDTO> userList = new ArrayList<UserInfoRespDTO>();
-		for (Follow follow : followList) {
-			userList.add(UserInfoRespDTO.of(follow.getUser()));
-		}
-
-		return userList;
+		List<FollowerInfoRespDTO> follwerList = 
+				followList.stream().map(f -> FollowerInfoRespDTO.of(f.getUser())).collect(Collectors.toList());
+		return follwerList;
 	}
 
 	public Long save(FollowDTO followDTO) {
