@@ -1,11 +1,11 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const FeedContainer = styled.div`
   width: 100%;
   height: calc(100vh - 115px);
   display: flex;
   flex-direction: column;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
 
   .no-photo {
     height: 100%;
@@ -60,6 +60,12 @@ export const FeedProfileTop = styled.div`
   .no-dog-info-box {
     width: 50%;
     padding-left: 1rem;
+  }
+
+  .dog-name {
+    font-size: 0.9rem;
+    display: flex;
+    padding-bottom: 0.3rem;
   }
 
   .dog-info {
@@ -139,7 +145,7 @@ export const FeedProfileTop = styled.div`
   }
 
   .dm-btn {
-    background-color: #699bf7;
+    background-color: #717171;
     margin-right: 0.3rem;
   }
 `;
@@ -147,7 +153,7 @@ export const FeedProfileTop = styled.div`
 export const FeedProfileBottom = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 1.5rem;
+  padding-top: 0.5rem;
 
   .special-text {
     font-size: 0.8rem;
@@ -155,6 +161,30 @@ export const FeedProfileBottom = styled.div`
 
   .characters-box {
     padding: 0.5rem 0;
+  }
+
+  .dog-user-mine {
+    color: #777;
+    font-size: 0.8rem;
+    padding-left: 0.3rem;
+    padding-right: 1rem;
+    padding-top: 0.1rem;
+    cursor: pointer;
+    text-align: end;
+  }
+
+  .dog-user-not-mine {
+    color: #777;
+    font-size: 0.8rem;
+    padding-left: 0.3rem;
+    padding-top: 0.1rem;
+    cursor: pointer;
+    text-align: end;
+  }
+
+  .dog-user-nickname {
+    margin-left: 0.3rem;
+    border-bottom: 1px solid #777;
   }
 `;
 

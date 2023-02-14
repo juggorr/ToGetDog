@@ -11,7 +11,7 @@ import {
 } from "../styles/NewEmotion";
 import { MainColorShortBtn } from "../styles/BtnsEmotion";
 
-import { BACKEND_URL, DUMMY_URL } from "../config";
+import { BACKEND_URL } from "../config";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const New = () => {
@@ -59,8 +59,7 @@ const New = () => {
           }
           onClick={() => {
             setSelectedDog(item.dogs.dogId);
-          }}
-        >
+          }}>
           <img
             className="dogProfileImg"
             src={`https://i8a807.p.ssafy.io/image/dog/` + item.dogs.dogProfile}
@@ -181,8 +180,7 @@ const New = () => {
         <MainColorShortBtn
           onClick={() => {
             navigate(-1);
-          }}
-        >
+          }}>
           취소
         </MainColorShortBtn>
         <MainColorShortBtn onClick={checkValid}>작성</MainColorShortBtn>

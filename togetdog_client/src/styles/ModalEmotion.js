@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const MenuModalWrapper = styled.div`
   z-index: 999;
@@ -76,13 +76,18 @@ export const ConfirmModalBody = styled.div`
     width: 17rem;
     display: flex;
     padding-top: 1.5rem;
-    // justify-content: space-between;
     justify-content: space-around;
+  }
+
+  .user-nickname {
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 0.5rem 0;
   }
 
   .rating-box {
     display: flex;
-    // padding-bottom: 1rem;
+    padding-bottom: 0.5rem;
     justify-content: space-between;
     align-items: center;
   }
