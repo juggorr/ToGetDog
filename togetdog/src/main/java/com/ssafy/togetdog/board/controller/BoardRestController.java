@@ -225,7 +225,7 @@ public class BoardRestController {
 		if(jwtService.getUserId(token) != boardDTO.getUserId()) {
 			resultMap.put("result", "fail");
 			resultMap.put("msg", "게시물이 수정 권한이 없습니다.");
-			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.UNAUTHORIZED);
 		}
 		
 		BoardDTO newBoardDto = boardService.update(boardDTO);
@@ -251,10 +251,10 @@ public class BoardRestController {
 		if(jwtService.getUserId(token) != boardDTO.getUserId()) {
 			resultMap.put("result", "fail");
 			resultMap.put("msg", "게시물이 삭제 권한이 없습니다.");
-			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.UNAUTHORIZED);
 		}
 		
-		boardService.delete(boardDTO);
+		boardService.delete(boardDTO.getBoardId());
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("msg", "게시물이 삭제되었습니다.");

@@ -58,9 +58,8 @@ public class BoardService {
 	}
 
 	@Transactional
-	public void delete(String boardid) {
+	public void delete(long boardId) {
 		try {
-			long boardId = Long.parseLong(boardid);
 			if (boardId > 0) {
 				boardRepository.deleteById(boardId);
 			} else {

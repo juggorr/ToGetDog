@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,18 +47,28 @@ public class AppointmentService {
 		User user = new User();
 		user.setUserId(userId);
 		
+		List<Appointment> reqlist = appointmentRepository.findAllBySentUserOrReceivedUser(user, user, Sort.by("dateTime").ascending());
 		
-		List<Appointment> reqlist = appointmentRepository.findAllBySentUserOrReceivedUser(user, user);
-		
-		List<AppointmentListDTO> requestList = reqlist.stream()
+		List<AppointmentListDTO> requestListTime = reqlist.stream()
 				.map(a-> AppointmentListDTO.of(a)).collect(Collectors.toList());
-		logger.info("requestList============== : {}", requestList);
+		logger.info("requestList============== : {}", requestListTime);
+		LocalDateTime now = LocalDateTime.now();
+		List<AppointmentListDTO> requestList = new ArrayList<AppointmentListDTO>(); 
+//		logger.info("현재 시간 ============== : {}", now);
+		
+		for (int i = 0; i < requestListTime.size(); i++) {
+			logger.info("requestList of i============== : {}", requestListTime.get(i).getDateTime().compareTo(now));
+			if(requestListTime.get(i).getStatus().equals("wait") && requestListTime.get(i).getDateTime().compareTo(now) < 0) {
+				deleteAppointment(requestListTime.get(i).getRoomId());
+			}
+			requestList.add(requestListTime.get(i));
+		}
 		
 		// 약속 리스트
 		for (int i = 0; i < requestList.size(); i++) {
 			List<DogInfoRespDTO> sentDogs = new ArrayList<>(); 
-			List<DogInfoRespDTO> recvDogs = new ArrayList<>(); 
-			
+			List<DogInfoRespDTO> recvDogs = new ArrayList<>();
+
 			logger.info("requestList of i============== : {}", requestList.get(i));
 			List<SentAppointment> sentApps = sentAppointmentRepository.findAllByAppointment(reqlist.get(i));
 			for (SentAppointment sent : sentApps) {
