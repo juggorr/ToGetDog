@@ -69,6 +69,7 @@ public class BoardService {
 			if (board.getUser().getUserId() != userId) {
 				throw new UnAuthorizedException("게시물을 삭제할 권한이 없는 유저입니다.");
 			}
+			fileUtil.fileDelete(board.getImage(), boardImageFilePath);
 			boardRepository.deleteById(boardId);
 		} catch(NumberFormatException e) {
 			throw new InvalidInputException("올바른 boardId가 아닙니다.");
