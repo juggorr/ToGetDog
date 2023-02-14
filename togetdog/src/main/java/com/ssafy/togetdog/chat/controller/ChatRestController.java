@@ -116,7 +116,7 @@ public class ChatRestController {
 			}
 		}
 		if(list.size() > 1)
-			list = list.subList((int)opponent.getStart()+1, list.size());
+			list = list.subList((int)opponent.getStart(), list.size());
 		if(list.size() > 500)
 			list = list.subList(list.size()-500, list.size());
 		
