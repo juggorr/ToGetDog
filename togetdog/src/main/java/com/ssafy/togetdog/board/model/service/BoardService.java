@@ -26,6 +26,7 @@ import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.dog.model.repository.DogRepository;
 import com.ssafy.togetdog.global.exception.InvalidInputException;
+import com.ssafy.togetdog.global.exception.UnAuthorizedException;
 import com.ssafy.togetdog.global.util.FileUtil;
 import com.ssafy.togetdog.user.model.entity.User;
 
@@ -58,13 +59,17 @@ public class BoardService {
 	}
 
 	@Transactional
-	public void delete(long boardId) {
+	public void delete(String boardid, long userId) {
 		try {
-			if (boardId > 0) {
-				boardRepository.deleteById(boardId);
-			} else {
-				throw new InvalidInputException("올바른 boardId가 아닙니다.");
+			long boardId = Long.parseLong(boardid);
+			Board board = boardRepository.findById(boardId).orElse(null);
+			if (board == null) {
+				throw new InvalidInputException("올바른 게시물을 찾을 수 없습니다.");
 			}
+			if (board.getUser().getUserId() != userId) {
+				throw new UnAuthorizedException("게시물을 삭제할 권한이 없는 유저입니다.");
+			}
+			boardRepository.deleteById(boardId);
 		} catch(NumberFormatException e) {
 			throw new InvalidInputException("올바른 boardId가 아닙니다.");
 		}
