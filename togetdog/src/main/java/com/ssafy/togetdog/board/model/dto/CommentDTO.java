@@ -51,7 +51,7 @@ public class CommentDTO {
     			.commentId(comment.getCommentId())
     			.boardId(comment.getBoard().getBoardId())
     			.userId(comment.getUser().getUserId())
-    			.nickName(comment.getUser().getUsername())
+    			.nickName(comment.getUser().getNickName())
     			.commentContent(comment.getCommentContent())
     			.build();
     }
