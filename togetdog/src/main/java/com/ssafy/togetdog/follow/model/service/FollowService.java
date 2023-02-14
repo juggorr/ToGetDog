@@ -2,6 +2,7 @@ package com.ssafy.togetdog.follow.model.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.follow.model.dto.FollowDTO;
+import com.ssafy.togetdog.follow.model.dto.FollowerInfoRespDTO;
 import com.ssafy.togetdog.follow.model.entity.Follow;
 import com.ssafy.togetdog.follow.model.repository.FollowRepository;
-import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
 import com.ssafy.togetdog.user.model.entity.User;
 
 import lombok.RequiredArgsConstructor;
@@ -38,18 +39,18 @@ public class FollowService {
 		return dogList;
 	}
 
-	public List<UserInfoRespDTO> getFollowerList(long dogId) {
+	public List<FollowerInfoRespDTO> getFollowerList(long dogId) {
 		Dog dog = new Dog();
 		dog.setDogId(dogId);
 		List<Follow> followList = followRepository.findAllByDog(dog);
-		List<UserInfoRespDTO> userList = new ArrayList<UserInfoRespDTO>();
-		
+		List<FollowerInfoRespDTO> userList = new ArrayList<FollowerInfoRespDTO>();
+
 		for (Follow follow : followList) {
 			// 삭제된 유저의 경우, 닉네임과 이메일이 같음
-			if(follow.getUser().getNickName().equals(follow.getUser().getEmail())) continue;
-			userList.add(UserInfoRespDTO.of(follow.getUser()));
+			if (follow.getUser().getNickName().equals(follow.getUser().getEmail()))
+				continue;
+			userList.add(FollowerInfoRespDTO.of(follow.getUser()));
 		}
-
 		return userList;
 	}
 
@@ -93,7 +94,7 @@ public class FollowService {
 		Dog dog = new Dog();
 		dog.setDogId(dogId);
 
-		if(followRepository.countByUserAndDog(user, dog) > 0)
+		if (followRepository.countByUserAndDog(user, dog) > 0)
 			return true;
 		else
 			return false;
