@@ -219,12 +219,12 @@ public class AppointmentService {
 		DogInfoRespDTO myDog = DogInfoRespDTO.of(dog, Double.parseDouble(dog.getDogWeight()));
 		logger.info("myDog ============== : {}", myDog);
 		boolean neutured = myDog.isDogNeutered();
-		int age = myDog.getDogAge() % 12;
+		int age = myDog.getDogAge() / 12;
 		LocalDateTime now = LocalDateTime.now();
-		String tenYearBefore = String.valueOf(now.minusYears(10)).substring(0, 4);
-		String fiveYearBefore = String.valueOf(now.minusYears(5)).substring(0, 4);
-		String oneYearBefore = String.valueOf(now.minusYears(1)).substring(0, 4);
-		String thisYear = String.valueOf(now).substring(0, 4);
+		String tenYearBefore = String.valueOf(now.minusYears(10)).substring(0, 4) + String.valueOf(now.minusYears(10)).substring(5, 7);
+		String fiveYearBefore = String.valueOf(now.minusYears(5)).substring(0, 4) + String.valueOf(now.minusYears(5)).substring(5, 7);
+		String oneYearBefore = String.valueOf(now.minusYears(1)).substring(0, 4) + String.valueOf(now.minusYears(1)).substring(5, 7);
+		String thisYear = String.valueOf(now).substring(0, 4) + String.valueOf(now).substring(5, 7);
 		logger.info("age ============== : {}", age);
 		double weight = myDog.getDogWeight();
 		String startWeight = "-1";
@@ -257,12 +257,16 @@ public class AppointmentService {
 		
 		if(neutured) { // 중성화 한 강아지 true = 1, false = 0
 			if(age < 1) { // 1살 미만
+				logger.info("11111111111111111111 ============== : {},{}", startWeight,endWeight);
 				recList = appointmentRepository.getNeuturedList(userId, regionCode, oneYearBefore, thisYear, startWeight, endWeight);
 			} else if(age < 5) { // 1~5살
+				logger.info("2222222 ============== : {},{}", startWeight,endWeight);
 				recList = appointmentRepository.getNeuturedList(userId, regionCode, fiveYearBefore, oneYearBefore, startWeight, endWeight);
 			} else if(age < 10) { // 5~10살
+				logger.info("333333333 ============== : {},{}", startWeight,endWeight);
 				recList = appointmentRepository.getNeuturedList(userId, regionCode, tenYearBefore, fiveYearBefore, startWeight, endWeight);
 			} else { // 10살 이상
+				logger.info("44444444 ============== : {},{}", startWeight,endWeight);
 				recList = appointmentRepository.getNeuturedList(userId, regionCode, "190001", tenYearBefore, startWeight, endWeight);
 			}
 		} else { // 중성화 안한 강아지, 쿼리 문 뒤에 dogGender 붙여야함
@@ -276,6 +280,8 @@ public class AppointmentService {
 				recList = appointmentRepository.getGenderList(userId, regionCode, "190001", tenYearBefore, startWeight, endWeight, gender);
 			}
 		}
+		logger.info("11111111111111111111 ============== : {},{}", oneYearBefore,thisYear);
+		logger.info("11111111111111111111 ============== : {},{}", userId,regionCode);
 		logger.info("recommendedList ============== : {}", recList);
 		reclist  = recList.stream().map(r -> DogRecommendListDTO.of(r)).collect(Collectors.toList());
 		return reclist;
