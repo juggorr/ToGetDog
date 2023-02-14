@@ -3,7 +3,7 @@ import { ChatRedDot, SingleChatListWrapper } from '../styles/ChatEmotion';
 import UserIcon from './UserIcon';
 
 const SingleChatList = ({ chatData }) => {
-  console.log(chatData);
+  console.log('채팅 데이터' + chatData);
   const navigate = useNavigate();
 
   const userAge = (birthyear) => {
@@ -19,7 +19,12 @@ const SingleChatList = ({ chatData }) => {
 
   return (
     <>
-      <SingleChatListWrapper onClick={() => navigate(`/chat/${chatData.roomId}`)}>
+      <SingleChatListWrapper
+        onClick={() => {
+          console.log(chatData.userId);
+          navigate(`/chat/${chatData.userId}`);
+        }}
+      >
         <div className='chat-profile-box'>
           <UserIcon text={chatData.nickName} idx={1} />
           {/* 채팅 안읽은 상태 시에만 ChatRedDot 띄우기 */}

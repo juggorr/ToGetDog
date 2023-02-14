@@ -67,7 +67,6 @@ export const ConfirmModalBody = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  
 
   .modal-msg {
     font-size: 0.75rem;

@@ -26,7 +26,7 @@ const MenuModal = ({
   const handleUserInfo = () => {
     setMenuBtnClick(false);
     setUserInfoModal(true);
-  }
+  };
 
   const handleDogDelete = () => {
     setMenuBtnClick(false);
@@ -77,10 +77,10 @@ const MenuModal = ({
                     navigate(it.link, { state: dogId });
                   } else if (it.link === '/dogedit' && feedDogData.length === 0) {
                     return handleNoDog();
-                  } else if (it.link === "/profile") {
+                  } else if (it.link === '/profile') {
                     return handleUserInfo();
-                  } else  {
-                    navigate(it.link)
+                  } else {
+                    navigate(it.link);
                   }
                   // it.link === "/logout" ? handleLogout() : navigate(it.link);
                 }}
