@@ -101,4 +101,8 @@ export const ConfirmModalBody = styled.div`
 export const ConfirmModalImage = styled.img`
   width: 4rem;
   // height: 1rem;
+
+  .no-essentials {
+    padding-bottom: 2rem;
+  }
 `;
