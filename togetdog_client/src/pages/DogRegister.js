@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { authAtom, userState } from '../recoil';
 import Select from 'react-select';
 import axios from 'axios';
 
-import { DUMMY_URL, BACKEND_URL } from '../config';
+import { BACKEND_URL } from '../config';
 
 import NoEssentialsModal from '../components/AlertModal/NoEssentialsModal'
 import { MainColorLongBtn } from '../styles/BtnsEmotion';
 import DoubleOptionBtn from '../components/DoubleOptionBtn';
 import { RegisterContainer, RegisterWrapper, ProfileImage, AddImage, InputWrapper } from '../styles/DogRegisterEmotion';
 import BackHeader from '../components/BackHeader';
+
 
 const nameRegexp = /^[가-힣]{1,5}$/;
 const imageRegexp = /(.*?)\.(jpg|jpeg|png)$/;
@@ -106,20 +107,16 @@ function DogRegister() {
   const [image, setImage] = useState(null);
   const handleImage = (e) => {
     const file = e.target.files[0];
-    // console.log(file);
-    // console.log(file.name);
-    // console.log(file.size);
     // 사진 확장자 유효성 검사
     if (!imageRegexp.test(file.name)) {
       setImageError(true);
       setImageErrorMsg('사진 파일을 올려주세요.');
       return;
     }
-
     // 사진 용량 유효성 검사
     if (file.size > maxSize) {
       setImageError(true);
-      setImageErrorMsg('50MB를 초과한 파일 입니다.');
+      setImageErrorMsg('50MB를 초과한 파일입니다.');
       return;
     } else {
       setImageError(false);
@@ -128,6 +125,7 @@ function DogRegister() {
       setImgURL(URL.createObjectURL(file));
     }
   };
+
   // 이름, 5글자 이상 입력 불가
   const [name, setName] = useState('');
   const handleName = (e) => {
@@ -141,6 +139,7 @@ function DogRegister() {
     }
     setName(name);
   };
+
   // 성별 선택
   const [sex, setSex] = useState('');
   const handleSex = (e) => {
@@ -151,6 +150,7 @@ function DogRegister() {
   const handleBreed = (e) => {
     setBreed(e.value);
   };
+
   // 태어난 해
   const [year, setYear] = useState('');
   const handleYear = (e) => {
@@ -166,6 +166,7 @@ function DogRegister() {
     }
     setYear(year);
   };
+
   // 태어난 달, 2글자 이상 입력 불가
   const [month, setMonth] = useState('');
   const handleMonth = (e) => {
@@ -179,6 +180,7 @@ function DogRegister() {
     }
     setMonth(month);
   };
+
   // 미래 시점 입력못하게 검사하는 함수
   useEffect(() => {
     // console.log('감시하자')
@@ -209,6 +211,7 @@ function DogRegister() {
     }
     setWeight(weight);
   };
+
   // 중성화 여부
   const [isNeuterd, setIsNeuterd] = useState('');
   const handleIsNeuterd = (e) => {
@@ -230,8 +233,6 @@ function DogRegister() {
     setPerk(value.slice(0, 20));
   };
 
-  
-
   // 유효성 검사 함수
   const checkValidation = () => {
     // 필수 입력 값들이 입력되었는지 확인
@@ -240,8 +241,7 @@ function DogRegister() {
       console.log('통과 실패');
       return false;
     };
-
-    // 필수 값들이 입력되었고, 값에 에러가 없는 경우
+    // 필수 값들이 입력되었고, 값에 에러가 없으면 통과!
     if (!imageError && !nameError && !yearError && !monthError && !weightError && !ageError) {
       return true;
     } else {
@@ -252,7 +252,6 @@ function DogRegister() {
   const sendPOST = async () => {
     // console.log(age);
     const formData = new FormData();
-
     // 생일 '201112' 형식으로 바꾸기
     let newBirth = month;
     if (month < 10 && month.length === 1) {
@@ -260,7 +259,6 @@ function DogRegister() {
     } else {
       newBirth = year + month;
     }
-
     // isNeuterd 설정
     let neuterdBoolean = null;
     switch (isNeuterd) {
@@ -270,7 +268,6 @@ function DogRegister() {
       default:
         neuterdBoolean = false;
     }
-    
 
     const dog = {
       dogName: name,
@@ -283,7 +280,6 @@ function DogRegister() {
       dogCharacter2: isActive,
       description: perk,
     };
-
     formData.append('dog', new Blob([JSON.stringify(dog)], { type: 'application/json' }));
     formData.append('dogProfile', image);
 
