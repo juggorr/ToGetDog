@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { authAtom, userState } from "../recoil";
-import { BACKEND_URL } from "../config";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { authAtom, userState } from '../recoil';
+import { BACKEND_URL } from '../config';
 import {
   WalkListWrapper,
   TabList,
@@ -12,23 +12,17 @@ import {
   InfoModal,
   StarRatingModal,
   Stars,
-} from "../styles/WalkEmotion";
-import { SmallCharacterBtn } from "../styles/BtnsEmotion.js";
-import { LightColorLongBtn } from "../styles/BtnsEmotion.js";
-import { RedColorShortBtn, MainColorShortBtn } from "../styles/BtnsEmotion.js";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+} from '../styles/WalkEmotion';
+import { SmallCharacterBtn } from '../styles/BtnsEmotion.js';
+import { LightColorLongBtn } from '../styles/BtnsEmotion.js';
+import { RedColorShortBtn, MainColorShortBtn } from '../styles/BtnsEmotion.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const SingleMeeting = ({ meeting, auth }) => {
   const [infoModalOpen, setInfoModalOpen] = useState(false);
   const [ratingModalOpen, setRatingModalOpen] = useState(false);
   const [checkboxValue, setCheckboxValue] = useState(false);
-  const [activeStar, setActiveStar] = useState([
-    true,
-    true,
-    true,
-    false,
-    false,
-  ]);
+  const [activeStar, setActiveStar] = useState([true, true, true, false, false]);
 
   const dogNameList = (dogs) => {
     const nameList = [];
@@ -36,7 +30,7 @@ const SingleMeeting = ({ meeting, auth }) => {
       for (let i = 0; i < dogs.length; i++) {
         nameList.push(dogs[i].dogName);
         if (i + 1 !== dogs.length) {
-          nameList.push(", ");
+          nameList.push(', ');
         }
       }
     }
@@ -46,30 +40,24 @@ const SingleMeeting = ({ meeting, auth }) => {
   const convertHours = (timeStr) => {
     const getTime = parseInt(timeStr.substring(0, 2));
     if (getTime === 0) {
-      return "12:" + timeStr.substring(3, 5) + " AM";
+      return '12:' + timeStr.substring(3, 5) + ' AM';
     } else if (getTime < 12) {
-      return timeStr.substring(0, 5) + " AM";
+      return timeStr.substring(0, 5) + ' AM';
     } else if (getTime === 12) {
-      return timeStr.substring(0, 5) + " PM";
+      return timeStr.substring(0, 5) + ' PM';
     } else {
-      return getTime - 12 + ":" + timeStr.substring(3, 5) + " PM";
+      return getTime - 12 + ':' + timeStr.substring(3, 5) + ' PM';
     }
   };
 
   const dayOfWeek = () => {
-    const week = ["일", "월", "화", "수", "목", "금", "토"];
-    const weekStr = meeting.date.split("T");
+    const week = ['일', '월', '화', '수', '목', '금', '토'];
+    const weekStr = meeting.date.split('T');
 
     const dayOfTheWeek = week[new Date(weekStr[0]).getDay()];
-    weekStr[0] = weekStr[0].replaceAll("-", "/");
+    weekStr[0] = weekStr[0].replaceAll('-', '/');
 
-    const dateResult =
-      "   " +
-      weekStr[0] +
-      " (" +
-      dayOfTheWeek +
-      ")     " +
-      convertHours(weekStr[1]);
+    const dateResult = '   ' + weekStr[0] + ' (' + dayOfTheWeek + ')     ' + convertHours(weekStr[1]);
     return dateResult;
   };
 
@@ -79,19 +67,14 @@ const SingleMeeting = ({ meeting, auth }) => {
     if (dogs) {
       if (dogs.length === 1) {
         result = (
-          <div className="dogProfileImgWrapper">
+          <div className='dogProfileImgWrapper'>
             <img
-              className="dogProfileImg"
-              src={"https://i8a807.p.ssafy.io/image/dog/" + dogs[0].dogProfile}
-              alt="dogProfile"
+              className='dogProfileImg'
+              src={'https://i8a807.p.ssafy.io/image/dog/' + dogs[0].dogProfile}
+              alt='dogProfile'
             />
-            {meeting.status === "done" &&
-            meeting.rated === false &&
-            infoModalOpen === false ? (
-              <button
-                className="ratingBtn"
-                onClick={() => setRatingModalOpen(true)}
-              >
+            {meeting.status === 'done' && meeting.rated === false && infoModalOpen === false ? (
+              <button className='ratingBtn' onClick={() => setRatingModalOpen(true)}>
                 평가
               </button>
             ) : null}
@@ -99,34 +82,25 @@ const SingleMeeting = ({ meeting, auth }) => {
         );
       } else if (dogs.length > 1) {
         result = (
-          <div className="manyDog">
-            <div className="manyDogProfileImgWrapper">
+          <div className='manyDog'>
+            <div className='manyDogProfileImgWrapper'>
               <img
-                className="manyDogProfileImg"
-                src={
-                  "https://i8a807.p.ssafy.io/image/dog/" + dogs[0].dogProfile
-                }
-                alt="dogProfile"
+                className='manyDogProfileImg'
+                src={'https://i8a807.p.ssafy.io/image/dog/' + dogs[0].dogProfile}
+                alt='dogProfile'
               />
             </div>
-            <div className="tinyCircle"></div>
-            <div className="tinyCircle"></div>
-            <div className="manyDogProfileImgWrapper">
+            <div className='tinyCircle'></div>
+            <div className='tinyCircle'></div>
+            <div className='manyDogProfileImgWrapper'>
               <img
-                className="manyDogProfileImg"
-                src={
-                  "https://i8a807.p.ssafy.io/image/dog/" + dogs[1].dogProfile
-                }
-                alt="dogProfile"
+                className='manyDogProfileImg'
+                src={'https://i8a807.p.ssafy.io/image/dog/' + dogs[1].dogProfile}
+                alt='dogProfile'
               />
             </div>
-            {meeting.status === "done" &&
-            meeting.rated === false &&
-            infoModalOpen === false ? (
-              <button
-                className="ratingBtn"
-                onClick={() => setRatingModalOpen(true)}
-              >
+            {meeting.status === 'done' && meeting.rated === false && infoModalOpen === false ? (
+              <button className='ratingBtn' onClick={() => setRatingModalOpen(true)}>
                 평가
               </button>
             ) : null}
@@ -142,16 +116,10 @@ const SingleMeeting = ({ meeting, auth }) => {
     if (dogs) {
       for (let i = 0; i < dogs.length; i++) {
         const singleCharacter = (
-          <SmallCharacterBtn className="characters-box" key={i}>
-            <button className="btn orange">{`#${
-              dogs[i].dogNeutered ? "중성화" : "중성화 X"
-            }`}</button>
-            <button className="btn yellow">{`#${
-              dogs[i].dogCharacter1 === "obedient" ? "온순함" : "사나움"
-            }`}</button>
-            <button className="btn yellow">{`#${
-              dogs[i].dogCharacter2 === "active" ? "활동적" : "비활동적"
-            }`}</button>
+          <SmallCharacterBtn className='characters-box' key={i}>
+            <button className='btn orange'>{`#${dogs[i].dogNeutered ? '중성화' : '중성화 X'}`}</button>
+            <button className='btn yellow'>{`#${dogs[i].dogCharacter1 === 'obedient' ? '온순함' : '사나움'}`}</button>
+            <button className='btn yellow'>{`#${dogs[i].dogCharacter2 === 'active' ? '활동적' : '비활동적'}`}</button>
           </SmallCharacterBtn>
         );
         characterList.push(singleCharacter);
@@ -163,16 +131,16 @@ const SingleMeeting = ({ meeting, auth }) => {
 
   const InformationModal = () => {
     const handleMeeting = async (status) => {
-      let method = "";
+      let method = '';
       let url = `${BACKEND_URL}/meeting`;
-      if (status === "cancel") {
-        method = "put";
-        url = url + "/cancel";
-      } else if (status === "decline") {
-        method = "delete";
-      } else if (status === "accept") {
-        method = "put";
-        url = url + "/accept";
+      if (status === 'cancel') {
+        method = 'put';
+        url = url + '/cancel';
+      } else if (status === 'decline') {
+        method = 'delete';
+      } else if (status === 'accept') {
+        method = 'put';
+        url = url + '/accept';
       }
       await axios({
         method: method,
@@ -181,7 +149,7 @@ const SingleMeeting = ({ meeting, auth }) => {
           appointmentId: meeting.roomId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: auth,
         },
       })
@@ -198,97 +166,86 @@ const SingleMeeting = ({ meeting, auth }) => {
     const renderBtns = () => {
       const Btns = [];
 
-      if (meeting.status === "confirmed") {
+      if (meeting.status === 'confirmed') {
         Btns.push(
-          <RedColorShortBtn onClick={() => handleMeeting("cancel")} key={1}>
+          <RedColorShortBtn onClick={() => handleMeeting('cancel')} key={1}>
             약속 취소
-          </RedColorShortBtn>
+          </RedColorShortBtn>,
         );
         Btns.push(
           <MainColorShortBtn onClick={() => setInfoModalOpen(false)} key={2}>
             확인
-          </MainColorShortBtn>
+          </MainColorShortBtn>,
         );
-      } else if (meeting.status === "wait") {
+      } else if (meeting.status === 'wait') {
         if (meeting.received) {
           Btns.push(
-            <RedColorShortBtn onClick={() => handleMeeting("decline")} key={1}>
+            <RedColorShortBtn onClick={() => handleMeeting('decline')} key={1}>
               반려
-            </RedColorShortBtn>
+            </RedColorShortBtn>,
           );
           Btns.push(
-            <MainColorShortBtn onClick={() => handleMeeting("accept")} key={2}>
+            <MainColorShortBtn onClick={() => handleMeeting('accept')} key={2}>
               수락
-            </MainColorShortBtn>
+            </MainColorShortBtn>,
           );
         } else {
           Btns.push(
-            <RedColorShortBtn onClick={() => handleMeeting("decline")} key={1}>
+            <RedColorShortBtn onClick={() => handleMeeting('decline')} key={1}>
               요청 취소
-            </RedColorShortBtn>
+            </RedColorShortBtn>,
           );
           Btns.push(
             <MainColorShortBtn onClick={() => setInfoModalOpen(false)} key={2}>
               확인
-            </MainColorShortBtn>
+            </MainColorShortBtn>,
           );
         }
-      } else if (meeting.status === "done") {
+      } else if (meeting.status === 'done') {
         Btns.push(
           <MainColorShortBtn onClick={() => setInfoModalOpen(false)} key={1}>
             확인
-          </MainColorShortBtn>
+          </MainColorShortBtn>,
         );
-      } else if (meeting.status === "cancelled") {
+      } else if (meeting.status === 'cancelled') {
         Btns.push(
           <MainColorShortBtn onClick={() => setInfoModalOpen(false)} key={1}>
             확인
-          </MainColorShortBtn>
+          </MainColorShortBtn>,
         );
       }
 
-      return <div className="btnContainer">{Btns}</div>;
+      return <div className='btnContainer'>{Btns}</div>;
     };
 
     return (
       <InfoModal>
-        <div
-          className="modalOutside"
-          onClick={() => setInfoModalOpen(false)}
-        ></div>
-        <div className="modalInside">
-          <p className="appointmentDate">• {dayOfWeek()}</p>
-          <p className="infoText">상대방의 강아지</p>
-          <div className="dogWrapper">
+        <div className='modalOutside' onClick={() => setInfoModalOpen(false)}></div>
+        <div className='modalInside'>
+          <p className='appointmentDate'>• {dayOfWeek()}</p>
+          <p className='infoText'>상대방의 강아지</p>
+          <div className='dogWrapper'>
             {renderDogImg(meeting.partnerDogs)}
-            <div className="dogInfo">
+            <div className='dogInfo'>
               <div>
-                <span className="dogNames">
-                  {dogNameList(meeting.partnerDogs)}
-                </span>
-                <span className="partnerName">
-                  <FontAwesomeIcon icon="user"></FontAwesomeIcon>{" "}
-                  {meeting.partnerName}
+                <span className='dogNames'>{dogNameList(meeting.partnerDogs)}</span>
+                <span className='partnerName'>
+                  <FontAwesomeIcon icon='user'></FontAwesomeIcon> {meeting.partnerName}
                 </span>
               </div>
-              <div className="characterWrapper">
-                {renderCharacter(meeting.partnerDogs)}
-              </div>
+              <div className='characterWrapper'>{renderCharacter(meeting.partnerDogs)}</div>
             </div>
           </div>
-          <p className="infoText">나의 강아지</p>
-          <div className="dogWrapper">
+          <p className='infoText'>나의 강아지</p>
+          <div className='dogWrapper'>
             {renderDogImg(meeting.myDogs)}
-            <div className="dogInfo">
-              <span className="dogNames">{dogNameList(meeting.myDogs)}</span>
+            <div className='dogInfo'>
+              <span className='dogNames'>{dogNameList(meeting.myDogs)}</span>
             </div>
           </div>
           {renderBtns()}
         </div>
-        <div
-          className="modalOutside"
-          onClick={() => setInfoModalOpen(false)}
-        ></div>
+        <div className='modalOutside' onClick={() => setInfoModalOpen(false)}></div>
       </InfoModal>
     );
   };
@@ -336,7 +293,7 @@ const SingleMeeting = ({ meeting, auth }) => {
             rating: rating,
           },
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: auth,
           },
         })
@@ -351,97 +308,70 @@ const SingleMeeting = ({ meeting, auth }) => {
 
     return (
       <StarRatingModal>
-        <div className="modalOutside" onClick={() => closeRatingModal()}></div>
-        <div className="modalInside">
-          <div className="iconWrapper">
-            <FontAwesomeIcon
-              icon="fa-xmark"
-              onClick={() => closeRatingModal()}
-            />
+        <div className='modalOutside' onClick={() => closeRatingModal()}></div>
+        <div className='modalInside'>
+          <div className='iconWrapper'>
+            <FontAwesomeIcon icon='fa-xmark' onClick={() => closeRatingModal()} />
           </div>
-          <p className="plainText">
-            {meeting.partnerName}님과의 산책 별점을 남겨주세요 :)
-          </p>
+          <p className='plainText'>{meeting.partnerName}님과의 산책 별점을 남겨주세요 :)</p>
           <Stars>
             <FontAwesomeIcon
-              icon="fa-star"
-              className={"star " + (activeStar[0] ? "active" : "disabled")}
+              icon='fa-star'
+              className={'star ' + (activeStar[0] ? 'active' : 'disabled')}
               onClick={() => starHandler(0)}
             ></FontAwesomeIcon>
             <FontAwesomeIcon
-              icon="fa-star"
-              className={"star " + (activeStar[1] ? "active" : "disabled")}
+              icon='fa-star'
+              className={'star ' + (activeStar[1] ? 'active' : 'disabled')}
               onClick={() => starHandler(1)}
             ></FontAwesomeIcon>
             <FontAwesomeIcon
-              icon="fa-star"
-              className={"star " + (activeStar[2] ? "active" : "disabled")}
+              icon='fa-star'
+              className={'star ' + (activeStar[2] ? 'active' : 'disabled')}
               onClick={() => starHandler(2)}
             ></FontAwesomeIcon>
             <FontAwesomeIcon
-              icon="fa-star"
-              className={"star " + (activeStar[3] ? "active" : "disabled")}
+              icon='fa-star'
+              className={'star ' + (activeStar[3] ? 'active' : 'disabled')}
               onClick={() => starHandler(3)}
             ></FontAwesomeIcon>
             <FontAwesomeIcon
-              icon="fa-star"
-              className={"star " + (activeStar[4] ? "active" : "disabled")}
+              icon='fa-star'
+              className={'star ' + (activeStar[4] ? 'active' : 'disabled')}
               onClick={() => starHandler(4)}
             ></FontAwesomeIcon>
           </Stars>
-          <div className="checkboxWrapper">
-            <input
-              type="checkbox"
-              checked={checkboxValue}
-              onChange={(e) => checkHandler(e)}
-            />
-            <p className="checkboxText">상대방이 오지 않았어요.</p>
+          <div className='checkboxWrapper'>
+            <input type='checkbox' checked={checkboxValue} onChange={(e) => checkHandler(e)} />
+            <p className='checkboxText'>상대방이 오지 않았어요.</p>
           </div>
-          <div className="btnWrapper">
-            <MainColorShortBtn onClick={() => requestHandler()}>
-              확인
-            </MainColorShortBtn>
+          <div className='btnWrapper'>
+            <MainColorShortBtn onClick={() => requestHandler()}>확인</MainColorShortBtn>
           </div>
         </div>
-        <div className="modalOutside" onClick={() => closeRatingModal()}></div>
+        <div className='modalOutside' onClick={() => closeRatingModal()}></div>
       </StarRatingModal>
     );
   };
 
   return (
     <SingleMeetingWrapper>
-      {infoModalOpen && (
-        <InformationModal
-          setInfoModalOpen={setInfoModalOpen}
-          meeting={meeting}
-        />
+      {infoModalOpen && <InformationModal setInfoModalOpen={setInfoModalOpen} meeting={meeting} />}
+      {meeting.status === 'done' && meeting.rated === false && ratingModalOpen && (
+        <RatingModal setRatingModalOpen={setRatingModalOpen} meeting={meeting}></RatingModal>
       )}
-      {meeting.status === "done" &&
-        meeting.rated === false &&
-        ratingModalOpen && (
-          <RatingModal
-            setRatingModalOpen={setRatingModalOpen}
-            meeting={meeting}
-          ></RatingModal>
-        )}
-      <div
-        className="appointmentContainer"
-        onClick={() => setInfoModalOpen(true)}
-      >
-        <div className="singleWrapper">
-          <div className="appointmentLine"></div>
-          <p className="appointmentDate">• {dayOfWeek()}</p>
-          <div className="appointmentWrapper">
-            <div className="nameWrapper">
-              <span className="dogNames">
-                {dogNameList(meeting.partnerDogs)}
-              </span>
-              <span className="partnerName">
-                <FontAwesomeIcon icon="user"></FontAwesomeIcon>{" "}
-                {meeting.partnerName}
+      <div className='appointmentContainer' onClick={() => setInfoModalOpen(true)}>
+        <div className='singleWrapper'>
+          <div className='appointmentLine'></div>
+          <p className='appointmentDate'>• {dayOfWeek()}</p>
+          <div className='appointmentWrapper'>
+            <div className='nameWrapper'>
+              <span className='dogNames'>{dogNameList(meeting.partnerDogs)}</span>
+              <span className='partnerName'>
+                <FontAwesomeIcon icon='user'></FontAwesomeIcon> {meeting.partnerName}
               </span>
             </div>
-            <p className="appointmentDate">장소 : {meeting.place}</p>
+            <p className='appointmentDate'>장소 : {meeting.place}</p>
           </div>
         </div>
         {renderDogImg(meeting.partnerDogs)}
@@ -470,6 +400,8 @@ const Walk = () => {
         // userOne이 보낸 사람, userTwo가 받은 사람
         // console.log(response.data);
         const appointments = [];
+        console.log(response.data.appointment);
+
         if (response.data.appointment) {
           for (let i = 0; i < response.data.appointment.length; i++) {
             const singleAppointment = {
@@ -480,23 +412,15 @@ const Walk = () => {
               received: false,
             };
             if (response.data.appointment[i].userOneId === user.userId) {
-              singleAppointment.myDogs =
-                response.data.appointment[i].userOneDogs;
-              singleAppointment.partnerDogs =
-                response.data.appointment[i].userTwoDogs;
-              singleAppointment.partnerName =
-                response.data.appointment[i].userTwoNickname;
-              singleAppointment.rated =
-                response.data.appointment[i].userOneRated;
+              singleAppointment.myDogs = response.data.appointment[i].userOneDogs;
+              singleAppointment.partnerDogs = response.data.appointment[i].userTwoDogs;
+              singleAppointment.partnerName = response.data.appointment[i].userTwoNickname;
+              singleAppointment.rated = response.data.appointment[i].userOneRated;
             } else {
-              singleAppointment.partnerDogs =
-                response.data.appointment[i].userOneDogs;
-              singleAppointment.myDogs =
-                response.data.appointment[i].userTwoDogs;
-              singleAppointment.partnerName =
-                response.data.appointment[i].userOneNickname;
-              singleAppointment.rated =
-                response.data.appointment[i].userTwoRated;
+              singleAppointment.partnerDogs = response.data.appointment[i].userOneDogs;
+              singleAppointment.myDogs = response.data.appointment[i].userTwoDogs;
+              singleAppointment.partnerName = response.data.appointment[i].userOneNickname;
+              singleAppointment.rated = response.data.appointment[i].userTwoRated;
               singleAppointment.received = true;
             }
             appointments.push(singleAppointment);
@@ -515,19 +439,15 @@ const Walk = () => {
     for (let i = 0; i < originalMeetings.length; i++) {
       // 약속별로 구분하는 조건문 추가
       const singleMeet = (
-        <SingleMeeting
-          key={originalMeetings[i].roomId}
-          meeting={originalMeetings[i]}
-          auth={auth}
-        ></SingleMeeting>
+        <SingleMeeting key={originalMeetings[i].roomId} meeting={originalMeetings[i]} auth={auth}></SingleMeeting>
       );
-      if (originalMeetings[i].status === "confirmed" && active === 1) {
+      if (originalMeetings[i].status === 'confirmed' && active === 1) {
         meetings.push(singleMeet);
-      } else if (originalMeetings[i].status === "wait" && active === 2) {
+      } else if (originalMeetings[i].status === 'wait' && active === 2) {
         meetings.push(singleMeet);
-      } else if (originalMeetings[i].status === "cancelled" && active === 3) {
+      } else if (originalMeetings[i].status === 'cancelled' && active === 3) {
         meetings.push(singleMeet);
-      } else if (originalMeetings[i].status === "done" && active === 3) {
+      } else if (originalMeetings[i].status === 'done' && active === 3) {
         meetings.push(singleMeet);
       }
     }
@@ -537,52 +457,35 @@ const Walk = () => {
   return (
     <WalkListWrapper>
       <TabList>
-        <div
-          className={
-            active === 1 ? "activeTab singleTab" : "disabledTab singleTab"
-          }
-          onClick={() => setActive(1)}
-        >
+        <div className={active === 1 ? 'activeTab singleTab' : 'disabledTab singleTab'} onClick={() => setActive(1)}>
           예정된 약속
         </div>
-        <div
-          className={
-            active === 2 ? "activeTab singleTab" : "disabledTab singleTab"
-          }
-          onClick={() => setActive(2)}
-        >
+        <div className={active === 2 ? 'activeTab singleTab' : 'disabledTab singleTab'} onClick={() => setActive(2)}>
           대기 중 요청
         </div>
-        <div
-          className={
-            active === 3 ? "activeTab singleTab" : "disabledTab singleTab"
-          }
-          onClick={() => setActive(3)}
-        >
+        <div className={active === 3 ? 'activeTab singleTab' : 'disabledTab singleTab'} onClick={() => setActive(3)}>
           종료된 약속
         </div>
       </TabList>
       <MeetingWrapper>
-        <div className="walkList">
+        <div className='walkList'>
           {renderMeetings()}
           {renderMeetings().length === 0 && active === 1 ? (
-            <div className="noMeeting">
-              <div className="noMeetingTextWrapper">
-                <p className="noMeetingText">예정된 산책 약속이 없어요.</p>
-                <p className="noMeetingText">산책 친구를 찾아보세요!</p>
+            <div className='noMeeting'>
+              <div className='noMeetingTextWrapper'>
+                <p className='noMeetingText'>예정된 산책 약속이 없어요.</p>
+                <p className='noMeetingText'>산책 친구를 찾아보세요!</p>
               </div>
-              <LightColorLongBtn onClick={() => navigate("/recommend")}>
-                새 친구 찾기
-              </LightColorLongBtn>
+              <LightColorLongBtn onClick={() => navigate('/recommend')}>새 친구 찾기</LightColorLongBtn>
             </div>
           ) : null}
           <div
-            className="recommendBtn"
+            className='recommendBtn'
             onClick={() => {
-              navigate("/recommend");
+              navigate('/recommend');
             }}
           >
-            <FontAwesomeIcon icon="fa-plus"></FontAwesomeIcon>
+            <FontAwesomeIcon icon='fa-plus'></FontAwesomeIcon>
           </div>
         </div>
       </MeetingWrapper>

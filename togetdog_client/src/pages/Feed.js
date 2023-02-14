@@ -101,11 +101,6 @@ const Feed = () => {
       if (dog.dogId === targetDogId) {
         setCurrentDog(dog);
         setFollowStatus(dog.following);
-        // let filteredPhotos = [];
-        // filteredPhotos = feedPhotoData.filter((feedPhoto) => feedPhoto.dogId === targetDogId);
-        // console.log(filteredPhotos);
-        // setFilteredPhotoData(filteredPhotos);
-        // setSubDogs(tmpSubDogs);
       } else {
         tmpSubDogs.push(dog);
       }
@@ -161,12 +156,9 @@ const Feed = () => {
         console.log(resp.data);
         setFeedData(resp.data.feed);
         setFeedUserData(resp.data.user);
-        // console.log(resp.data.user.dogs);
         if (resp.data.user.dogs) {
           setFeedDogData(resp.data.user.dogs);
           setCurrentDog(resp.data.user.dogs[0]);
-          // console.log(resp.data.user.dogs);
-          // console.log(resp.data.user.dogs);
           if (resp.data.user.dogs.toString() !== [].toString()) {
             setFollowStatus(resp.data.user.dogs[0].following);
           }
@@ -182,11 +174,6 @@ const Feed = () => {
         }
         setSubDogs(tmpSubDogs);
         setFeedPhotoData(resp.data.feed);
-        // let filteredPhotos = [];
-        // if (resp.data.feed) {
-        //   filteredPhotos = resp.data.feed.filter((feedPhoto) => feedPhoto.dogId === resp.data.user.dogs[0].dogId);
-        //   setFilteredPhotoData(filteredPhotos);
-        // }
         setLoading(false);
       })
       .catch((err) => {
@@ -204,7 +191,7 @@ const Feed = () => {
   if (isLoading) {
     return (
       <div className='loading'>
-        <img src={Loading} alt='loading...'></img>
+        <img src={Loading} alt='loading...' />
       </div>
     );
   }
@@ -226,7 +213,7 @@ const Feed = () => {
             setMenuBtnClick={setMenuBtnClick}
           />
         )}
-        <UserInfoModal 
+        <UserInfoModal
           userInfoModal={userInfoModal}
           setUserInfoModal={setUserInfoModal}
           setMenuBtnClick={setMenuBtnClick}
