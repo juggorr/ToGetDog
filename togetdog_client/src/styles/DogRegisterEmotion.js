@@ -72,6 +72,12 @@ export const RegisterWrapper = styled.div`
     color: red;
     font-size: 0.8rem;
   }
+
+  .profile-error {
+    color: red;
+    font-size: 0.8rem;
+    text-align: center;
+  }
 `;
 
 export const ProfileImage = styled.div`

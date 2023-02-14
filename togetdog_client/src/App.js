@@ -29,7 +29,6 @@ import EmailAuth from "./pages/EmailAuth";
 import EditBoard from "./pages/EditBoard";
 import CreateAppointment from "./pages/CreateAppointment";
 import DogRegister from "./pages/DogRegister";
-import DogRegisterTemp from "./pages/DogRegisterTemp"
 import SubLayout from "./components/SubLayout";
 import Search from "./pages/Search";
 import FollowerList from "./pages/FollowerList";
@@ -76,7 +75,6 @@ function App() {
           <Route path="/passwordedit" element={<PasswordEdit />} />
           <Route path="/passwordsearch" element={<PasswordSearch />} />
           <Route path="/dogregister" element={<DogRegister />} />
-          <Route path="/temp" element={<DogRegisterTemp />} />
           <Route path="/dogedit" element={<DogEdit />} />
           {/* 임시로 링크 */}
           <Route path="/dogdelete" element={<ConfirmModal />} />
