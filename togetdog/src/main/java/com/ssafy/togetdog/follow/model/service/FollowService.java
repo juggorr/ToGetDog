@@ -40,9 +40,15 @@ public class FollowService {
 		Dog dog = new Dog();
 		dog.setDogId(dogId);
 		List<Follow> followList = followRepository.findAllByDog(dog);
-		List<FollowerInfoRespDTO> follwerList = 
-				followList.stream().map(f -> FollowerInfoRespDTO.of(f.getUser())).collect(Collectors.toList());
-		return follwerList;
+		List<FollowerInfoRespDTO> userList = new ArrayList<FollowerInfoRespDTO>();
+
+		for (Follow follow : followList) {
+			// 삭제된 유저의 경우, 닉네임과 이메일이 같음
+			if (follow.getUser().getNickName().equals(follow.getUser().getEmail()))
+				continue;
+			userList.add(FollowerInfoRespDTO.of(follow.getUser()));
+		}
+		return userList;
 	}
 
 	public Long save(FollowDTO followDTO) {
@@ -85,7 +91,7 @@ public class FollowService {
 		Dog dog = new Dog();
 		dog.setDogId(dogId);
 
-		if(followRepository.countByUserAndDog(user, dog) > 0)
+		if (followRepository.countByUserAndDog(user, dog) > 0)
 			return true;
 		else
 			return false;
