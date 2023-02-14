@@ -6,6 +6,7 @@ import SingleChatList from '../components/SingleChatList';
 import { BACKEND_URL } from '../config';
 import { authAtom, userState } from '../recoil';
 import { ChatContainer } from '../styles/ChatEmotion';
+import Loading from '../assets/loading.gif';
 
 const Chat = () => {
   const auth = useRecoilValue(authAtom);
@@ -52,7 +53,11 @@ const Chat = () => {
   }, []);
 
   if (isLoading) {
-    return <div className='loading'>Loading...</div>;
+    return (
+      <div className='loading'>
+        <img src={Loading} alt='loading...' />
+      </div>
+    );
   }
 
   return (

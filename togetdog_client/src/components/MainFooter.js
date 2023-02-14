@@ -15,14 +15,12 @@ const MainFooter = () => {
   const [user, setUser] = useRecoilState(userState);
   const navigate = useNavigate();
 
-
-
   // URL이 바뀔 때마다 해당 URL에 적합한 곳에 불이 들어오도록 작업
   useEffect(() => {
     console.log('하단 바 작업용 url');
     console.log(window.location.href);
-    let currentURL = window.location.href.slice(10,).split('/');
-    
+    let currentURL = window.location.href.slice(10).split('/');
+
     const page = currentURL[1];
     const userId = currentURL[2];
 
@@ -72,16 +70,16 @@ const MainFooter = () => {
         <div
           className='icon-box'
           onClick={() => {
-            navigate('/recommend');
+            navigate('/chat');
             setActiveNav(4);
           }}
         >
-          <FontAwesomeIcon icon='dog' className={activeNav === 4 ? 'footer-icon active' : 'footer-icon'} />
+          <FontAwesomeIcon icon='comments' className={activeNav === 4 ? 'footer-icon active' : 'footer-icon'} />
         </div>
         <div
           className='icon-box'
           onClick={() => {
-            console.log(user.userId)
+            console.log(user.userId);
             navigate(`/feed/${user.userId}`);
             // navigate된 후 새로고침 처리
             window.location.reload();
