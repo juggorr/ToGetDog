@@ -237,12 +237,15 @@ public class BoardRestController {
 	 */
 	@ApiOperation(value = "게시물 삭제", notes = "선택된 단건 게시글을 삭제")
 	@DeleteMapping("/board")
-	public ResponseEntity<?> deleteBoard(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@RequestBody BoardDTO boardDto) {
+	public ResponseEntity<?> deleteBoard(
+			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@RequestParam String boardId) {
+		logger.debug("deleteBoard : {}", boardId);
+		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
 		
-		boardService.delete(boardDto);
+		boardService.delete(boardId);
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("msg", "게시물이 삭제되었습니다.");

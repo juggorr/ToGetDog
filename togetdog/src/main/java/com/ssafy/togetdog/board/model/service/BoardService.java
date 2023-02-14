@@ -58,12 +58,16 @@ public class BoardService {
 	}
 
 	@Transactional
-	public void delete(BoardDTO boardDto) {
-		long boardId = boardDto.getBoardId();
-		if (boardId > 0) {
-			boardRepository.deleteById(boardId);
-		} else {
-			throw new InvalidInputException();
+	public void delete(String boardid) {
+		try {
+			long boardId = Long.parseLong(boardid);
+			if (boardId > 0) {
+				boardRepository.deleteById(boardId);
+			} else {
+				throw new InvalidInputException("올바른 boardId가 아닙니다.");
+			}
+		} catch(NumberFormatException e) {
+			throw new InvalidInputException("올바른 boardId가 아닙니다.");
 		}
 	}
 
