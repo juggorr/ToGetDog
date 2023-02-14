@@ -3,8 +3,10 @@ package com.ssafy.togetdog.chat.controller;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -101,6 +103,10 @@ public class ChatRestController {
 		ChatInUserInfo opponent = cis.otherUserInfo(userId , other);
 		if(opponent == null) {
 			opponent = cis.createChatRoom(user, other);
+		}else {
+			Set<Long> set = new HashSet<>();
+			set.add(userId);
+			cis.updateChatInfo(opponent.getRoomId(), set);
 		}
 		long roomId = opponent.getRoomId();
 		List<ChattingDTO> list = cms.findMessage(roomId);
