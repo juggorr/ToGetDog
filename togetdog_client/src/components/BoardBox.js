@@ -25,7 +25,7 @@ const BoardBox = ({ boardData, dogData, likeStatus, setLikeStatus }) => {
 
   const deleteBoard = async () => {
     await axios
-      .delete(`https://i8a807.p.ssafy.io/api/board`, {
+      .delete(`${BACKEND_URL}/board`, {
         params: {
           boardId: boardData.boardId,
         },

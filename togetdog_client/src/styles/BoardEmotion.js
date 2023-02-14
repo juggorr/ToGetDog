@@ -17,7 +17,6 @@ export const BoardUserInfoBox = styled.div`
 
   .board-info-box-left {
     display: flex;
-    // padding-left: 1rem;
   }
 
   .menu-icon {
@@ -95,6 +94,7 @@ export const BoardCommentBox = styled.div`
   padding: 1rem 2rem;
   display: flex;
   flex-direction: column;
+  position: relative;
 
   .comment-input-box {
     padding-top: 0.5rem;
@@ -130,21 +130,32 @@ export const BoardCommentBox = styled.div`
 
   .comment-box {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     font-size: 0.8rem;
-    padding: 0.3rem 0;
+    padding: 0.5rem 0;
     border-bottom: 1px solid #e2e2e2;
   }
 
+  .comment-content {
+    display: flex;
+    flex-direction: column;
+  }
+
   .comment-user {
-    flex: 0.2;
     font-weight: 700;
     padding-right: 0.3rem;
     padding-bottom: 0.2rem;
   }
 
-  .comment-content {
-    flex: 0.8;
+  .comment-delete-btn {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    line-height: 1.5rem;
+    text-align: center;
+    background-color: #ef5a5f;
+    color: #fff;
   }
 `;
 

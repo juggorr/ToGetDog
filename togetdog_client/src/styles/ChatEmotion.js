@@ -93,8 +93,6 @@ export const ChatMsgContainer = styled.div`
     padding: 0.1rem 0.3rem;
     background-color: #fff;
     border: 1px solid #e2e2e2;
-    display: flex;
-    flex-direction: column;
     margin-top: 2.5rem;
     margin-right: 2.7rem;
   }

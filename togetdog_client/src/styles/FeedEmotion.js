@@ -151,8 +151,10 @@ export const ProfileWrapper = styled.div`
 `;
 
 export const MainDogImg = styled.img`
-  width: 100px;
-  height: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  min-height: 100px;
+  max-height: 100px;
   border-radius: 50%;
   object-fit: cover;
   background-color: #fff;
