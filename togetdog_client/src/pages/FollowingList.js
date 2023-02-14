@@ -33,7 +33,7 @@ function FollowingList() {
         })
         .then((res) => {
           console.log(res);
-          setFollowings(res.data.dogs)
+          setFollowings(res.data.dogs);
         })
         .catch((err) => {
           console.log(err)

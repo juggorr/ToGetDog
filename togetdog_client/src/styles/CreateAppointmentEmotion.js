@@ -87,6 +87,18 @@ export const DogImgWrapper = styled.div`
     margin: 0.3rem 0.9rem;
     background-color: #ffffff;
   }
+
+  .userFollowCircle{
+    width: 4rem;
+    height: 4rem;
+    border-radius: 70%;
+    overflow: hidden;
+    margin: 0.3rem 0.9rem;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 export const TimeWrapper = styled.div`

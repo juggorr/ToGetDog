@@ -161,12 +161,12 @@ const Feed = () => {
         console.log(resp.data);
         setFeedData(resp.data.feed);
         setFeedUserData(resp.data.user);
-        console.log(resp.data.user.dogs);
+        // console.log(resp.data.user.dogs);
         if (resp.data.user.dogs) {
           setFeedDogData(resp.data.user.dogs);
           setCurrentDog(resp.data.user.dogs[0]);
-          console.log(resp.data.user.dogs);
-          console.log(resp.data.user.dogs);
+          // console.log(resp.data.user.dogs);
+          // console.log(resp.data.user.dogs);
           if (resp.data.user.dogs.toString() !== [].toString()) {
             setFollowStatus(resp.data.user.dogs[0].following);
           }
