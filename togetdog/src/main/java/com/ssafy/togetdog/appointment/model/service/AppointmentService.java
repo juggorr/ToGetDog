@@ -23,7 +23,6 @@ import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.dto.DogRecommendListDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.dog.model.repository.DogRepository;
-import com.ssafy.togetdog.follow.model.repository.FollowRepository;
 import com.ssafy.togetdog.follow.model.service.FollowService;
 import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.repository.UserRepository;
@@ -52,26 +51,28 @@ public class AppointmentService {
 		
 		List<AppointmentListDTO> requestList = reqlist.stream()
 				.map(a-> AppointmentListDTO.of(a)).collect(Collectors.toList());
-		logger.info("============== : {}", requestList);
+		logger.info("requestList============== : {}", requestList);
 		
 		// 약속 리스트
 		for (int i = 0; i < requestList.size(); i++) {
 			List<DogInfoRespDTO> sentDogs = new ArrayList<>(); 
 			List<DogInfoRespDTO> recvDogs = new ArrayList<>(); 
+			
+			logger.info("requestList of i============== : {}", requestList.get(i));
 			List<SentAppointment> sentApps = sentAppointmentRepository.findAllByAppointment(reqlist.get(i));
-			logger.info("=====sentApps========= : {}", sentApps.size());
 			for (SentAppointment sent : sentApps) {
+				if(sent.getDog().getDogName().equals("deleted")) continue;
+				logger.info("============== : {}", DogInfoRespDTO.of(sent.getDog()));
 				sentDogs.add(DogInfoRespDTO.of(sent.getDog(), Double.parseDouble(sent.getDog().getDogWeight())));
-				logger.info("============== : {}", sentDogs);
 			}
 			logger.info("!============== : {}", sentDogs);
 			requestList.get(i).setUserOneDogs(sentDogs);
 			
 			List<ReceivedAppointment> recvApps = receivedAppointmentRepository.findAllByAppointment(reqlist.get(i));
-			logger.info("=====recvApps========= : {}", recvApps.size());
 			for (ReceivedAppointment recv : recvApps) {
+				if(recv.getDog().getDogName().equals("deleted")) continue;
+				logger.info("============== : {}", DogInfoRespDTO.of(recv.getDog()));
 				recvDogs.add(DogInfoRespDTO.of(recv.getDog(), Double.parseDouble(recv.getDog().getDogWeight())));
-				logger.info("============== : {}", recvDogs);
 			}
 			logger.info("!============== : {}", recvDogs);
 			requestList.get(i).setUserTwoDogs(recvDogs);
