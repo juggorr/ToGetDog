@@ -9,6 +9,7 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 import com.ssafy.togetdog.chat.model.dto.ChatDTO;
+import com.ssafy.togetdog.chat.model.dto.ChatInfoDTO;
 import com.ssafy.togetdog.chat.model.dto.SessionInfo;
 import com.ssafy.togetdog.chat.service.ChatInfoService;
 import com.ssafy.togetdog.chat.service.ChatMsgService;
@@ -50,6 +51,12 @@ public class ChatSaveList {
 			return false;
 	}
 	
+	public void chatLastUpdate(ChatInfoDTO dto) {
+		long roomId = dto.getRoomId();
+		if(chatList.containsKey(dto.getRoomId())) {
+			dto.setLastChatContent(chatList.get(roomId).get(chatList.get(roomId).size()-1).getContent());
+		}
+	}
 	// 채팅 저장 메소드
 	public void saveChat(ChatDTO chatDto) {
 		long roomId = chatDto.getRoomId();

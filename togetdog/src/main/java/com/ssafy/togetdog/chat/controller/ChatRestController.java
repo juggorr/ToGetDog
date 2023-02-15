@@ -60,6 +60,9 @@ public class ChatRestController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		List<ChatInfoDTO> list = cis.callChatList(js.getUserId(token));
+		for(ChatInfoDTO dto : list) {
+			csl.chatLastUpdate(dto);
+		}
 		Collections.sort(list, new Comparator<ChatInfoDTO>() {
 			@Override
 			public int compare(ChatInfoDTO o1, ChatInfoDTO o2) {
