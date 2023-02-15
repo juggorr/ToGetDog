@@ -3,6 +3,13 @@ import styled from '@emotion/styled';
 export const HomeWrapper = styled.div`
   overflow-y: scroll;
 
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
   .scrollHandler {
     height: 100px;
   }
@@ -91,7 +98,7 @@ export const RecommendBoxWrapper = styled.div`
   .recommendBox {
     display: flex;
     overflow-x: scroll;
-    padding-left: 0.3rem;
+    padding-left: 0.5rem;
 
     -ms-overflow-style: none; /* 인터넷 익스플로러 */
     scrollbar-width: none; /* 파이어폭스 */
@@ -154,7 +161,7 @@ export const NoFriendsWrapper = styled.div`
 `;
 
 export const SingleBoardWrapper = styled.div`
-  margin: 0rem 1rem;
+  margin: 0rem 0.5rem;
 
   .profileWrapper {
     display: flex;
@@ -163,7 +170,6 @@ export const SingleBoardWrapper = styled.div`
   .contentWrapper {
     display: flex;
     flex-direction: column;
-
     align-items: center;
   }
   .imgWrapper {
