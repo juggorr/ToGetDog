@@ -169,7 +169,7 @@ public class AppointmentService {
 		}
 		
 		// 내가 받은 요청이거나, 보낸 요청을 기준으로 조회
-		List<Appointment> requestList = appointmentRepository.findStatusesList(user.getUserId(), user.getUserId(), "done", "cancelled");
+		List<Appointment> requestList = appointmentRepository.findStatusesList("done", "cancelled", user.getUserId(), user.getUserId());
 		List<AppointmentListDTO> resultList = new ArrayList<AppointmentListDTO>();
 		
 		// deleted user 처리 및 deleted 강아지 처리
