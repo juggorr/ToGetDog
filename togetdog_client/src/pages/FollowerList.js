@@ -3,20 +3,22 @@ import { useLocation } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import axios from 'axios';
 
+
 import { authAtom } from "../recoil";
 import { BACKEND_URL } from "../config";
 import FollowersList from "../components/FollowersList";
 import { 
   ListContainer, 
   ListWrapper } from "../styles/FollowerListEmotion";
+import Loading from "../assets/loading.gif"
 
 // 강아지 ID 받아야함
 function FollowerList() {
 
   const auth = useRecoilValue(authAtom);
 
+  const [isLoading, setIsLoading] = useState(true);
   // navigate로 넘어온 강아지Id 받기
-  // useEffect에 넣어야할 것 같기도함
   const location = useLocation();
   const dogId = location.state.dogId;
 
@@ -36,6 +38,7 @@ function FollowerList() {
           console.log(res);
           console.log(res.data.users);
           setFollowers(res.data.users);
+          setIsLoading(false);
         })
         .catch((err) => {
           console.log(err)
@@ -45,6 +48,13 @@ function FollowerList() {
     fetchFollowers();
   }, []);
 
+  if (isLoading) {
+    return (
+      <div className="loading">
+        <img src={Loading} alt='loading...'/>
+      </div>
+    )
+  }
 
   return (
     <ListContainer>
