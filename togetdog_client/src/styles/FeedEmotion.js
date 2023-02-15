@@ -1,11 +1,11 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const FeedContainer = styled.div`
   width: 100%;
   height: calc(100vh - 115px);
   display: flex;
   flex-direction: column;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
 
   .no-photo {
     height: 100%;
@@ -34,7 +34,6 @@ export const FeedPhotoWrapper = styled.div`
 
 export const FeedPhoto = styled.img`
   width: 33.333%;
-  margin-bottom: 0.1rem;
   object-fit: cover;
 
   @media (min-width: 650px) {
