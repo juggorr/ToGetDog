@@ -2,6 +2,7 @@ package com.ssafy.togetdog.appointment.model.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,7 +16,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
 	List<Appointment> findAllByReceivedUser(User user);
 
-	List<Appointment> findAllBySentUserOrReceivedUser(User userOne, User userTwo);
+	List<Appointment> findAllBySentUserOrReceivedUserAndStatus(User userOne, User userTwo, String status, Sort sort);
+	
+	List<Appointment> findAllBySentUserOrReceivedUserAndStatusIn(User userOne, User userTwo, List<String> statusArr, Sort sort);
 	
 	Long countByReceivedUserAndStatus(User user, String status);
 	

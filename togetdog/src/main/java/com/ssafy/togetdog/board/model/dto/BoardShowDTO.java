@@ -1,14 +1,10 @@
 package com.ssafy.togetdog.board.model.dto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.ssafy.togetdog.board.model.entity.Board;
-import com.ssafy.togetdog.board.model.entity.Comment;
 import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
-import com.ssafy.togetdog.dog.model.entity.Dog;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

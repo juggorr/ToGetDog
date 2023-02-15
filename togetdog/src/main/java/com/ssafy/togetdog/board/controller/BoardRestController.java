@@ -40,6 +40,7 @@ import com.ssafy.togetdog.notify.model.service.NotifyService;
 import com.ssafy.togetdog.user.model.dto.UserIncludesDogsDTO;
 import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
 import com.ssafy.togetdog.user.model.entity.User;
+import com.ssafy.togetdog.user.model.repository.UserRepository;
 import com.ssafy.togetdog.user.model.service.JwtService;
 import com.ssafy.togetdog.user.model.service.UserService;
 
@@ -81,11 +82,11 @@ public class BoardRestController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
 		Long userId = jwtService.getUserId(token);
-//		Long userId = 4L;
+//		Long userId = 38L;
 		
 		// 강아지 (이름, 프로필 이미지랑, 견종, 나이, 성별)
 		List<DogInfoRespDTO> followList = followService.getFollowingList(userId);
-		logger.info("return boardList : {}", followList);
+		logger.info("return followList : {}", followList);
 		List<Long> dogIds = new ArrayList<Long>();
 		for (DogInfoRespDTO follow : followList) {
 			dogIds.add(follow.getDogId());
@@ -106,11 +107,19 @@ public class BoardRestController {
 	 */
 	@ApiOperation(value = "피드 조회", notes = "피드 상단은 강아지 정보, 피드 하단은 게시글 리스트")
 	@GetMapping("/feed/{userId}")
-	public ResponseEntity<?> getFeed(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@PathVariable long userId,@RequestParam(value="pageNo") int pageNo){
+	public ResponseEntity<?> getFeed(
+			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@PathVariable long userId,
+			@RequestParam(value="pageNo") int pageNo){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
 		
+		User user = userService.findUserByUserId(userId);
+		if(user.getNickName().contains("delete")) {
+			resultMap.put("result", "fail");
+			resultMap.put("msg", "삭제된 사용자입니다.");
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.NOT_FOUND);
+		}
 		UserInfoRespDTO userInfo = userService.getUserInfo(Long.toString(userId));
 		UserIncludesDogsDTO userDTO = new UserIncludesDogsDTO(userInfo);
 		userDTO.setUserId(userId);
@@ -216,11 +225,17 @@ public class BoardRestController {
 	 */
 	@ApiOperation(value = "게시물 수정", notes = "선택된 단건 게시글을 수정")
 	@PutMapping("/board")
-	public ResponseEntity<?> modifyBoard(/*@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,*/
+	public ResponseEntity<?> modifyBoard(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
 			@RequestBody BoardDTO boardDTO) {
 		logger.info("Board update parameter : {} {}", boardDTO);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-//		jwtService.validateToken(token);
+		jwtService.validateToken(token);
+		
+		if(jwtService.getUserId(token) != boardDTO.getUserId()) {
+			resultMap.put("result", "fail");
+			resultMap.put("msg", "게시물이 수정 권한이 없습니다.");
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.UNAUTHORIZED);
+		}
 		
 		BoardDTO newBoardDto = boardService.update(boardDTO);
 		
@@ -238,11 +253,11 @@ public class BoardRestController {
 	@ApiOperation(value = "게시물 삭제", notes = "선택된 단건 게시글을 삭제")
 	@DeleteMapping("/board")
 	public ResponseEntity<?> deleteBoard(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@RequestBody BoardDTO boardDto) {
+			@RequestParam String boardId) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
 		
-		boardService.delete(boardDto);
+		boardService.delete(boardId, jwtService.getUserId(token));
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("msg", "게시물이 삭제되었습니다.");
@@ -260,7 +275,7 @@ public class BoardRestController {
 			@RequestBody CommentDTO commentDto) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
-		logger.info("comment comment comment parameter : {} {}", commentDto);
+		logger.info("comment regist parameter : {}", commentDto);
 		commentService.save(commentDto);
 		List<CommentDTO> comments = commentService.findAllCommentsInBoard(commentDto.getBoardId());
 		
@@ -277,13 +292,15 @@ public class BoardRestController {
 	 */
 	@ApiOperation(value = "댓글 삭제", notes = "선택된 단건 댓글을 삭제")
 	@DeleteMapping("/board/comment")
-	public ResponseEntity<?> deleteComment(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@RequestBody CommentDTO commentDto) {
+	public ResponseEntity<?> deleteComment(
+			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@RequestParam long commentId) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
 		
-		commentService.delete(commentDto.getCommentId());
-		List<CommentDTO> comments = commentService.findAllCommentsInBoard(commentDto.getBoardId());
+		logger.info("comment delete parameter : {}", commentId);
+		Board board = commentService.deleteAndReturn(commentId, jwtService.getUserId(token));
+		List<CommentDTO> comments = commentService.findAllCommentsInBoard(board);
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("comments", comments);
@@ -308,8 +325,11 @@ public class BoardRestController {
 		// notify 전송
 		User sender = userService.findUserByUserId(jwtService.getUserId(token));
 		User receiver = boardService.findBoardByBoardId(likeDTO.getBoardId()).getUser();
-		Board board = boardService.findBoardByBoardId(likeDTO.getBoardId());
-		notifyService.insertLikeNotify(receiver, sender, board.getDog().getDogId(), likeDTO.getBoardId());
+		// 자기 자신에게는 알림을 전송하지 않는다.
+		if (sender.getUserId() != receiver.getUserId()) {
+			Board board = boardService.findBoardByBoardId(likeDTO.getBoardId());
+			notifyService.insertLikeNotify(receiver, sender, board.getDog().getDogId(), likeDTO.getBoardId());
+		}
 
 		resultMap.put("result", SUCCESS);
 		resultMap.put("likeCnt", likeService.getLikes(likeDTO.getBoardId()));

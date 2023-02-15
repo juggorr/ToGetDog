@@ -1,18 +1,26 @@
 package com.ssafy.togetdog.user.model.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.togetdog.appointment.model.entity.Appointment;
+import com.ssafy.togetdog.appointment.model.repository.AppointmentRepository;
+import com.ssafy.togetdog.board.model.repository.BoardRepository;
+import com.ssafy.togetdog.dog.model.repository.DogRepository;
 import com.ssafy.togetdog.global.exception.DuplicatedInputException;
 import com.ssafy.togetdog.global.exception.InvalidInputException;
 import com.ssafy.togetdog.global.exception.InvalidLoginActingException;
 import com.ssafy.togetdog.global.exception.unAuthWaitUserException;
+import com.ssafy.togetdog.notify.model.repository.NotifyRepository;
 import com.ssafy.togetdog.user.model.dto.EmailAuthParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
 import com.ssafy.togetdog.user.model.dto.UserLoginParamDTO;
@@ -36,6 +44,10 @@ public class UserServiceImpl implements UserService {
 	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
 	private final WaitUserRepository waitUserRepository;
+	private final DogRepository dogRepository;
+	private final BoardRepository boardRepository;
+	private final NotifyRepository notifyRepository;
+	private final AppointmentRepository appointmentRepository;
 
 	/* 회원 가입을 위한 이메일 전송 */
 	@Override
@@ -65,6 +77,7 @@ public class UserServiceImpl implements UserService {
 	/* 소셜회원 가입처리*/
 	@Override
 	public void socialRegist(UserSocialRegistParamDTO userDTO) {
+		checkSocialRegistrationValidation(userDTO);
 		userRepository.save(UserSocialRegistParamDTO.of(userDTO));
 	}
 	
@@ -147,7 +160,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void withdrawal(long userId) {
 		User user = findUserByUserId(userId);
-		if (user != null) {
+		if (user != null) {			
+			// 사용자가 남긴 게시물 및 댓글 삭제
+			boardRepository.deleteAllByUser(user);
+			// 사용자가 가지고 있는 강아지 삭제
+			dogRepository.deleteAllByUser(user);
+			// 사용자가 받았던 알람 리스트 삭제
+			notifyRepository.deleteAllByReceiver(user);
+			// 사용자에게 예정된 약속이 있을 때 취소 시키기
+			updateAppointmentByUser(user);
+			
 			user.setEmail("deletedUser" + userId);
 			user.setNickName("deletedUser" + userId);
 			user.setPassword("deletedUser" + userId);
@@ -162,8 +184,22 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 	
-	//////////////////////////////////////////////
-	// 범용 method
+	public void updateAppointmentByUser(User user) {
+		List<String> statusArr = new ArrayList<String>();
+		statusArr.add("confirmed");
+		statusArr.add("wait");
+		
+		List<Appointment> requestList = appointmentRepository.findAllBySentUserOrReceivedUserAndStatusIn(user, user, statusArr,
+				Sort.by("dateTime").descending());
+		for (Appointment appointment : requestList) {
+			appointment.setStatus("cancelled");
+			appointmentRepository.save(appointment);
+		}
+	}
+	
+	////////////////
+	// 범용 method //
+	///////////////
 
 	@Override
 	public User findUserByEmailAndPassword(String email, String password) {
@@ -228,7 +264,9 @@ public class UserServiceImpl implements UserService {
 		return waitUserRepository.findByNickName(nickname).orElse(null);
 	}
 	
-	///////////////////////////////
+	/////////////////
+	// 유효성 method //
+	////////////////
 
 	/***
 	 * Validation for User Registration
@@ -269,6 +307,70 @@ public class UserServiceImpl implements UserService {
 		// password regexp check
 		if (!Pattern.matches(passwordRegexp, userDTO.getPassword())) {
 			throw new InvalidInputException("비밀번호 입력값이 올바르지 않습니다.");
+		}
+		// nickname regexp check
+		if (!Pattern.matches(nicknameRegexp, userDTO.getNickname())) {
+			throw new InvalidInputException("닉네임 입력값이 올바르지 않습니다.");
+		}
+		// gender regexp check
+		if (!Pattern.matches(genderRegexp, userDTO.getGender())) {
+			throw new InvalidInputException("성별 입력값이 올바르지 않습니다.");
+		}
+		// regionCode regexp check
+		if (!Pattern.matches(regionCodeRegexp, userDTO.getRegionCode())) {
+			throw new InvalidInputException("지역번호 값이 올바르지 않습니다.");
+		}
+		// birth check
+		try {
+			int birth = Integer.parseInt(userDTO.getBirth());
+			LocalDate now = LocalDate.now();
+			if (birth > now.getYear() || birth < 1900) {
+				throw new InvalidInputException("생년월일 값이 올바르지 않습니다.");
+			}
+		} catch (NumberFormatException e) {
+			throw new InvalidInputException("생년월일 값이 숫자가 아닙니다.");
+		}
+	}
+	
+	/***
+	 * Validation for User SocialRegistration
+	 * 
+	 * @param userRegistParamDTO
+	 */
+	public void checkSocialRegistrationValidation(UserSocialRegistParamDTO userDTO) {
+		String emailRegexp = "^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
+		String nicknameRegexp = "^[a-zA-Z가-힇0-9]{2,16}$";
+		String genderRegexp = "^female$|^male$|^none$";
+		String regionCodeRegexp = "(^[0-9]{5}$)";
+		
+		User user = userRepository.findByEmail(userDTO.getEmail()).orElse(null);
+		if (user != null) {
+			throw new DuplicatedInputException("이미 가입된 이메일입니다.");
+		}
+		
+		// null check
+		if (userDTO.getEmail() == null) {
+			throw new InvalidInputException("이메일이 null입니다.");
+		}
+		if (userDTO.getNickname() == null) {
+			throw new InvalidInputException("닉네임이 null입니다.");
+		}
+		if (userDTO.getGender() == null) {
+			throw new InvalidInputException("성별이 null입니다.");
+		}
+		if (userDTO.getAddress() == null) {
+			throw new InvalidInputException("주소 값이 null입니다.");
+		}
+		if (userDTO.getRegionCode() == null) {
+			throw new InvalidInputException("지역코드 값이 null입니다.");
+		}
+		if (userDTO.getBirth() == null) {
+			throw new InvalidInputException("생년월일 값이 null입니다.");
+		}
+		
+		// email regexp check
+		if (!Pattern.matches(emailRegexp, userDTO.getEmail())) {
+			throw new InvalidInputException("이메일 입력값이 올바르지 않습니다.");
 		}
 		// nickname regexp check
 		if (!Pattern.matches(nicknameRegexp, userDTO.getNickname())) {

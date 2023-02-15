@@ -1,34 +1,32 @@
-package com.ssafy.togetdog.user.model.dto;
+package com.ssafy.togetdog.follow.model.dto;
+
+import java.time.LocalDate;
 
 import javax.validation.constraints.Size;
 
 import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.vo.ProviderType;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
 @Setter
+@Getter
 @ToString
-public class UserInfoRespDTO {
-	private String email;
-	private String nickName;
-	private String birth;
+public class FollowerInfoRespDTO {
+	private long userId;
+	private String nickname;
+	private int userAge;
 	private String userGender;
 	private String address;
 	private String regionCode;
 	private String social;
 	private double rating;
-
-	public static UserInfoRespDTO of(User user) {
+	
+	public static FollowerInfoRespDTO of(User user) {
 		String gender = user.getGender();
 		if (gender.equals("f")) gender = "female";
 		else if (gender.equals("m")) gender = "male";
@@ -46,12 +44,14 @@ public class UserInfoRespDTO {
 
 		double rating = 0;
 		if (user.getRatingCount() != 0) {
-			rating = (int) user.getRatingSum() / user.getRatingCount();
+			rating = user.getRatingSum() / user.getRatingCount();
 		}
-		return UserInfoRespDTO.builder()
-				.email(user.getEmail())
-				.nickName(user.getNickName())
-				.birth(user.getUserBirth())
+		
+		LocalDate now = LocalDate.now();
+		return FollowerInfoRespDTO.builder()
+				.userId(user.getUserId())
+				.nickname(user.getNickName())
+				.userAge(now.getYear() - Integer.parseInt(user.getUserBirth()))
 				.userGender(gender)
 				.address(user.getAddress())
 				.regionCode(user.getRegionCode())

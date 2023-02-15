@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,7 @@ import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.dog.model.repository.DogRepository;
 import com.ssafy.togetdog.global.exception.InvalidInputException;
+import com.ssafy.togetdog.global.exception.UnAuthorizedException;
 import com.ssafy.togetdog.global.util.FileUtil;
 import com.ssafy.togetdog.user.model.entity.User;
 
@@ -57,12 +59,20 @@ public class BoardService {
 	}
 
 	@Transactional
-	public void delete(BoardDTO boardDto) {
-		long boardId = boardDto.getBoardId();
-		if (boardId > 0) {
+	public void delete(String boardid, long userId) {
+		try {
+			long boardId = Long.parseLong(boardid);
+			Board board = boardRepository.findById(boardId).orElse(null);
+			if (board == null) {
+				throw new InvalidInputException("올바른 게시물을 찾을 수 없습니다.");
+			}
+			if (board.getUser().getUserId() != userId) {
+				throw new UnAuthorizedException("게시물을 삭제할 권한이 없는 유저입니다.");
+			}
+			fileUtil.fileDelete(board.getImage(), boardImageFilePath);
 			boardRepository.deleteById(boardId);
-		} else {
-			throw new InvalidInputException();
+		} catch(NumberFormatException e) {
+			throw new InvalidInputException("올바른 boardId가 아닙니다.");
 		}
 	}
 
@@ -99,7 +109,7 @@ public class BoardService {
 	}
 
 	public Page<BoardDTO> getAllByDogId(long dogId, int page) {
-		Pageable pageable = PageRequest.of(page, 96);
+		Pageable pageable = PageRequest.of(page, 27, Sort.by("boardId").descending());
 		Dog dog = new Dog();
 		dog.setDogId(dogId);
 		Page<Board> bList = boardRepository.findAllByDog(dog, pageable);
@@ -113,18 +123,18 @@ public class BoardService {
 	}
 
 	public Page<BoardDTO> findAll(int page) {
-		Pageable pageable = PageRequest.of(page, 96);
+		Pageable pageable = PageRequest.of(page, 27, Sort.by("boardId").descending());
 		Page<Board> bList = boardRepository.findAll(pageable);
 		Page<BoardDTO> boardList = bList.map(b -> new BoardDTO(b));
 		return boardList;
 	}
 
 	public Page<BoardHomeDTO> getAllInDogIds(List<Long> dogIds, int page) {
-		Pageable pageable = PageRequest.of(page, 30);
+		logger.debug("======= page : {}", page);
+		Pageable pageable = PageRequest.of(page, 9, Sort.by("boardId").descending());
 		List<Dog> dogList = new ArrayList<Dog>();
 		for (Long id : dogIds) {
 			Dog dog = dogRepository.findByDogId(id);
-			logger.debug("======= dog : {}", dog);
 			dogList.add(dog);
 		}
 		Page<BoardHomeDTO> fbList = boardRepository.findAllByDogIn(dogList, pageable);

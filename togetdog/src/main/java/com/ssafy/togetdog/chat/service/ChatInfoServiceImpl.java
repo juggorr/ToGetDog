@@ -7,8 +7,11 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.togetdog.board.controller.BoardRestController;
 import com.ssafy.togetdog.chat.model.dto.ChatInUserInfo;
 import com.ssafy.togetdog.chat.model.dto.ChatInfoDTO;
 import com.ssafy.togetdog.chat.model.entity.ChatInfo;
@@ -19,6 +22,7 @@ import com.ssafy.togetdog.chat.repository.ChatInfoRepository;
 import com.ssafy.togetdog.chat.repository.ChatMsgRepository;
 import com.ssafy.togetdog.chat.repository.ChatRoomRepository;
 import com.ssafy.togetdog.user.model.entity.User;
+import com.ssafy.togetdog.user.model.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 @Service
@@ -31,6 +35,10 @@ public class ChatInfoServiceImpl implements ChatInfoService{
 	private final ChatMsgRepository chatMsgRepo;
 
 	private final ChatRoomRepository chatRoomRepo;
+	
+	private final UserRepository userRepository;
+	
+	private final Logger logger = LoggerFactory.getLogger(ChatInfoServiceImpl.class);
 
 	@Transactional
 	public void updateChatInfo(long roomId, Set<Long> nowUser) {
@@ -62,8 +70,18 @@ public class ChatInfoServiceImpl implements ChatInfoService{
 	@Transactional
 	public List<ChatInfoDTO> callChatList(long userId) {
 		List<ChatInfo> list = chatInfoRepo.findByUserIdAndActivation(userId , 1).orElse(null);
+		
 		if(list == null)
 			return null;
+		
+		// 삭제된 사용자인 경우 리스트에 띄우지 않음
+		for (int i = 0; i < list.size(); i++) {
+			User user = userRepository.findById(list.get(i).getOther().getUserId()).orElse(null);
+			if(user.getNickName().contains("delete")) {
+				list.remove(list.get(i));
+			}
+		}
+		
 		return list.stream()
 				.map(m->ChatInfoDTO.of(m))
 				.collect(Collectors.toList());
