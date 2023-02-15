@@ -2,7 +2,6 @@ package com.ssafy.togetdog.appointment.model.repository;
 
 import java.util.List;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,9 +18,17 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 	@Query(value = "select * from request r "
 			+ "where r.status = :status and (r.sent_user_id = :senderId or r.received_user_id = :receiverId)"
 			+ "order by date_time", nativeQuery = true)
-	List<Appointment> findStatusList(@Param("status") String status, @Param("senderId") long senderId, @Param("receiverId") long receiverId);
+	List<Appointment> findStatusList(
+			@Param("status") String status, 
+			@Param("senderId") long senderId, @Param("receiverId") long receiverId);
 	
-	List<Appointment> findAllByStatusInAndSentUserOrReceivedUser(List<String> statusArr, User userOne, User userTwo, Sort sort);
+	@Query(value = "select * from request" + 
+			"where (sent_user_id = :senderId or received_user_id = :receiverId)" + 
+			"and (status = :status1 or status = :status2)" + 
+			"order by is_receiver_rate, date_time desc", nativeQuery = true)
+	List<Appointment> findStatusesList(
+			@Param("senderId") long senderId, @Param("receiverId") long receiverId, 
+			@Param("status1") String status1, @Param("status2") String status2);
 	
 	Long countByReceivedUserAndStatus(User user, String status);
 	
