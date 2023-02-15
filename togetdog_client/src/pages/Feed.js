@@ -108,7 +108,7 @@ const Feed = () => {
     await axios
       .get(`${BACKEND_URL}/board/list/${targetDogId}`, {
         params: {
-          pageNo: pageNo,
+          pageNo: pageNo.current,
         },
         headers: {
           Authorization: auth,
@@ -155,7 +155,10 @@ const Feed = () => {
       const dogId = location.state.dogId;
 
       axios
-        .get(`${BACKEND_URL}/feed/${feedUserId}?pageNo=${pageNo}`, {
+        .get(`${BACKEND_URL}/feed/${feedUserId}`, {
+          params: {
+            pageNo: pageNo.current,
+          },
           headers: {
             'Content-Type': 'application/json',
             Authorization: auth,
@@ -194,7 +197,7 @@ const Feed = () => {
           axios
             .get(`${BACKEND_URL}/board/list/${dogId}`, {
               params: {
-                pageNo: pageNo,
+                pageNo: pageNo.current,
               },
               headers: {
                 Authorization: auth,
@@ -226,7 +229,10 @@ const Feed = () => {
     }
 
     axios
-      .get(`${BACKEND_URL}/feed/${feedUserId}?pageNo=${pageNo}`, {
+      .get(`${BACKEND_URL}/feed/${feedUserId}`, {
+        params: {
+          pageNo: pageNo.current,
+        },
         headers: {
           'Content-Type': 'application/json',
           Authorization: auth,
