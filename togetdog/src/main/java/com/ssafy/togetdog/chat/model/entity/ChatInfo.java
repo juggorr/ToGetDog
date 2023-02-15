@@ -67,6 +67,7 @@ public class ChatInfo {
 	public void updateAct(long act) {
 		this.activation = act;
 		this.start = this.last;
+		this.lastChat = ChatMsg.builder().idx(1).build();
 	}
 	
 

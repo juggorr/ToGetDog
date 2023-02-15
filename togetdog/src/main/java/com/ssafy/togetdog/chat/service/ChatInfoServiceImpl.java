@@ -114,7 +114,7 @@ public class ChatInfoServiceImpl implements ChatInfoService{
 		ChatInfo info = chatInfoRepo.findByRoomIdAndUserId(roomId, userId).orElse(null);
 		if(info == null)
 			return true;
-		info.setActivation(2);
+		info.updateAct(2);
 		chatInfoRepo.save(info);
 		return false;
 	}
