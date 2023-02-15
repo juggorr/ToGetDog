@@ -166,9 +166,9 @@ const ChatMsg = () => {
       },
       (error) => {
         // 소켓 연결 실패
+        navigate('/500');
         console.log(error);
         stompClient.connected = false;
-        navigate('/500');
       },
     );
     // socket.onclose = () => {
