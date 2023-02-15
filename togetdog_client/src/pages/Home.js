@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import DogRecommend from "../components/DogRecommend";
-import UserFollow from "../components/UserFollow";
+// import UserFollow from "../components/UserFollow";
 import { BACKEND_URL } from "../config";
 import { authAtom, userState } from "../recoil";
 import {
@@ -156,8 +156,6 @@ const Home = () => {
     }
     if (!boardList) {
       setLoading(true);
-    } else {
-      setTinyLoading(true);
     }
     await axios
       .get(`${BACKEND_URL}/home`, {
@@ -219,6 +217,7 @@ const Home = () => {
 
   useEffect(() => {
     if (inView && hasNextPage) {
+      setTinyLoading(true);
       getBoardList();
     }
   }, [inView]);
@@ -272,8 +271,9 @@ const Home = () => {
         <div className="tinyLoading">
           <img src={Loading} alt="loading..."></img>
         </div>
-      ) : null}
-      <div ref={ref} className="scrollHandler" />
+      ) : (
+        <div ref={ref} className="scrollHandler" />
+      )}
     </HomeWrapper>
   );
 };
