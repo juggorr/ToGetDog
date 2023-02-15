@@ -2,11 +2,10 @@ import styled from "@emotion/styled";
 
 export const ListContainer = styled.div`
   width: 100%;
-  height: calc(100vh - 115px);
   display: flex;
   flex-direction: column;
   font-family: 'Noto Sans KR', sans-serif;
-
+  padding: 0 0 1.5rem;
 `;
   
   export const ListWrapper = styled.div`
