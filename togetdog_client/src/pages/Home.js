@@ -169,8 +169,9 @@ const Home = () => {
         },
       })
       .then((response) => {
-        // console.log(response.data);
-        setBoardList([...boardList, ...response.data.boardList]);
+        // console.log(pageNo.current);
+        // console.log(response.data.boardList);
+        setBoardList((boardList) => [...boardList, ...response.data.boardList]);
         setLoading(false);
         setTinyLoading(false);
         setHasNextPage(response.data.boardList.length === 9);
@@ -221,7 +222,7 @@ const Home = () => {
     if (inView && hasNextPage) {
       getBoardList();
     }
-  }, [getBoardList, hasNextPage, inView]);
+  }, [inView]);
 
   if (isLoading) {
     return (
