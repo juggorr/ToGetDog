@@ -66,6 +66,11 @@ public class ChatRestController {
 			resultMap.put("dm", new ArrayList<Object>());
 			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 		}
+		
+		for(ChatInfoDTO dto : list) {
+		        csl.chatLastUpdate(dto);
+		}
+		
 		Collections.sort(list, new Comparator<ChatInfoDTO>() {
 			@Override
 			public int compare(ChatInfoDTO o1, ChatInfoDTO o2) {
