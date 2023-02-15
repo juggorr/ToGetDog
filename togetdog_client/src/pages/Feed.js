@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import ConfirmModal from '../components/ConfirmModal';
@@ -91,7 +91,7 @@ const Feed = () => {
   const feedUserId = location.pathname.split('/').reverse()[0];
 
   // pageNo
-  const pageNo = 1;
+  const pageNo = useRef(1);
 
   const swapMainDog = async (targetDogId) => {
     setLoading(true);
