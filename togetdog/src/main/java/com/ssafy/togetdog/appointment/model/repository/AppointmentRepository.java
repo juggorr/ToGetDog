@@ -16,19 +16,20 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 	List<Appointment> findAllByReceivedUser(User user);
 
 	@Query(value = "select * from request r "
-			+ "where r.status = :status and (r.sent_user_id = :senderId or r.received_user_id = :receiverId)"
+			+ "where r.status = :status "
+			+ "and (r.sent_user_id = :senderId or r.received_user_id = :receiverId) "
 			+ "order by date_time", nativeQuery = true)
 	List<Appointment> findStatusList(
 			@Param("status") String status, 
 			@Param("senderId") long senderId, @Param("receiverId") long receiverId);
 	
-	@Query(value = "select * from request r" + 
-			"where (r.sent_user_id = :senderId or r.received_user_id = :receiverId)" + 
-			"and r.status in (:status1, :status2)" + 
-			"order by r.is_receiver_rate, r.date_time desc", nativeQuery = true)
+	@Query(value = "select * from request r "
+			+ "where r.status in (:status1, :status2) "
+			+ "and (r.sent_user_id = :senderId or r.received_user_id = :receiverId) "
+			+ "order by r.is_receiver_rate, r.date_time desc", nativeQuery = true)
 	List<Appointment> findStatusesList(
-			@Param("senderId") long senderId, @Param("receiverId") long receiverId, 
-			@Param("status1") String status1, @Param("status2") String status2);
+			@Param("status1") String status1, @Param("status2") String status2,
+			@Param("senderId") long senderId, @Param("receiverId") long receiverId);
 	
 	Long countByReceivedUserAndStatus(User user, String status);
 	
