@@ -92,6 +92,7 @@ export const MainColorLongBtn = styled.button`
 export const MainColorShortBtn = styled.button`
   width: 6rem;
   height: 2.3rem;
+  line-height: 2.3rem;
   border-radius: 2rem;
   border: none;
 
