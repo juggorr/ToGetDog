@@ -15,19 +15,14 @@ const MenuModal = ({
   feedUserData,
   setConfirmBtnClick,
   setNoDogBtnClick,
+  setNoChangeModalClick,
   dogId,
-  setUserInfoModal,
 }) => {
   const setAuth = useSetRecoilState(authAtom);
   const [user, setUser] = useRecoilState(userState);
 
   const outSection = useRef();
   const navigate = useNavigate();
-
-  const handleUserInfo = () => {
-    setMenuBtnClick(false);
-    setUserInfoModal(true);
-  };
 
   const handleDogDelete = () => {
     setMenuBtnClick(false);
@@ -46,6 +41,11 @@ const MenuModal = ({
     console.log('로그아웃이 정상적으로 처리되었습니다.');
     navigate('/login');
   };
+
+  const handleNoChange = () => {
+    setMenuBtnClick(false);
+    setNoChangeModalClick(true);
+  }
 
   return (
     <>
@@ -82,7 +82,8 @@ const MenuModal = ({
                     if (feedUserData.social === 'origin') {
                       navigate(it.link);
                     } else {
-                      alert('소셜 회원은 비밀번호를 변경할 수 없습니다.')
+                      return handleNoChange();
+                      // alert('소셜 회원은 비밀번호를 변경할 수 없습니다.')
                     }
                   } else {
                     navigate(it.link);
