@@ -189,7 +189,7 @@ public class UserServiceImpl implements UserService {
 		statusArr.add("confirmed");
 		statusArr.add("wait");
 		
-		List<Appointment> requestList = appointmentRepository.findAllBySentUserOrReceivedUserAndStatusIn(user, user, statusArr,
+		List<Appointment> requestList = appointmentRepository.findAllByStatusInAndSentUserOrReceivedUser(statusArr, user, user,
 				Sort.by("dateTime").descending());
 		for (Appointment appointment : requestList) {
 			appointment.setStatus("cancelled");
