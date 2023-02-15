@@ -69,6 +69,7 @@ export const ConfirmModalBody = styled.div`
   align-items: center;
 
   .modal-msg {
+    padding-top: 2rem;
     font-size: 0.75rem;
   }
 
@@ -106,8 +107,4 @@ export const ConfirmModalBody = styled.div`
 export const ConfirmModalImage = styled.img`
   width: 4rem;
   // height: 1rem;
-
-  .no-essentials {
-    padding-bottom: 2rem;
-  }
 `;

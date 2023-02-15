@@ -70,13 +70,15 @@ const MenuModal = ({
                       console.log(feedDogData.length);
                       return handleDogDelete();
                     } else {
-                      console.log('없서');
+                      // console.log('없서');
                       return handleNoDog();
                     }
                   } else if (it.link === '/dogedit' && feedDogData.length > 0) {
                     navigate(it.link, { state: dogId });
                   } else if (it.link === '/dogedit' && feedDogData.length === 0) {
                     return handleNoDog();
+                  } else if (it.link === '/passwordedit') {
+                    console.log(user);
                   } else {
                     navigate(it.link);
                   }
