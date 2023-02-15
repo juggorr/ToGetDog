@@ -11,7 +11,7 @@ export const HomeTextBtn = styled.div`
   background-color: #000;
   text-align: center;
   line-height: 45px;
-  margin-top: 50px;
+  margin-top: 2rem;
 `;
 
 export const EmailBtn = styled.button`
