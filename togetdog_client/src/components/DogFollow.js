@@ -10,7 +10,8 @@ function DogFollow({ dog }) {
 
   // 사진, 이름 클릭시 해당 인물 피드로 이동
   const onClick = () => {
-    navigate(`/feed/${dog.userId}`);
+    // console.log(dog.dogId);
+    navigate(`/feed/${dog.userId}`, {state: {dogId: dog.dogId}});
   };
 
   

@@ -32,7 +32,8 @@ const SingleFriend = ({ item }) => {
       <DogImgWrapper>
         <div
           className="dogProfileCircle"
-          onClick={() => navigate(`/feed/${item.userId}`)}
+          // onClick={() => console.log(item.dogId)}
+          onClick={() => navigate(`/feed/${item.userId}`, {state: {dogId: item.dogId}})}
         >
           <img
             src={"https://i8a807.p.ssafy.io/image/dog/" + item.dogProfile}
@@ -41,7 +42,7 @@ const SingleFriend = ({ item }) => {
           />
         </div>
       </DogImgWrapper>
-      <div className="dogInfo" onClick={() => navigate(`/feed/${item.userId}`)}>
+      <div className="dogInfo" onClick={() => navigate(`/feed/${item.userId}`, {state: {dogId: item.dogId}})}>
         <div className="dogNameWrapper">
           <p className="dogName">{item.dogName}</p>
           {/* {dogTown(item.address)} */}
