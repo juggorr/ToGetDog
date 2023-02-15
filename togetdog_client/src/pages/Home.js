@@ -169,15 +169,14 @@ const Home = () => {
         },
       })
       .then((response) => {
-        // console.log(pageNo.current);
         // console.log(response.data.boardList);
+        if (response.data.boardList.length) {
+          pageNo.current += 1;
+        }
         setBoardList((boardList) => [...boardList, ...response.data.boardList]);
         setLoading(false);
         setTinyLoading(false);
         setHasNextPage(response.data.boardList.length === 9);
-        if (response.data.boardList.length) {
-          pageNo.current += 1;
-        }
       })
       .catch((error) => {
         console.log(error);
