@@ -9,13 +9,14 @@ import FollowingsList from "../components/FollowingsList";
 import { 
   ListContainer, 
   ListWrapper } from "../styles/FollowerListEmotion";
-
+  import Loading from "../assets/loading.gif"
 
 
 function FollowingList() {
 
   const auth = useRecoilValue(authAtom);
 
+  const [isLoading, setIsLoading] = useState(true);
   // navigate로 넘어온 유저Id 받기
   // useEffect에 넣어야할 것 같기도함
   const location = useLocation();
@@ -34,6 +35,7 @@ function FollowingList() {
         .then((res) => {
           console.log(res);
           setFollowings(res.data.dogs);
+          setIsLoading(false);
         })
         .catch((err) => {
           console.log(err)
@@ -43,6 +45,13 @@ function FollowingList() {
     fetchFollowings();
   }, [userId])
 
+  if (isLoading) {
+    return (
+      <div className="loading">
+        <img src={Loading} alt='loading...'/>
+      </div>
+    )
+  }
   
   return(
     <ListContainer>
