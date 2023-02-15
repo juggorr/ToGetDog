@@ -241,12 +241,12 @@ const Feed = () => {
                 <div className='dog-name'>
                   {currentDog.dogName}
                   {currentDog.dogGender === 'male' ? (
-                    <img src={Boy} className='dog-gender' />
+                    <img src={Boy} className='dog-gender' alt='Boy' />
                   ) : (
-                    <img src={Girl} className='dog-gender' />
+                    <img src={Girl} className='dog-gender' alt='Girl' />
                   )}
                 </div>
-                <div className='dog-breed'>{`${currentDog.dogType}`}</div>
+                <div className='dog-breed'>{currentDog.dogType}</div>
                 <div className='dog-age'>{`${
                   currentDog.dogAge >= 12 ? `${Math.floor(currentDog.dogAge / 12)}살` : `${currentDog.dogAge}개월`
                 }`}</div>
@@ -298,6 +298,7 @@ const Feed = () => {
                         state: { userId: user.userId },
                       })
                     }
+                    className='follow-box'
                   >
                     <div className='follow-text'>팔로잉</div>
                     <div>{feedUserData.followCnt}</div>

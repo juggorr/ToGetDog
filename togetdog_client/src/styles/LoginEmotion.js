@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const LoginContainer = styled.div`
   height: 100vh;
@@ -86,7 +86,7 @@ export const InputWrapper = styled.div`
   .input-title {
     font-size: 15px;
     margin-bottom: 0.5rem;
-  }  
+  }
 
   .red-dot {
     color: red;

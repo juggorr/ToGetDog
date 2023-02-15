@@ -52,8 +52,21 @@ export const FeedProfileTop = styled.div`
   background-color: #fff;
   position: relative;
 
+  @keyframes leftright {
+    0%,
+    20% {
+      transform: translateX(0%);
+      left: 0%;
+    }
+    80%,
+    100% {
+      transform: translateX(-100%);
+      left: 100%;
+    }
+  }
+
   .dog-info-box {
-    width: 75%;
+    width: 100%;
     padding-left: 0.7rem;
   }
 
@@ -72,8 +85,19 @@ export const FeedProfileTop = styled.div`
   .dog-age {
     font-size: 0.85rem;
     color: #777;
-    display: flex;
-    align-items: center;
+  }
+
+  .dog-breed {
+    width: 6.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    overflow-x: scroll;
+    -ms-overflow-style: none; /* 인터넷 익스플로러 */
+    scrollbar-width: none; /* 파이어폭스 */
+  }
+
+  .dog-breed::-webkit-scrollbar {
+    display: none; /* 크롬, 사파리, 오페라, 엣지 */
   }
 
   .dog-gender {
@@ -81,7 +105,8 @@ export const FeedProfileTop = styled.div`
   }
 
   .profile-etc-wrapper {
-    width: 30%;
+    // width: 40%;
+    min-width: 30%;
     display: flex;
     flex-direction: column;
     align-items: end;
@@ -101,11 +126,13 @@ export const FeedProfileTop = styled.div`
   }
 
   .follow-box {
+    display: flex;
     margin-bottom: 0.3rem;
   }
 
   .follow-text {
     color: #777;
+    padding-right: 0.5rem;
   }
 
   .sub-dogs {

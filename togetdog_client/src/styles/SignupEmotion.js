@@ -181,16 +181,14 @@ export const LogoWrapper = styled.div`
   align-itmes: center;
   padding-bottom: 50px;
 
-  .logo-title {
-    font-size: 40px;
-    font-weight
-    color: #000;
-  }
+  // .email-logo {
+  //   width: 5rem;
+  //   height: 5rem;
+  //   margin: auto;
+  //   margin-bottom: 2rem;
+  // }
 
-  .email-logo {
-    width: 9rem;
-    height: 9rem;
-    margin: auto;
-    margin-bottom: 2rem;
+  .logo-img {
+    width: 19rem;
   }
 `;
