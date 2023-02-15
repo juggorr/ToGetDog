@@ -299,6 +299,7 @@ export const StarRatingModal = styled.div`
   .checkboxWrapper {
     display: flex;
     justify-content: center;
+    align-items: center;
   }
 
   .checkboxText {

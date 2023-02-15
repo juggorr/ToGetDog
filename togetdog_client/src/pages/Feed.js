@@ -86,6 +86,7 @@ const Feed = () => {
 
   const location = useLocation();
   const feedUserId = location.pathname.split('/').reverse()[0];
+
   // pageNo
   const pageNo = 1;
 
@@ -111,8 +112,10 @@ const Feed = () => {
         },
       })
       .then((resp) => {
-        console.log(resp);
-        console.log(resp.data);
+        // console.log('피드 포토 받기');
+        // console.log(resp);
+        // console.log(resp.data);
+        // console.log('피드 포토 받기 끝')
         setFeedPhotoData(resp.data.boardList);
         setLoading(false);
       })
@@ -139,6 +142,86 @@ const Feed = () => {
       return;
     }
 
+    if (location.state) {
+      console.log('state 받았음');
+      console.log('state 받았음');
+      console.log('state 받았음');
+      console.log('state 받았음');
+      console.log(location.state);
+      // console.log('state를 받아오는 경우')
+      const dogId = location.state.dogId;
+
+      axios
+        .get(`${BACKEND_URL}/feed/${feedUserId}?pageNo=${pageNo}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: auth,
+          },
+        })
+        .then((res) => {
+          setFeedData(res.data.feed);
+          setFeedUserData(res.data.user);
+          if (res.data.user.dogs) {
+            setFeedDogData(res.data.user.dogs);
+            res.data.user.dogs.forEach((dog) => {
+              if (dog.dogId === dogId) {
+                setCurrentDog(dog);
+              };
+            })
+            if (res.data.user.dogs.toString() !== [].toString()) {
+              // current dog에 대한 팔로잉으로 수정해야함
+              res.data.user.dogs.forEach((dog) => {
+                if (dog.dogId === dogId) {
+                  setFollowStatus(dog.following);
+                }
+              });
+            }
+          }
+          let tmpSubDogs = [];
+
+          if (res.data.user.dogs) {
+            res.data.user.dogs.forEach((dog) => {
+              if (dog.dogId !== dogId) {
+                tmpSubDogs.push(dog);
+              }
+            });
+          }
+          setSubDogs(tmpSubDogs);
+          // setFeedPhotoData할 때 axios요청으로 보드 받아와서 넣어야 함
+          axios
+            .get(`${BACKEND_URL}/board/list/${dogId}`, {
+              params: {
+                pageNo: pageNo,
+              },
+              headers: {
+                Authorization: auth,
+              },
+            })
+            .then((res) => {
+              setFeedPhotoData(res.data.boardList);
+            })
+            .catch((err) => {
+              console.log(err);
+              if (err.response.state === 401) {
+                alert('토큰이 만료되어 자동 로그아웃되었습니다.');
+                handleLogout();
+              }
+            })
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response.status === 404) {
+            navigate('/*');
+          } else if (err.response.status === 401) {
+            alert('토큰이 만료되어 자동 로그아웃되었습니다.');
+            handleLogout();
+          }
+          console.log('피드 데이터 불러오기 실패');          
+        })
+      return;
+    }
+
     axios
       .get(`${BACKEND_URL}/feed/${feedUserId}?pageNo=${pageNo}`, {
         headers: {
@@ -147,8 +230,10 @@ const Feed = () => {
         },
       })
       .then((resp) => {
-        console.log(resp);
-        console.log(resp.data);
+        // console.log(resp);
+        // console.log(resp.data);
+        // console.log('들어오는 데이터')
+        // console.log(resp.data.user.dogs);
         setFeedData(resp.data.feed);
         setFeedUserData(resp.data.user);
         if (resp.data.user.dogs) {

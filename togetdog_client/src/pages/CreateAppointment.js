@@ -252,7 +252,12 @@ const CreateAppointment = () => {
   };
 
   const isValid = () => {
-    if (myDogError.current === true || partnerDogError.current === true) {
+    if (!userData.dogs[0]) {
+      alert("강아지를 한 마리 이상 등록해주세요.");
+    } else if (
+      myDogError.current === true ||
+      partnerDogError.current === true
+    ) {
       setRequestError(true);
     } else if (!placeInput.current) {
       setRequestError(true);
@@ -320,6 +325,14 @@ const CreateAppointment = () => {
           <FontAwesomeIcon icon="fa-user-group" />
           {"   "}나의 강아지를 선택해주세요.
         </p>
+        {userData.dogs && userData.dogs[0] ? null : (
+          <>
+            <MainColorShortBtn onClick={() => navigate("/dogregister")}>
+              강아지 등록
+            </MainColorShortBtn>
+            <p className="warningStr">먼저 강아지를 등록해주세요.</p>
+          </>
+        )}
         <div className="dogImageWrapper">
           {userData.dogs &&
             userData.dogs.map((item, idx) => (

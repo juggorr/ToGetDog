@@ -57,19 +57,29 @@ const SingleMeeting = ({ meeting, auth }) => {
   };
 
   const dayOfWeek = () => {
-    const week = ["일", "월", "화", "수", "목", "금", "토"];
-    const weekStr = meeting.date.split("T");
+    // 한국시간으로 변환
+    const kstTime = new Date(meeting.date);
+    kstTime.setHours(kstTime.getHours() + 9);
 
-    const dayOfTheWeek = week[new Date(weekStr[0]).getDay()];
-    weekStr[0] = weekStr[0].replaceAll("-", "/");
+    // 요일 찾기
+    const weekArr = ["일", "월", "화", "수", "목", "금", "토"];
+    const dayOfTheWeek = weekArr[kstTime.getDay()];
+
+    // toIOString()은 UTC시간 기준이기 때문에 offset설정을 다시 해줬습니다.
+    const timeValue = new Date(
+      kstTime.getTime() - kstTime.getTimezoneOffset() * 60000
+    )
+      .toISOString()
+      .split("T");
+    timeValue[0] = timeValue[0].replaceAll("-", "/");
 
     const dateResult =
       "   " +
-      weekStr[0] +
+      timeValue[0] +
       " (" +
       dayOfTheWeek +
       ")     " +
-      convertHours(weekStr[1]);
+      convertHours(timeValue[1]);
     return dateResult;
   };
 
@@ -90,7 +100,8 @@ const SingleMeeting = ({ meeting, auth }) => {
             infoModalOpen === false ? (
               <button
                 className="ratingBtn"
-                onClick={() => setRatingModalOpen(true)}>
+                onClick={() => setRatingModalOpen(true)}
+              >
                 평가
               </button>
             ) : null}
@@ -124,7 +135,8 @@ const SingleMeeting = ({ meeting, auth }) => {
             infoModalOpen === false ? (
               <button
                 className="ratingBtn"
-                onClick={() => setRatingModalOpen(true)}>
+                onClick={() => setRatingModalOpen(true)}
+              >
                 평가
               </button>
             ) : null}
@@ -252,7 +264,8 @@ const SingleMeeting = ({ meeting, auth }) => {
       <InfoModal>
         <div
           className="modalOutside"
-          onClick={() => setInfoModalOpen(false)}></div>
+          onClick={() => setInfoModalOpen(false)}
+        ></div>
         <div className="modalInside">
           <p className="appointmentDate">• {dayOfWeek()}</p>
           <p className="infoText">상대방의 강아지</p>
@@ -284,7 +297,8 @@ const SingleMeeting = ({ meeting, auth }) => {
         </div>
         <div
           className="modalOutside"
-          onClick={() => setInfoModalOpen(false)}></div>
+          onClick={() => setInfoModalOpen(false)}
+        ></div>
       </InfoModal>
     );
   };
@@ -362,23 +376,28 @@ const SingleMeeting = ({ meeting, auth }) => {
             <FontAwesomeIcon
               icon="fa-star"
               className={"star " + (activeStar[0] ? "active" : "disabled")}
-              onClick={() => starHandler(0)}></FontAwesomeIcon>
+              onClick={() => starHandler(0)}
+            ></FontAwesomeIcon>
             <FontAwesomeIcon
               icon="fa-star"
               className={"star " + (activeStar[1] ? "active" : "disabled")}
-              onClick={() => starHandler(1)}></FontAwesomeIcon>
+              onClick={() => starHandler(1)}
+            ></FontAwesomeIcon>
             <FontAwesomeIcon
               icon="fa-star"
               className={"star " + (activeStar[2] ? "active" : "disabled")}
-              onClick={() => starHandler(2)}></FontAwesomeIcon>
+              onClick={() => starHandler(2)}
+            ></FontAwesomeIcon>
             <FontAwesomeIcon
               icon="fa-star"
               className={"star " + (activeStar[3] ? "active" : "disabled")}
-              onClick={() => starHandler(3)}></FontAwesomeIcon>
+              onClick={() => starHandler(3)}
+            ></FontAwesomeIcon>
             <FontAwesomeIcon
               icon="fa-star"
               className={"star " + (activeStar[4] ? "active" : "disabled")}
-              onClick={() => starHandler(4)}></FontAwesomeIcon>
+              onClick={() => starHandler(4)}
+            ></FontAwesomeIcon>
           </Stars>
           <div className="checkboxWrapper">
             <input
@@ -412,11 +431,13 @@ const SingleMeeting = ({ meeting, auth }) => {
         ratingModalOpen && (
           <RatingModal
             setRatingModalOpen={setRatingModalOpen}
-            meeting={meeting}></RatingModal>
+            meeting={meeting}
+          ></RatingModal>
         )}
       <div
         className="appointmentContainer"
-        onClick={() => setInfoModalOpen(true)}>
+        onClick={() => setInfoModalOpen(true)}
+      >
         <div className="singleWrapper">
           <div className="appointmentLine"></div>
           <p className="appointmentDate">• {dayOfWeek()}</p>
@@ -459,7 +480,6 @@ const Walk = () => {
         // userOne이 보낸 사람, userTwo가 받은 사람
         // console.log(response.data);
         const appointments = [];
-        console.log(response.data.appointment);
 
         if (response.data.appointment) {
           for (let i = 0; i < response.data.appointment.length; i++) {
@@ -509,7 +529,8 @@ const Walk = () => {
         <SingleMeeting
           key={originalMeetings[i].roomId}
           meeting={originalMeetings[i]}
-          auth={auth}></SingleMeeting>
+          auth={auth}
+        ></SingleMeeting>
       );
       if (originalMeetings[i].status === "confirmed" && active === 1) {
         meetings.push(singleMeet);
@@ -531,21 +552,24 @@ const Walk = () => {
           className={
             active === 1 ? "activeTab singleTab" : "disabledTab singleTab"
           }
-          onClick={() => setActive(1)}>
+          onClick={() => setActive(1)}
+        >
           예정된 약속
         </div>
         <div
           className={
             active === 2 ? "activeTab singleTab" : "disabledTab singleTab"
           }
-          onClick={() => setActive(2)}>
+          onClick={() => setActive(2)}
+        >
           대기 중 요청
         </div>
         <div
           className={
             active === 3 ? "activeTab singleTab" : "disabledTab singleTab"
           }
-          onClick={() => setActive(3)}>
+          onClick={() => setActive(3)}
+        >
           종료된 약속
         </div>
       </TabList>
@@ -563,13 +587,16 @@ const Walk = () => {
               </LightColorLongBtn>
             </div>
           ) : null}
-          <div
-            className="recommendBtn"
-            onClick={() => {
-              navigate("/recommend");
-            }}>
-            <FontAwesomeIcon icon="fa-plus"></FontAwesomeIcon>
-          </div>
+          {active === 3 ? null : (
+            <div
+              className="recommendBtn"
+              onClick={() => {
+                navigate("/recommend");
+              }}
+            >
+              <FontAwesomeIcon icon="fa-plus"></FontAwesomeIcon>
+            </div>
+          )}
         </div>
       </MeetingWrapper>
     </WalkListWrapper>
