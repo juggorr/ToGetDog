@@ -80,6 +80,7 @@ public class AppointmentService {
 			// 요청의 모든 강아지가 삭제된 상태라면 산책할 수 없는 상태라고 보고, 약속을 취소시킵니다.
 			if (sentDogs.size() < 1) {
 				updateAppointment(appointment.getRoomId(), "cancelled");
+				continue;
 			} else {				
 				appointmentDTO.setUserOneDogs(sentDogs);
 			}
@@ -92,6 +93,7 @@ public class AppointmentService {
 			// 요청 받은 모든 강아지가 삭제된 상태라면 산책할 수 없는 상태라고 보고, 약속을 취소시킵니다.
 			if (recvDogs.size() < 1) {
 				updateAppointment(appointment.getRoomId(), "cancelled");
+				continue;
 			} else {
 				appointmentDTO.setUserTwoDogs(recvDogs);
 			}
@@ -135,6 +137,7 @@ public class AppointmentService {
 			// 요청의 모든 강아지가 삭제된 상태라면 산책할 수 없는 상태라고 보고, 약속을 취소시킵니다.
 			if (sentDogs.size() < 1) {
 				updateAppointment(appointment.getRoomId(), "cancelled");
+				continue;
 			} else {				
 				appointmentDTO.setUserOneDogs(sentDogs);
 			}
@@ -147,6 +150,7 @@ public class AppointmentService {
 			// 요청 받은 모든 강아지가 삭제된 상태라면 산책할 수 없는 상태라고 보고, 약속을 취소시킵니다.
 			if (recvDogs.size() < 1) {
 				updateAppointment(appointment.getRoomId(), "cancelled");
+				continue;
 			} else {
 				appointmentDTO.setUserTwoDogs(recvDogs);
 			}
