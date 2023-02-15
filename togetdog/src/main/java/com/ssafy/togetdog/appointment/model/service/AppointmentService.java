@@ -57,29 +57,44 @@ public class AppointmentService {
 		List<Appointment> requestList = appointmentRepository.findAllBySentUserOrReceivedUserAndStatus(user, user, "confirmed",
 				Sort.by("dateTime").ascending());
 
-		// Entity to DTO
-		List<AppointmentListDTO> resultList = requestList.stream().map(a -> AppointmentListDTO.of(a))
-				.collect(Collectors.toList());
+		List<AppointmentListDTO> resultList = new ArrayList<AppointmentListDTO>();
 
-		// 약속 리스트
-		for (int i = 0; i < requestList.size(); i++) {
+		// deleted user 처리 및 deleted 강아지 처리
+		// 받은 사람이 deleted 유저일 경우는 없으니 보낸사람일 경우만 처리합니다.
+		for (Appointment appointment : requestList) {
+			if (appointment.getSentUser().getUsername().startsWith("deleted")) continue;
+			
+			AppointmentListDTO appointmentDTO = AppointmentListDTO.of(appointment);
+			
+			// deleted 강아지 처리
 			List<DogInfoRespDTO> sentDogs = new ArrayList<>();
 			List<DogInfoRespDTO> recvDogs = new ArrayList<>();
-
-			List<SentAppointment> sentApps = sentAppointmentRepository.findAllByAppointment(requestList.get(i));
+			
+			List<SentAppointment> sentApps = sentAppointmentRepository.findAllByAppointment(appointment);
 			for (SentAppointment sent : sentApps) {
 				if (sent.getDog().getDogName().equals("deleted")) continue;
 				sentDogs.add(DogInfoRespDTO.of(sent.getDog(), Double.parseDouble(sent.getDog().getDogWeight())));
 			}
+			// 요청의 모든 강아지가 삭제된 상태라면 산책할 수 없는 상태라고 보고, 약속을 취소시킵니다.
+			if (sentDogs.size() < 1) {
+				updateAppointment(appointment.getRoomId(), "cancelled");
+			} else {				
+				appointmentDTO.setUserOneDogs(sentDogs);
+			}
 			
-			resultList.get(i).setUserOneDogs(sentDogs);
-
-			List<ReceivedAppointment> recvApps = receivedAppointmentRepository.findAllByAppointment(requestList.get(i));
+			List<ReceivedAppointment> recvApps = receivedAppointmentRepository.findAllByAppointment(appointment);
 			for (ReceivedAppointment recv : recvApps) {
 				if (recv.getDog().getDogName().equals("deleted")) continue;
 				recvDogs.add(DogInfoRespDTO.of(recv.getDog(), Double.parseDouble(recv.getDog().getDogWeight())));
 			}
-			resultList.get(i).setUserTwoDogs(recvDogs);
+			// 요청 받은 모든 강아지가 삭제된 상태라면 산책할 수 없는 상태라고 보고, 약속을 취소시킵니다.
+			if (recvDogs.size() < 1) {
+				updateAppointment(appointment.getRoomId(), "cancelled");
+			} else {
+				appointmentDTO.setUserTwoDogs(recvDogs);
+			}
+			
+			resultList.add(appointmentDTO);
 		}
 		return resultList;
 	}
@@ -94,30 +109,45 @@ public class AppointmentService {
 		// 내가 받은 요청이거나, 보낸 요청을 기준으로 조회
 		List<Appointment> requestList = appointmentRepository.findAllBySentUserOrReceivedUserAndStatus(user, user, "wait",
 				Sort.by("dateTime").ascending());
+		
+		List<AppointmentListDTO> resultList = new ArrayList<AppointmentListDTO>();
 
-		// Entity to DTO
-		List<AppointmentListDTO> resultList = requestList.stream().map(a -> AppointmentListDTO.of(a))
-				.collect(Collectors.toList());
-
-		// 약속 리스트
-		for (int i = 0; i < requestList.size(); i++) {
+		// deleted user 처리 및 deleted 강아지 처리
+		// 받은 사람이 deleted 유저일 경우는 없으니 보낸사람일 경우만 처리합니다.
+		for (Appointment appointment : requestList) {
+			if (appointment.getSentUser().getUsername().startsWith("deleted")) continue;
+			
+			AppointmentListDTO appointmentDTO = AppointmentListDTO.of(appointment);
+			
+			// deleted 강아지 처리
 			List<DogInfoRespDTO> sentDogs = new ArrayList<>();
 			List<DogInfoRespDTO> recvDogs = new ArrayList<>();
-
-			List<SentAppointment> sentApps = sentAppointmentRepository.findAllByAppointment(requestList.get(i));
+			
+			List<SentAppointment> sentApps = sentAppointmentRepository.findAllByAppointment(appointment);
 			for (SentAppointment sent : sentApps) {
 				if (sent.getDog().getDogName().equals("deleted")) continue;
 				sentDogs.add(DogInfoRespDTO.of(sent.getDog(), Double.parseDouble(sent.getDog().getDogWeight())));
 			}
+			// 요청의 모든 강아지가 삭제된 상태라면 산책할 수 없는 상태라고 보고, 약속을 취소시킵니다.
+			if (sentDogs.size() < 1) {
+				updateAppointment(appointment.getRoomId(), "cancelled");
+			} else {				
+				appointmentDTO.setUserOneDogs(sentDogs);
+			}
 			
-			resultList.get(i).setUserOneDogs(sentDogs);
-
-			List<ReceivedAppointment> recvApps = receivedAppointmentRepository.findAllByAppointment(requestList.get(i));
+			List<ReceivedAppointment> recvApps = receivedAppointmentRepository.findAllByAppointment(appointment);
 			for (ReceivedAppointment recv : recvApps) {
 				if (recv.getDog().getDogName().equals("deleted")) continue;
 				recvDogs.add(DogInfoRespDTO.of(recv.getDog(), Double.parseDouble(recv.getDog().getDogWeight())));
 			}
-			resultList.get(i).setUserTwoDogs(recvDogs);
+			// 요청 받은 모든 강아지가 삭제된 상태라면 산책할 수 없는 상태라고 보고, 약속을 취소시킵니다.
+			if (recvDogs.size() < 1) {
+				updateAppointment(appointment.getRoomId(), "cancelled");
+			} else {
+				appointmentDTO.setUserTwoDogs(recvDogs);
+			}
+			
+			resultList.add(appointmentDTO);
 		}
 		return resultList;
 	}
@@ -137,37 +167,39 @@ public class AppointmentService {
 		// 내가 받은 요청이거나, 보낸 요청을 기준으로 조회
 		List<Appointment> requestList = appointmentRepository.findAllBySentUserOrReceivedUserAndStatusIn(user, user, statusArr,
 				Sort.by("dateTime").descending());
-
-		// Entity to DTO
-		List<AppointmentListDTO> resultList = requestList.stream().map(a -> AppointmentListDTO.of(a))
-				.collect(Collectors.toList());
-
-		// 약속 리스트
-		for (int i = 0; i < requestList.size(); i++) {
+		
+		List<AppointmentListDTO> resultList = new ArrayList<AppointmentListDTO>();
+		
+		// deleted user 처리 및 deleted 강아지 처리
+		// 받은 사람이 deleted 유저일 경우는 없으니 보낸사람일 경우만 처리합니다.
+		for (Appointment appointment : requestList) {
+			if (appointment.getSentUser().getUsername().startsWith("deleted")) continue;
+			
+			AppointmentListDTO appointmentDTO = AppointmentListDTO.of(appointment);
+			
+			// deleted 강아지 처리
 			List<DogInfoRespDTO> sentDogs = new ArrayList<>();
 			List<DogInfoRespDTO> recvDogs = new ArrayList<>();
-
-			List<SentAppointment> sentApps = sentAppointmentRepository.findAllByAppointment(requestList.get(i));
+			
+			List<SentAppointment> sentApps = sentAppointmentRepository.findAllByAppointment(appointment);
 			for (SentAppointment sent : sentApps) {
 				if (sent.getDog().getDogName().equals("deleted")) continue;
 				sentDogs.add(DogInfoRespDTO.of(sent.getDog(), Double.parseDouble(sent.getDog().getDogWeight())));
 			}
 			
-			resultList.get(i).setUserOneDogs(sentDogs);
-
-			List<ReceivedAppointment> recvApps = receivedAppointmentRepository.findAllByAppointment(requestList.get(i));
+			appointmentDTO.setUserOneDogs(sentDogs);
+			
+			List<ReceivedAppointment> recvApps = receivedAppointmentRepository.findAllByAppointment(appointment);
 			for (ReceivedAppointment recv : recvApps) {
 				if (recv.getDog().getDogName().equals("deleted")) continue;
 				recvDogs.add(DogInfoRespDTO.of(recv.getDog(), Double.parseDouble(recv.getDog().getDogWeight())));
 			}
-			resultList.get(i).setUserTwoDogs(recvDogs);
+			appointmentDTO.setUserTwoDogs(recvDogs);
+			
+			resultList.add(appointmentDTO);
 		}
 		return resultList;
 	}
-
-	
-	/* 산책 리스트 전체 조회 : status가 confirmed/wait/cancelled, done */
-	
 
 	public void addAppointment(long myId, long userId, List<Dog> myDogs, List<Dog> partnerDogs, LocalDateTime date,
 			String place) {
