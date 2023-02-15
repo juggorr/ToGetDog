@@ -22,10 +22,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 			@Param("status") String status, 
 			@Param("senderId") long senderId, @Param("receiverId") long receiverId);
 	
-	@Query(value = "select * from request" + 
-			"where (sent_user_id = :senderId or received_user_id = :receiverId)" + 
-			"and status in (:status1, :status2)" + 
-			"order by is_receiver_rate, date_time desc", nativeQuery = true)
+	@Query(value = "select * from request r" + 
+			"where (r.sent_user_id = :senderId or r.received_user_id = :receiverId)" + 
+			"and r.status in (:status1, :status2)" + 
+			"order by r.is_receiver_rate, r.date_time desc", nativeQuery = true)
 	List<Appointment> findStatusesList(
 			@Param("senderId") long senderId, @Param("receiverId") long receiverId, 
 			@Param("status1") String status1, @Param("status2") String status2);
