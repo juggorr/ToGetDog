@@ -221,7 +221,7 @@ export const YourChatBoxWrapper = styled.div`
 
 export const MyChatBox = styled.div`
   float: right;
-  max-width: 65vw;
+  max-width: 60vw;
   background-color: #eee;
   color: #000;
   padding: 0.6rem 1rem;
@@ -231,7 +231,7 @@ export const MyChatBox = styled.div`
 
 export const YourChatBox = styled.div`
   float: left;
-  max-width: 65vw;
+  max-width: 60vw;
   background-color: #699bf7;
   color: #fff;
   padding: 0.6rem 1rem;

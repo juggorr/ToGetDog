@@ -1,7 +1,14 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const HomeWrapper = styled.div`
   overflow-y: scroll;
+
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
   .scrollHandler {
     height: 100px;
@@ -34,7 +41,7 @@ export const HomeContainer = styled.div`
     white-space: nowrap;
     font-size: 1.3rem;
     font-weight: 700;
-    font-family: "Gowun Dodum", sans-serif;
+    font-family: 'Gowun Dodum', sans-serif;
     color: #fff;
     text-shadow: -1px 0 #559968, 0 1px #559968, 1px 0 #559968, 0 -1px #559968;
     animation: typing 1s steps(20, end) forwards;
@@ -91,7 +98,7 @@ export const RecommendBoxWrapper = styled.div`
   .recommendBox {
     display: flex;
     overflow-x: scroll;
-    padding-left: 0.3rem;
+    padding-left: 0.5rem;
 
     -ms-overflow-style: none; /* 인터넷 익스플로러 */
     scrollbar-width: none; /* 파이어폭스 */
@@ -107,7 +114,7 @@ export const RecommendBoxWrapper = styled.div`
   }
 
   .recommend-txt {
-    font-family: "Gowun Dodum", sans-serif;
+    font-family: 'Gowun Dodum', sans-serif;
     font-weight: 700;
     font-size: 0.9rem;
     padding-left: 0.3rem;
@@ -116,8 +123,9 @@ export const RecommendBoxWrapper = styled.div`
   .noFriends {
     text-align: center;
     margin: 2rem;
-    font-family: "Inter", sans-serif;
-    font-size: 14px;
+    font-family: 'Gowun Dodum', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
     color: #717171;
   }
 `;
@@ -138,7 +146,7 @@ export const DogProfile = styled.img`
 `;
 
 export const DogName = styled.div`
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.8rem;
   padding-top: 0.3rem;
   font-weight: 600;
@@ -147,13 +155,13 @@ export const DogName = styled.div`
 export const NoFriendsWrapper = styled.div`
   margin: 2rem 0rem;
   text-align: center;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 14px;
   color: #717171;
 `;
 
 export const SingleBoardWrapper = styled.div`
-  margin: 0rem 1rem;
+  margin: 0rem 0.5rem;
 
   .profileWrapper {
     display: flex;
@@ -162,7 +170,6 @@ export const SingleBoardWrapper = styled.div`
   .contentWrapper {
     display: flex;
     flex-direction: column;
-
     align-items: center;
   }
   .imgWrapper {
@@ -177,7 +184,7 @@ export const SingleBoardWrapper = styled.div`
     object-fit: cover;
   }
   .contentText {
-    font-family: "Inter", sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 14px;
     padding: 0.8rem;
     margin-bottom: 1rem;
@@ -210,7 +217,7 @@ export const DogImgWrapper = styled.div`
 `;
 
 export const DogInfoWrapper = styled.div`
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   display: flex;
   align-items: center;
 
