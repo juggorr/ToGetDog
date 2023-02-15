@@ -307,6 +307,7 @@ const Feed = () => {
           setNoDogBtnClick={setNoDogBtnClick}
           setUserInfoModal={setUserInfoModal}
           feedDogData={feedDogData}
+          feedUserData={feedUserData}
           dogId={currentDog?.dogId}
         />
         <FeedProfileWrapper>

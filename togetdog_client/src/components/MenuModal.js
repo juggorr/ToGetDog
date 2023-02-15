@@ -12,6 +12,7 @@ const MenuModal = ({
   menuBtnClick,
   setMenuBtnClick,
   feedDogData,
+  feedUserData,
   setConfirmBtnClick,
   setNoDogBtnClick,
   dogId,
@@ -78,7 +79,11 @@ const MenuModal = ({
                   } else if (it.link === '/dogedit' && feedDogData.length === 0) {
                     return handleNoDog();
                   } else if (it.link === '/passwordedit') {
-                    console.log(user);
+                    if (feedUserData.social === 'origin') {
+                      navigate(it.link);
+                    } else {
+                      alert('소셜 회원은 비밀번호를 변경할 수 없습니다.')
+                    }
                   } else {
                     navigate(it.link);
                   }
