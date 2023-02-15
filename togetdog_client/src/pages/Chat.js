@@ -21,7 +21,6 @@ const Chat = () => {
     setUser(null);
     localStorage.removeItem('user');
     setAuth(null);
-    console.log('로그아웃이 정상적으로 처리되었습니다.');
     navigate('/login');
   };
 
@@ -38,8 +37,6 @@ const Chat = () => {
         },
       })
       .then((resp) => {
-        console.log(resp);
-        console.log(resp.data.dm);
         setChatList(resp.data.dm);
         setLoading(false);
       })

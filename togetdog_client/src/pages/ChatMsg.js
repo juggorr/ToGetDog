@@ -54,7 +54,6 @@ const ChatMsg = () => {
         },
       })
       .then((res) => {
-        console.log(res.data);
         console.log('채팅방 나가기 완료');
         navigate(`/chat`);
       })
@@ -68,7 +67,6 @@ const ChatMsg = () => {
     setUser(null);
     localStorage.removeItem('user');
     setAuth(null);
-    console.log('로그아웃이 정상적으로 처리되었습니다.');
     navigate('/login');
   };
 
@@ -94,23 +92,18 @@ const ChatMsg = () => {
   };
 
   const gotoBottom = () => {
-    let element = document.getElementById('chatContent');
-    element.scrollTop = element.scrollHeight - element.clientHeight;
+    let chatBox = document.getElementById('chatContent');
+    chatBox.scrollTop = chatBox.scrollHeight - chatBox.clientHeight;
   };
 
   const sendMessage = () => {
-    console.log('hi');
-    console.log(msgInput);
     if (msgInput && stompClient.connected) {
       send();
       setMsgInput('');
       document.querySelector('.chat-input').value = '';
-      console.log('if come');
     }
   };
   const send = () => {
-    console.log('Send message:' + msgInput);
-    console.log(stompClient);
     const msg = {
       userId: user.userId,
       content: msgInput,
@@ -118,16 +111,7 @@ const ChatMsg = () => {
       roomId: roomId,
     };
 
-    console.log('메세지 확인');
-    console.log(msg);
-    console.log(stompClient);
-
-    console.log('커넥 트루 확인');
-    console.log(stompClient.connected);
-
     if (stompClient.connected) {
-      console.log('if come22222');
-
       // 보낼 메세지 json 객체 (roomid 넣으삼)
       const msg = {
         userId: user.userId,
@@ -141,30 +125,22 @@ const ChatMsg = () => {
   };
 
   const connect = (rooms) => {
-    const serverURL = 'https://togetdog.site/ws/chat';
-    // const serverURL = "http://70.12.247.250:8080/ws/chat";
+    const serverURL = 'https://i8a807.p.ssafy.io/ws/chat';
     let socket = new SockJS(serverURL);
     let newClient = Stomp.over(socket);
     setStompClient(newClient);
-    console.log('처음 시작시 클라이언트');
-    console.log(stompClient);
-    console.log('처음 시작시 클라이언트');
     newClient.connect(
       {},
       (frame) => {
         // 소켓 연결 성공
         console.log('소켓 연결 성공', frame);
+        setLoading(false);
+        gotoBottom();
 
-        // this.sessionId 에 현재 접속한 유저의 세션 아이디를 저장해 놓음
-        // this.sessionId - 1.처음 접속시 2 메세지 보낼시 - Json객체로 보냄
-        var len = socket._transport.url.length;
-        // let sess = socket._transport.url.substring(len - 10 , len-18);
+        let len = socket._transport.url.length;
         let sess = socket._transport.url.substring(len - 8, len);
 
         setSessionId(sess);
-        console.log('세션 아이디 : ' + socket._transport.url);
-        console.log('세션 아이디 : ' + sessionId);
-        console.log('룸 아이디 : ' + rooms);
 
         // 처음 접속시 서버로 해당 채팅방에 접속한 유저의 정보를 보냄
         // 정보 : sessionId , userId , roomId(방번호)
@@ -183,18 +159,14 @@ const ChatMsg = () => {
 
         // 하단 /subscribe/roomId/ 뒤에 서버로부터 받은 roomId 붙여주면 됨(5 대신에)
         newClient.subscribe('/subscribe/roomId/' + rooms, async (res) => {
-          console.log('subscribe + ' + res);
           // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
-          console.log('ㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇ');
-          console.log(JSON.parse(res.body));
-
           await setChats((chats) => [...chats, JSON.parse(res.body)]);
           gotoBottom();
         });
       },
       (error) => {
         // 소켓 연결 실패
-        console.log('소켓 연결 실패', error);
+        console.log(error);
         stompClient.connected = false;
       },
     );
@@ -209,8 +181,6 @@ const ChatMsg = () => {
       return;
     }
 
-    console.log('room' + otherId);
-
     axios
       .get(`${BACKEND_URL}/chat/chatting`, {
         params: {
@@ -221,11 +191,9 @@ const ChatMsg = () => {
         },
       })
       .then((resp) => {
-        console.log(resp);
         setChatTarget(resp.data.other);
         setChats(resp.data.chats);
         setRoomId(resp.data.other.roomId);
-        setLoading(false);
         // 소켓 연결 시도
         connect(resp.data.other.roomId);
       })
