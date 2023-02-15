@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -169,15 +168,8 @@ public class AppointmentService {
 			throw new InvalidInputException("사용자 정보를 찾을 수 없습니다..");
 		}
 		
-		List<String> statusArr = new ArrayList<String>();
-		statusArr.add("done");
-		statusArr.add("cancelled");
-		
-		
 		// 내가 받은 요청이거나, 보낸 요청을 기준으로 조회
-		List<Appointment> requestList = appointmentRepository.findAllByStatusInAndSentUserOrReceivedUser(statusArr, user, user,
-				Sort.by("dateTime").descending());
-		
+		List<Appointment> requestList = appointmentRepository.findStatusesList(user.getUserId(), user.getUserId(), "done", "cancelled");
 		List<AppointmentListDTO> resultList = new ArrayList<AppointmentListDTO>();
 		
 		// deleted user 처리 및 deleted 강아지 처리

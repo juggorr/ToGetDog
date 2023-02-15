@@ -1,13 +1,11 @@
 package com.ssafy.togetdog.user.model.service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -185,15 +183,16 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public void updateAppointmentByUser(User user) {
-		List<String> statusArr = new ArrayList<String>();
-		statusArr.add("confirmed");
-		statusArr.add("wait");
-		
-		List<Appointment> requestList = appointmentRepository.findAllByStatusInAndSentUserOrReceivedUser(statusArr, user, user,
-				Sort.by("dateTime").descending());
-		for (Appointment appointment : requestList) {
+		// 확정된 약속은 취소처리
+		List<Appointment> confirmedList = appointmentRepository.findStatusList("confirmed", user.getUserId(), user.getUserId());
+		for (Appointment appointment : confirmedList) {
 			appointment.setStatus("cancelled");
 			appointmentRepository.save(appointment);
+		}
+		// 대기중이던 약속은 삭제 처리
+		List <Appointment> waitList = appointmentRepository.findStatusList("wait", user.getUserId(), user.getUserId());
+		for (Appointment appointment : waitList) {
+			appointmentRepository.delete(appointment);
 		}
 	}
 	
