@@ -587,14 +587,16 @@ const Walk = () => {
               </LightColorLongBtn>
             </div>
           ) : null}
-          <div
-            className="recommendBtn"
-            onClick={() => {
-              navigate("/recommend");
-            }}
-          >
-            <FontAwesomeIcon icon="fa-plus"></FontAwesomeIcon>
-          </div>
+          {active === 3 ? null : (
+            <div
+              className="recommendBtn"
+              onClick={() => {
+                navigate("/recommend");
+              }}
+            >
+              <FontAwesomeIcon icon="fa-plus"></FontAwesomeIcon>
+            </div>
+          )}
         </div>
       </MeetingWrapper>
     </WalkListWrapper>
