@@ -33,4 +33,7 @@ public interface NotifyRepository extends JpaRepository<Notify, Long> {
 	@Modifying
 	@Query(value = "delete from notify n where n.dog_id=:dogId", nativeQuery = true)
 	void deleteAllByDogId(@Param("dogId") long dogId);
+	
+	// 회원 탈퇴 시 받았던 알림 삭제하기
+	void deleteAllByReceiver(User user);
 }
