@@ -26,6 +26,7 @@ public class ChatMsgServiceImpl implements ChatMsgService{
 	@Transactional
 	public void saveChatMsg(List<ChatDTO> list) {
 		List<ChatMsg> saveMsg = new ArrayList<>();
+
 		for(ChatDTO cDto : list) {
 			saveMsg.add(cDto.toEntity());
 		}
