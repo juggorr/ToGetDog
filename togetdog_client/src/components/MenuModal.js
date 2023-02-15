@@ -82,6 +82,7 @@ const MenuModal = ({
                     if (feedUserData.social === 'origin') {
                       navigate(it.link);
                     } else {
+                      console.log('소셜 회원은 비밀번호 변경 불가')
                       return handleNoChange();
                       // alert('소셜 회원은 비밀번호를 변경할 수 없습니다.')
                     }
