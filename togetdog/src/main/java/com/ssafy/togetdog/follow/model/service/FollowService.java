@@ -28,8 +28,7 @@ public class FollowService {
 	private final DogRepository dogRepository;
 
 	public List<DogInfoRespDTO> getFollowingList(long userId) {
-		User user = new User();
-		user.setUserId(userId);
+		User user = userRepository.findById(userId).orElse(null);
 		List<Follow> followList = followRepository.findAllByUser(user);
 
 		List<DogInfoRespDTO> dogList = new ArrayList<DogInfoRespDTO>();
@@ -43,8 +42,7 @@ public class FollowService {
 	}
 
 	public List<FollowerInfoRespDTO> getFollowerList(long dogId) {
-		Dog dog = new Dog();
-		dog.setDogId(dogId);
+		Dog dog = dogRepository.findByDogId(dogId);
 		List<Follow> followList = followRepository.findAllByDog(dog);
 		List<FollowerInfoRespDTO> userList = new ArrayList<FollowerInfoRespDTO>();
 
@@ -80,26 +78,11 @@ public class FollowService {
 	}
 
 	public int getFollowers(long dogId) {
-		Dog dog = dogRepository.findByDogId(dogId);
-		List<Follow> list = followRepository.findAllByDog(dog);
-		for (int i = 0; i < list.size(); i++) {
-			if(list.get(i).getUser().getUsername().contains("delete")) {
-				list.remove(list.get(i));
-			}
-		}
-		return list.size();
+		return getFollowerList(dogId).size();
 	}
 
 	public int getFollowings(long userId) {
-		User user = userRepository.findById(userId).orElse(null);
-		if(user == null) return 0;
-		List<Follow> list = followRepository.findAllByUser(user);
-		for (int i = 0; i < list.size(); i++) {
-			if(list.get(i).getDog().getDogName().contains("delete")) {
-				list.remove(list.get(i));
-			}
-		}
-		return list.size();
+		return getFollowingList(userId).size();
 	}
 
 	public boolean isFollowing(long userId, long dogId) {
