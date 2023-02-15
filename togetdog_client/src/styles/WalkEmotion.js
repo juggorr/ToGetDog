@@ -134,6 +134,7 @@ export const SingleMeetingWrapper = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     margin-top: 3.2rem;
+    position: relative;
   }
 
   .tinyCircle {
@@ -189,6 +190,7 @@ export const SingleMeetingWrapper = styled.div`
 
   .singleDog {
     display: flex;
+    position: relative;
   }
 
   .ratingBtn {

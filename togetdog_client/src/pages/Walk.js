@@ -89,61 +89,65 @@ const SingleMeeting = ({ meeting, auth }) => {
     if (dogs) {
       if (dogs.length === 1) {
         result = (
-          <div className="singleDog">
-            <div className="dogProfileImgWrapper">
-              <img
-                className="dogProfileImg"
-                src={
-                  "https://i8a807.p.ssafy.io/image/dog/" + dogs[0].dogProfile
-                }
-                alt="dogProfile"
-              />
+          <div className="sigleDogWrapper">
+            <div className="singleDog">
+              <div className="dogProfileImgWrapper">
+                <img
+                  className="dogProfileImg"
+                  src={
+                    "https://i8a807.p.ssafy.io/image/dog/" + dogs[0].dogProfile
+                  }
+                  alt="dogProfile"
+                />
+              </div>
+              {meeting.status === "done" &&
+                meeting.rated === false &&
+                infoModalOpen === false ? (
+                <button
+                  className="singleDogRatingBtn"
+                  onClick={() => setRatingModalOpen(true)}
+                >
+                  평가
+                </button>
+              ) : null}
             </div>
-            {meeting.status === "done" &&
-            meeting.rated === false &&
-            infoModalOpen === false ? (
-              <button
-                className="singleDogRatingBtn"
-                onClick={() => setRatingModalOpen(true)}
-              >
-                평가
-              </button>
-            ) : null}
           </div>
         );
       } else if (dogs.length > 1) {
         result = (
-          <div className="manyDog">
-            <div className="manyDogProfileImgWrapper">
-              <img
-                className="manyDogProfileImg"
-                src={
-                  "https://i8a807.p.ssafy.io/image/dog/" + dogs[0].dogProfile
-                }
-                alt="dogProfile"
-              />
+          <div>
+            <div className="manyDog">
+              <div className="manyDogProfileImgWrapper">
+                <img
+                  className="manyDogProfileImg"
+                  src={
+                    "https://i8a807.p.ssafy.io/image/dog/" + dogs[0].dogProfile
+                  }
+                  alt="dogProfile"
+                />
+              </div>
+              <div className="tinyCircle"></div>
+              <div className="tinyCircle"></div>
+              <div className="manyDogProfileImgWrapper">
+                <img
+                  className="manyDogProfileImg"
+                  src={
+                    "https://i8a807.p.ssafy.io/image/dog/" + dogs[1].dogProfile
+                  }
+                  alt="dogProfile"
+                />
+              </div>
+              {meeting.status === "done" &&
+                meeting.rated === false &&
+                infoModalOpen === false ? (
+                <button
+                  className="ratingBtn"
+                  onClick={() => setRatingModalOpen(true)}
+                >
+                  평가
+                </button>
+              ) : null}
             </div>
-            <div className="tinyCircle"></div>
-            <div className="tinyCircle"></div>
-            <div className="manyDogProfileImgWrapper">
-              <img
-                className="manyDogProfileImg"
-                src={
-                  "https://i8a807.p.ssafy.io/image/dog/" + dogs[1].dogProfile
-                }
-                alt="dogProfile"
-              />
-            </div>
-            {meeting.status === "done" &&
-            meeting.rated === false &&
-            infoModalOpen === false ? (
-              <button
-                className="ratingBtn"
-                onClick={() => setRatingModalOpen(true)}
-              >
-                평가
-              </button>
-            ) : null}
           </div>
         );
       }
@@ -157,15 +161,12 @@ const SingleMeeting = ({ meeting, auth }) => {
       for (let i = 0; i < dogs.length; i++) {
         const singleCharacter = (
           <SmallCharacterBtn className="characters-box" key={i}>
-            <button className="btn orange">{`#${
-              dogs[i].dogNeutered ? "중성화" : "중성화 X"
-            }`}</button>
-            <button className="btn yellow">{`#${
-              dogs[i].dogCharacter1 === "obedient" ? "온순함" : "사나움"
-            }`}</button>
-            <button className="btn yellow">{`#${
-              dogs[i].dogCharacter2 === "active" ? "활동적" : "비활동적"
-            }`}</button>
+            <button className="btn orange">{`#${dogs[i].dogNeutered ? "중성화" : "중성화 X"
+              }`}</button>
+            <button className="btn yellow">{`#${dogs[i].dogCharacter1 === "obedient" ? "온순함" : "사나움"
+              }`}</button>
+            <button className="btn yellow">{`#${dogs[i].dogCharacter2 === "active" ? "활동적" : "비활동적"
+              }`}</button>
           </SmallCharacterBtn>
         );
         characterList.push(singleCharacter);
