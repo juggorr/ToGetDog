@@ -16,9 +16,12 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
 	List<Appointment> findAllByReceivedUser(User user);
 
-	List<Appointment> findAllBySentUserOrReceivedUserAndStatus(User userOne, User userTwo, String status, Sort sort);
+	@Query(value = "select * from request r "
+			+ "where r.status = :status and (r.sent_user_id = :senderId or r.received_user_id = :receiverId)"
+			+ "order by date_time", nativeQuery = true)
+	List<Appointment> findStatusList(@Param("status") String status, @Param("senderId") long senderId, @Param("receiverId") long receiverId);
 	
-	List<Appointment> findAllBySentUserOrReceivedUserAndStatusIn(User userOne, User userTwo, List<String> statusArr, Sort sort);
+	List<Appointment> findAllByStatusInAndSentUserOrReceivedUser(List<String> statusArr, User userOne, User userTwo, Sort sort);
 	
 	Long countByReceivedUserAndStatus(User user, String status);
 	
