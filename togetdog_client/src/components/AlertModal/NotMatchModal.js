@@ -25,12 +25,14 @@ function NotMatchModal({ notMatchModal, setNotMatchModal }) {
       >
         <ConfirmModalBody>
           <ConfirmModalImage src={Emotion4} />
-          <span>기존 비밀번호와 일치하지 않아요</span>
-          <MainColorShortBtn 
-            onClick={onClick}
-          >
-            확인
-          </MainColorShortBtn>
+          <span className="modal-msg">기존 비밀번호와 일치하지 않아요</span>
+          <div className="two-btns-wrapper">
+            <MainColorShortBtn 
+              onClick={onClick}
+            >
+              확인
+            </MainColorShortBtn>
+          </div>
         </ConfirmModalBody>
       </ConfirmModalWrapper>
       ) : null}

@@ -7,7 +7,7 @@ import { BACKEND_URL } from '../config';
 
 import NotMatchModal from "../components/AlertModal/NotMatchModal";
 import { MainColorShortBtn, GreyColorShortBtn } from '../styles/BtnsEmotion';
-import { SignupContainer, SignupWrapper, InputWrapper } from '../styles/SignupEmotion';
+import { PasswordContainer, SignupWrapper, InputWrapper } from '../styles/SignupEmotion';
 import NoEssentialsModal from '../components/AlertModal/NoEssentialsModal'
 import { authAtom, userState } from "../recoil";
 
@@ -124,9 +124,9 @@ function PasswordEdit() {
 
 
   const checkOthers = () => {
-    console.log(oldPassword);
-    console.log(password);
-    console.log(passwordCheck);
+    // console.log(oldPassword);
+    // console.log(password);
+    // console.log(passwordCheck);
 
     if (!oldPassword || !password || !passwordCheck) {
       setNoEssentialsModal(true);
@@ -138,7 +138,7 @@ function PasswordEdit() {
 
   return (
     <>
-    <SignupContainer>
+    <PasswordContainer>
       <NotMatchModal 
         notMatchModal={notMatchModal}
         setNotMatchModal={setNotMatchModal}
@@ -208,7 +208,7 @@ function PasswordEdit() {
               <MainColorShortBtn onClick={checkOthers}>변경하기</MainColorShortBtn>
           </div>
       </SignupWrapper>
-    </SignupContainer>
+    </PasswordContainer>
     </>
   );
 }

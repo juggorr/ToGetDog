@@ -2,8 +2,9 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import UserInfoModal from '../components/AlertModal/UserInfoModal';
 import ConfirmModal from '../components/ConfirmModal';
+import UserInfoModal from '../components/AlertModal/UserInfoModal';
+import NoChangeModal from '../components/AlertModal/NoChangeModal';
 import NoDogAlertModal from '../components/AlertModal/NoDogAlertModal';
 import MenuModal from '../components/MenuModal';
 import OrangeCharacterBtn from '../components/OrangeCharacterBtn';
@@ -70,6 +71,8 @@ const Feed = () => {
   const [confirmBtnClick, setConfirmBtnClick] = useState(false);
   // 등록된 강아지 없으면 등록된 강아지가 없다는 경고 모달 띄우기
   const [noDogBtnClick, setNoDogBtnClick] = useState(false);
+  // 소셜 회원일 경우 비밀번호 변경이 불가능하다는 모달 띄우기
+  const [noChangeModalClick, setNoChangeModalClick] = useState(false);
 
   const [menuBtnClick, setMenuBtnClick] = useState(false);
   const [feedData, setFeedData] = useState();
@@ -299,14 +302,19 @@ const Feed = () => {
           setMenuBtnClick={setMenuBtnClick}
           feedUserData={feedUserData}
         />
+        <NoChangeModal 
+          noChangeModalClick={noChangeModalClick}
+          setNoChangeModalClick={setNoChangeModalClick}
+          setMenuBtnClick={setMenuBtnClick}
+        />
         <MenuModal
           menuLists={menuLists}
           menuBtnClick={menuBtnClick}
           setMenuBtnClick={setMenuBtnClick}
           setConfirmBtnClick={setConfirmBtnClick}
           setNoDogBtnClick={setNoDogBtnClick}
-          setUserInfoModal={setUserInfoModal}
           feedDogData={feedDogData}
+          feedUserData={feedUserData}
           dogId={currentDog?.dogId}
         />
         <FeedProfileWrapper>
