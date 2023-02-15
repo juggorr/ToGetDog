@@ -26,6 +26,8 @@ const MainFooter = () => {
     if (page === 'feed') {
       if (userId == user.userId) {
         setActiveNav(5);
+      } else {
+        setActiveNav(6);
       }
     } else if (page === 'chat') {
       setActiveNav(4);
@@ -33,6 +35,8 @@ const MainFooter = () => {
       setActiveNav(2);
     } else if (page === 'map') {
       setActiveNav(1);
+    } else if (page === '') {
+      setActiveNav(3);
     }
   }, [window.location.href]);
 
