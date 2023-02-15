@@ -1,5 +1,6 @@
 package com.ssafy.togetdog.search.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,8 +28,14 @@ public class SearchServiceImpl implements SearchService{
 	private final UserRepository userRepository;
 	private final DogService dogService;
 	
-	public List<SearchDogDTO> getDogInfoList(String dogName){
+	public List<SearchDogDTO> getDogInfoList(String dogName, long userId){
+		User user = userRepository.findById(userId).orElse(null);
+		if(user == null) return null;
+		List<Dog> myDogs = dogRepository.findAllByUser(user).orElse(new ArrayList<Dog>());
 		List<Dog> dogs = dogRepository.findByDogNameContains(dogName).orElse(null);
+		for (Dog dog : myDogs) {
+			dogs.remove(dog);
+		}
 		if(dogs == null)
 			return null;
 		
@@ -37,10 +44,12 @@ public class SearchServiceImpl implements SearchService{
 		return dogList;
 	}
 	
-	public List<SearchUserDTO> getUserInfoList(String userName){
+	public List<SearchUserDTO> getUserInfoList(String userName, long userId){
+		User user = userRepository.findById(userId).orElse(null);
+		if(user == null) return null;
 		List<User> users = userRepository.findByNickNameContains(userName).orElse(null);
-		if(users == null)
-			return null;
+		if(users == null) return null;
+		users.remove(user);
 		List<SearchUserDTO> userList = users.stream().map(u ->SearchUserDTO.of(u, dogService.findDogsByUserId(u.getUserId())))
 				 .collect(Collectors.toList());
 		return userList;
