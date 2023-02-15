@@ -32,8 +32,7 @@ const SingleChatList = ({ chatData }) => {
         <div className='chat-content-box'>
           <div className='nickname'>{chatData.nickName}</div>
           <div className='user-info'>
-            {userAge(chatData.userBirth)}대 / {chatData.gender === 'm' ? '남' : '여'} /{' '}
-            {userDongName('서울 강남구 역삼동')}
+            {userAge(chatData.userBirth)}대 / {chatData.gender === 'm' ? '남' : '여'} / {userDongName(chatData.address)}
           </div>
           <div className='chat-preview'>{chatData.lastChatContent}</div>
         </div>

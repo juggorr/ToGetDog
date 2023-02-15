@@ -193,7 +193,7 @@ export const FeedProfileBottom = styled.div`
     color: #777;
     font-size: 0.8rem;
     padding-left: 0.3rem;
-    padding-right: 1rem;
+    padding-right: 0.5rem;
     padding-top: 0.1rem;
     cursor: pointer;
     text-align: end;
