@@ -38,31 +38,26 @@ const Feed = () => {
   const menuLists = [
     {
       menu_id: 1,
-      text: '내 정보 보기',
-      link: '/profile',
-    },
-    {
-      menu_id: 2,
       text: '프로필 수정',
       link: '/useredit',
     },
     {
-      menu_id: 3,
+      menu_id: 2,
       text: '강아지 프로필 수정',
       link: '/dogedit',
     },
     {
-      menu_id: 4,
+      menu_id: 3,
       text: '강아지 프로필 삭제',
       link: '/dogdelete',
     },
     {
-      menu_id: 5,
+      menu_id: 4,
       text: '계정 비밀번호 변경',
       link: '/passwordedit',
     },
     {
-      menu_id: 6,
+      menu_id: 5,
       text: '로그아웃',
       link: '/logout',
     },
