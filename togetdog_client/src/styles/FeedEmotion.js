@@ -1,11 +1,11 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const FeedContainer = styled.div`
   width: 100%;
   height: calc(100vh - 115px);
   display: flex;
   flex-direction: column;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
 
   .no-photo {
     height: 100%;
@@ -65,10 +65,11 @@ export const FeedProfileTop = styled.div`
   .dog-name {
     font-size: 0.9rem;
     display: flex;
-    padding-bottom: 0.3rem;
+    padding-bottom: 0.1rem;
   }
 
-  .dog-info {
+  .dog-breed,
+  .dog-age {
     font-size: 0.85rem;
     color: #777;
     display: flex;
@@ -110,8 +111,8 @@ export const FeedProfileTop = styled.div`
   .sub-dogs {
     display: flex;
     position: absolute;
-    top: 3.7rem;
-    left: 4.5rem;
+    top: 4.3rem;
+    left: 4.3rem;
   }
 
   .no-dogs-txt {
