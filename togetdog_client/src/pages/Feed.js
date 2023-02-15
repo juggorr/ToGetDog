@@ -169,8 +169,8 @@ const Feed = () => {
             res.data.user.dogs.forEach((dog) => {
               if (dog.dogId === dogId) {
                 setCurrentDog(dog);
-              };
-            })
+              }
+            });
             if (res.data.user.dogs.toString() !== [].toString()) {
               // current dog에 대한 팔로잉으로 수정해야함
               res.data.user.dogs.forEach((dog) => {
@@ -209,7 +209,7 @@ const Feed = () => {
                 alert('토큰이 만료되어 자동 로그아웃되었습니다.');
                 handleLogout();
               }
-            })
+            });
           setLoading(false);
         })
         .catch((err) => {
@@ -220,8 +220,8 @@ const Feed = () => {
             alert('토큰이 만료되어 자동 로그아웃되었습니다.');
             handleLogout();
           }
-          console.log('피드 데이터 불러오기 실패');          
-        })
+          console.log('피드 데이터 불러오기 실패');
+        });
       return;
     }
 
@@ -302,7 +302,7 @@ const Feed = () => {
           setMenuBtnClick={setMenuBtnClick}
           feedUserData={feedUserData}
         />
-        <NoChangeModal 
+        <NoChangeModal
           noChangeModalClick={noChangeModalClick}
           setNoChangeModalClick={setNoChangeModalClick}
           setMenuBtnClick={setMenuBtnClick}

@@ -90,7 +90,6 @@ export const FeedProfileTop = styled.div`
   .dog-breed {
     width: 6.5rem;
     white-space: nowrap;
-    overflow: hidden;
     overflow-x: scroll;
     -ms-overflow-style: none; /* 인터넷 익스플로러 */
     scrollbar-width: none; /* 파이어폭스 */
@@ -105,7 +104,6 @@ export const FeedProfileTop = styled.div`
   }
 
   .profile-etc-wrapper {
-    // width: 40%;
     min-width: 30%;
     display: flex;
     flex-direction: column;
