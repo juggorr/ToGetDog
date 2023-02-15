@@ -313,6 +313,7 @@ const Feed = () => {
           setMenuBtnClick={setMenuBtnClick}
           setConfirmBtnClick={setConfirmBtnClick}
           setNoDogBtnClick={setNoDogBtnClick}
+          setNoChangeModalClick={setNoChangeModalClick}
           feedDogData={feedDogData}
           feedUserData={feedUserData}
           dogId={currentDog?.dogId}
