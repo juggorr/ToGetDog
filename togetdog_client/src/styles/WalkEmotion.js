@@ -187,9 +187,25 @@ export const SingleMeetingWrapper = styled.div`
     color: #575757;
   }
 
+  .singleDog {
+    display: flex;
+  }
+
   .ratingBtn {
     position: absolute;
     margin-top: 0.5rem;
+    margin-left: -0.5rem;
+    background-color: #6eb175;
+    border: 2px solid white;
+    color: #ffffff;
+    width: 5rem;
+    height: 2.5rem;
+    border-radius: 1rem;
+  }
+
+  .singleDogRatingBtn {
+    position: absolute;
+    margin-top: 3.2rem;
     margin-left: -0.5rem;
     background-color: #6eb175;
     border: 2px solid white;
