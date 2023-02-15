@@ -480,7 +480,6 @@ const Walk = () => {
         // userOne이 보낸 사람, userTwo가 받은 사람
         // console.log(response.data);
         const appointments = [];
-        console.log(response.data.appointment);
 
         if (response.data.appointment) {
           for (let i = 0; i < response.data.appointment.length; i++) {
