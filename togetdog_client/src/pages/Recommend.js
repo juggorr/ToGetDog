@@ -32,7 +32,8 @@ const SingleFriend = ({ item }) => {
       <DogImgWrapper>
         <div
           className="dogProfileCircle"
-          onClick={() => navigate(`/feed/${item.userId}`)}>
+          onClick={() => navigate(`/feed/${item.userId}`)}
+        >
           <img
             src={"https://i8a807.p.ssafy.io/image/dog/" + item.dogProfile}
             alt="dog_img"
@@ -271,12 +272,9 @@ const Recommend = () => {
             </ul>
             <div className="plainText">의 산책 친구들</div>
           </div>
-
-          {friends !== [] ? (
-            <FriendsList friends={friends}></FriendsList>
-          ) : null}
         </DropdownWrapper>
       )}
+      {friends !== [] ? <FriendsList friends={friends}></FriendsList> : null}
     </RecommendWrapper>
   );
 };
