@@ -2,14 +2,29 @@ import styled from "@emotion/styled";
 
 export const RecommendWrapper = styled.div`
   position: relative;
-  margin: 0.5rem 0rem;
+  padding: 0.5rem 0rem;
+
+  .no-dog-recommend {
+    height: calc(100vh - 115px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .no-dog-txt {
+    padding-bottom: 1rem;
+  }
 `;
+
 export const DropdownWrapper = styled.div`
   display: flex;
   align-items: start;
+  flex-direction: column;
   font-family: "Lato", sans-serif;
   position: absolute;
-  z-index: 1;
+  z-index: 5;
 
   .dropdown {
     margin: 0rem;
@@ -63,9 +78,9 @@ export const DropdownWrapper = styled.div`
 `;
 
 export const FriendListWrapper = styled.div`
-  padding-top: 3rem;
   font-family: "Inter", sans-serif;
   position: relative;
+  padding-bottom: 5rem;
 
   .singleDog {
     padding: 0.3rem 1rem;
@@ -149,7 +164,8 @@ export const FriendListWrapper = styled.div`
 export const CheckBoxWrapper = styled.div`
   display: flex;
   margin: 0rem 1rem;
-  margin-bottom: 1rem;
+  padding: 0.5rem 0rem;
+  padding-top: 3rem;
 
   .checkBox {
     display: flex;

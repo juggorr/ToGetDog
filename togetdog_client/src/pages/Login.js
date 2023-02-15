@@ -65,7 +65,7 @@ const Login = () => {
   };
 
   const onKeyPress = (e) => {
-    if (e.key == 'Enter') {
+    if (e.key === 'Enter') {
       checkInput();
     }
   };
@@ -98,7 +98,7 @@ const Login = () => {
       })
       .catch((err) => {
         console.log('로그인 실패');
-        console.log(err)
+        console.log(err);
       });
   };
 
@@ -106,7 +106,6 @@ const Login = () => {
   // const naverURL = 'http://70.12.247.230:8080/oauth2/authorization/naver'
   // const kakaoURL = 'http://70.12.247.230:8080/oauth2/authorization/kakao'
   // const googleURL = 'http://70.12.247.230:8080/oauth2/authorization/google'
-
 
   return (
     <>
@@ -154,7 +153,9 @@ const Login = () => {
             <div onClick={() => navigate('/signup')} className='login-bottom-text'>
               회원가입
             </div>
-            <div onClick={() => navigate('/passwordsearch')}className='login-bottom-text'>비밀번호 찾기</div>
+            <div onClick={() => navigate('/passwordsearch')} className='login-bottom-text'>
+              비밀번호 찾기
+            </div>
           </div>
         </LoginWrapper>
       </LoginContainer>

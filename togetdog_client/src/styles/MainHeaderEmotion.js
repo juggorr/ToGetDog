@@ -53,7 +53,7 @@ export const HeaderWrapper = styled.div`
 `;
 
 export const BackHeaderWrapper = styled.div`
-  width: 100%;
+  width: inherit;
   height: 60px;
   display: flex;
   position: fixed;

@@ -6,19 +6,21 @@ import {
   ChatUserContainer,
 } from '../styles/ChatEmotion';
 import MenuIcon from '../assets/menu_icon.png';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import UserIcon from '../components/UserIcon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MyChat from '../components/MyChat';
 import YourChat from '../components/YourChat';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { authAtom, userState } from '../recoil';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BACKEND_URL } from '../config';
 
 import Stomp from 'webstomp-client';
 import SockJS from 'sockjs-client';
+import Loading from '../assets/loading.gif';
+import { MenuModalWrapper } from '../styles/ModalEmotion';
 
 const ChatMsg = () => {
   const auth = useRecoilValue(authAtom);
@@ -32,27 +34,46 @@ const ChatMsg = () => {
   const [chats, setChats] = useState();
   const [menuBtnClick, setMenuBtnClick] = useState(false);
   const [isLoading, setLoading] = useState(true);
+  const [roomId, setRoomId] = useState();
 
-  const serverURL = 'https://togetdog.site/ws/chat';
-  let socket = new SockJS(serverURL);
-  const stompClient = Stomp.over(socket);
+  const [sessionId, setSessionId] = useState();
+  const [stompClient, setStompClient] = useState();
 
-  let sessionId = 0;
-  let roomId = 5;
-  let connected = false;
+  const outSection = useRef();
+  const location = useLocation();
+  let otherId = location.pathname.split('/').reverse()[0];
+
+  const exitChat = () => {
+    axios
+      .put(`${BACKEND_URL}/chat`, null, {
+        params: {
+          roomId: roomId,
+        },
+        headers: {
+          Authorization: auth,
+        },
+      })
+      .then((res) => {
+        console.log('채팅방 나가기 완료');
+        navigate(`/chat`);
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log('채팅방을 나가는 도중에 에러가 발생하였습니다.');
+      });
+  };
 
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem('user');
     setAuth(null);
-    console.log('로그아웃이 정상적으로 처리되었습니다.');
     navigate('/login');
   };
 
   const userAge = (birthyear) => {
     const currentYear = new Date().getFullYear();
 
-    return Math.floor((currentYear - birthyear + 1) / 10) * 10;
+    return Math.floor((currentYear - birthyear) / 10) * 10;
   };
 
   const userDongName = (userAddress) => {
@@ -60,24 +81,38 @@ const ChatMsg = () => {
     return dongName;
   };
 
-  const onChangeMsg = async (e) => {
-    await setMsgInput(e.target.value);
+  const onChangeMsg = (e) => {
+    setMsgInput(e.target.value);
   };
 
-  const sendMessage = () => {
-    console.log('hi');
-    console.log(msgInput);
-    if (msgInput) {
-      send();
-      setMsgInput('');
+  const onKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      sendMessage();
     }
   };
 
+  const gotoBottom = () => {
+    let chatBox = document.getElementById('chatContent');
+    chatBox.scrollTop = chatBox.scrollHeight - chatBox.clientHeight;
+  };
+
+  const sendMessage = () => {
+    if (msgInput && stompClient.connected) {
+      send();
+      setMsgInput('');
+      document.querySelector('.chat-input').value = '';
+    }
+  };
   const send = () => {
-    if (stompClient) {
-      console.log('hihi');
+    const msg = {
+      userId: user.userId,
+      content: msgInput,
+      sessionId: sessionId,
+      roomId: roomId,
+    };
+
+    if (stompClient.connected) {
       // 보낼 메세지 json 객체 (roomid 넣으삼)
-      // 성다연 todo : roomId 저장
       const msg = {
         userId: user.userId,
         content: msgInput,
@@ -85,41 +120,37 @@ const ChatMsg = () => {
         roomId: roomId,
       };
       // 하단 /publish/messages/ 뒤에 서버로부터 받은 roomId 붙여주면 됨(5 대신에)
-      // 성다연 todo : 하단 roomId 저장
       stompClient.send('/publish/messages/' + roomId, JSON.stringify(msg), {});
     }
   };
 
-  const connect = () => {
-    // console.log(socket);
-    // console.log(Stomp.over(socket));
-
-    stompClient.connect(
+  const connect = (rooms) => {
+    const serverURL = 'https://i8a807.p.ssafy.io/ws/chat';
+    let socket = new SockJS(serverURL);
+    let newClient = Stomp.over(socket);
+    setStompClient(newClient);
+    newClient.connect(
       {},
       (frame) => {
         // 소켓 연결 성공
-        connected = true;
         console.log('소켓 연결 성공', frame);
+        setLoading(false);
+        gotoBottom();
 
-        // this.sessionId 에 현재 접속한 유저의 세션 아이디를 저장해 놓음
-        // this.sessionId - 1.처음 접속시 2 메세지 보낼시 - Json객체로 보냄
-        var len = socket._transport.url.length;
-        sessionId = socket._transport.url.substring(len - 8, len);
-        // sessionId = socket._transport.url.substring(len - 10, len - 18);
-        console.log('세션 아이디 : ' + socket._transport.url);
-        console.log('세션 아이디 : ' + sessionId);
+        let len = socket._transport.url.length;
+        let sess = socket._transport.url.substring(len - 8, len);
+
+        setSessionId(sess);
 
         // 처음 접속시 서버로 해당 채팅방에 접속한 유저의 정보를 보냄
         // 정보 : sessionId , userId , roomId(방번호)
         // 성다연 todo : 하단 userId roomId 저장
-
-        console.log('룸넘버' + roomId);
-        stompClient.send(
+        newClient.send(
           '/publish/messages/sessionNum',
           JSON.stringify({
-            sessionId: sessionId,
+            sessionId: sess,
             userId: user.userId,
-            roomId: roomId,
+            roomId: rooms,
           }),
           {},
         );
@@ -127,21 +158,22 @@ const ChatMsg = () => {
         // 서버의 메시지 전송 endpoint를 구독합니다. 이런형태를 pub sub 구조라고 합니다.
 
         // 하단 /subscribe/roomId/ 뒤에 서버로부터 받은 roomId 붙여주면 됨(5 대신에)
-        // 성다연 todo : 하단 roomId 저장
-        stompClient.subscribe('/subscribe/roomId/' + roomId, (res) => {
-          console.log('안녕');
-          console.log(res);
+        newClient.subscribe('/subscribe/roomId/' + rooms, async (res) => {
           // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
-          // setChats(chats.push(JSON.parse(res.body)));
-          this.recvList.push(JSON.parse(res.body));
+          await setChats((chats) => [...chats, JSON.parse(res.body)]);
+          gotoBottom();
         });
       },
       (error) => {
         // 소켓 연결 실패
-        console.log('소켓 연결 실패', error);
-        connected = false;
+        navigate('/500');
+        console.log(error);
+        stompClient.connected = false;
       },
     );
+    // socket.onclose = () => {
+    //   connect(roomId);
+    // };
   };
 
   useEffect(() => {
@@ -153,18 +185,18 @@ const ChatMsg = () => {
     axios
       .get(`${BACKEND_URL}/chat/chatting`, {
         params: {
-          otherId: 2,
+          otherId: otherId,
         },
         headers: {
           Authorization: auth,
         },
       })
       .then((resp) => {
-        console.log(resp);
-        console.log(resp.data.chats);
         setChatTarget(resp.data.other);
         setChats(resp.data.chats);
-        setLoading(false);
+        setRoomId(resp.data.other.roomId);
+        // 소켓 연결 시도
+        connect(resp.data.other.roomId);
       })
       .catch((err) => {
         console.log(err);
@@ -174,23 +206,44 @@ const ChatMsg = () => {
         }
       });
 
-    // 소켓 연결 시도
-    connect();
+    setTimeout(() => {
+      gotoBottom();
+    }, 1000);
   }, []);
 
   if (isLoading) {
-    return <div className='loading'>Loading...</div>;
+    return (
+      <div className='loading'>
+        <img src={Loading} alt='loading...'></img>
+      </div>
+    );
   }
 
   return (
     <>
       <ChatMsgContainer>
         <img src={MenuIcon} className='chat-menu-icon' onClick={() => setMenuBtnClick(true)} alt='menu' />
+        {menuBtnClick === true ? (
+          <MenuModalWrapper
+            ref={outSection}
+            onClick={(e) => {
+              if (outSection.current === e.target) {
+                setMenuBtnClick(false);
+              }
+            }}
+          >
+            <div className='modal-body'>
+              <div className='single-menu' onClick={exitChat}>
+                {'채팅방 나가기'}
+              </div>
+            </div>
+          </MenuModalWrapper>
+        ) : null}
         <ChatUserContainer>
           <UserIcon text={chatTarget.nickName} idx={chatTarget.userId} />
           <div className='nickname'>{chatTarget.nickName}</div>
           <div className='user-info'>
-            {userAge(chatTarget.userBirth)}대 / {chatTarget.userGender === 'm' ? '남' : '여'} /{' '}
+            {userAge(chatTarget.userBirth)}대 / {chatTarget.gender === 'm' ? '남' : '여'} /{' '}
             {userDongName(chatTarget.address)}
           </div>
         </ChatUserContainer>
@@ -211,7 +264,7 @@ const ChatMsg = () => {
             약속 확인하기
           </button>
         </ChatBtnWrapper>
-        <ChatMsgBoxWrapper>
+        <ChatMsgBoxWrapper id='chatContent'>
           {chats.map((chat) => {
             if (chat.userId === user.userId) {
               return <MyChat time={chat.date} text={chat.content} />;
@@ -222,7 +275,13 @@ const ChatMsg = () => {
         </ChatMsgBoxWrapper>
         <ChatInputWrapper>
           <div className='chat-input-box'>
-            <input className='chat-input' onChange={onChangeMsg} maxLength='5' placeholder='메시지를 입력하세요' />
+            <input
+              className='chat-input'
+              onChange={onChangeMsg}
+              onKeyPress={onKeyPress}
+              maxLength='100'
+              placeholder='메시지를 입력하세요'
+            />
             <div className='send-btn' onClick={sendMessage}>
               <FontAwesomeIcon icon='fa-solid fa-paper-plane' />
             </div>

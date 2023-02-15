@@ -57,19 +57,29 @@ const SingleMeeting = ({ meeting, auth }) => {
   };
 
   const dayOfWeek = () => {
-    const week = ["일", "월", "화", "수", "목", "금", "토"];
-    const weekStr = meeting.date.split("T");
+    // 한국시간으로 변환
+    const kstTime = new Date(meeting.date);
+    kstTime.setHours(kstTime.getHours() + 9);
 
-    const dayOfTheWeek = week[new Date(weekStr[0]).getDay()];
-    weekStr[0] = weekStr[0].replaceAll("-", "/");
+    // 요일 찾기
+    const weekArr = ["일", "월", "화", "수", "목", "금", "토"];
+    const dayOfTheWeek = weekArr[kstTime.getDay()];
+
+    // toIOString()은 UTC시간 기준이기 때문에 offset설정을 다시 해줬습니다.
+    const timeValue = new Date(
+      kstTime.getTime() - kstTime.getTimezoneOffset() * 60000
+    )
+      .toISOString()
+      .split("T");
+    timeValue[0] = timeValue[0].replaceAll("-", "/");
 
     const dateResult =
       "   " +
-      weekStr[0] +
+      timeValue[0] +
       " (" +
       dayOfTheWeek +
       ")     " +
-      convertHours(weekStr[1]);
+      convertHours(timeValue[1]);
     return dateResult;
   };
 
@@ -79,17 +89,21 @@ const SingleMeeting = ({ meeting, auth }) => {
     if (dogs) {
       if (dogs.length === 1) {
         result = (
-          <div className="dogProfileImgWrapper">
-            <img
-              className="dogProfileImg"
-              src={"https://i8a807.p.ssafy.io/image/dog/" + dogs[0].dogProfile}
-              alt="dogProfile"
-            />
+          <div className="singleDog">
+            <div className="dogProfileImgWrapper">
+              <img
+                className="dogProfileImg"
+                src={
+                  "https://i8a807.p.ssafy.io/image/dog/" + dogs[0].dogProfile
+                }
+                alt="dogProfile"
+              />
+            </div>
             {meeting.status === "done" &&
             meeting.rated === false &&
             infoModalOpen === false ? (
               <button
-                className="ratingBtn"
+                className="singleDogRatingBtn"
                 onClick={() => setRatingModalOpen(true)}
               >
                 평가
@@ -459,8 +473,19 @@ const Walk = () => {
   const setAuth = useSetRecoilState(authAtom);
 
   useEffect(() => {
+    let url = `${BACKEND_URL}/meeting`;
+    if (active === 1) {
+      url += "/confirmed";
+    } else if (active === 2) {
+      url += "/wait";
+    } else if (active === 3) {
+      url += "/done";
+    } else {
+      return;
+    }
+
     axios
-      .get(`${BACKEND_URL}/meeting`, {
+      .get(url, {
         headers: {
           Authorization: auth,
         },
@@ -468,8 +493,10 @@ const Walk = () => {
       .then(function (response) {
         // 데이터 들어오는 형태 확인 필요함
         // userOne이 보낸 사람, userTwo가 받은 사람
-        // console.log(response.data);
+        // console.log(url);
+        // console.log(response.data.appointment);
         const appointments = [];
+
         if (response.data.appointment) {
           for (let i = 0; i < response.data.appointment.length; i++) {
             const singleAppointment = {
@@ -521,15 +548,8 @@ const Walk = () => {
           auth={auth}
         ></SingleMeeting>
       );
-      if (originalMeetings[i].status === "confirmed" && active === 1) {
-        meetings.push(singleMeet);
-      } else if (originalMeetings[i].status === "wait" && active === 2) {
-        meetings.push(singleMeet);
-      } else if (originalMeetings[i].status === "cancelled" && active === 3) {
-        meetings.push(singleMeet);
-      } else if (originalMeetings[i].status === "done" && active === 3) {
-        meetings.push(singleMeet);
-      }
+
+      meetings.push(singleMeet);
     }
     return meetings;
   };
@@ -576,14 +596,16 @@ const Walk = () => {
               </LightColorLongBtn>
             </div>
           ) : null}
-          <div
-            className="recommendBtn"
-            onClick={() => {
-              navigate("/recommend");
-            }}
-          >
-            <FontAwesomeIcon icon="fa-plus"></FontAwesomeIcon>
-          </div>
+          {active === 3 ? null : (
+            <div
+              className="recommendBtn"
+              onClick={() => {
+                navigate("/recommend");
+              }}
+            >
+              <FontAwesomeIcon icon="fa-plus"></FontAwesomeIcon>
+            </div>
+          )}
         </div>
       </MeetingWrapper>
     </WalkListWrapper>

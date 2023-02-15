@@ -12,21 +12,17 @@ const MenuModal = ({
   menuBtnClick,
   setMenuBtnClick,
   feedDogData,
+  feedUserData,
   setConfirmBtnClick,
   setNoDogBtnClick,
+  setNoChangeModalClick,
   dogId,
-  setUserInfoModal,
 }) => {
   const setAuth = useSetRecoilState(authAtom);
   const [user, setUser] = useRecoilState(userState);
 
   const outSection = useRef();
   const navigate = useNavigate();
-
-  const handleUserInfo = () => {
-    setMenuBtnClick(false);
-    setUserInfoModal(true);
-  }
 
   const handleDogDelete = () => {
     setMenuBtnClick(false);
@@ -45,6 +41,11 @@ const MenuModal = ({
     console.log('로그아웃이 정상적으로 처리되었습니다.');
     navigate('/login');
   };
+
+  const handleNoChange = () => {
+    setMenuBtnClick(false);
+    setNoChangeModalClick(true);
+  }
 
   return (
     <>
@@ -70,19 +71,24 @@ const MenuModal = ({
                       console.log(feedDogData.length);
                       return handleDogDelete();
                     } else {
-                      console.log('없서');
+                      // console.log('없서');
                       return handleNoDog();
                     }
                   } else if (it.link === '/dogedit' && feedDogData.length > 0) {
                     navigate(it.link, { state: dogId });
                   } else if (it.link === '/dogedit' && feedDogData.length === 0) {
                     return handleNoDog();
-                  } else if (it.link === "/profile") {
-                    return handleUserInfo();
-                  } else  {
-                    navigate(it.link)
+                  } else if (it.link === '/passwordedit') {
+                    if (feedUserData.social === 'origin') {
+                      navigate(it.link);
+                    } else {
+                      console.log('소셜 회원은 비밀번호 변경 불가')
+                      return handleNoChange();
+                      // alert('소셜 회원은 비밀번호를 변경할 수 없습니다.')
+                    }
+                  } else {
+                    navigate(it.link);
                   }
-                  // it.link === "/logout" ? handleLogout() : navigate(it.link);
                 }}
               >
                 {it.text}

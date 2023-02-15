@@ -6,6 +6,19 @@ export const SignupContainer = styled.div`
   // align-items: center;
   justify-content: center;
   padding: 1.5rem 0;
+
+  .password-edit{
+    align-items: center;
+  }
+`;
+
+export const PasswordContainer = styled.div`
+  height: calc(100vh - 60px - 3rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 0;
+}
 `;
 
 export const SignupWrapper = styled.div`
@@ -29,7 +42,9 @@ export const SignupWrapper = styled.div`
   }
 
   .two-btns-wrapper {
+    width: 15rem;
     padding-top: 2rem;
+    display: flex;
     justify-content: space-around;
   }
 
@@ -181,16 +196,14 @@ export const LogoWrapper = styled.div`
   align-itmes: center;
   padding-bottom: 50px;
 
-  .logo-title {
-    font-size: 40px;
-    font-weight
-    color: #000;
-  }
+  // .email-logo {
+  //   width: 5rem;
+  //   height: 5rem;
+  //   margin: auto;
+  //   margin-bottom: 2rem;
+  // }
 
-  .email-logo {
-    width: 9rem;
-    height: 9rem;
-    margin: auto;
-    margin-bottom: 2rem;
+  .logo-img {
+    width: 19rem;
   }
 `;

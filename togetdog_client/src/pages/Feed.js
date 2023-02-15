@@ -2,15 +2,16 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import UserInfoModal from '../components/AlertModal/UserInfoModal';
 import ConfirmModal from '../components/ConfirmModal';
+import UserInfoModal from '../components/AlertModal/UserInfoModal';
+import NoChangeModal from '../components/AlertModal/NoChangeModal';
 import NoDogAlertModal from '../components/AlertModal/NoDogAlertModal';
 import MenuModal from '../components/MenuModal';
 import OrangeCharacterBtn from '../components/OrangeCharacterBtn';
 import YellowCharacterBtn from '../components/YellowCharacterBtn';
 import { BACKEND_URL } from '../config';
 import { authAtom, userState } from '../recoil';
-import { PlusBtn } from '../styles/BtnsEmotion';
+import { MainColorShortBtn, PlusBtn } from '../styles/BtnsEmotion';
 import {
   FeedContainer,
   FeedPhoto,
@@ -38,31 +39,26 @@ const Feed = () => {
   const menuLists = [
     {
       menu_id: 1,
-      text: '내 정보 보기',
-      link: '/profile',
-    },
-    {
-      menu_id: 2,
       text: '프로필 수정',
       link: '/useredit',
     },
     {
-      menu_id: 3,
+      menu_id: 2,
       text: '강아지 프로필 수정',
       link: '/dogedit',
     },
     {
-      menu_id: 4,
+      menu_id: 3,
       text: '강아지 프로필 삭제',
       link: '/dogdelete',
     },
     {
-      menu_id: 5,
+      menu_id: 4,
       text: '계정 비밀번호 변경',
       link: '/passwordedit',
     },
     {
-      menu_id: 6,
+      menu_id: 5,
       text: '로그아웃',
       link: '/logout',
     },
@@ -75,6 +71,8 @@ const Feed = () => {
   const [confirmBtnClick, setConfirmBtnClick] = useState(false);
   // 등록된 강아지 없으면 등록된 강아지가 없다는 경고 모달 띄우기
   const [noDogBtnClick, setNoDogBtnClick] = useState(false);
+  // 소셜 회원일 경우 비밀번호 변경이 불가능하다는 모달 띄우기
+  const [noChangeModalClick, setNoChangeModalClick] = useState(false);
 
   const [menuBtnClick, setMenuBtnClick] = useState(false);
   const [feedData, setFeedData] = useState();
@@ -91,6 +89,7 @@ const Feed = () => {
 
   const location = useLocation();
   const feedUserId = location.pathname.split('/').reverse()[0];
+
   // pageNo
   const pageNo = 1;
 
@@ -101,11 +100,6 @@ const Feed = () => {
       if (dog.dogId === targetDogId) {
         setCurrentDog(dog);
         setFollowStatus(dog.following);
-        // let filteredPhotos = [];
-        // filteredPhotos = feedPhotoData.filter((feedPhoto) => feedPhoto.dogId === targetDogId);
-        // console.log(filteredPhotos);
-        // setFilteredPhotoData(filteredPhotos);
-        // setSubDogs(tmpSubDogs);
       } else {
         tmpSubDogs.push(dog);
       }
@@ -121,8 +115,10 @@ const Feed = () => {
         },
       })
       .then((resp) => {
-        console.log(resp);
-        console.log(resp.data);
+        // console.log('피드 포토 받기');
+        // console.log(resp);
+        // console.log(resp.data);
+        // console.log('피드 포토 받기 끝')
         setFeedPhotoData(resp.data.boardList);
         setLoading(false);
       })
@@ -149,6 +145,86 @@ const Feed = () => {
       return;
     }
 
+    if (location.state) {
+      console.log('state 받았음');
+      console.log('state 받았음');
+      console.log('state 받았음');
+      console.log('state 받았음');
+      console.log(location.state);
+      // console.log('state를 받아오는 경우')
+      const dogId = location.state.dogId;
+
+      axios
+        .get(`${BACKEND_URL}/feed/${feedUserId}?pageNo=${pageNo}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: auth,
+          },
+        })
+        .then((res) => {
+          setFeedData(res.data.feed);
+          setFeedUserData(res.data.user);
+          if (res.data.user.dogs) {
+            setFeedDogData(res.data.user.dogs);
+            res.data.user.dogs.forEach((dog) => {
+              if (dog.dogId === dogId) {
+                setCurrentDog(dog);
+              };
+            })
+            if (res.data.user.dogs.toString() !== [].toString()) {
+              // current dog에 대한 팔로잉으로 수정해야함
+              res.data.user.dogs.forEach((dog) => {
+                if (dog.dogId === dogId) {
+                  setFollowStatus(dog.following);
+                }
+              });
+            }
+          }
+          let tmpSubDogs = [];
+
+          if (res.data.user.dogs) {
+            res.data.user.dogs.forEach((dog) => {
+              if (dog.dogId !== dogId) {
+                tmpSubDogs.push(dog);
+              }
+            });
+          }
+          setSubDogs(tmpSubDogs);
+          // setFeedPhotoData할 때 axios요청으로 보드 받아와서 넣어야 함
+          axios
+            .get(`${BACKEND_URL}/board/list/${dogId}`, {
+              params: {
+                pageNo: pageNo,
+              },
+              headers: {
+                Authorization: auth,
+              },
+            })
+            .then((res) => {
+              setFeedPhotoData(res.data.boardList);
+            })
+            .catch((err) => {
+              console.log(err);
+              if (err.response.state === 401) {
+                alert('토큰이 만료되어 자동 로그아웃되었습니다.');
+                handleLogout();
+              }
+            })
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response.status === 404) {
+            navigate('/*');
+          } else if (err.response.status === 401) {
+            alert('토큰이 만료되어 자동 로그아웃되었습니다.');
+            handleLogout();
+          }
+          console.log('피드 데이터 불러오기 실패');          
+        })
+      return;
+    }
+
     axios
       .get(`${BACKEND_URL}/feed/${feedUserId}?pageNo=${pageNo}`, {
         headers: {
@@ -157,16 +233,15 @@ const Feed = () => {
         },
       })
       .then((resp) => {
-        console.log(resp);
-        console.log(resp.data);
+        // console.log(resp);
+        // console.log(resp.data);
+        // console.log('들어오는 데이터')
+        // console.log(resp.data.user.dogs);
         setFeedData(resp.data.feed);
         setFeedUserData(resp.data.user);
-        console.log(resp.data.user.dogs);
         if (resp.data.user.dogs) {
           setFeedDogData(resp.data.user.dogs);
           setCurrentDog(resp.data.user.dogs[0]);
-          console.log(resp.data.user.dogs);
-          console.log(resp.data.user.dogs);
           if (resp.data.user.dogs.toString() !== [].toString()) {
             setFollowStatus(resp.data.user.dogs[0].following);
           }
@@ -182,11 +257,6 @@ const Feed = () => {
         }
         setSubDogs(tmpSubDogs);
         setFeedPhotoData(resp.data.feed);
-        // let filteredPhotos = [];
-        // if (resp.data.feed) {
-        //   filteredPhotos = resp.data.feed.filter((feedPhoto) => feedPhoto.dogId === resp.data.user.dogs[0].dogId);
-        //   setFilteredPhotoData(filteredPhotos);
-        // }
         setLoading(false);
       })
       .catch((err) => {
@@ -204,7 +274,7 @@ const Feed = () => {
   if (isLoading) {
     return (
       <div className='loading'>
-        <img src={Loading} alt='loading...'></img>
+        <img src={Loading} alt='loading...' />
       </div>
     );
   }
@@ -226,9 +296,15 @@ const Feed = () => {
             setMenuBtnClick={setMenuBtnClick}
           />
         )}
-        <UserInfoModal 
+        <UserInfoModal
           userInfoModal={userInfoModal}
           setUserInfoModal={setUserInfoModal}
+          setMenuBtnClick={setMenuBtnClick}
+          feedUserData={feedUserData}
+        />
+        <NoChangeModal 
+          noChangeModalClick={noChangeModalClick}
+          setNoChangeModalClick={setNoChangeModalClick}
           setMenuBtnClick={setMenuBtnClick}
         />
         <MenuModal
@@ -237,8 +313,9 @@ const Feed = () => {
           setMenuBtnClick={setMenuBtnClick}
           setConfirmBtnClick={setConfirmBtnClick}
           setNoDogBtnClick={setNoDogBtnClick}
-          setUserInfoModal={setUserInfoModal}
+          setNoChangeModalClick={setNoChangeModalClick}
           feedDogData={feedDogData}
+          feedUserData={feedUserData}
           dogId={currentDog?.dogId}
         />
         <FeedProfileWrapper>
@@ -255,23 +332,26 @@ const Feed = () => {
               </div>
             ) : currentDog ? (
               <div className='dog-info-box'>
-                <div>
+                <div className='dog-name'>
                   {currentDog.dogName}
                   {currentDog.dogGender === 'male' ? (
-                    <img src={Boy} className='dog-gender' />
+                    <img src={Boy} className='dog-gender' alt='Boy' />
                   ) : (
-                    <img src={Girl} className='dog-gender' />
+                    <img src={Girl} className='dog-gender' alt='Girl' />
                   )}
                 </div>
-                <div className='dog-info'>
-                  {`${currentDog.dogType} / ${
-                    currentDog.dogAge >= 12 ? `${Math.floor(currentDog.dogAge / 12)}살` : `${currentDog.dogAge}개월`
-                  }`}
-                </div>
+                <div className='dog-breed'>{currentDog.dogType}</div>
+                <div className='dog-age'>{`${
+                  currentDog.dogAge >= 12 ? `${Math.floor(currentDog.dogAge / 12)}살` : `${currentDog.dogAge}개월`
+                }`}</div>
               </div>
             ) : (
               <div className='dog-info-box'>
-                <div>{'등록된 강아지가 없습니다.'}</div>
+                {feedUserData.userId === user.userId ? (
+                  <MainColorShortBtn onClick={() => navigate('/dogregister')}>강아지 등록</MainColorShortBtn>
+                ) : (
+                  <div>{'등록된 강아지가 없습니다.'}</div>
+                )}
               </div>
             )}
 
@@ -312,6 +392,7 @@ const Feed = () => {
                         state: { userId: user.userId },
                       })
                     }
+                    className='follow-box'
                   >
                     <div className='follow-text'>팔로잉</div>
                     <div>{feedUserData.followCnt}</div>
@@ -321,17 +402,22 @@ const Feed = () => {
             ) : currentDog ? (
               <div className='other-user-btns'>
                 <FollowBtn dogId={currentDog.dogId} followStatus={followStatus} setFollowStatus={setFollowStatus} />
-                <div
-                  className='make-appointment-btn'
-                  onClick={() =>
-                    navigate('/createAppointment', {
-                      state: {
-                        partnerId: feedUserData.userId,
-                      },
-                    })
-                  }
-                >
-                  <FontAwesomeIcon icon='fa-calendar' />
+                <div className='feed-btn-box'>
+                  <div className='dm-btn' onClick={() => navigate(`/chat/${feedUserData.userId}`)}>
+                    <FontAwesomeIcon icon='fa-solid fa-message' />
+                  </div>
+                  <div
+                    className='make-appointment-btn'
+                    onClick={() =>
+                      navigate('/createAppointment', {
+                        state: {
+                          partnerId: feedUserData.userId,
+                        },
+                      })
+                    }
+                  >
+                    <FontAwesomeIcon icon='fa-calendar' />
+                  </div>
                 </div>
               </div>
             ) : null}
@@ -339,6 +425,13 @@ const Feed = () => {
           {/* 특이사항, 성격 들어가는 부분 */}
           {currentDog ? (
             <FeedProfileBottom>
+              <div
+                className={`${feedUserData.userId === user.userId ? 'dog-user-mine' : 'dog-user-not-mine'}`}
+                onClick={() => setUserInfoModal(!userInfoModal)}
+              >
+                <FontAwesomeIcon icon='fa-solid fa-user' />
+                <span className='dog-user-nickname'>{feedUserData.nickname}</span>
+              </div>
               <div className='special-text'>{currentDog.description}</div>
               <div className='characters-box'>
                 <OrangeCharacterBtn text={`#${currentDog.dogNeutered ? '중성화' : '중성화 X'}`} />
@@ -347,7 +440,15 @@ const Feed = () => {
               </div>
             </FeedProfileBottom>
           ) : (
-            <div className='margin-bottom'></div>
+            <FeedProfileBottom>
+              <div
+                className={`${feedUserData.userId === user.userId ? 'dog-user-mine' : 'dog-user-not-mine'}`}
+                onClick={() => setUserInfoModal(!userInfoModal)}
+              >
+                <FontAwesomeIcon icon='fa-solid fa-user' />
+                <span className='dog-user-nickname'>{feedUserData.nickname}</span>
+              </div>
+            </FeedProfileBottom>
           )}
         </FeedProfileWrapper>
         {!feedPhotoData ? (

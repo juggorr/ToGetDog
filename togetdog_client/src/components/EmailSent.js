@@ -1,5 +1,5 @@
 import { EmailContainer, EmailWrapper, LogoWrapper } from '../styles/SignupEmotion';
-import PinkEmail from './../assets/pink_email.svg';
+import ToGetDog from '../assets/togetdog.png';
 
 const EmailSent = (props) => {
   return (
@@ -7,8 +7,7 @@ const EmailSent = (props) => {
       <EmailContainer>
         <EmailWrapper>
           <LogoWrapper>
-            <img className='email-logo' src={PinkEmail} />
-            <div className='logo-title'>ToGetDog</div>
+            <img src={ToGetDog} className='logo-img' alt='MainLogo' />
           </LogoWrapper>
           <div className='text-align-center email-desc'>
             {props.email} 로
@@ -16,7 +15,9 @@ const EmailSent = (props) => {
             이메일이 발송되었습니다.
             <br />
             <br />
-            인증을 통해 회원가입을 완료해주세요.
+            24시간 이내로 인증하신 후
+            <br />
+            회원가입을 완료해주세요.
           </div>
         </EmailWrapper>
       </EmailContainer>

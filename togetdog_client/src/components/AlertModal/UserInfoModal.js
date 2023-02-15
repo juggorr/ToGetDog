@@ -1,73 +1,37 @@
 import { useState, useEffect, useRef } from 'react';
-// import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import axios from 'axios';
 
-
-import { authAtom, userState } from '../../recoil';
-
-import WalkIcon from "../../assets/walking_with_dog.png";
-import UserIcon from "../UserIcon";
-import { BACKEND_URL } from '../../config';
-import { ConfirmModalWrapper, ConfirmModalBody, ConfirmModalImage } from '../../styles/ModalEmotion';
-import YellowCharacterBtn from "../YellowCharacterBtn";
+import UserIcon from '../UserIcon';
+import { ConfirmModalWrapper, ConfirmModalBody } from '../../styles/ModalEmotion';
+import YellowCharacterBtn from '../YellowCharacterBtn';
 import { MainColorShortBtn } from '../../styles/BtnsEmotion';
-import emotion1 from "../../assets/emotion1.png"
-import emotion2 from "../../assets/emotion2.png"
-import emotion3 from "../../assets/emotion3.png"
-import emotion4 from "../../assets/emotion4.png"
-import emotion5 from "../../assets/emotion5.png"
+import emotion1 from '../../assets/emotion1.png';
+import emotion2 from '../../assets/emotion2.png';
+import emotion3 from '../../assets/emotion3.png';
+import emotion4 from '../../assets/emotion4.png';
+import emotion5 from '../../assets/emotion5.png';
 
-
-
-function UserInfoModal({ userInfoModal, setUserInfoModal, setMenuBtnClick }) {
-
-  const user = useRecoilValue(userState);
-  const auth = useRecoilValue(authAtom);
+function UserInfoModal({ userInfoModal, setUserInfoModal, feedUserData }) {
   const outSection = useRef();
 
-  const [brithYear, setBirthYear] = useState('');
+  const [age, setAge] = useState(0);
   const [dong, setDong] = useState('');
-  const [sung, setSung] = useState('');
+  const [gender, setGender] = useState('');
   const [rate, setRate] = useState('');
 
   useEffect(() => {
-    axios
-      .get(`${BACKEND_URL}/user/${user.userId}`, {
-        headers: {
-          Authorization: auth,
-        }
-      })
-      .then((res) => {        
-        setRate(res.data.user.rating);
-        
-        const dongData = res.data.user.address.split(" ");
-        setDong(dongData[dongData.length - 1]);
+    setAge(Math.floor(feedUserData.userAge / 10) * 10);
+    setRate(feedUserData.rating);
+    setDong(feedUserData.address.substring(feedUserData.address.lastIndexOf(' ') + 1));
+    setGender(feedUserData.userGender === 'male' ? '남성' : '여성');
+  }, []);
 
-        const thisYear = new Date().getFullYear();
-        setBirthYear(Math.floor((thisYear - res.data.user.birth + 1) / 10) * 10);
-        
-        if (res.data.user.userGender === 'male') {
-          setSung('남성')
-        } else if (res.data.user.userGender === 'female') {
-          setSung('여성')
-        } else {
-          setSung('기타')
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-  }, [])
-
+  console.log(feedUserData);
 
   const onClick = () => {
     setUserInfoModal(false);
-    setMenuBtnClick(true);
-  }
+  };
 
-
-  return(
+  return (
     <>
       {userInfoModal === true ? (
         <ConfirmModalWrapper
@@ -79,32 +43,29 @@ function UserInfoModal({ userInfoModal, setUserInfoModal, setMenuBtnClick }) {
           }}
         >
           <ConfirmModalBody>
-            <UserIcon text={user.nickName}></UserIcon>
-            <h3>{user.nickName}</h3>
-            <div className="rating-box">
+            <UserIcon text={feedUserData.nickname}></UserIcon>
+            <div className='user-nickname'>{feedUserData.nickname}</div>
+            <div className='rating-box'>
               {rate < 1 ? (
-                <img className="rate-img" src={emotion5} alt='최저'/>
+                <img className='rate-img' src={emotion5} alt='최저' />
               ) : rate < 2 ? (
-                <img className="rate-img" src={emotion4} alt='저' />
+                <img className='rate-img' src={emotion4} alt='저' />
               ) : rate < 3 ? (
-                <img className="rate-img" src={emotion3} alt='중' />
+                <img className='rate-img' src={emotion3} alt='중' />
               ) : rate < 4 ? (
-                <img className="rate-img" src={emotion2} alt='고' /> 
-              ) : <img className="rate-img" src={emotion1} alt='최고'/>
-              }
-              <p className="rate">{rate}</p>
+                <img className='rate-img' src={emotion2} alt='고' />
+              ) : (
+                <img className='rate-img' src={emotion1} alt='최고' />
+              )}
+              <p className='rate'>{rate}</p>
             </div>
-            <div className="characters-box">
-              <YellowCharacterBtn text={`#${dong}`} />
-              <YellowCharacterBtn text={`#${brithYear}대`} />
-              <YellowCharacterBtn text={`#${sung}`} />
+            <div className='characters-box'>
+              <YellowCharacterBtn text={`# ${dong}`} />
+              <YellowCharacterBtn text={`# ${age}대`} />
+              <YellowCharacterBtn text={`# ${gender}`} />
             </div>
-            <div className="two-btns-wrapper">
-              <MainColorShortBtn
-                onClick={onClick}
-              >
-                닫기
-              </MainColorShortBtn>
+            <div className='two-btns-wrapper'>
+              <MainColorShortBtn onClick={onClick}>닫기</MainColorShortBtn>
             </div>
           </ConfirmModalBody>
         </ConfirmModalWrapper>

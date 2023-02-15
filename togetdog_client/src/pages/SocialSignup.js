@@ -231,7 +231,7 @@ function SocialSignup() {
         // setEmailStatus(true);
         console.log('회원가입 성공!')
         console.log(res);
-        navigate('/login');
+        navigate('/socialsuccess');
       })
       .catch((err) => {
         console.log(err);

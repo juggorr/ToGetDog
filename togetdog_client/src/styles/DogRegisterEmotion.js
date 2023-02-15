@@ -5,7 +5,8 @@ import plusIcon from "../assets/plusicon3.png";
 import dog_profile from "../assets/dog_profile.png";
 
 export const RegisterContainer = styled.div`
-  heignt: 100vh;
+  width: 100%;
+  heignt: calc(100vh - 60px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -71,6 +72,12 @@ export const RegisterWrapper = styled.div`
   .error {
     color: red;
     font-size: 0.8rem;
+  }
+
+  .profile-error {
+    color: red;
+    font-size: 0.8rem;
+    text-align: center;
   }
 `;
 
