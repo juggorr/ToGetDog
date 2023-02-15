@@ -1,13 +1,13 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import DogRecommend from "../components/DogRecommend";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import DogRecommend from '../components/DogRecommend';
 // import UserFollow from "../components/UserFollow";
-import { BACKEND_URL } from "../config";
-import { authAtom, userState } from "../recoil";
+import { BACKEND_URL } from '../config';
+import { authAtom, userState } from '../recoil';
 import {
   HomeContainer,
   HomeWrapper,
@@ -16,71 +16,58 @@ import {
   DogInfoWrapper,
   DogImgWrapper,
   NoFriendsWrapper,
-} from "../styles/HomeEmotion";
-import Banner1 from "../assets/banner1.svg";
-import Banner2 from "../assets/banner2.svg";
-import Banner3 from "../assets/banner3.svg";
-import Banner4 from "../assets/banner4.svg";
-import Banner5 from "../assets/banner5.svg";
-import Banner6 from "../assets/banner6.svg";
-import Boy from "../assets/boy.png";
-import Girl from "../assets/girl.png";
-import Loading from "../assets/loading.gif";
-import { useInView } from "react-intersection-observer";
+} from '../styles/HomeEmotion';
+import Banner1 from '../assets/banner1.svg';
+import Banner2 from '../assets/banner2.svg';
+import Banner3 from '../assets/banner3.svg';
+import Banner4 from '../assets/banner4.svg';
+import Banner5 from '../assets/banner5.svg';
+import Banner6 from '../assets/banner6.svg';
+import Boy from '../assets/boy.png';
+import Girl from '../assets/girl.png';
+import Loading from '../assets/loading.gif';
+import { useInView } from 'react-intersection-observer';
 
 const SingleBoard = ({ board }) => {
   const navigate = useNavigate();
 
   return (
     <SingleBoardWrapper>
-      <div className="contentLine"></div>
-      <div className="profileWrapper">
+      <div className='contentLine'></div>
+      <div className='profileWrapper'>
         <DogImgWrapper>
-          <div className="dogProfileCircle">
+          <div className='dogProfileCircle'>
             <img
-              className="dogProfileImg"
-              src={
-                "https://i8a807.p.ssafy.io/image/dog/" + board.dog.dogProfile
-              }
+              className='dogProfileImg'
+              src={'https://i8a807.p.ssafy.io/image/dog/' + board.dog.dogProfile}
               alt={board.dog.dogName}
             />
           </div>
         </DogImgWrapper>
         <DogInfoWrapper>
-          <div className="dogInfo">
-            <div className="dogNameWrapper">{board.dog.dogName}</div>
-            <div className="dogType">
-              {board.dog.dogType} /{" "}
-              {board.dog.dogAge < 12
-                ? board.dog.dogAge
-                : Math.floor(board.dog.dogAge / 12)}
-              {board.dog.dogAge < 12 ? "개월" : "살"}
-              <div className="genderWrapper">
-                <img
-                  src={board.dog.dogGender === "male" ? Boy : Girl}
-                  alt="gender"
-                  className="genderImg"
-                />
+          <div className='dogInfo'>
+            <div className='dogNameWrapper'>{board.dog.dogName}</div>
+            <div className='dogType'>
+              {board.dog.dogType} / {board.dog.dogAge < 12 ? board.dog.dogAge : Math.floor(board.dog.dogAge / 12)}
+              {board.dog.dogAge < 12 ? '개월' : '살'}
+              <div className='genderWrapper'>
+                <img src={board.dog.dogGender === 'male' ? Boy : Girl} alt='gender' className='genderImg' />
               </div>
             </div>
           </div>
         </DogInfoWrapper>
       </div>
       <div
-        className="contentWrapper"
+        className='contentWrapper'
         onClick={() => {
           navigate(`/board/${board.boardId}`);
         }}
       >
-        <div className="imgWrapper">
-          <img
-            className="contentImg"
-            src={"https://i8a807.p.ssafy.io/image/board/" + board.image}
-            alt="content_img"
-          />
+        <div className='imgWrapper'>
+          <img className='contentImg' src={'https://i8a807.p.ssafy.io/image/board/' + board.image} alt='content_img' />
         </div>
       </div>
-      <div className="contentText">{board.content}</div>
+      <div className='contentText'>{board.content}</div>
     </SingleBoardWrapper>
   );
 };
@@ -89,14 +76,10 @@ const BoardList = (boardList) => {
 
   if (boardList.length) {
     for (let i = 0; i < boardList.length; i++) {
-      tempBoardList.push(
-        <SingleBoard key={i} board={boardList[i]}></SingleBoard>
-      );
+      tempBoardList.push(<SingleBoard key={i} board={boardList[i]}></SingleBoard>);
     }
   } else {
-    tempBoardList.push(
-      <NoFriendsWrapper key={0}>조회할 게시글이 없어요.</NoFriendsWrapper>
-    );
+    tempBoardList.push(<NoFriendsWrapper key={0}>조회할 게시글이 없어요.</NoFriendsWrapper>);
   }
 
   return tempBoardList;
@@ -129,29 +112,22 @@ const Home = () => {
   const [tinyLoading, setTinyLoading] = useState(true);
 
   const pageNo = useRef(1);
-  const backgroundImages = [
-    Banner1,
-    Banner2,
-    Banner3,
-    Banner4,
-    Banner5,
-    Banner6,
-  ];
+  const backgroundImages = [Banner1, Banner2, Banner3, Banner4, Banner5, Banner6];
 
   const randomIndex = Math.floor(Math.random() * backgroundImages.length);
   const backgroundImg = backgroundImages[randomIndex];
 
   const handleLogout = () => {
     setUser(null);
-    localStorage.removeItem("user");
+    localStorage.removeItem('user');
     setAuth(null);
-    console.log("로그아웃이 정상적으로 처리되었습니다.");
-    navigate("/login");
+    console.log('로그아웃이 정상적으로 처리되었습니다.');
+    navigate('/login');
   };
 
   const getBoardList = useCallback(async () => {
-    if (!auth || !localStorage.getItem("recoil-persist")) {
-      navigate("/login");
+    if (!auth || !localStorage.getItem('recoil-persist')) {
+      navigate('/login');
       return;
     }
     if (!boardList) {
@@ -167,7 +143,6 @@ const Home = () => {
         },
       })
       .then((response) => {
-        // console.log(response.data.boardList);
         if (response.data.boardList.length) {
           pageNo.current += 1;
         }
@@ -179,9 +154,9 @@ const Home = () => {
       .catch((error) => {
         console.log(error);
         if (error.response.status === 404) {
-          navigate("/*");
+          navigate('/*');
         } else if (error.response.status === 401) {
-          alert("토큰이 만료되어 자동 로그아웃되었습니다.");
+          alert('토큰이 만료되어 자동 로그아웃되었습니다.');
           handleLogout();
         }
       });
@@ -202,9 +177,9 @@ const Home = () => {
       .catch((error) => {
         console.log(error);
         if (error.response.status === 404) {
-          navigate("/*");
+          navigate('/*');
         } else if (error.response.status === 401) {
-          alert("토큰이 만료되어 자동 로그아웃되었습니다.");
+          alert('토큰이 만료되어 자동 로그아웃되었습니다.');
           handleLogout();
         }
       });
@@ -224,8 +199,8 @@ const Home = () => {
 
   if (isLoading) {
     return (
-      <div className="loading">
-        <img src={Loading} alt="loading..."></img>
+      <div className='loading'>
+        <img src={Loading} alt='loading...'></img>
       </div>
     );
   }
@@ -233,17 +208,13 @@ const Home = () => {
   return (
     <HomeWrapper>
       <HomeContainer>
-        <div className="container">
-          <img
-            className="backgroundImg"
-            src={backgroundImg}
-            alt="banner_img"
-          ></img>
-          <div className="typedOutContainer">
-            <div className="typed-out">안녕하세요, {user.nickName}님!</div>
+        <div className='container'>
+          <img className='backgroundImg' src={backgroundImg} alt='banner_img'></img>
+          <div className='typedOutContainer'>
+            <div className='typed-out'>안녕하세요, {user.nickName}님!</div>
           </div>
-          <div className="btnContainer">
-            <button className="walk-btn" onClick={() => navigate("/recommend")}>
+          <div className='btnContainer'>
+            <button className='walk-btn' onClick={() => navigate('/recommend')}>
               산책 친구 찾기
             </button>
           </div>
@@ -251,28 +222,28 @@ const Home = () => {
       </HomeContainer>
       {recommendList.length ? (
         <RecommendBoxWrapper>
-          <div className="recommend-txt-box">
-            <FontAwesomeIcon icon="fa-solid fa-paw" />
-            <span className="recommend-txt">추천 댕댕이 친구들</span>
+          <div className='recommend-txt-box'>
+            <FontAwesomeIcon icon='fa-solid fa-paw' />
+            <span className='recommend-txt'>추천 댕댕이 친구들</span>
           </div>
-          <div className="recommendBox">{RecommendWrapper(recommendList)}</div>
+          <div className='recommendBox'>{RecommendWrapper(recommendList)}</div>
         </RecommendBoxWrapper>
       ) : (
         <RecommendBoxWrapper>
-          <div className="recommend-txt-box">
-            <FontAwesomeIcon icon="fa-solid fa-paw" />
-            <span className="recommend-txt">추천 댕댕이 친구들</span>
+          <div className='recommend-txt-box'>
+            <FontAwesomeIcon icon='fa-solid fa-paw' />
+            <span className='recommend-txt'>추천 댕댕이 친구들</span>
           </div>
-          <p className="noFriends">팔로우할 만한 강아지가 없어요.</p>
+          <p className='noFriends'>추천 강아지 친구들이 존재하지 않습니다.</p>
         </RecommendBoxWrapper>
       )}
       {BoardList(boardList)}
       {tinyLoading ? (
-        <div className="tinyLoading">
-          <img src={Loading} alt="loading..."></img>
+        <div className='tinyLoading'>
+          <img src={Loading} alt='loading...'></img>
         </div>
       ) : (
-        <div ref={ref} className="scrollHandler" />
+        <div ref={ref} className='scrollHandler' />
       )}
     </HomeWrapper>
   );
