@@ -89,17 +89,21 @@ const SingleMeeting = ({ meeting, auth }) => {
     if (dogs) {
       if (dogs.length === 1) {
         result = (
-          <div className="dogProfileImgWrapper">
-            <img
-              className="dogProfileImg"
-              src={"https://i8a807.p.ssafy.io/image/dog/" + dogs[0].dogProfile}
-              alt="dogProfile"
-            />
+          <div className="singleDog">
+            <div className="dogProfileImgWrapper">
+              <img
+                className="dogProfileImg"
+                src={
+                  "https://i8a807.p.ssafy.io/image/dog/" + dogs[0].dogProfile
+                }
+                alt="dogProfile"
+              />
+            </div>
             {meeting.status === "done" &&
             meeting.rated === false &&
             infoModalOpen === false ? (
               <button
-                className="ratingBtn"
+                className="singleDogRatingBtn"
                 onClick={() => setRatingModalOpen(true)}
               >
                 평가
