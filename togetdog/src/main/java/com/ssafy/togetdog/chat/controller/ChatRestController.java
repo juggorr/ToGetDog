@@ -1,5 +1,6 @@
 package com.ssafy.togetdog.chat.controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -60,6 +61,11 @@ public class ChatRestController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		List<ChatInfoDTO> list = cis.callChatList(js.getUserId(token));
+		if(list == null) {
+			resultMap.put("result", SUCCESS);
+			resultMap.put("dm", new ArrayList<Object>());
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+		}
 		Collections.sort(list, new Comparator<ChatInfoDTO>() {
 			@Override
 			public int compare(ChatInfoDTO o1, ChatInfoDTO o2) {

@@ -7,8 +7,11 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.togetdog.board.controller.BoardRestController;
 import com.ssafy.togetdog.chat.model.dto.ChatInUserInfo;
 import com.ssafy.togetdog.chat.model.dto.ChatInfoDTO;
 import com.ssafy.togetdog.chat.model.entity.ChatInfo;
@@ -34,6 +37,8 @@ public class ChatInfoServiceImpl implements ChatInfoService{
 	private final ChatRoomRepository chatRoomRepo;
 	
 	private final UserRepository userRepository;
+	
+	private final Logger logger = LoggerFactory.getLogger(ChatInfoServiceImpl.class);
 
 	@Transactional
 	public void updateChatInfo(long roomId, Set<Long> nowUser) {
@@ -71,11 +76,12 @@ public class ChatInfoServiceImpl implements ChatInfoService{
 		
 		// 삭제된 사용자인 경우 리스트에 띄우지 않음
 		for (int i = 0; i < list.size(); i++) {
-			User user = userRepository.findById(list.get(i).getUserId()).orElse(null);
+			User user = userRepository.findById(list.get(i).getOther().getUserId()).orElse(null);
 			if(user.getNickName().contains("delete")) {
 				list.remove(list.get(i));
 			}
 		}
+		
 		return list.stream()
 				.map(m->ChatInfoDTO.of(m))
 				.collect(Collectors.toList());
