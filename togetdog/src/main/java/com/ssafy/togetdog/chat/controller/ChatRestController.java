@@ -52,14 +52,16 @@ public class ChatRestController {
 	@ApiOperation(value = "채팅 방 목록 조회", notes = "사용자가 참여 중인 채팅 방 목록을 조회합니다.")
 	@GetMapping("/list")
 	public ResponseEntity<?> getChatList(
-			@RequestHeader(value = "Authorization")
-			@ApiParam(required = true) 
-			String token
+//			@RequestHeader(value = "Authorization")
+//			@ApiParam(required = true) 
+//			String token,
+			long userId
 			) {
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
-		List<ChatInfoDTO> list = cis.callChatList(js.getUserId(token));
+//		List<ChatInfoDTO> list = cis.callChatList(js.getUserId(token));
+		List<ChatInfoDTO> list = cis.callChatList(userId);
 		Collections.sort(list, new Comparator<ChatInfoDTO>() {
 			@Override
 			public int compare(ChatInfoDTO o1, ChatInfoDTO o2) {
@@ -77,15 +79,16 @@ public class ChatRestController {
 	@ApiOperation(value = "채팅 방 조회", notes = "사용자가 참여 중인 특정 채팅을 조회합니다.")
 	@GetMapping("/chatting")
 	public ResponseEntity<?> getChat(
-			@RequestHeader(value = "Authorization")
-			@ApiParam(required = true) 
-			String token,
+//			@RequestHeader(value = "Authorization")
+//			@ApiParam(required = true) 
+//			String token,
+			long userId,
 			@RequestBody long otherId
 			) {
 
-		js.validateToken(token);
+//		js.validateToken(token);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		long userId = js.getUserId(token);
+//		long userId = js.getUserId(token);
 		
 		if(userId == otherId) {
 			resultMap.put("result", FAIL);
@@ -129,13 +132,14 @@ public class ChatRestController {
 	@ApiOperation(value = "채팅 방 삭제", notes = "사용자가 참여 중인 특정 채팅방을 삭제합니다.")
 	@PutMapping
 	public ResponseEntity<?> deleteChat(
-			@RequestHeader(value = "Authorization")
-			@ApiParam(required = true) 
-			String token,
+//			@RequestHeader(value = "Authorization")
+//			@ApiParam(required = true) 
+//			String token,
+			long userId,
 			@RequestParam long roomId
 			) {
-		js.validateToken(token);
-		long userId = js.getUserId(token);
+//		js.validateToken(token);
+//		long userId = js.getUserId(token);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		if(cis.chatInfoActi(roomId, userId)) {
 			resultMap.put("result", FAIL);
