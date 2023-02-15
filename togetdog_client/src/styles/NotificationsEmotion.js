@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 
 export const NotificationsWrapper = styled.div`
   font-family: "Noto Sans KR", sans-serif;
+  margin-top: 0.3rem;
 
   .walkRequestWrapper {
     display: flex;
@@ -47,6 +48,16 @@ export const NotificationsWrapper = styled.div`
     border-radius: 70%;
     background-color: #75de92;
     margin: 0rem 1rem;
+  }
+
+  .scrollHandler {
+    height: 100px;
+  }
+
+  .tinyLoading {
+    height: 4rem;
+    display: flex;
+    justify-content: center;
   }
 `;
 
