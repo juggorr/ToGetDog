@@ -11,7 +11,7 @@ import com.ssafy.togetdog.appointment.model.entity.SentAppointment;
 public interface SentAppointmentRepository extends JpaRepository<SentAppointment, Long> {
 
 	List<SentAppointment> findAllByAppointment(Appointment appointment);
-
+	
 	void deleteByAppointment(Optional<Appointment> appointment);
 
 
