@@ -24,7 +24,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 	
 	@Query(value = "select * from request" + 
 			"where (sent_user_id = :senderId or received_user_id = :receiverId)" + 
-			"and (status = :status1 or status = :status2)" + 
+			"and status in (:status1, :status2)" + 
 			"order by is_receiver_rate, date_time desc", nativeQuery = true)
 	List<Appointment> findStatusesList(
 			@Param("senderId") long senderId, @Param("receiverId") long receiverId, 
