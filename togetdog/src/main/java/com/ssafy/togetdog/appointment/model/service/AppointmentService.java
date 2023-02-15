@@ -54,8 +54,7 @@ public class AppointmentService {
 		}
 
 		// 내가 받은 요청이거나, 보낸 요청을 기준으로 조회
-		List<Appointment> requestList = appointmentRepository.findAllBySentUserOrReceivedUserAndStatus(user, user, "confirmed",
-				Sort.by("dateTime").ascending());
+		List<Appointment> requestList = appointmentRepository.findStatusList("confirmed", user.getUserId(), user.getUserId());
 
 		List<AppointmentListDTO> resultList = new ArrayList<AppointmentListDTO>();
 
@@ -113,8 +112,7 @@ public class AppointmentService {
 		}
 
 		// 내가 받은 요청이거나, 보낸 요청을 기준으로 조회
-		List<Appointment> requestList = appointmentRepository.findAllBySentUserOrReceivedUserAndStatus(user, user, "wait",
-				Sort.by("dateTime").ascending());
+		List<Appointment> requestList = appointmentRepository.findStatusList("wait", user.getUserId(), user.getUserId());
 		
 		List<AppointmentListDTO> resultList = new ArrayList<AppointmentListDTO>();
 
@@ -177,7 +175,7 @@ public class AppointmentService {
 		
 		
 		// 내가 받은 요청이거나, 보낸 요청을 기준으로 조회
-		List<Appointment> requestList = appointmentRepository.findAllBySentUserOrReceivedUserAndStatusIn(user, user, statusArr,
+		List<Appointment> requestList = appointmentRepository.findAllByStatusInAndSentUserOrReceivedUser(statusArr, user, user,
 				Sort.by("dateTime").descending());
 		
 		List<AppointmentListDTO> resultList = new ArrayList<AppointmentListDTO>();
