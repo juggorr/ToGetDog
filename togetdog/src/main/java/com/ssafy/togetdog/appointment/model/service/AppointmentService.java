@@ -62,11 +62,10 @@ public class AppointmentService {
 		// deleted user 처리 및 deleted 강아지 처리
 		// 받은 사람이 deleted 유저일 경우는 없으니 보낸사람일 경우만 처리합니다.
 		for (Appointment appointment : requestList) {
-			if (appointment.getSentUser().getNickName().startsWith("deleted")) {
-				appointment.getSentUser().setNickName("탈퇴한 유저");
-			}
-			
 			AppointmentListDTO appointmentDTO = AppointmentListDTO.of(appointment);
+			if (appointment.getSentUser().getNickName().startsWith("deleted")) {
+				appointmentDTO.setUserOneNickname("탈퇴한 유저");
+			}
 			
 			// deleted 강아지 처리
 			List<DogInfoRespDTO> sentDogs = new ArrayList<>();
@@ -119,11 +118,12 @@ public class AppointmentService {
 		// deleted user 처리 및 deleted 강아지 처리
 		// 받은 사람이 deleted 유저일 경우는 없으니 보낸사람일 경우만 처리합니다.
 		for (Appointment appointment : requestList) {
+			AppointmentListDTO appointmentDTO = AppointmentListDTO.of(appointment);
+			
 			if (appointment.getSentUser().getNickName().startsWith("deleted")) {
-				appointment.getSentUser().setNickName("탈퇴한 유저");
+				appointmentDTO.setUserOneNickname("탈퇴한 유저");
 			}
 			
-			AppointmentListDTO appointmentDTO = AppointmentListDTO.of(appointment);
 			
 			// deleted 강아지 처리
 			List<DogInfoRespDTO> sentDogs = new ArrayList<>();
@@ -181,11 +181,10 @@ public class AppointmentService {
 		// deleted user 처리 및 deleted 강아지 처리
 		// 받은 사람이 deleted 유저일 경우는 없으니 보낸사람일 경우만 처리합니다.
 		for (Appointment appointment : requestList) {
-			if (appointment.getSentUser().getNickName().startsWith("deleted")) {
-				appointment.getSentUser().setNickName("탈퇴한 유저");
-			}
-			
 			AppointmentListDTO appointmentDTO = AppointmentListDTO.of(appointment);
+			if (appointment.getSentUser().getNickName().startsWith("deleted")) {
+				appointmentDTO.setUserOneNickname("탈퇴한 유저");
+			}
 			
 			// deleted 강아지 처리
 			List<DogInfoRespDTO> sentDogs = new ArrayList<>();
