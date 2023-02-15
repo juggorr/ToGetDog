@@ -40,6 +40,7 @@ import com.ssafy.togetdog.notify.model.service.NotifyService;
 import com.ssafy.togetdog.user.model.dto.UserIncludesDogsDTO;
 import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
 import com.ssafy.togetdog.user.model.entity.User;
+import com.ssafy.togetdog.user.model.repository.UserRepository;
 import com.ssafy.togetdog.user.model.service.JwtService;
 import com.ssafy.togetdog.user.model.service.UserService;
 
@@ -106,11 +107,19 @@ public class BoardRestController {
 	 */
 	@ApiOperation(value = "피드 조회", notes = "피드 상단은 강아지 정보, 피드 하단은 게시글 리스트")
 	@GetMapping("/feed/{userId}")
-	public ResponseEntity<?> getFeed(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
-			@PathVariable long userId,@RequestParam(value="pageNo") int pageNo){
+	public ResponseEntity<?> getFeed(
+			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token,
+			@PathVariable long userId,
+			@RequestParam(value="pageNo") int pageNo){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
 		
+		User user = userService.findUserByUserId(userId);
+		if(user.getNickName().contains("delete")) {
+			resultMap.put("result", "fail");
+			resultMap.put("msg", "삭제된 사용자입니다.");
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.NOT_FOUND);
+		}
 		UserInfoRespDTO userInfo = userService.getUserInfo(Long.toString(userId));
 		UserIncludesDogsDTO userDTO = new UserIncludesDogsDTO(userInfo);
 		userDTO.setUserId(userId);

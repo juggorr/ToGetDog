@@ -130,6 +130,7 @@ public class BoardService {
 	}
 
 	public Page<BoardHomeDTO> getAllInDogIds(List<Long> dogIds, int page) {
+		logger.debug("======= page : {}", page);
 		Pageable pageable = PageRequest.of(page, 9, Sort.by("boardId").descending());
 		List<Dog> dogList = new ArrayList<Dog>();
 		for (Long id : dogIds) {
