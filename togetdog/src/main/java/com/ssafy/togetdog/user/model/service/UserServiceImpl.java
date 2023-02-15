@@ -1,20 +1,26 @@
 package com.ssafy.togetdog.user.model.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.togetdog.appointment.model.entity.Appointment;
+import com.ssafy.togetdog.appointment.model.repository.AppointmentRepository;
 import com.ssafy.togetdog.board.model.repository.BoardRepository;
 import com.ssafy.togetdog.dog.model.repository.DogRepository;
 import com.ssafy.togetdog.global.exception.DuplicatedInputException;
 import com.ssafy.togetdog.global.exception.InvalidInputException;
 import com.ssafy.togetdog.global.exception.InvalidLoginActingException;
 import com.ssafy.togetdog.global.exception.unAuthWaitUserException;
+import com.ssafy.togetdog.notify.model.repository.NotifyRepository;
 import com.ssafy.togetdog.user.model.dto.EmailAuthParamDTO;
 import com.ssafy.togetdog.user.model.dto.UserInfoRespDTO;
 import com.ssafy.togetdog.user.model.dto.UserLoginParamDTO;
@@ -40,6 +46,8 @@ public class UserServiceImpl implements UserService {
 	private final WaitUserRepository waitUserRepository;
 	private final DogRepository dogRepository;
 	private final BoardRepository boardRepository;
+	private final NotifyRepository notifyRepository;
+	private final AppointmentRepository appointmentRepository;
 
 	/* 회원 가입을 위한 이메일 전송 */
 	@Override
@@ -157,6 +165,11 @@ public class UserServiceImpl implements UserService {
 			boardRepository.deleteAllByUser(user);
 			// 사용자가 가지고 있는 강아지 삭제
 			dogRepository.deleteAllByUser(user);
+			// 사용자가 받았던 알람 리스트 삭제
+			notifyRepository.deleteAllByReceiver(user);
+			// 사용자에게 예정된 약속이 있을 때 취소 시키기
+			updateAppointmentByUser(user);
+			
 			user.setEmail("deletedUser" + userId);
 			user.setNickName("deletedUser" + userId);
 			user.setPassword("deletedUser" + userId);
@@ -168,6 +181,19 @@ public class UserServiceImpl implements UserService {
 			userRepository.save(user);
 		} else {
 			throw new InvalidInputException("회원 정보를 찾을 수 없습니다.");
+		}
+	}
+	
+	public void updateAppointmentByUser(User user) {
+		List<String> statusArr = new ArrayList<String>();
+		statusArr.add("confirmed");
+		statusArr.add("wait");
+		
+		List<Appointment> requestList = appointmentRepository.findAllBySentUserOrReceivedUserAndStatusIn(user, user, statusArr,
+				Sort.by("dateTime").descending());
+		for (Appointment appointment : requestList) {
+			appointment.setStatus("cancelled");
+			appointmentRepository.save(appointment);
 		}
 	}
 	
