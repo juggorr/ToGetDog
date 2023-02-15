@@ -8,11 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
+import com.ssafy.togetdog.dog.model.repository.DogRepository;
 import com.ssafy.togetdog.follow.model.dto.FollowDTO;
 import com.ssafy.togetdog.follow.model.dto.FollowerInfoRespDTO;
 import com.ssafy.togetdog.follow.model.entity.Follow;
 import com.ssafy.togetdog.follow.model.repository.FollowRepository;
 import com.ssafy.togetdog.user.model.entity.User;
+import com.ssafy.togetdog.user.model.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +24,8 @@ import lombok.RequiredArgsConstructor;
 public class FollowService {
 
 	private final FollowRepository followRepository;
+	private final UserRepository userRepository ;
+	private final DogRepository dogRepository;
 
 	public List<DogInfoRespDTO> getFollowingList(long userId) {
 		User user = new User();
@@ -76,15 +80,26 @@ public class FollowService {
 	}
 
 	public int getFollowers(long dogId) {
-		Dog dog = new Dog();
-		dog.setDogId(dogId);
-		return followRepository.countByDog(dog);
+		Dog dog = dogRepository.findByDogId(dogId);
+		List<Follow> list = followRepository.findAllByDog(dog);
+		for (int i = 0; i < list.size(); i++) {
+			if(list.get(i).getUser().getUsername().contains("delete")) {
+				list.remove(list.get(i));
+			}
+		}
+		return list.size();
 	}
 
 	public int getFollowings(long userId) {
-		User user = new User();
-		user.setUserId(userId);
-		return followRepository.countByUser(user);
+		User user = userRepository.findById(userId).orElse(null);
+		if(user == null) return 0;
+		List<Follow> list = followRepository.findAllByUser(user);
+		for (int i = 0; i < list.size(); i++) {
+			if(list.get(i).getDog().getDogName().contains("delete")) {
+				list.remove(list.get(i));
+			}
+		}
+		return list.size();
 	}
 
 	public boolean isFollowing(long userId, long dogId) {
