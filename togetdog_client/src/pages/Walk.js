@@ -473,8 +473,19 @@ const Walk = () => {
   const setAuth = useSetRecoilState(authAtom);
 
   useEffect(() => {
+    let url = `${BACKEND_URL}/meeting`;
+    if (active === 1) {
+      url += "/confirmed";
+    } else if (active === 2) {
+      url += "/wait";
+    } else if (active === 3) {
+      url += "/done";
+    } else {
+      return;
+    }
+
     axios
-      .get(`${BACKEND_URL}/meeting`, {
+      .get(url, {
         headers: {
           Authorization: auth,
         },
@@ -482,7 +493,8 @@ const Walk = () => {
       .then(function (response) {
         // 데이터 들어오는 형태 확인 필요함
         // userOne이 보낸 사람, userTwo가 받은 사람
-        // console.log(response.data);
+        // console.log(url);
+        // console.log(response.data.appointment);
         const appointments = [];
 
         if (response.data.appointment) {
@@ -536,15 +548,8 @@ const Walk = () => {
           auth={auth}
         ></SingleMeeting>
       );
-      if (originalMeetings[i].status === "confirmed" && active === 1) {
-        meetings.push(singleMeet);
-      } else if (originalMeetings[i].status === "wait" && active === 2) {
-        meetings.push(singleMeet);
-      } else if (originalMeetings[i].status === "cancelled" && active === 3) {
-        meetings.push(singleMeet);
-      } else if (originalMeetings[i].status === "done" && active === 3) {
-        meetings.push(singleMeet);
-      }
+
+      meetings.push(singleMeet);
     }
     return meetings;
   };
