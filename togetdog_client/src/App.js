@@ -22,6 +22,7 @@ import Signup from "./pages/Signup";
 import Oauth from "./pages/Oauth";
 import OauthError from "./pages/OauthError";
 import SocialSignup from "./pages/SocialSignup";
+import SocialSignupSuccess from "./pages/SocialSignupSuccess";
 
 import NotFound from "./pages/NotFound";
 import InternalServer from "./pages/InternalServer";
@@ -83,6 +84,7 @@ function App() {
           <Route path="/*" element={<NotFound />} />
           <Route path="/oauth" element={<Oauth />} />
           <Route path="/oautherror" element={<OauthError />} />
+          <Route path="/socialsuccess" element={<SocialSignupSuccess />} />
           <Route path="/createAppointment" element={<CreateAppointment />} />
           <Route path="/search" element={<Search />} />
           {/* <Route path="/socialtemp" element={<SocialTemp />} />
