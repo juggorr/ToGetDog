@@ -64,9 +64,11 @@ public class ChatInfo {
 		this.lastChat = cm;
 	}
 	
-	public void updateAct(long act) {
+	public void updateAct(long act , ChatMsg cm) {
 		this.activation = act;
 		this.start = this.last;
+		if(cm != null)
+			this.lastChat = cm;
 	}
 	
 

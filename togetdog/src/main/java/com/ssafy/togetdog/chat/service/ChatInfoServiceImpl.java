@@ -40,7 +40,7 @@ public class ChatInfoServiceImpl implements ChatInfoService{
 			return;
 		for(ChatInfo user : list) {
 			if(user.getActivation() == 2L) {
-				user.updateAct(1);
+				user.updateAct(1 , null);
 			}
 			user.updateLast(cm);
 			if(nowUser.contains(user.getUserId())) {
@@ -114,7 +114,8 @@ public class ChatInfoServiceImpl implements ChatInfoService{
 		ChatInfo info = chatInfoRepo.findByRoomIdAndUserId(roomId, userId).orElse(null);
 		if(info == null)
 			return true;
-		info.setActivation(2);
+		ChatMsg cm = chatMsgRepo.findByIdxAndRoomId(1 , roomId);
+		info.updateAct(2 , cm);
 		chatInfoRepo.save(info);
 		return false;
 	}
