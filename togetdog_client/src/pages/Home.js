@@ -169,14 +169,14 @@ const Home = () => {
         },
       })
       .then((response) => {
-        // console.log(response.data);
-        setBoardList([...boardList, ...response.data.boardList]);
-        setLoading(false);
-        setTinyLoading(false);
-        setHasNextPage(response.data.boardList.length === 9);
+        // console.log(response.data.boardList);
         if (response.data.boardList.length) {
           pageNo.current += 1;
         }
+        setBoardList((boardList) => [...boardList, ...response.data.boardList]);
+        setLoading(false);
+        setTinyLoading(false);
+        setHasNextPage(response.data.boardList.length === 9);
       })
       .catch((error) => {
         console.log(error);
@@ -221,7 +221,7 @@ const Home = () => {
     if (inView && hasNextPage) {
       getBoardList();
     }
-  }, [getBoardList, hasNextPage, inView]);
+  }, [inView]);
 
   if (isLoading) {
     return (

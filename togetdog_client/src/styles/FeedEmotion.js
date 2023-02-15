@@ -62,7 +62,14 @@ export const FeedProfileTop = styled.div`
     padding-left: 1rem;
   }
 
-  .dog-info {
+  .dog-name {
+    font-size: 0.9rem;
+    display: flex;
+    padding-bottom: 0.1rem;
+  }
+
+  .dog-breed,
+  .dog-age {
     font-size: 0.85rem;
     color: #777;
     display: flex;
@@ -104,8 +111,8 @@ export const FeedProfileTop = styled.div`
   .sub-dogs {
     display: flex;
     position: absolute;
-    top: 3.7rem;
-    left: 4.5rem;
+    top: 4.3rem;
+    left: 4.3rem;
   }
 
   .no-dogs-txt {
@@ -139,7 +146,7 @@ export const FeedProfileTop = styled.div`
   }
 
   .dm-btn {
-    background-color: #699bf7;
+    background-color: #717171;
     margin-right: 0.3rem;
   }
 `;
@@ -147,7 +154,7 @@ export const FeedProfileTop = styled.div`
 export const FeedProfileBottom = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 1.5rem;
+  padding-top: 0.5rem;
 
   .special-text {
     font-size: 0.8rem;
@@ -155,6 +162,30 @@ export const FeedProfileBottom = styled.div`
 
   .characters-box {
     padding: 0.5rem 0;
+  }
+
+  .dog-user-mine {
+    color: #777;
+    font-size: 0.8rem;
+    padding-left: 0.3rem;
+    padding-right: 1rem;
+    padding-top: 0.1rem;
+    cursor: pointer;
+    text-align: end;
+  }
+
+  .dog-user-not-mine {
+    color: #777;
+    font-size: 0.8rem;
+    padding-left: 0.3rem;
+    padding-top: 0.1rem;
+    cursor: pointer;
+    text-align: end;
+  }
+
+  .dog-user-nickname {
+    margin-left: 0.3rem;
+    border-bottom: 1px solid #777;
   }
 `;
 

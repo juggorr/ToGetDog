@@ -10,7 +10,7 @@ import OrangeCharacterBtn from '../components/OrangeCharacterBtn';
 import YellowCharacterBtn from '../components/YellowCharacterBtn';
 import { BACKEND_URL } from '../config';
 import { authAtom, userState } from '../recoil';
-import { PlusBtn } from '../styles/BtnsEmotion';
+import { MainColorShortBtn, PlusBtn } from '../styles/BtnsEmotion';
 import {
   FeedContainer,
   FeedPhoto,
@@ -38,31 +38,26 @@ const Feed = () => {
   const menuLists = [
     {
       menu_id: 1,
-      text: '내 정보 보기',
-      link: '/profile',
-    },
-    {
-      menu_id: 2,
       text: '프로필 수정',
       link: '/useredit',
     },
     {
-      menu_id: 3,
+      menu_id: 2,
       text: '강아지 프로필 수정',
       link: '/dogedit',
     },
     {
-      menu_id: 4,
+      menu_id: 3,
       text: '강아지 프로필 삭제',
       link: '/dogdelete',
     },
     {
-      menu_id: 5,
+      menu_id: 4,
       text: '계정 비밀번호 변경',
       link: '/passwordedit',
     },
     {
-      menu_id: 6,
+      menu_id: 5,
       text: '로그아웃',
       link: '/logout',
     },
@@ -217,6 +212,7 @@ const Feed = () => {
           userInfoModal={userInfoModal}
           setUserInfoModal={setUserInfoModal}
           setMenuBtnClick={setMenuBtnClick}
+          feedUserData={feedUserData}
         />
         <MenuModal
           menuLists={menuLists}
@@ -242,7 +238,7 @@ const Feed = () => {
               </div>
             ) : currentDog ? (
               <div className='dog-info-box'>
-                <div>
+                <div className='dog-name'>
                   {currentDog.dogName}
                   {currentDog.dogGender === 'male' ? (
                     <img src={Boy} className='dog-gender' />
@@ -250,15 +246,18 @@ const Feed = () => {
                     <img src={Girl} className='dog-gender' />
                   )}
                 </div>
-                <div className='dog-info'>
-                  {`${currentDog.dogType} / ${
-                    currentDog.dogAge >= 12 ? `${Math.floor(currentDog.dogAge / 12)}살` : `${currentDog.dogAge}개월`
-                  }`}
-                </div>
+                <div className='dog-breed'>{`${currentDog.dogType}`}</div>
+                <div className='dog-age'>{`${
+                  currentDog.dogAge >= 12 ? `${Math.floor(currentDog.dogAge / 12)}살` : `${currentDog.dogAge}개월`
+                }`}</div>
               </div>
             ) : (
               <div className='dog-info-box'>
-                <div>{'등록된 강아지가 없습니다.'}</div>
+                {feedUserData.userId === user.userId ? (
+                  <MainColorShortBtn onClick={() => navigate('/dogregister')}>강아지 등록</MainColorShortBtn>
+                ) : (
+                  <div>{'등록된 강아지가 없습니다.'}</div>
+                )}
               </div>
             )}
 
@@ -309,7 +308,7 @@ const Feed = () => {
               <div className='other-user-btns'>
                 <FollowBtn dogId={currentDog.dogId} followStatus={followStatus} setFollowStatus={setFollowStatus} />
                 <div className='feed-btn-box'>
-                  <div className='dm-btn' onClick={() => navigate('/')}>
+                  <div className='dm-btn' onClick={() => navigate(`/chat/${feedUserData.userId}`)}>
                     <FontAwesomeIcon icon='fa-solid fa-message' />
                   </div>
                   <div
@@ -331,6 +330,13 @@ const Feed = () => {
           {/* 특이사항, 성격 들어가는 부분 */}
           {currentDog ? (
             <FeedProfileBottom>
+              <div
+                className={`${feedUserData.userId === user.userId ? 'dog-user-mine' : 'dog-user-not-mine'}`}
+                onClick={() => setUserInfoModal(!userInfoModal)}
+              >
+                <FontAwesomeIcon icon='fa-solid fa-user' />
+                <span className='dog-user-nickname'>{feedUserData.nickname}</span>
+              </div>
               <div className='special-text'>{currentDog.description}</div>
               <div className='characters-box'>
                 <OrangeCharacterBtn text={`#${currentDog.dogNeutered ? '중성화' : '중성화 X'}`} />
@@ -339,7 +345,15 @@ const Feed = () => {
               </div>
             </FeedProfileBottom>
           ) : (
-            <div className='margin-bottom'></div>
+            <FeedProfileBottom>
+              <div
+                className={`${feedUserData.userId === user.userId ? 'dog-user-mine' : 'dog-user-not-mine'}`}
+                onClick={() => setUserInfoModal(!userInfoModal)}
+              >
+                <FontAwesomeIcon icon='fa-solid fa-user' />
+                <span className='dog-user-nickname'>{feedUserData.nickname}</span>
+              </div>
+            </FeedProfileBottom>
           )}
         </FeedProfileWrapper>
         {!feedPhotoData ? (

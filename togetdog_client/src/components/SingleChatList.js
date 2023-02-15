@@ -19,18 +19,18 @@ const SingleChatList = ({ chatData }) => {
 
   return (
     <>
-      <SingleChatListWrapper
-        onClick={() => {
-          console.log(chatData.userId);
-          navigate(`/chat/${chatData.userId}`);
-        }}
-      >
+      <SingleChatListWrapper>
         <div className='chat-profile-box'>
-          <UserIcon text={chatData.nickName} idx={1} />
+          <UserIcon text={chatData.nickName} idx={chatData.userId} />
           {/* 채팅 안읽은 상태 시에만 ChatRedDot 띄우기 */}
           {chatData.newChat > 0 ? <ChatRedDot /> : null}
         </div>
-        <div className='chat-content-box'>
+        <div
+          className='chat-content-box'
+          onClick={() => {
+            navigate(`/chat/${chatData.userId}`);
+          }}
+        >
           <div className='nickname'>{chatData.nickName}</div>
           <div className='user-info'>
             {userAge(chatData.userBirth)}대 / {chatData.gender === 'm' ? '남' : '여'} /{' '}
