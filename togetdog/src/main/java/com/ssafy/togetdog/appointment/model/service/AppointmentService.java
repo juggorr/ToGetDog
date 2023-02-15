@@ -51,90 +51,38 @@ public class AppointmentService {
 		List<Appointment> reqlist = appointmentRepository.findAllBySentUserOrReceivedUser(user, user,
 				Sort.by("dateTime").ascending());
 
-		List<AppointmentListDTO> requestListTime = reqlist.stream().map(a -> AppointmentListDTO.of(a))
+		List<AppointmentListDTO> requestList = reqlist.stream().map(a -> AppointmentListDTO.of(a))
 				.collect(Collectors.toList());
-		logger.info("requestList============== : {}", requestListTime);
-		LocalDateTime now = LocalDateTime.now();
-		List<AppointmentListDTO> requestList = new ArrayList<AppointmentListDTO>();
-//		logger.info("현재 시간 ============== : {}", now);
-
-		for (int i = 0; i < requestListTime.size(); i++) {
-			logger.info("requestList of i============== : {}", requestListTime.get(i).getDateTime().compareTo(now));
-			if (requestListTime.get(i).getStatus().equals("wait")
-					&& requestListTime.get(i).getDateTime().compareTo(now) < 0) {
-				deleteAppointment(requestListTime.get(i).getRoomId());
-			}
-			requestList.add(requestListTime.get(i));
-		}
 
 		// 약속 리스트
 		for (int i = 0; i < requestList.size(); i++) {
 			List<DogInfoRespDTO> sentDogs = new ArrayList<>();
 			List<DogInfoRespDTO> recvDogs = new ArrayList<>();
 
-			logger.info("requestList of i============== : {}", requestList.get(i));
+//			logger.info("requestList of i============== : {}", requestList.get(i));
 			List<SentAppointment> sentApps = sentAppointmentRepository.findAllByAppointment(reqlist.get(i));
 			for (SentAppointment sent : sentApps) {
 				if (sent.getDog().getDogName().equals("deleted"))
 					continue;
-				logger.info("============== : {}", DogInfoRespDTO.of(sent.getDog()));
+//				logger.info("============== : {}", DogInfoRespDTO.of(sent.getDog()));
 				sentDogs.add(DogInfoRespDTO.of(sent.getDog(), Double.parseDouble(sent.getDog().getDogWeight())));
 			}
-			logger.info("!============== : {}", sentDogs);
+//			logger.info("!============== : {}", sentDogs);
 			requestList.get(i).setUserOneDogs(sentDogs);
 
 			List<ReceivedAppointment> recvApps = receivedAppointmentRepository.findAllByAppointment(reqlist.get(i));
 			for (ReceivedAppointment recv : recvApps) {
 				if (recv.getDog().getDogName().equals("deleted"))
 					continue;
-				logger.info("============== : {}", DogInfoRespDTO.of(recv.getDog()));
+//				logger.info("============== : {}", DogInfoRespDTO.of(recv.getDog()));
 				recvDogs.add(DogInfoRespDTO.of(recv.getDog(), Double.parseDouble(recv.getDog().getDogWeight())));
 			}
-			logger.info("!============== : {}", recvDogs);
+//			logger.info("!============== : {}", recvDogs);
 			requestList.get(i).setUserTwoDogs(recvDogs);
 		}
-		logger.info("return appointment sentList : {}", requestList.size());
+//		logger.info("return appointment sentList : {}", requestList.size());
 		logger.info("return appointment sentList : {}", requestList);
 
-		/*
-		 * //recv, sent 분리된 리스트 User user = new User(); user.setUserId(userId);
-		 * List<Appointment> sentlist = appointmentRepository.findAllBySentUser(user);
-		 * List<Appointment> recvlist =
-		 * appointmentRepository.findAllByReceivedUser(user);
-		 * 
-		 * 
-		 * List<AppointmentListDTO> sentList = sentlist.stream()
-		 * .map(a->AppointmentListDTO.of(a)).collect(Collectors.toList());
-		 * List<AppointmentListDTO> recvList = recvlist.stream()
-		 * .map(a->AppointmentListDTO.of(a)).collect(Collectors.toList());
-		 * logger.info("============== : {}", sentList);
-		 * logger.info("-------------- : {}", recvList);
-		 * 
-		 * // 내가 보낸 약속 for (int i = 0; i < sentList.size(); i++) { List<SentAppointment>
-		 * sentApps = sentAppointmentRepository.findAllByAppointment(sentlist.get(i));
-		 * List<DogInfoRespDTO> sentDogs = new ArrayList<>(); for (SentAppointment sent
-		 * : sentApps) { sentDogs.add(DogInfoRespDTO.of(sent.getDog())); }
-		 * sentList.get(i).setSentDogs(sentDogs); List<SentAppointment> recvApps =
-		 * sentAppointmentRepository.findAllByAppointment(sentlist.get(i));
-		 * List<DogInfoRespDTO> recvDogs = new ArrayList<>(); for (SentAppointment recv
-		 * : recvApps) { recvDogs.add(DogInfoRespDTO.of(recv.getDog())); }
-		 * sentList.get(i).setReceivedDogs(recvDogs); }
-		 * logger.info("return appointment sentList : {}", sentList.size());
-		 * logger.info("return appointment sentList : {}", sentList);
-		 * 
-		 * // 내가 받은 약속 for (int i = 0; i < recvlist.size(); i++) {
-		 * List<ReceivedAppointment> sentApps =
-		 * receivedAppointmentRepository.findAllByAppointment(recvlist.get(i));
-		 * List<DogInfoRespDTO> sentDogs = new ArrayList<>(); for (ReceivedAppointment
-		 * sent : sentApps) { sentDogs.add(DogInfoRespDTO.of(sent.getDog())); }
-		 * recvList.get(i).setSentDogs(sentDogs); List<ReceivedAppointment> recvApps =
-		 * receivedAppointmentRepository.findAllByAppointment(recvlist.get(i));
-		 * List<DogInfoRespDTO> recvDogs = new ArrayList<>(); for (ReceivedAppointment
-		 * recv : recvApps) { recvDogs.add(DogInfoRespDTO.of(recv.getDog())); }
-		 * recvList.get(i).setReceivedDogs(recvDogs); }
-		 * logger.info("return appointment recvList : {}", recvList.size());
-		 * logger.info("return appointment recvList : {}", recvList);
-		 */
 		return requestList;
 	}
 
