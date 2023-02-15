@@ -1,14 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-// import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import axios from 'axios';
 
-import { authAtom, userState } from '../../recoil';
-
-import WalkIcon from '../../assets/walking_with_dog.png';
 import UserIcon from '../UserIcon';
-import { BACKEND_URL } from '../../config';
-import { ConfirmModalWrapper, ConfirmModalBody, ConfirmModalImage } from '../../styles/ModalEmotion';
+import { ConfirmModalWrapper, ConfirmModalBody } from '../../styles/ModalEmotion';
 import YellowCharacterBtn from '../YellowCharacterBtn';
 import { MainColorShortBtn } from '../../styles/BtnsEmotion';
 import emotion1 from '../../assets/emotion1.png';
@@ -18,8 +11,6 @@ import emotion4 from '../../assets/emotion4.png';
 import emotion5 from '../../assets/emotion5.png';
 
 function UserInfoModal({ userInfoModal, setUserInfoModal, feedUserData }) {
-  const user = useRecoilValue(userState);
-  const auth = useRecoilValue(authAtom);
   const outSection = useRef();
 
   const [age, setAge] = useState(0);

@@ -73,7 +73,7 @@ const ChatMsg = () => {
   const userAge = (birthyear) => {
     const currentYear = new Date().getFullYear();
 
-    return Math.floor((currentYear - birthyear + 1) / 10) * 10;
+    return Math.floor((currentYear - birthyear) / 10) * 10;
   };
 
   const userDongName = (userAddress) => {
