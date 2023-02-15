@@ -38,9 +38,12 @@ public class AppointmentListDTO {
 	public static AppointmentListDTO of(Appointment appointment) {
 		double oneRating = 0;
 		double twoRating = 0;
+		
+		// 아직 평가받은 적이 없으면 그냥 return
 		if(appointment.getSentUser().getRatingSum() <= 0) {
 			oneRating = appointment.getSentUser().getRatingSum();
 		} else {
+			// 평가받은 적이 있으면 점수로 return
 			oneRating = Math.ceil((double) appointment.getSentUser().getRatingSum() / (double) appointment.getSentUser().getRatingCount());
 		}
 		if(appointment.getReceivedUser().getRatingSum() <= 0) {

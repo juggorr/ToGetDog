@@ -48,25 +48,71 @@ public class AppointmentRestController {
 	private final NotifyService notifyService;
 		
 	/***
-	 * get appointment list
-	 * @param dogId, pageNo
+	 * get confirmed appointment list
+	 * @param token
 	 * @return status 200, 401, 500
 	 */
-	@ApiOperation(value = "산책 리스트 조회", notes = "산책 예정된 약속/대기중 요청/종료된 약속 리스트, status가 confirmed/wait/cancelled, done")
-	@GetMapping
-	public ResponseEntity<?> getAppointments(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token){
+	@ApiOperation(value = "예정된 산책 리스트 조회", notes = "산책 예정된 약속 리스트, status가 confirmed인 약속 리스트를 반환합니다.")
+	@GetMapping("/confirmed")
+	public ResponseEntity<?> getConfirmedAppointments(
+			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token
+			) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		jwtService.validateToken(token);
 		long userId = jwtService.getUserId(token);
-//		long userId = 38L;
-		List<AppointmentListDTO> appointemntInfo = appointmentService.findAllByUserId(userId);
+		List<AppointmentListDTO> appointemntInfo = appointmentService.findConfirmedAppointments(userId);
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("appointment", appointemntInfo);
 		resultMap.put("msg", "산책 리스트가 반환되었습니다.");
 		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 	}
+	
+	/***
+	 * get wait appointment list
+	 * @param token
+	 * @return status 200, 401, 500
+	 */
+	@ApiOperation(value = "대기 중인 산책 리스트 조회", notes = "대기중인 약속 리스트, status가 wait인 약속 리스트를 반환합니다.")
+	@GetMapping("/wait")
+	public ResponseEntity<?> getWaitAppointments(
+			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token
+			) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		jwtService.validateToken(token);
+		long userId = jwtService.getUserId(token);
+		List<AppointmentListDTO> appointemntInfo = appointmentService.findWaitAppointments(userId);
+		
+		resultMap.put("result", SUCCESS);
+		resultMap.put("appointment", appointemntInfo);
+		resultMap.put("msg", "산책 리스트가 반환되었습니다.");
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+	}
+	
+	/***
+	 * get cancelled or done appointment list
+	 * @param token
+	 * @return status 200, 401, 500
+	 */
+	@ApiOperation(value = "종료된 산책 리스트 조회", notes = "종료된 약속 리스트, status가 cancelled/done인 약속 리스트를 반환합니다.")
+	@GetMapping("/done")
+	public ResponseEntity<?> getDoneAppointments(
+			@RequestHeader(value = "Authorization") @ApiParam(required = true) String token
+			) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		jwtService.validateToken(token);
+		long userId = jwtService.getUserId(token);
+		List<AppointmentListDTO> appointemntInfo = appointmentService.findDoneAppointments(userId);
+		
+		resultMap.put("result", SUCCESS);
+		resultMap.put("appointment", appointemntInfo);
+		resultMap.put("msg", "산책 리스트가 반환되었습니다.");
+		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+	}
+	
 	
 	/***
 	 * request appointment

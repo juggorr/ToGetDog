@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.hibernate.query.criteria.internal.expression.ConcatExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
@@ -26,6 +25,7 @@ import com.ssafy.togetdog.dog.model.dto.DogRecommendListDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 import com.ssafy.togetdog.dog.model.repository.DogRepository;
 import com.ssafy.togetdog.follow.model.service.FollowService;
+import com.ssafy.togetdog.global.exception.InvalidInputException;
 import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.repository.UserRepository;
 
@@ -44,14 +44,21 @@ public class AppointmentService {
 	private final DogRepository dogRepository;
 	private final FollowService followService;
 
-	public List<AppointmentListDTO> findAllByUserId(long userId) {
-		User user = new User();
-		user.setUserId(userId);
+	/* 산책 리스트 조회 */
+	
+	/* status가 confirmed인 list */
+	public List<AppointmentListDTO> findConfirmedAppointments(long userId) {
+		User user = userRepository.findById(userId).orElse(null);
+		if (user == null) {
+			throw new InvalidInputException("사용자 정보를 찾을 수 없습니다..");
+		}
 
-		List<Appointment> reqlist = appointmentRepository.findAllBySentUserOrReceivedUser(user, user,
+		// 내가 받은 요청이거나, 보낸 요청을 기준으로 조회
+		List<Appointment> requestList = appointmentRepository.findAllBySentUserOrReceivedUserAndStatus(user, user, "confirmed",
 				Sort.by("dateTime").ascending());
 
-		List<AppointmentListDTO> requestList = reqlist.stream().map(a -> AppointmentListDTO.of(a))
+		// Entity to DTO
+		List<AppointmentListDTO> resultList = requestList.stream().map(a -> AppointmentListDTO.of(a))
 				.collect(Collectors.toList());
 
 		// 약속 리스트
@@ -59,32 +66,108 @@ public class AppointmentService {
 			List<DogInfoRespDTO> sentDogs = new ArrayList<>();
 			List<DogInfoRespDTO> recvDogs = new ArrayList<>();
 
-//			logger.info("requestList of i============== : {}", requestList.get(i));
-			List<SentAppointment> sentApps = sentAppointmentRepository.findAllByAppointment(reqlist.get(i));
+			List<SentAppointment> sentApps = sentAppointmentRepository.findAllByAppointment(requestList.get(i));
 			for (SentAppointment sent : sentApps) {
-				if (sent.getDog().getDogName().equals("deleted"))
-					continue;
-//				logger.info("============== : {}", DogInfoRespDTO.of(sent.getDog()));
+				if (sent.getDog().getDogName().equals("deleted")) continue;
 				sentDogs.add(DogInfoRespDTO.of(sent.getDog(), Double.parseDouble(sent.getDog().getDogWeight())));
 			}
-//			logger.info("!============== : {}", sentDogs);
-			requestList.get(i).setUserOneDogs(sentDogs);
+			
+			resultList.get(i).setUserOneDogs(sentDogs);
 
-			List<ReceivedAppointment> recvApps = receivedAppointmentRepository.findAllByAppointment(reqlist.get(i));
+			List<ReceivedAppointment> recvApps = receivedAppointmentRepository.findAllByAppointment(requestList.get(i));
 			for (ReceivedAppointment recv : recvApps) {
-				if (recv.getDog().getDogName().equals("deleted"))
-					continue;
-//				logger.info("============== : {}", DogInfoRespDTO.of(recv.getDog()));
+				if (recv.getDog().getDogName().equals("deleted")) continue;
 				recvDogs.add(DogInfoRespDTO.of(recv.getDog(), Double.parseDouble(recv.getDog().getDogWeight())));
 			}
-//			logger.info("!============== : {}", recvDogs);
-			requestList.get(i).setUserTwoDogs(recvDogs);
+			resultList.get(i).setUserTwoDogs(recvDogs);
 		}
-//		logger.info("return appointment sentList : {}", requestList.size());
-		logger.info("return appointment sentList : {}", requestList);
-
-		return requestList;
+		return resultList;
 	}
+	
+	/* status가 wait인 list */
+	public List<AppointmentListDTO> findWaitAppointments(long userId) {
+		User user = userRepository.findById(userId).orElse(null);
+		if (user == null) {
+			throw new InvalidInputException("사용자 정보를 찾을 수 없습니다..");
+		}
+
+		// 내가 받은 요청이거나, 보낸 요청을 기준으로 조회
+		List<Appointment> requestList = appointmentRepository.findAllBySentUserOrReceivedUserAndStatus(user, user, "wait",
+				Sort.by("dateTime").ascending());
+
+		// Entity to DTO
+		List<AppointmentListDTO> resultList = requestList.stream().map(a -> AppointmentListDTO.of(a))
+				.collect(Collectors.toList());
+
+		// 약속 리스트
+		for (int i = 0; i < requestList.size(); i++) {
+			List<DogInfoRespDTO> sentDogs = new ArrayList<>();
+			List<DogInfoRespDTO> recvDogs = new ArrayList<>();
+
+			List<SentAppointment> sentApps = sentAppointmentRepository.findAllByAppointment(requestList.get(i));
+			for (SentAppointment sent : sentApps) {
+				if (sent.getDog().getDogName().equals("deleted")) continue;
+				sentDogs.add(DogInfoRespDTO.of(sent.getDog(), Double.parseDouble(sent.getDog().getDogWeight())));
+			}
+			
+			resultList.get(i).setUserOneDogs(sentDogs);
+
+			List<ReceivedAppointment> recvApps = receivedAppointmentRepository.findAllByAppointment(requestList.get(i));
+			for (ReceivedAppointment recv : recvApps) {
+				if (recv.getDog().getDogName().equals("deleted")) continue;
+				recvDogs.add(DogInfoRespDTO.of(recv.getDog(), Double.parseDouble(recv.getDog().getDogWeight())));
+			}
+			resultList.get(i).setUserTwoDogs(recvDogs);
+		}
+		return resultList;
+	}
+	
+	/* status가 cancelled, done인 list -> deleted User는 탈퇴한 유저로 닉네임을 변경해주어야 합니다. */
+	public List<AppointmentListDTO> findDoneAppointments(long userId) {
+		User user = userRepository.findById(userId).orElse(null);
+		if (user == null) {
+			throw new InvalidInputException("사용자 정보를 찾을 수 없습니다..");
+		}
+		
+		List<String> statusArr = new ArrayList<String>();
+		statusArr.add("done");
+		statusArr.add("cancelled");
+		
+		
+		// 내가 받은 요청이거나, 보낸 요청을 기준으로 조회
+		List<Appointment> requestList = appointmentRepository.findAllBySentUserOrReceivedUserAndStatusIn(user, user, statusArr,
+				Sort.by("dateTime").descending());
+
+		// Entity to DTO
+		List<AppointmentListDTO> resultList = requestList.stream().map(a -> AppointmentListDTO.of(a))
+				.collect(Collectors.toList());
+
+		// 약속 리스트
+		for (int i = 0; i < requestList.size(); i++) {
+			List<DogInfoRespDTO> sentDogs = new ArrayList<>();
+			List<DogInfoRespDTO> recvDogs = new ArrayList<>();
+
+			List<SentAppointment> sentApps = sentAppointmentRepository.findAllByAppointment(requestList.get(i));
+			for (SentAppointment sent : sentApps) {
+				if (sent.getDog().getDogName().equals("deleted")) continue;
+				sentDogs.add(DogInfoRespDTO.of(sent.getDog(), Double.parseDouble(sent.getDog().getDogWeight())));
+			}
+			
+			resultList.get(i).setUserOneDogs(sentDogs);
+
+			List<ReceivedAppointment> recvApps = receivedAppointmentRepository.findAllByAppointment(requestList.get(i));
+			for (ReceivedAppointment recv : recvApps) {
+				if (recv.getDog().getDogName().equals("deleted")) continue;
+				recvDogs.add(DogInfoRespDTO.of(recv.getDog(), Double.parseDouble(recv.getDog().getDogWeight())));
+			}
+			resultList.get(i).setUserTwoDogs(recvDogs);
+		}
+		return resultList;
+	}
+
+	
+	/* 산책 리스트 전체 조회 : status가 confirmed/wait/cancelled, done */
+	
 
 	public void addAppointment(long myId, long userId, List<Dog> myDogs, List<Dog> partnerDogs, LocalDateTime date,
 			String place) {
