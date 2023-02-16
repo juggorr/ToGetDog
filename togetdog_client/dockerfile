@@ -7,8 +7,8 @@ COPY package.json /usr/src/app/package.json
 RUN npm install --silent
 
 COPY . /usr/src/app
-CMD ['ls', '-al']
-COPY /home/ubuntu/config/.env /usr/src/app/.env
+#CMD ['ls', '-al']
+#COPY /home/ubuntu/config/.env /usr/src/app/.env
 RUN npm run build
 
 FROM nginx:latest
