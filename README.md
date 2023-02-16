@@ -1,6 +1,6 @@
 # 🐶 TOGETDOG : 강아지 산책 SNS
 
-![togetdog.png](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/78d04b67-6415-47a6-8273-44d12ed46c17/togetdog.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230213%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230213T062927Z&X-Amz-Expires=86400&X-Amz-Signature=0a9515192dc3c43908e6eec7a7a6d5ed813df9ac6a956f996aefee6a3c386290&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22togetdog.png%22&x-id=GetObject)
+![togetdog.png](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/78d04b67-6415-47a6-8273-44d12ed46c17/togetdog.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230216%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230216T084437Z&X-Amz-Expires=86400&X-Amz-Signature=00bbe3d43802df06d5db555b5cc24766038bf494fac53f289ce3751cbc64b21c&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22togetdog.png%22&x-id=GetObject)
 
 ### ***지금 TOGETDOG으로 👉🏻 https://togetdog.site***
 ---
