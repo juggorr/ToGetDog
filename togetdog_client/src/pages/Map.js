@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import { userState } from "../recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { authAtom, userState } from "../recoil";
 import axios from "axios";
 
-import { BACKEND_URL, DUMMY_URL } from "../config";
+import { BACKEND_URL } from "../config";
 import {
   MapContainer,
   PlaceIconWrapper,
@@ -16,6 +16,7 @@ import dogHospital from "../assets/dog_hospital.png";
 import dogService from "../assets/dog_service.png";
 import dogRestaurant from "../assets/dog_restaurant.png";
 import dogFacility from "../assets/dog_facility.png";
+import { useNavigate } from "react-router-dom";
 
 const SinglePlace = ({ facility }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -105,7 +106,10 @@ const SinglePlace = ({ facility }) => {
 const Map = () => {
   // const [map, setMap] = useState(null);
   // const container = document.getElementById("map");
+  const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
+  const auth = useRecoilValue(authAtom);
+  const setAuth = useSetRecoilState(authAtom);
 
   const [curLat, setCurLat] = useState(37.56679717791351);
   const [curLng, setCurLng] = useState(126.97868056416682);
@@ -127,25 +131,42 @@ const Map = () => {
     });
   }, []);
 
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+    setAuth(null);
+    console.log("로그아웃이 정상적으로 처리되었습니다.");
+    navigate("/login");
+  };
+
   const GetFacilities = (lat, lng) => {
     const fetchFacilities = async () => {
       try {
         setFacilities(null);
-        // setError(null);
-        // setLoading(true);
         const response = await axios.get(
-          `${BACKEND_URL}/facility?latitude=${lat}&longitude=${lng}`
+          `${BACKEND_URL}/facility?latitude=${lat}&longitude=${lng}`,
+          {
+            headers: {
+              Authorization: auth,
+            },
+          }
         );
         const arr = response.data.storeList;
         // console.log(response.data);
+
         arr.sort((a, b) => {
           return a.distance - b.distance;
         });
         setFacilities(arr);
-      } catch (e) {
-        // setError(e);
+      } catch (error) {
+        console.log(error);
+        if (error.response.status === 404) {
+          navigate("/*");
+        } else if (error.response.status === 401) {
+          alert("토큰이 만료되어 자동 로그아웃되었습니다.");
+          handleLogout();
+        }
       }
-      // setLoading(false);
     };
 
     fetchFacilities();
