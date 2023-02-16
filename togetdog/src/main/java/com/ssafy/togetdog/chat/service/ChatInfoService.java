@@ -14,4 +14,5 @@ public interface ChatInfoService {
 	void updateChatInfo(long roomId , Set<Long> nowUser);
 	ChatInUserInfo createChatRoom(User user, User other) ;
 	boolean chatInfoActi(long roomId , long userId);
+	void updateChatActi(long roomId , long userId);
 }
