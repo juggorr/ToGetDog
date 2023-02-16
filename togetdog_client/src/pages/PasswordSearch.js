@@ -89,8 +89,8 @@ function PasswordSearch() {
       })
       .catch((err) => {
         // console.log(err);
-        console.log(err.status.response.status);
-        if (err.status.response.status === 409) {
+        // console.log(err.status.response.status);
+        if (err.response.status === 409) {
           alert('소셜 회원은 비밀번호를 변경할 수 없습니다.');
           navigate('/login');
           return;
