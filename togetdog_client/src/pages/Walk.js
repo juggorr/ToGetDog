@@ -400,6 +400,14 @@ const Walk = () => {
   const auth = useRecoilValue(authAtom);
   const setAuth = useSetRecoilState(authAtom);
 
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('user');
+    setAuth(null);
+    console.log('로그아웃이 정상적으로 처리되었습니다.');
+    navigate('/login');
+  };
+
   useEffect(() => {
     let url = `${BACKEND_URL}/meeting`;
     if (active === 1) {
@@ -453,6 +461,12 @@ const Walk = () => {
       })
       .catch(function (error) {
         console.log(error);
+        if (error.response.status === 404) {
+          navigate('/*');
+        } else if (error.response.status === 401) {
+          alert('토큰이 만료되어 자동 로그아웃되었습니다.');
+          handleLogout();
+        }
       });
   }, [active]);
 

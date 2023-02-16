@@ -163,7 +163,6 @@ export const FeedProfileTop = styled.div`
     height: 1.7rem;
     font-size: 0.8rem;
     text-align: center;
-    line-height: 1.5rem;
     border-radius: 50%;
     color: #fff;
     margin-top: 2.6rem;
@@ -171,6 +170,7 @@ export const FeedProfileTop = styled.div`
 
   .make-appointment-btn {
     background-color: #7fb77e;
+    line-height: 1.6rem;
   }
 
   .dm-btn {
