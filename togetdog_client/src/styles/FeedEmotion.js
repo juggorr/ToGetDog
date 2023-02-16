@@ -81,7 +81,7 @@ export const FeedProfileTop = styled.div`
 
   .dog-name {
     font-size: 0.9rem;
-    line-height: 0.9rem;
+    line-height: 24px;
   }
 
   .dog-breed,

@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const MenuModalWrapper = styled.div`
   z-index: 999;
@@ -21,7 +21,7 @@ export const MenuModalWrapper = styled.div`
 
 export const MenuModalBody = styled.div`
   border-radius: 0.5rem;
-  padding: 0.1rem 0.3rem;
+  padding: 0.2rem 0.4rem;
   background-color: #fff;
   border: 1px solid #e2e2e2;
   display: flex;
@@ -30,8 +30,8 @@ export const MenuModalBody = styled.div`
   margin-right: 2.7rem;
 
   .single-menu {
-    padding: 0.4rem 0.3rem;
-    font-size: 0.8rem;
+    padding: 0.4rem;
+    font-size: 0.9rem;
     border-bottom: 1px solid #e2e2e2;
   }
 
