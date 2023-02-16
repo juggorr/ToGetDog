@@ -171,7 +171,7 @@ public class AppointmentRestController {
 		appointmentService.updateAppointment(roomId, "cancelled");
 		
 		// 상대방에게 취소 알림 전송
-		notifyService.insertCancelNotify(appointmentService.findAppointmentById(roomId));
+		notifyService.insertCancelNotify(appointmentService.findAppointmentById(roomId), jwtService.getUserId(token));
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("msg", "산책 요청이 취소되었습니다.");
