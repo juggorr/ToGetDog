@@ -201,14 +201,14 @@ const FriendsList = ({ friends }) => {
       if (!tempFilter.length) {
         tempFilter.push(
           <p className="noFriends" key={0}>
-            추천 산책 친구가 없습니다.
+            동네에 추천해줄 산책 친구가 없습니다.
           </p>
         );
       }
     } else {
       tempFilter.push(
         <p className="noFriends" key={0}>
-          추천 산책 친구가 없습니다.
+          동네에 추천해줄 산책 친구가 없습니다.
         </p>
       );
     }

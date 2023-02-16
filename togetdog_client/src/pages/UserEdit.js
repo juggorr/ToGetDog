@@ -1,29 +1,38 @@
-import axios from 'axios';
-import { useEffect, useState, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
+import axios from "axios";
+import { useEffect, useState, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 
-import { BACKEND_URL, DUMMY_URL } from '../config';
+import { BACKEND_URL, DUMMY_URL } from "../config";
 
-import SignoutConfirmModal from '../components/SignoutConfirmModal';
-import { MainColorLongBtn, BlackBtn, MainColorShortBtn, GreyColorShortBtn } from '../styles/BtnsEmotion';
-import OptionBtn from '../components/OptionBtn';
-import { SignupContainer, SignupWrapper, InputWrapper } from '../styles/SignupEmotion';
-import DaumKakaoEditAddress from '../components/DaumKakaoEditAddress';
-import { authAtom, userState } from '../recoil';
+import SignoutConfirmModal from "../components/SignoutConfirmModal";
+import {
+  MainColorLongBtn,
+  BlackBtn,
+  MainColorShortBtn,
+  GreyColorShortBtn,
+} from "../styles/BtnsEmotion";
+import OptionBtn from "../components/OptionBtn";
+import {
+  SignupContainer,
+  SignupWrapper,
+  InputWrapper,
+} from "../styles/SignupEmotion";
+import DaumKakaoEditAddress from "../components/DaumKakaoEditAddress";
+import { authAtom, userState } from "../recoil";
 
 const genderBtnList = [
   {
-    btn_id: 'male',
-    text: '남자',
+    btn_id: "male",
+    text: "남자",
   },
   {
-    btn_id: 'female',
-    text: '여자',
+    btn_id: "female",
+    text: "여자",
   },
   {
-    btn_id: 'none',
-    text: '기타',
+    btn_id: "none",
+    text: "기타",
   },
 ];
 
@@ -44,13 +53,13 @@ function UserEdit() {
 
   useEffect(() => {
     // 로그인 안된 유저 접근 불가
-    if (!auth || !localStorage.getItem('recoil-persist')) {
-      navigate('/login');
+    if (!auth || !localStorage.getItem("recoil-persist")) {
+      navigate("/login");
       return;
     }
     // 로그인한 유저 url접근 막기
     if (!location.state) {
-      alert('허용되지 않은 접근입니다.');
+      alert("허용되지 않은 접근입니다.");
       navigate(-1);
       return;
     }
@@ -85,29 +94,29 @@ function UserEdit() {
   }, [userInfos]);
 
   // placeholder값들 정의
-  const [nicknameHold, setNicknameHold] = useState('');
-  const [birthHold, setBirthHold] = useState('');
-  const [addressHold, setAddressHold] = useState('');
+  const [nicknameHold, setNicknameHold] = useState("");
+  const [birthHold, setBirthHold] = useState("");
+  const [addressHold, setAddressHold] = useState("");
 
   const [inputs, setInputs] = useState({
-    nickname: '',
-    gender: '', // 성별 default 값 '남자'로 설정
-    birth: '',
-    address: '',
-    sigunguCode: '',
+    nickname: "",
+    gender: "", // 성별 default 값 '남자'로 설정
+    birth: "",
+    address: "",
+    sigunguCode: "",
   });
 
   const { nickname, gender, birth, address, sigunguCode } = inputs;
 
   // const [nicknameError, setNicknameError] = useState(false);
   const nicknameError = useRef(false);
-  const [nicknameErrorMsg, setNicknameErrorMsg] = useState('');
+  const [nicknameErrorMsg, setNicknameErrorMsg] = useState("");
   // const [birthError, setBirthError] = useState(false);
   const birthError = useRef(false);
-  const [birthErrorMsg, setBirthErrorMsg] = useState('');
+  const [birthErrorMsg, setBirthErrorMsg] = useState("");
   // const [addressError, setAddressError] = useState(false);
   const addressError = useRef(false);
-  const [addressErrorMsg, setAddressErrorMsg] = useState('');
+  const [addressErrorMsg, setAddressErrorMsg] = useState("");
 
   // addressError current값 바꿔주는 함수
   const addressErrorChange = () => {
@@ -124,12 +133,15 @@ function UserEdit() {
 
   // 닉네임 핸들러 메소드
   const handleNickname = async (e) => {
-    setNicknameHold('');
+    setNicknameHold("");
     const nickname = e.target.value;
-    if (!nicknameKorRegexp.test(nickname) && !nicknameEngRegexp.test(nickname)) {
-      console.log('닉네임 형식에 맞지 않음');
+    if (
+      !nicknameKorRegexp.test(nickname) &&
+      !nicknameEngRegexp.test(nickname)
+    ) {
+      console.log("닉네임 형식에 맞지 않음");
       nicknameError.current = false;
-      setNicknameErrorMsg('닉네임은 한글 1~8자 혹은 영문 2~16자');
+      setNicknameErrorMsg("닉네임은 한글 1~8자 혹은 영문 2~16자");
       return;
     }
     await axios
@@ -139,14 +151,14 @@ function UserEdit() {
           // console.log(resp);
           // console.log("사용 가능한 닉네임");
           nicknameError.current = true;
-          setNicknameErrorMsg('사용 가능한 닉네임입니다.');
+          setNicknameErrorMsg("사용 가능한 닉네임입니다.");
         }
       })
       .catch((err) => {
         // 409 에러일 경우로 코드 리팩토링 필요
-        console.log('사용 불가능한 닉네임');
+        console.log("사용 불가능한 닉네임");
         nicknameError.current = false;
-        setNicknameErrorMsg('중복된 닉네임입니다.');
+        setNicknameErrorMsg("중복된 닉네임입니다.");
       });
 
     onChange(e);
@@ -162,16 +174,16 @@ function UserEdit() {
 
   // 출생년도 메소드
   const handleBirth = (e) => {
-    setBirthHold('');
+    setBirthHold("");
     const birthYear = e.target.value;
     if (birthYear >= 1900 && birthYear <= new Date().getFullYear()) {
       // setBirthError(true);
       birthError.current = true;
-      setBirthErrorMsg('');
+      setBirthErrorMsg("");
     } else {
       // setBirthError(false);
       birthError.current = false;
-      setBirthErrorMsg('출생연도를 입력해주세요.');
+      setBirthErrorMsg("출생연도를 입력해주세요.");
     }
     onChange(e);
   };
@@ -179,7 +191,7 @@ function UserEdit() {
   const [popup, setPopup] = useState(false);
 
   const handlePopup = () => {
-    setAddressHold('');
+    setAddressHold("");
     setPopup(!popup);
   };
 
@@ -190,7 +202,7 @@ function UserEdit() {
 
   // PUT 요청 보내기
   const handleEdit = async () => {
-    console.log('회원정보 변경!');
+    console.log("회원정보 변경!");
 
     await axios
       .put(
@@ -204,10 +216,10 @@ function UserEdit() {
         },
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: auth,
           },
-        },
+        }
       )
       // DB에 다시 접근해서 새로운 회원정보 받아서 로컬에 업데이트
       .then(() => {
@@ -270,23 +282,23 @@ function UserEdit() {
     if (!birthError.current) {
       // setBirthError(false);
       birthError.current = false;
-      setBirthErrorMsg('출생연도를 입력해주세요.');
+      setBirthErrorMsg("출생연도를 입력해주세요.");
     }
     if (!addressError.current) {
       // setAddressError(false);
       addressError.current = false;
-      setAddressErrorMsg('주소를 입력해주세요.');
+      setAddressErrorMsg("주소를 입력해주세요.");
     } else {
       // setAddressError(true);
       addressError.current = true;
-      setAddressErrorMsg('');
+      setAddressErrorMsg("");
     }
 
     if (nicknameError.current && birthError.current && addressError.current) {
-      console.log('회원 정보 변경을 시도합니다.');
+      console.log("회원 정보 변경을 시도합니다.");
       handleEdit();
     } else {
-      console.log('아직 입력되지 않은 값 있음.');
+      console.log("아직 입력되지 않은 값 있음.");
       return;
     }
   };
@@ -303,60 +315,81 @@ function UserEdit() {
   return (
     <>
       <SignupContainer>
-        <SignoutConfirmModal signoutBtnClick={signoutBtnClick} setSignoutBtnClick={setSignoutBtnClick} />
+        <SignoutConfirmModal
+          signoutBtnClick={signoutBtnClick}
+          setSignoutBtnClick={setSignoutBtnClick}
+        />
         <SignupWrapper>
           {/* 닉네임 선택 wrapper */}
           <InputWrapper>
-            <div className='boardHeader'>회원 정보 수정</div>
-            <div className='input-title'>
-              닉네임<span className='red-dot'>*</span>
+            <div className="boardHeader">회원 정보 수정</div>
+            <div className="input-title">
+              견주 닉네임<span className="red-dot">*</span>
             </div>
-            <div className='horizontal-flex'>
-              <div className='input-box general-input-box'>
+            <div className="horizontal-flex">
+              <div className="input-box general-input-box">
                 <input
-                  name='nickname'
-                  className='email-input'
+                  name="nickname"
+                  className="email-input"
                   placeholder={nicknameHold}
                   onChange={(e) => handleNickname(e)}
                 />
               </div>
             </div>
-            <div className={nicknameError.current ? 'success' : 'error'}>{nicknameErrorMsg}</div>
+            <div className={nicknameError.current ? "success" : "error"}>
+              {nicknameErrorMsg}
+            </div>
           </InputWrapper>
           {/* 성별 선택 wrapper */}
           <InputWrapper>
-            <div className='input-title'>
-              성별
-              <span className='red-dot'>*</span>
+            <div className="input-title">
+              견주 성별
+              <span className="red-dot">*</span>
             </div>
-            <div className='horizontal-flex btn-list'>
+            <div className="horizontal-flex btn-list">
               {genderBtnList.map((it) => (
-                <OptionBtn key={it.btn_id} {...it} onClick={handleClickGender} isSelected={it.btn_id === gender} />
+                <OptionBtn
+                  key={it.btn_id}
+                  {...it}
+                  onClick={handleClickGender}
+                  isSelected={it.btn_id === gender}
+                />
               ))}
             </div>
           </InputWrapper>
           {/* 출생연도 선택 wrapper */}
           <InputWrapper>
-            <div className='input-title'>
-              출생연도
-              <span className='red-dot'>*</span>
+            <div className="input-title">
+              견주 출생연도
+              <span className="red-dot">*</span>
             </div>
-            <div className='horizontal-flex'>
-              <div className='number-input-box'>
-                <input className='number-input' name='birth' onChange={(e) => handleBirth(e)} placeholder={birthHold} />
+            <div className="horizontal-flex">
+              <div className="number-input-box">
+                <input
+                  className="number-input"
+                  name="birth"
+                  onChange={(e) => handleBirth(e)}
+                  placeholder={birthHold}
+                />
               </div>
-              <div className='year'>년</div>
+              <div className="year">년</div>
             </div>
-            <div className='error'>{birthErrorMsg}</div>
+            <div className="error">{birthErrorMsg}</div>
           </InputWrapper>
           {/* 주소 입력 wrapper */}
           <InputWrapper>
-            <div className='input-title'>
-              주소<span className='red-dot'>*</span>
+            <div className="input-title">
+              주소<span className="red-dot">*</span>
             </div>
-            <div className='horizontal-flex'>
-              <div className='input-box address-box'>
-                <input className='email-input' value={address} name='address' placeholder={addressHold} disabled />
+            <div className="horizontal-flex">
+              <div className="input-box address-box">
+                <input
+                  className="email-input"
+                  value={address}
+                  name="address"
+                  placeholder={addressHold}
+                  disabled
+                />
               </div>
               <BlackBtn onClick={handlePopup}>주소 찾기</BlackBtn>
               {popup && (
@@ -368,21 +401,20 @@ function UserEdit() {
                   errorMsg={addressErrorMsg}
                   setErrorMsg={setAddressErrorMsg}
                   popup={popup}
-                  setPopup={setPopup}
-                ></DaumKakaoEditAddress>
+                  setPopup={setPopup}></DaumKakaoEditAddress>
               )}
             </div>
-            <div className='error'>{addressErrorMsg}</div>
+            <div className="error">{addressErrorMsg}</div>
           </InputWrapper>
-          <div className='signup-desc'>* 표시는 필수 입력 값입니다.</div>
-          <div className='two-btns-wrapper'>
+          <div className="signup-desc">* 표시는 필수 입력 값입니다.</div>
+          <div className="two-btns-wrapper">
             {/* <GreyColorShortBtn onClick={handleNotEdit}>
               돌아가기
             </GreyColorShortBtn> */}
             <MainColorLongBtn onClick={checkEdit}>변경하기</MainColorLongBtn>
           </div>
-          <div className='edit-bottom-wrapper'>
-            <div className='edit-bottom-text' onClick={handleSignout}>
+          <div className="edit-bottom-wrapper">
+            <div className="edit-bottom-text" onClick={handleSignout}>
               회원탈퇴
             </div>
           </div>

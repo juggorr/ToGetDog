@@ -59,7 +59,7 @@ export const SearchTabWrapper = styled.div`
     justify-content: center;
     align-items: center;
     margin: 0rem 0.6rem;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
 `;
 
