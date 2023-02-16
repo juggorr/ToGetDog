@@ -271,7 +271,7 @@ const SingleMeeting = ({ meeting, auth }) => {
           <div className="dogWrapper">
             {renderDogImg(meeting.partnerDogs)}
             <div className="dogInfo">
-              <div>
+              <div className="partner-info">
                 <span className="dogNames">
                   {dogNameList(meeting.partnerDogs)}
                 </span>

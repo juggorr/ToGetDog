@@ -389,7 +389,7 @@ const CreateAppointment = () => {
           />
         </div>
         {requestError ? (
-          <p className="warningStr">입력값이 없는 항목이 있습니다.</p>
+          <p className="warningStr">* 모든 값을 입력해주세요</p>
         ) : null}
       </WalkRequest>
       <div className="btnWrapper">
