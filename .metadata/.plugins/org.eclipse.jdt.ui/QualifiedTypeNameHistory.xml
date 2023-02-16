@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.time.LocalDateTime"/>
+<fullyQualifiedTypeName name="com.ssafy.togetdog.appointment.model.dto.AppointmentListDTO"/>
+<fullyQualifiedTypeName name="org.springframework.data.domain.Sort"/>
+<fullyQualifiedTypeName name="org.hibernate.query.criteria.internal.expression.ConcatExpression"/>
+<fullyQualifiedTypeName name="com.ssafy.togetdog.global.exception.UnAuthorizedException"/>
+<fullyQualifiedTypeName name="com.ssafy.togetdog.board.model.entity.Board"/>
+<fullyQualifiedTypeName name="lombok.Builder"/>
+<fullyQualifiedTypeName name="lombok.AllArgsConstructor"/>
+<fullyQualifiedTypeName name="com.ssafy.togetdog.board.model.dto.CommentDTO"/>
+<fullyQualifiedTypeName name="java.util.stream.Collector"/>
+<fullyQualifiedTypeName name="java.util.stream.Collectors"/>
+<fullyQualifiedTypeName name="com.ssafy.togetdog.board.model.repository.BoardRepository"/>
+<fullyQualifiedTypeName name="com.ssafy.togetdog.global.exception.InvalidInputException"/>
+<fullyQualifiedTypeName name="java.util.Optional"/>
+<fullyQualifiedTypeName name="com.ssafy.togetdog.chat.model.entity.ChatMsg"/>
+<fullyQualifiedTypeName name="com.ssafy.togetdog.chat.model.dto.ChatInfoDTO"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="com.ssafy.togetdog.user.model.repository.UserRepository"/>
+<fullyQualifiedTypeName name="com.ssafy.togetdog.dog.model.repository.DogRepository"/>
+</qualifiedTypeNameHistroy>
