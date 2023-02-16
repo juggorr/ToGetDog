@@ -39,7 +39,7 @@ const SingleBoard = ({ board }) => {
           <div className='dogProfileCircle'>
             <img
               className='dogProfileImg'
-              src={'https://i8a807.p.ssafy.io/image/dog/' + board.dog.dogProfile}
+              src={'https://togetdog.site/image/dog/' + board.dog.dogProfile}
               alt={board.dog.dogName}
             />
           </div>
@@ -64,7 +64,7 @@ const SingleBoard = ({ board }) => {
         }}
       >
         <div className='imgWrapper'>
-          <img className='contentImg' src={'https://i8a807.p.ssafy.io/image/board/' + board.image} alt='content_img' />
+          <img className='contentImg' src={'https://togetdog.site/image/board/' + board.image} alt='content_img' />
         </div>
       </div>
       <div className='contentText'>{board.content}</div>

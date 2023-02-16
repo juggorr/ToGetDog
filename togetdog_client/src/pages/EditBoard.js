@@ -119,7 +119,7 @@ const EditBoard = () => {
           </div>
         </div>
         <ContentImgWrapper>
-          <ContentEditImg src={`https://i8a807.p.ssafy.io/image/board/` + boardData.image} />
+          <ContentEditImg src={`https://togetdog.site/image/board/` + boardData.image} />
         </ContentImgWrapper>
 
         <p className='queryStr'>
