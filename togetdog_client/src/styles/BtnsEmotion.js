@@ -156,21 +156,21 @@ export const LightColorLongBtn = styled.button`
 export const OrangeBtn = styled.button`
   background-color: #ffd89d;
   border: none;
-  padding: 0.3rem 0.5rem;
+  padding: 0.4rem 0.5rem;
   border-radius: 0.6rem;
   margin: 0.1rem 0rem;
   margin-right: 0.5rem;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
 `;
 
 export const YellowBtn = styled.button`
   background-color: #fff0cb;
   border: none;
-  padding: 0.3rem 0.5rem;
+  padding: 0.4rem 0.5rem;
   border-radius: 0.6rem;
   margin: 0.1rem 0rem;
   margin-right: 0.5rem;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
 `;
 
 export const PlusBtn = styled.div`
