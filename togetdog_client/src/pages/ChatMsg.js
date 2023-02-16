@@ -125,7 +125,7 @@ const ChatMsg = () => {
   };
 
   const connect = (rooms) => {
-    const serverURL = 'https://i8a807.p.ssafy.io/ws/chat';
+    const serverURL = 'https://togetdog.site/ws/chat';
     let socket = new SockJS(serverURL);
     let newClient = Stomp.over(socket);
     setStompClient(newClient);
