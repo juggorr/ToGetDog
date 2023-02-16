@@ -88,13 +88,13 @@ function PasswordSearch() {
         setReissueModal(true);
       })
       .catch((err) => {
-        console.log(err);
-        console.log(err.status);
-        // if (err.status === 409) {
-        //   alert('소셜 회원은 비밀번호를 변경할 수 없습니다.');
-        //   navigate('/login');
-        //   return;
-        // }
+        // console.log(err);
+        console.log(err.status.response.status);
+        if (err.status.response.status === 409) {
+          alert('소셜 회원은 비밀번호를 변경할 수 없습니다.');
+          navigate('/login');
+          return;
+        }
       })
   }
 
