@@ -5,9 +5,9 @@ export const SignupContainer = styled.div`
   display: flex;
   // align-items: center;
   justify-content: center;
-  padding: 1.5rem 0;
+  padding: 3rem 0;
 
-  .password-edit{
+  .password-edit {
     align-items: center;
   }
 `;
