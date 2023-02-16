@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -117,16 +118,14 @@ public class ChatRestController {
 			cis.updateChatInfo(opponent.getRoomId(), set);
 		}
 		long roomId = opponent.getRoomId();
-		List<ChattingDTO> list = cms.findMessage(roomId);
+		List<ChattingDTO> list = cms.findMessage(roomId , opponent.getStart());
+		Collections.reverse(list);
 		if(csl.getList(roomId) != null) {
-			for(ChatDTO dto : csl.getList(roomId)) {
-				list.add(ChattingDTO.of(dto));				
-			}
+			list.addAll(csl.getList(roomId).stream().map(m -> ChattingDTO.of(m)).collect(Collectors.toList()));
+//			for(ChatDTO dto : csl.getList(roomId)) {
+//				list.add(ChattingDTO.of(dto));				
+//			}
 		}
-		if(list.size() > 1)
-			list = list.subList((int)opponent.getStart(), list.size());
-		if(list.size() > 500)
-			list = list.subList(list.size()-500, list.size());
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("chats", list);
