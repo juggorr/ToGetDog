@@ -231,9 +231,10 @@ public class BoardRestController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		jwtService.validateToken(token);
 		
-		if(jwtService.getUserId(token) != boardDTO.getUserId()) {
+		Board board = boardService.findBoardByBoardId(boardDTO.getBoardId());
+		if(jwtService.getUserId(token) != board.getUser().getUserId()) {
 			resultMap.put("result", "fail");
-			resultMap.put("msg", "게시물이 수정 권한이 없습니다.");
+			resultMap.put("msg", "게시물의 수정 권한이 없습니다.");
 			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.UNAUTHORIZED);
 		}
 		
