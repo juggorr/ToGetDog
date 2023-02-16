@@ -47,7 +47,7 @@ public class UserIncludesDogsRespDTO {
 
 		double rating = 0;
 		if (user.getRatingCount() != 0) {
-			rating = user.getRatingSum() / user.getRatingCount();
+			rating = (int) user.getRatingSum() / user.getRatingCount();
 		}
 		
 		LocalDate now = LocalDate.now();

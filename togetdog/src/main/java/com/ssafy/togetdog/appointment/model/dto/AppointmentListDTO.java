@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.ssafy.togetdog.appointment.model.entity.Appointment;
 import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
-import com.ssafy.togetdog.dog.model.entity.Dog;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,12 +35,48 @@ public class AppointmentListDTO {
 	private boolean isUserOneRated;
 	private boolean isUserTwoRated;
 	
-	public static AppointmentListDTO of(Appointment appointment) {
+	public static AppointmentListDTO ofIgnoreDeletedUser(Appointment appointment) {
 		double oneRating = 0;
 		double twoRating = 0;
+		
+		// 아직 평가받은 적이 없으면 그냥 return
 		if(appointment.getSentUser().getRatingSum() <= 0) {
 			oneRating = appointment.getSentUser().getRatingSum();
 		} else {
+			// 평가받은 적이 있으면 점수로 return
+			oneRating = Math.ceil((double) appointment.getSentUser().getRatingSum() / (double) appointment.getSentUser().getRatingCount());
+		}
+		if(appointment.getReceivedUser().getRatingSum() <= 0) {
+			twoRating = appointment.getReceivedUser().getRatingSum();
+		} else {
+			twoRating = Math.ceil((double) appointment.getReceivedUser().getRatingSum() / (double) appointment.getReceivedUser().getRatingCount());
+		}
+		
+		return AppointmentListDTO.builder()
+				.roomId(appointment.getRoomId())
+				.userOneId(appointment.getSentUser().getUserId())
+				.userOneNickname(appointment.getSentUser().getNickName())
+				.userOneRating(oneRating)
+				.userTwoId(appointment.getReceivedUser().getUserId())
+				.userTwoNickname(appointment.getReceivedUser().getNickName())
+				.userTwoRating(twoRating)
+				.place(appointment.getPlace())
+				.dateTime(appointment.getDateTime())
+				.status(appointment.getStatus())
+				.isUserOneRated(appointment.isSenderRated())
+				.isUserTwoRated(appointment.isReceiverRated())
+				.build();
+	}
+	
+	public static AppointmentListDTO of(Appointment appointment) {
+		double oneRating = 0;
+		double twoRating = 0;
+		
+		// 아직 평가받은 적이 없으면 그냥 return
+		if(appointment.getSentUser().getRatingSum() <= 0) {
+			oneRating = appointment.getSentUser().getRatingSum();
+		} else {
+			// 평가받은 적이 있으면 점수로 return
 			oneRating = Math.ceil((double) appointment.getSentUser().getRatingSum() / (double) appointment.getSentUser().getRatingCount());
 		}
 		if(appointment.getReceivedUser().getRatingSum() <= 0) {

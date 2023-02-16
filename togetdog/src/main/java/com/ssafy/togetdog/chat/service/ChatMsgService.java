@@ -7,6 +7,6 @@ import com.ssafy.togetdog.chat.model.dto.ChattingDTO;
 
 public interface ChatMsgService {
 	void saveChatMsg(List<ChatDTO> list);
-	List<ChattingDTO> findMessage(long roomId);
+	List<ChattingDTO> findMessage(long roomId , long start);
 	Long chatCount(long roomId);
 }

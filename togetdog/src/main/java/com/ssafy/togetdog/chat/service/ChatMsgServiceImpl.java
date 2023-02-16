@@ -26,6 +26,7 @@ public class ChatMsgServiceImpl implements ChatMsgService{
 	@Transactional
 	public void saveChatMsg(List<ChatDTO> list) {
 		List<ChatMsg> saveMsg = new ArrayList<>();
+
 		for(ChatDTO cDto : list) {
 			saveMsg.add(cDto.toEntity());
 		}
@@ -33,8 +34,9 @@ public class ChatMsgServiceImpl implements ChatMsgService{
 	}
 	
 	@Transactional
-	public List<ChattingDTO> findMessage(long roomId) {
-		List<ChatMsg> list =  chatMsgRepo.findByRoomId(roomId).orElse(null);
+	public List<ChattingDTO> findMessage(long roomId , long start) {
+//		List<ChatMsg> list =  chatMsgRepo.findByRoomId(roomId).orElse(null);
+		List<ChatMsg> list =  chatMsgRepo.findTop300ByRoomIdAndIdxGreaterThanOrderByIdDesc(roomId , start).orElse(null);
 		if(list == null)
 			return null;
 		return list.stream()

@@ -2,7 +2,6 @@ package com.ssafy.togetdog.search.model.dto;
 
 import java.time.LocalDateTime;
 
-import com.ssafy.togetdog.dog.model.dto.DogInfoRespDTO;
 import com.ssafy.togetdog.dog.model.entity.Dog;
 
 import lombok.AllArgsConstructor;
