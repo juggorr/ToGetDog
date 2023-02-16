@@ -338,7 +338,7 @@ const Feed = () => {
             ) : (
               <div className='dog-info-box'>
                 {feedUserData.userId === user.userId ? (
-                  <MainColorShortBtn onClick={() => navigate('/dogregister')}>강아지 등록</MainColorShortBtn>
+                  <MainColorShortBtn onClick={() => navigate('/dogregister', {state: {dogs: feedDogData}})}>강아지 등록</MainColorShortBtn>
                 ) : (
                   <div>{'등록된 강아지가 없습니다.'}</div>
                 )}
@@ -356,7 +356,7 @@ const Feed = () => {
                   ))
                 : null}
               {feedDogData.length === 3 || feedUserData.userId !== user.userId ? null : (
-                <PlusBtn onClick={() => navigate('/dogregister')}>+</PlusBtn>
+                <PlusBtn onClick={() => navigate('/dogregister', {state: {dogs: feedDogData}})}>+</PlusBtn>
               )}
             </div>
             {feedUserData.userId === user.userId ? (
@@ -379,7 +379,7 @@ const Feed = () => {
                   <div
                     onClick={() =>
                       navigate(`/followinglist/${user.userId}`, {
-                        state: { userId: user.userId },
+                        state: { userId: user.userId, isGranted: true },
                       })
                     }
                     className='follow-box'

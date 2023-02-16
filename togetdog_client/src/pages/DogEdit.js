@@ -69,10 +69,17 @@ function DogEdit() {
   const user = useRecoilValue(userState);
   
   const navigate = useNavigate();
+  const location = useLocation();
+  const dogId = location.state;
 
   // 들어오면 강아지 정보 받아오기 & 현재 년, 월 받아오기
   const [dog, setDog] = useState({});
   useEffect(() => {
+    if(!auth || !localStorage.getItem("recoil-persist") || !dog) {
+      navigate("/");
+      return;
+    }
+
     axios
       .get(`${BACKEND_URL}/dog/${dogId}`)
       .then((res) => {
@@ -83,8 +90,6 @@ function DogEdit() {
         console.log(err)
       })
   }, [])
-  const location = useLocation();
-  const dogId = location.state;
 
   // 견종 리스트 public/breeds.txt에서 불러오기
   const [breedList, setBreedList] = useState([]);
