@@ -51,7 +51,7 @@ export const SignupWrapper = styled.div`
   .signup-desc {
     width: 270px;
     text-align: left;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     color: red;
   }
 
@@ -87,7 +87,7 @@ export const InputWrapper = styled.div`
   }
 
   .input-title {
-    font-size: 15px;
+    font-size: 0.9rem;
     margin-bottom: 0.5rem;
   }
 
@@ -118,7 +118,7 @@ export const InputWrapper = styled.div`
   .email-input,
   .number-input {
     width: 100%;
-    font-size: 13px;
+    font-size: 0.9rem;
     color: #000;
     border: none;
     background: none;
@@ -148,7 +148,7 @@ export const InputWrapper = styled.div`
   }
 
   .year {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .success {
@@ -175,7 +175,6 @@ export const EmailContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  // background-color: rgba(0, 0, 0, 0.55);
 `;
 
 export const EmailWrapper = styled.div`
@@ -195,13 +194,6 @@ export const LogoWrapper = styled.div`
   justify-content: center;
   align-itmes: center;
   padding-bottom: 50px;
-
-  // .email-logo {
-  //   width: 5rem;
-  //   height: 5rem;
-  //   margin: auto;
-  //   margin-bottom: 2rem;
-  // }
 
   .logo-img {
     width: 19rem;

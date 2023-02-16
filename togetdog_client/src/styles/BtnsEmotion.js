@@ -43,9 +43,9 @@ export const BlackLongBtn = styled.button`
 `;
 
 export const BlackBtn = styled.button`
-  width: 70px;
-  height: 28px;
-  font-size: 11px;
+  width: 5rem;
+  height: 1.8rem;
+  font-size: 0.8rem;
   background-color: #000;
   color: #fff;
   border-radius: 5px;
