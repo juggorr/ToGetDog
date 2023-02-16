@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import DogRecommend from '../components/DogRecommend';
-import UserFollow from '../components/UserFollow';
+// import UserFollow from "../components/UserFollow";
 import { BACKEND_URL } from '../config';
 import { authAtom, userState } from '../recoil';
 import {
@@ -15,6 +15,7 @@ import {
   SingleBoardWrapper,
   DogInfoWrapper,
   DogImgWrapper,
+  NoFriendsWrapper,
 } from '../styles/HomeEmotion';
 import Banner1 from '../assets/banner1.svg';
 import Banner2 from '../assets/banner2.svg';
@@ -73,10 +74,12 @@ const SingleBoard = ({ board }) => {
 const BoardList = (boardList) => {
   let tempBoardList = [];
 
-  if (boardList) {
+  if (boardList.length) {
     for (let i = 0; i < boardList.length; i++) {
       tempBoardList.push(<SingleBoard key={i} board={boardList[i]}></SingleBoard>);
     }
+  } else {
+    tempBoardList.push(<NoFriendsWrapper key={0}>조회할 게시글이 없어요.</NoFriendsWrapper>);
   }
 
   return tempBoardList;
@@ -129,8 +132,6 @@ const Home = () => {
     }
     if (!boardList) {
       setLoading(true);
-    } else {
-      setTinyLoading(true);
     }
     await axios
       .get(`${BACKEND_URL}/home`, {
@@ -142,14 +143,13 @@ const Home = () => {
         },
       })
       .then((response) => {
-        // console.log(response.data);
-        setBoardList([...boardList, ...response.data.boardList]);
-        setLoading(false);
-        setTinyLoading(false);
-        setHasNextPage(response.data.boardList.length === 30);
         if (response.data.boardList.length) {
           pageNo.current += 1;
         }
+        setBoardList((boardList) => [...boardList, ...response.data.boardList]);
+        setLoading(false);
+        setTinyLoading(false);
+        setHasNextPage(response.data.boardList.length === 9);
       })
       .catch((error) => {
         console.log(error);
@@ -171,6 +171,7 @@ const Home = () => {
       })
       .then((response) => {
         // console.log(response.data);
+        // console.log(response.data.dogs);
         setRecommendList(response.data.dogs);
       })
       .catch((error) => {
@@ -191,9 +192,10 @@ const Home = () => {
 
   useEffect(() => {
     if (inView && hasNextPage) {
+      setTinyLoading(true);
       getBoardList();
     }
-  }, [getBoardList, hasNextPage, inView]);
+  }, [inView]);
 
   if (isLoading) {
     return (
@@ -218,22 +220,31 @@ const Home = () => {
           </div>
         </div>
       </HomeContainer>
-
-      <RecommendBoxWrapper>
-        <div className='recommend-txt-box'>
-          <FontAwesomeIcon icon='fa-solid fa-paw' />
-          <span className='recommend-txt'>추천 댕댕이 친구들</span>
-        </div>
-        <div className='recommendBox'>{RecommendWrapper(recommendList)}</div>
-      </RecommendBoxWrapper>
+      {recommendList.length ? (
+        <RecommendBoxWrapper>
+          <div className='recommend-txt-box'>
+            <FontAwesomeIcon icon='fa-solid fa-paw' />
+            <span className='recommend-txt'>추천 댕댕이 친구들</span>
+          </div>
+          <div className='recommendBox'>{RecommendWrapper(recommendList)}</div>
+        </RecommendBoxWrapper>
+      ) : (
+        <RecommendBoxWrapper>
+          <div className='recommend-txt-box'>
+            <FontAwesomeIcon icon='fa-solid fa-paw' />
+            <span className='recommend-txt'>추천 댕댕이 친구들</span>
+          </div>
+          <p className='noFriends'>추천 강아지 친구들이 존재하지 않습니다.</p>
+        </RecommendBoxWrapper>
+      )}
       {BoardList(boardList)}
-
       {tinyLoading ? (
         <div className='tinyLoading'>
           <img src={Loading} alt='loading...'></img>
         </div>
-      ) : null}
-      <div ref={ref} className='scrollHandler' />
+      ) : (
+        <div ref={ref} className='scrollHandler' />
+      )}
     </HomeWrapper>
   );
 };

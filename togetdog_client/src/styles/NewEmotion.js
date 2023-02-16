@@ -88,6 +88,7 @@ export const DogImgWrapper = styled.div`
     height: 4.2rem;
     overflow: hidden;
     margin: 0.3rem 0rem;
+    background-color: #ffffff;
   }
 
   .disabled {
@@ -130,6 +131,11 @@ export const ContentImgWrapper = styled.div`
   }
 
   .contentImg > label > img {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .contentImg > img {
     width: 100%;
     object-fit: cover;
   }

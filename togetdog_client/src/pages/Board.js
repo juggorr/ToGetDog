@@ -8,6 +8,7 @@ import { BACKEND_URL } from '../config';
 import axios from 'axios';
 import BoardBox from '../components/BoardBox';
 import CommentBox from '../components/CommentBox';
+import Loading from '../assets/loading.gif';
 
 const Board = () => {
   const auth = useRecoilValue(authAtom);
@@ -65,7 +66,11 @@ const Board = () => {
   }, []);
 
   if (isLoading) {
-    return <div className='loading'>Loading...</div>;
+    return (
+      <div className='loading'>
+        <img src={Loading} alt='loading...' />
+      </div>
+    );
   }
 
   return (

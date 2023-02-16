@@ -10,7 +10,8 @@ export const TabList = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  z-index: 99;
+  z-index: 5;
+  margin-top: 0.5rem;
 
   .activeTab {
     background-color: #ffd89d;
@@ -37,14 +38,14 @@ export const TabList = styled.div`
 export const MeetingWrapper = styled.div`
   position: relative;
   width: 100%;
-  top: 1.2rem;
+  top: 1.7rem;
   display: flex;
   justify-content: center;
 
   .walkList {
     width: 95%;
-    height: calc(100vh - 11rem);
-    border-radius: 3%;
+    height: calc(100vh - 12rem);
+    border-radius: 1rem;
     background-color: #f5f0ec;
     padding-top: 2.5rem;
     overflow-y: auto;
@@ -133,6 +134,7 @@ export const SingleMeetingWrapper = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     margin-top: 3.2rem;
+    position: relative;
   }
 
   .tinyCircle {
@@ -186,9 +188,26 @@ export const SingleMeetingWrapper = styled.div`
     color: #575757;
   }
 
+  .singleDog {
+    display: flex;
+    position: relative;
+  }
+
   .ratingBtn {
     position: absolute;
     margin-top: 0.5rem;
+    margin-left: -0.5rem;
+    background-color: #6eb175;
+    border: 2px solid white;
+    color: #ffffff;
+    width: 5rem;
+    height: 2.5rem;
+    border-radius: 1rem;
+  }
+
+  .singleDogRatingBtn {
+    position: absolute;
+    margin-top: 3.2rem;
     margin-left: -0.5rem;
     background-color: #6eb175;
     border: 2px solid white;
@@ -298,6 +317,7 @@ export const StarRatingModal = styled.div`
   .checkboxWrapper {
     display: flex;
     justify-content: center;
+    align-items: center;
   }
 
   .checkboxText {

@@ -4,11 +4,12 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { authAtom, userState } from '../recoil';
 import axios from 'axios';
 import { CreateBoardWrapper, BoardContentWrapper, ContentImgWrapper } from '../styles/NewEmotion';
-import { MainColorLongBtn, MainColorShortBtn } from '../styles/BtnsEmotion';
+import { MainColorShortBtn } from '../styles/BtnsEmotion';
 
 import { BACKEND_URL, DUMMY_URL } from '../config';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ContentEditImg } from '../styles/BoardEmotion';
+import Loading from '../assets/loading.gif';
 
 const EditBoard = () => {
   const navigate = useNavigate();
@@ -80,11 +81,12 @@ const EditBoard = () => {
         },
       })
       .then((resp) => {
-        console.log(resp);
+        // console.log(resp);
         console.log(resp.data);
-        console.log('게시물 수정이 완료되었습니다.');
+        // console.log("게시물 수정이 완료되었습니다.");
         alert('게시물 수정이 완료되었습니다.');
-        navigate(`/board/${boardId}`);
+        // navigate(`/board/${boardId}`);
+        window.location.replace(`/board/${boardId}`);
       })
       .catch((err) => {
         console.log(err);
@@ -96,7 +98,11 @@ const EditBoard = () => {
   };
 
   if (isLoading) {
-    return <div className='loading'>Loading...</div>;
+    return (
+      <div className='loading'>
+        <img src={Loading} alt='loading...' />
+      </div>
+    );
   }
 
   return (
@@ -113,7 +119,7 @@ const EditBoard = () => {
           </div>
         </div>
         <ContentImgWrapper>
-          <ContentEditImg src={`https://i8a807.p.ssafy.io/image/dog/` + boardData.image} />
+          <ContentEditImg src={`https://i8a807.p.ssafy.io/image/board/` + boardData.image} />
         </ContentImgWrapper>
 
         <p className='queryStr'>

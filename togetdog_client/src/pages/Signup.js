@@ -120,6 +120,8 @@ const Signup = () => {
     // 비밀번호 유효성 검사
     if (!passwordRegexp.test(e.target.value)) {
       setPasswordError(false);
+      setPasswordCheckError(false);
+      setPasswordCheckErrorMsg('비밀번호가 일치하지 않습니다.');
       setPasswordErrorMsg('비밀번호는 영문, 숫자, 특수문자 포함 8~16자');
     } else {
       setPasswordError(true);

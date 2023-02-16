@@ -19,10 +19,6 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
 	void deleteByDogAndUser(Dog dog, User user);
 
-	int countByDog(Dog dog);
-
-	int countByUser(User user);
-
 	int countByUserAndDog(User user, Dog dog);
 
 }

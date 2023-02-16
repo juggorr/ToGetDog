@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 
 export const NotificationsWrapper = styled.div`
   font-family: "Noto Sans KR", sans-serif;
+  margin-top: 0.3rem;
 
   .walkRequestWrapper {
     display: flex;
@@ -48,6 +49,16 @@ export const NotificationsWrapper = styled.div`
     background-color: #75de92;
     margin: 0rem 1rem;
   }
+
+  .scrollHandler {
+    height: 100px;
+  }
+
+  .tinyLoading {
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+  }
 `;
 
 export const SingleNotificationWrapper = styled.div`
@@ -58,13 +69,22 @@ export const SingleNotificationWrapper = styled.div`
   border-bottom: 1px solid #bcbcbc;
 
   .textWrapper {
-    margin-left: 0.5rem;
-    display: block;
+    margin: 0rem 0.5rem;
+    height: 2rem;
+    display: flex;
     padding-right: 1rem;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
+    align-items: center;
+    // text-overflow: ellipsis;
     font-family: "Noto Sans KR", sans-serif;
     font-size: 0.9rem;
+    overflow-x: scroll;
+    -ms-overflow-style: none; /* 인터넷 익스플로러 */
+    scrollbar-width: none; /* 파이어폭스 */
+  }
+
+  .textWrapper::-webkit-scrollbar {
+    display: none; /* 크롬, 사파리, 오페라, 엣지 */
   }
 `;

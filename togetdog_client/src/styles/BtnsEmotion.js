@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import dog_profile from "../assets/dog2.jpg";
+import styled from '@emotion/styled';
+import dog_profile from '../assets/dog2.jpg';
 
 // 홈으로 이동 텍스트 버튼
 export const HomeTextBtn = styled.div`
@@ -11,10 +11,10 @@ export const HomeTextBtn = styled.div`
   background-color: #000;
   text-align: center;
   line-height: 45px;
-  margin-top: 50px;
+  margin-top: 2rem;
 `;
 
-export const PinkBtn = styled.button`
+export const EmailBtn = styled.button`
   width: 240px;
   height: 50px;
   line-height: 50px;
@@ -22,7 +22,7 @@ export const PinkBtn = styled.button`
   color: #fff;
   font-size: 20px;
   font-weight: 700;
-  background: #b7147e;
+  background: #6eb175;
   border-radius: 38px;
   margin-top: 50px;
   cursor: pointer;
@@ -43,9 +43,9 @@ export const BlackLongBtn = styled.button`
 `;
 
 export const BlackBtn = styled.button`
-  width: 70px;
-  height: 28px;
-  font-size: 11px;
+  width: 5rem;
+  height: 1.8rem;
+  font-size: 0.8rem;
   background-color: #000;
   color: #fff;
   border-radius: 5px;
@@ -92,6 +92,7 @@ export const MainColorLongBtn = styled.button`
 export const MainColorShortBtn = styled.button`
   width: 6rem;
   height: 2.3rem;
+  line-height: 2.3rem;
   border-radius: 2rem;
   border: none;
 
@@ -99,7 +100,7 @@ export const MainColorShortBtn = styled.button`
   color: #fff;
   font-weight: 700;
   font-size: 0.9rem;
-  font-family: "Lato", sans-serif;
+  font-family: 'Lato', sans-serif;
 `;
 
 export const GreyColorShortBtn = styled.button`
@@ -172,7 +173,7 @@ export const YellowBtn = styled.button`
   font-size: 0.78rem;
 `;
 
-export const PlusBtn = styled.button`
+export const PlusBtn = styled.div`
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;
@@ -180,7 +181,7 @@ export const PlusBtn = styled.button`
   background-color: #559968;
 
   font-size: 3rem;
-  line-height: 3.5rem;
+  line-height: 3.2rem;
   text-align: center;
   color: #fff;
 `;
@@ -214,7 +215,7 @@ export const UserIconCircle = styled.div`
     align-items: center;
     justify-content: center;
     border-radius: 70%;
-    font-family: "Noto Sans KR", sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     font-weight: 700;
     color: #ffffff;
     font-size: 1.2rem;
@@ -241,8 +242,7 @@ export const UserIconCircle = styled.div`
   }
 
   .image {
-    background-image: ${(props) =>
-      props.image ? `url(${props.image})` : `url(${dog_profile})`};
+    background-image: ${(props) => (props.image ? `url(${props.image})` : `url(${dog_profile})`)};
     background-size: cover;
   }
 `;

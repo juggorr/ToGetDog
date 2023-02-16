@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const BoardContainer = styled.div`
   display: flex;
@@ -17,7 +17,6 @@ export const BoardUserInfoBox = styled.div`
 
   .board-info-box-left {
     display: flex;
-    // padding-left: 1rem;
   }
 
   .menu-icon {
@@ -95,6 +94,7 @@ export const BoardCommentBox = styled.div`
   padding: 1rem 2rem;
   display: flex;
   flex-direction: column;
+  position: relative;
 
   .comment-input-box {
     padding-top: 0.5rem;
@@ -122,6 +122,7 @@ export const BoardCommentBox = styled.div`
     display: flex;
     flex-direction: column;
     padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     overflow-y: scroll;
     margin-top: 0.5rem;
     height: calc(100vh - 550px);
@@ -129,18 +130,32 @@ export const BoardCommentBox = styled.div`
 
   .comment-box {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
     font-size: 0.8rem;
-    padding-top: 0.2rem;
-  }
-
-  .comment-user {
-    flex: 0.2;
-    font-weight: 700;
-    padding-right: 0.3rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e2e2e2;
   }
 
   .comment-content {
-    flex: 0.8;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .comment-user {
+    font-weight: 700;
+    padding-right: 0.3rem;
+    padding-bottom: 0.2rem;
+  }
+
+  .comment-delete-btn {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    line-height: 1.5rem;
+    text-align: center;
+    background-color: #ef5a5f;
+    color: #fff;
   }
 `;
 
@@ -148,4 +163,5 @@ export const ContentEditImg = styled.img`
   width: 12rem;
   height: 12rem;
   object-fit: cover;
+  border-radius: 0.5rem;
 `;

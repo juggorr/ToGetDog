@@ -24,13 +24,13 @@ function NoEssentialsModal({ noEssentialsModal, setNoEssentialsModal }) {
         }}
       >
         <ConfirmModalBody>
-          <ConfirmModalImage src={Emotion4} />
-          <span>필수 값을 입력하지 않았어요.</span>
-          <MainColorShortBtn 
-            onClick={onClick}
-          >
-            확인
-          </MainColorShortBtn>
+          <ConfirmModalImage src={Emotion4}/>
+          <span className="modal-msg">필수 값을 입력하지 않았어요.</span>
+          <div className="two-btns-wrapper">
+            <MainColorShortBtn onClick={onClick}>
+              확인
+            </MainColorShortBtn>
+          </div>
         </ConfirmModalBody>
       </ConfirmModalWrapper>
       ) : null}

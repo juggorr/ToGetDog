@@ -1,8 +1,8 @@
-import { ErrorWrapper, ErrorImg } from "../styles/ErrorEmotion";
-import { HomeTextBtn } from "../styles/BtnsEmotion";
-import { useNavigate } from "react-router-dom";
+import { ErrorWrapper, ErrorImg } from '../styles/ErrorEmotion';
+import { HomeTextBtn } from '../styles/BtnsEmotion';
+import { useNavigate } from 'react-router-dom';
 
-import Snoopy from "../assets/snoopy.jpg";
+import Snoopy from '../assets/snoopy.jpg';
 
 const InternalServer = () => {
   const navigate = useNavigate();
@@ -10,12 +10,17 @@ const InternalServer = () => {
   return (
     <ErrorWrapper>
       <ErrorImg src={Snoopy} />
-      <div className="error">Internal Server Error</div>
-      <div className="errorDesc">페이지가 작동하지 않습니다.</div>
+      <div className='error'>Connection Error</div>
+      <div className='errorDesc'>
+        통신이 원활하지 않습니다.
+        <br />
+        다시 시도해주세요.
+      </div>
       <HomeTextBtn
         onClick={() => {
-          navigate("/");
-        }}>
+          navigate('/');
+        }}
+      >
         홈으로 이동
       </HomeTextBtn>
     </ErrorWrapper>

@@ -65,7 +65,7 @@ const Login = () => {
   };
 
   const onKeyPress = (e) => {
-    if (e.key == 'Enter') {
+    if (e.key === 'Enter') {
       checkInput();
     }
   };
@@ -97,8 +97,16 @@ const Login = () => {
         navigate('/');
       })
       .catch((err) => {
+        if (err.response.status === 409) {
+          if (err.response.data.msg === '이메일과 비밀번호가 일치하지 않습니다.') {
+            alert('이메일과 비밀번호가 일치하지 않습니다.');
+            return;
+          } else if (err.response.data.msg === '가입대기중') {
+            alert('이메일 인증을 완료하신 후 로그인이 가능합니다.');
+            return;
+          }
+        }
         console.log('로그인 실패');
-        console.log(err)
       });
   };
 
@@ -106,7 +114,6 @@ const Login = () => {
   // const naverURL = 'http://70.12.247.230:8080/oauth2/authorization/naver'
   // const kakaoURL = 'http://70.12.247.230:8080/oauth2/authorization/kakao'
   // const googleURL = 'http://70.12.247.230:8080/oauth2/authorization/google'
-
 
   return (
     <>
@@ -154,7 +161,9 @@ const Login = () => {
             <div onClick={() => navigate('/signup')} className='login-bottom-text'>
               회원가입
             </div>
-            <div onClick={() => navigate('/passwordsearch')}className='login-bottom-text'>비밀번호 찾기</div>
+            <div onClick={() => navigate('/passwordsearch')} className='login-bottom-text'>
+              비밀번호 찾기
+            </div>
           </div>
         </LoginWrapper>
       </LoginContainer>

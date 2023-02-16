@@ -49,7 +49,7 @@ public class ChatSaveList {
 		else
 			return false;
 	}
-	
+
 	// 채팅 저장 메소드
 	public void saveChat(ChatDTO chatDto) {
 		long roomId = chatDto.getRoomId();

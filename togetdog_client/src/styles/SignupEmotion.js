@@ -1,10 +1,24 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const SignupContainer = styled.div`
-  height: 100vh;
+  // height: calc(100vh - 60px - 3rem);
+  display: flex;
+  // align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+
+  .password-edit {
+    align-items: center;
+  }
+`;
+
+export const PasswordContainer = styled.div`
+  height: calc(100vh - 60px - 3rem);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 1.5rem 0;
+}
 `;
 
 export const SignupWrapper = styled.div`
@@ -28,14 +42,16 @@ export const SignupWrapper = styled.div`
   }
 
   .two-btns-wrapper {
+    width: 15rem;
     padding-top: 2rem;
+    display: flex;
     justify-content: space-around;
   }
 
   .signup-desc {
     width: 270px;
     text-align: left;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     color: red;
   }
 
@@ -71,7 +87,7 @@ export const InputWrapper = styled.div`
   }
 
   .input-title {
-    font-size: 15px;
+    font-size: 0.9rem;
     margin-bottom: 0.5rem;
   }
 
@@ -102,7 +118,7 @@ export const InputWrapper = styled.div`
   .email-input,
   .number-input {
     width: 100%;
-    font-size: 13px;
+    font-size: 0.9rem;
     color: #000;
     border: none;
     background: none;
@@ -132,7 +148,7 @@ export const InputWrapper = styled.div`
   }
 
   .year {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .success {
@@ -147,7 +163,7 @@ export const InputWrapper = styled.div`
 
   .boardHeader {
     text-align: center;
-    font-family: "Noto Sans KR", sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     font-size: 1.2rem;
     font-weight: 600;
     margin: 2rem 0rem;
@@ -159,7 +175,6 @@ export const EmailContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  // background-color: rgba(0, 0, 0, 0.55);
 `;
 
 export const EmailWrapper = styled.div`
@@ -169,7 +184,7 @@ export const EmailWrapper = styled.div`
   align-items: center;
 
   .email-desc {
-    font-family: "Noto Sans KR", sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
   }
 `;
 
@@ -180,16 +195,7 @@ export const LogoWrapper = styled.div`
   align-itmes: center;
   padding-bottom: 50px;
 
-  .logo-title {
-    font-size: 40px;
-    font-weight
-    color: #000;
-  }
-
-  .email-logo {
-    width: 9rem;
-    height: 9rem;
-    margin: auto;
-    margin-bottom: 2rem;
+  .logo-img {
+    width: 19rem;
   }
 `;

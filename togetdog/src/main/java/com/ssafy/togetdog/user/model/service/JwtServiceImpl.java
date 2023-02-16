@@ -58,7 +58,7 @@ public class JwtServiceImpl implements JwtService {
 	}
 
 	@Override
-	public <T> String create(long userId, String subject, long expir) {
+	public <T> String create(long userId, String subject, int expir) {
 		String jwt = Jwts.builder()
 				.setHeaderParam("type", "JWT")
 				.setHeaderParam("regDate", System.currentTimeMillis())
@@ -71,7 +71,7 @@ public class JwtServiceImpl implements JwtService {
 	}
 
 	@Override
-	public <T> String create(long userId, String subject, long expir, String role) {
+	public <T> String create(long userId, String subject, int expir, String role) {
 		String jwt = Jwts.builder()
 				.setHeaderParam("type", "JWT")
 				.setHeaderParam("regDate", System.currentTimeMillis())
