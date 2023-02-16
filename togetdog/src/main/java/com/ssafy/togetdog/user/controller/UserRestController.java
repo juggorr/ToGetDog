@@ -34,6 +34,7 @@ import com.ssafy.togetdog.user.model.entity.User;
 import com.ssafy.togetdog.user.model.service.JwtService;
 import com.ssafy.togetdog.user.model.service.MailSendService;
 import com.ssafy.togetdog.user.model.service.UserService;
+import com.ssafy.togetdog.user.model.vo.ProviderType;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -284,6 +285,10 @@ public class UserRestController {
 			resultMap.put("result", "FAIL");
 			resultMap.put("msg", "가입된 이메일이 아닙니다.");
 			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.BAD_REQUEST);
+		} else if (!user.getSocial().equals(ProviderType.O)) {
+			resultMap.put("result", "FAIL");
+			resultMap.put("msg", "소셜 회원입니다.");
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.CONFLICT);
 		}
 		logger.info(email + "로 새로운 이메일을 송부합니다.");
 		mailService.sendTmpPassword(user.getUserId(), user.getEmail());
