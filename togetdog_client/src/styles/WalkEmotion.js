@@ -157,9 +157,8 @@ export const SingleMeetingWrapper = styled.div`
   }
 
   .appointmentDate {
-    margin: 0;
     margin-top: 0.3rem;
-    font-size: 0.5rem;
+    font-size: 0.8rem;
     color: #575757;
     white-space: pre-wrap;
   }
@@ -174,7 +173,7 @@ export const SingleMeetingWrapper = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    align-items: end;
+    align-items: center;
   }
 
   .dogNames {
@@ -182,9 +181,14 @@ export const SingleMeetingWrapper = styled.div`
     font-weight: 600;
   }
 
+  .partner-info {
+    display: flex;
+    align-items: center;
+  }
+
   .partnerName {
     margin: 0rem 0.6rem;
-    font-size: 0.58rem;
+    font-size: 0.7rem;
     color: #575757;
   }
 
@@ -257,7 +261,7 @@ export const InfoModal = styled.div`
   }
 
   .infoText {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     margin-top: 1.5rem;
   }
 

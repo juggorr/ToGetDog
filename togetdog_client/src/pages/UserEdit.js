@@ -73,9 +73,7 @@ function UserEdit() {
       .then((res) => {
         setUserInfos(res.data.user);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, []);
 
   // useEffect로 동기처리해버리기~
@@ -139,7 +137,6 @@ function UserEdit() {
       !nicknameKorRegexp.test(nickname) &&
       !nicknameEngRegexp.test(nickname)
     ) {
-      console.log("닉네임 형식에 맞지 않음");
       nicknameError.current = false;
       setNicknameErrorMsg("닉네임은 한글 1~8자 혹은 영문 2~16자");
       return;
@@ -148,15 +145,12 @@ function UserEdit() {
       .get(`${BACKEND_URL}/user/nickname`, { params: { nickname } })
       .then((resp) => {
         if (resp.status === 200) {
-          // console.log(resp);
-          // console.log("사용 가능한 닉네임");
           nicknameError.current = true;
           setNicknameErrorMsg("사용 가능한 닉네임입니다.");
         }
       })
       .catch((err) => {
         // 409 에러일 경우로 코드 리팩토링 필요
-        console.log("사용 불가능한 닉네임");
         nicknameError.current = false;
         setNicknameErrorMsg("중복된 닉네임입니다.");
       });
@@ -202,8 +196,6 @@ function UserEdit() {
 
   // PUT 요청 보내기
   const handleEdit = async () => {
-    console.log("회원정보 변경!");
-
     await axios
       .put(
         `${BACKEND_URL}/user`,
@@ -238,13 +230,9 @@ function UserEdit() {
             };
             setUser(newUser);
           })
-          .catch((err) => {
-            console.log(err);
-          });
+          .catch((err) => {});
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
 
     navigate(`/feed/${user.userId}`);
   };
@@ -275,7 +263,6 @@ function UserEdit() {
       addressError.current = true;
     }
     return;
-    // console.log('바꿔')
   };
 
   const checkOthers = () => {
@@ -295,10 +282,8 @@ function UserEdit() {
     }
 
     if (nicknameError.current && birthError.current && addressError.current) {
-      console.log("회원 정보 변경을 시도합니다.");
       handleEdit();
     } else {
-      console.log("아직 입력되지 않은 값 있음.");
       return;
     }
   };

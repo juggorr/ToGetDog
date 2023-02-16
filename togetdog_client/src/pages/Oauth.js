@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
-import { useNavigate, useLocation, } from "react-router-dom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useNavigate, useLocation } from "react-router-dom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
-import { BACKEND_URL } from '../config';
-import { authAtom, userState } from '../recoil';
+import { BACKEND_URL } from "../config";
+import { authAtom, userState } from "../recoil";
 
 function Oauth() {
   const navigate = useNavigate();
@@ -12,13 +12,13 @@ function Oauth() {
   const setAuth = useSetRecoilState(authAtom);
   const [user, setUser] = useRecoilState(userState);
 
-  const [token, setToken] = useState('');
+  const [token, setToken] = useState("");
   const [userInfos, setUserInfos] = useState({
-    email: '',
-    userId: '',
-    nickName: '',
-    address: '',
-  })
+    email: "",
+    userId: "",
+    nickName: "",
+    address: "",
+  });
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -27,15 +27,13 @@ function Oauth() {
 
   // 문자열 조작
   useEffect(() => {
-    console.log(params);
-
-    let [token, user] = params.split('&');
-    console.log(token);
-    console.log(user);
+    let [token, user] = params.split("&");
     token = token.slice(14, token.length);
     setToken(token);
 
-    let [email, id, nickname, address] = user.slice(28 ,user.length - 1).split(', ');
+    let [email, id, nickname, address] = user
+      .slice(28, user.length - 1)
+      .split(", ");
     id = id.slice(7, id.length);
     nickname = nickname.slice(9, nickname.length);
     address = address.slice(8, address.length);
@@ -47,38 +45,34 @@ function Oauth() {
     });
   }, []);
 
-// 유저 정보가 입력되면 로컬스토리지에 유저 정보 저장
-useEffect(() => {
-  function setLocalStore() {
-    console.log(userInfos);
-    setUser(userInfos);
-  
-    localStorage.setItem('user', JSON.stringify(token));
-    setAuth(token);
-    setIsLoading(false);
-  }
+  // 유저 정보가 입력되면 로컬스토리지에 유저 정보 저장
+  useEffect(() => {
+    function setLocalStore() {
+      setUser(userInfos);
 
-  function logIn() {
-    navigate('/');
-  }
+      localStorage.setItem("user", JSON.stringify(token));
+      setAuth(token);
+      setIsLoading(false);
+    }
 
-  setLocalStore();
-  if (!isLoading) {
-    logIn();
-  }
+    function logIn() {
+      navigate("/");
+    }
 
-}, [userInfos]);
+    setLocalStore();
+    if (!isLoading) {
+      logIn();
+    }
+  }, [userInfos]);
 
-// 위 코드가 실행된 후에 navigate되도록 해야함
-  return(
+  // 위 코드가 실행된 후에 navigate되도록 해야함
+  return (
     <>
-    {isLoading ? (
-      <div>소셜 로그인 중입니다...</div>
-    ) :(
-      <div>
-        소셜 로그인 성공!
-      </div>
-    )}
+      {isLoading ? (
+        <div>소셜 로그인 중입니다...</div>
+      ) : (
+        <div>소셜 로그인 성공!</div>
+      )}
     </>
   );
 }

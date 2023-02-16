@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import DaumPostCode from 'react-daum-postcode';
+import React, { useEffect, useState } from "react";
+import DaumPostCode from "react-daum-postcode";
 
 const DaumKakaoEditAddress = (props) => {
   const handleComplete = (data) => {
-    let address = data.sido + ' ' + data.sigungu + ' ' + data.bname;
+    let address = data.sido + " " + data.sigungu + " " + data.bname;
     let sigunguCode = data.sigunguCode;
-
-    console.log(address);
-    console.log(sigunguCode);
 
     props.setData({
       ...props.data,
@@ -16,13 +13,16 @@ const DaumKakaoEditAddress = (props) => {
     });
 
     props.setError();
-    props.setErrorMsg('');
+    props.setErrorMsg("");
     props.setPopup(!props.popup);
   };
 
   return (
     <div>
-      <DaumPostCode className='modal' autoClose onComplete={handleComplete}></DaumPostCode>
+      <DaumPostCode
+        className="modal"
+        autoClose
+        onComplete={handleComplete}></DaumPostCode>
     </div>
   );
 };

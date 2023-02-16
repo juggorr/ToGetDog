@@ -17,7 +17,6 @@ const MainFooter = () => {
 
   // URL이 바뀔 때마다 해당 URL에 적합한 곳에 불이 들어오도록 작업
   useEffect(() => {
-    // console.log('하단 바 작업용 url');
     let currentURL = window.location.href.slice(10).split("/");
 
     const page = currentURL[1];
@@ -90,7 +89,6 @@ const MainFooter = () => {
         <div
           className="icon-box"
           onClick={() => {
-            console.log(user.userId);
             navigate(`/feed/${user.userId}`);
             // navigate된 후 새로고침 처리
             window.location.reload();

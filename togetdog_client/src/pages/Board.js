@@ -46,18 +46,15 @@ const Board = () => {
         },
       })
       .then((resp) => {
-        console.log(resp);
-        console.log(resp.data);
         setBoardData(resp.data.board);
         setDogData(resp.data.board.dog);
         setLikeStatus(resp.data.board.liked);
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
         if (err.response.status === 500) {
           navigate("/*");
-          console.log("존재하지 않는 게시물입니다.");
+          alert("존재하지 않는 게시물입니다.");
         } else if (err.response.status === 401) {
           alert("자동 로그아웃되었습니다.");
           handleLogout();

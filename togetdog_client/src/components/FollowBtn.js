@@ -1,8 +1,8 @@
-import axios from 'axios';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { BACKEND_URL } from '../config';
-import { authAtom, userState } from '../recoil';
-import { FollowBtnOff, FollowBtnOn } from '../styles/BtnsEmotion';
+import axios from "axios";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { BACKEND_URL } from "../config";
+import { authAtom, userState } from "../recoil";
+import { FollowBtnOff, FollowBtnOn } from "../styles/BtnsEmotion";
 
 const FollowBtn = ({ dogId, followStatus, setFollowStatus }) => {
   const auth = useRecoilValue(authAtom);
@@ -17,13 +17,10 @@ const FollowBtn = ({ dogId, followStatus, setFollowStatus }) => {
         },
       })
       .then((res) => {
-        console.log(res);
         setFollowStatus(!followStatus);
-        console.log('팔로우 완료');
+        console.log("팔로우 완료");
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   const handleUnfollow = async () => {
@@ -38,13 +35,10 @@ const FollowBtn = ({ dogId, followStatus, setFollowStatus }) => {
         },
       })
       .then((res) => {
-        console.log(res);
         setFollowStatus(!followStatus);
-        console.log('언팔로우가 완료되었습니다.');
+        console.log("언팔로우가 완료되었습니다.");
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   return (

@@ -22,14 +22,14 @@ export const WalkRequest = styled.div`
 
   .queryStr {
     font-family: "Noto Sans KR", sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: #717171;
     white-space: pre-wrap;
   }
 
   .warningStr {
     font-family: "Noto Sans KR", sans-serif;
-    font-size: 0.5rem;
+    font-size: 0.8rem;
     color: #f24e1e;
     white-space: pre-wrap;
   }
@@ -41,7 +41,6 @@ export const WalkRequest = styled.div`
 
   .inputWrapper {
     display: flex;
-    justify-content: center;
   }
 
   .textInput {
@@ -79,7 +78,7 @@ export const DogImgWrapper = styled.div`
     object-fit: cover;
   }
 
-  .dogFollowCircle{
+  .dogFollowCircle {
     width: 4rem;
     height: 4rem;
     border-radius: 70%;
@@ -88,7 +87,7 @@ export const DogImgWrapper = styled.div`
     background-color: #ffffff;
   }
 
-  .userFollowCircle{
+  .userFollowCircle {
     width: 4rem;
     height: 4rem;
     border-radius: 70%;

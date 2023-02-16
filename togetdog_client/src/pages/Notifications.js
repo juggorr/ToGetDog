@@ -93,7 +93,6 @@ const Notifications = () => {
         setMeetingCnt(response.data.notice.meetingCnt);
       })
       .catch((error) => {
-        console.log(error);
         if (error.response.status === 404) {
           navigate("/*");
         } else if (error.response.status === 401) {
@@ -114,13 +113,10 @@ const Notifications = () => {
       .then((response) => {
         navigate("/walk");
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   };
 
   useEffect(() => {
-    // console.log(inView, hasNextPage);
     if (inView && hasNextPage) {
       setIsLoading(true);
       getNotifications();
