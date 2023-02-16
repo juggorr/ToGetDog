@@ -12,8 +12,10 @@ import ToGetDog from '../assets/togetdog.png';
 const EmailAuth = () => {
   const navigate = useNavigate();
 
-  const email = new URLSearchParams(window.location.search).get('email');
-  const authKey = new URLSearchParams(window.location.search).get('authKey');
+  let url = window.location.search;
+  url = url.replace(/&amp;/gi, '&');
+  let email = new URLSearchParams(url).get('email');
+  const authKey = new URLSearchParams(url).get('authKey');
 
   const handleVerification = async () => {
     console.log(email);
