@@ -322,8 +322,8 @@ const Feed = () => {
               </div>
             ) : currentDog ? (
               <div className='dog-info-box'>
-                <div className='dog-name'>
-                  {currentDog.dogName}
+                <div className='dog-name-box'>
+                  <span className='dog-name'>{currentDog.dogName}</span>
                   {currentDog.dogGender === 'male' ? (
                     <img src={Boy} className='dog-gender' alt='Boy' />
                   ) : (
