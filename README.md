@@ -185,3 +185,24 @@ togetdog
 --- 
 
 ### **💚 프로젝트 시연화면** ###
+
+#### Home 화면
+![home](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/60ec865b-03ef-4e81-a626-be4ecd52a598/image_%285%29.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230216%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230216T085130Z&X-Amz-Expires=86400&X-Amz-Signature=173108a4341a39761c7246df7eee6862a05fcd63d966afdea30d6e8b818d1e45&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22image%2520%285%29.png%22&x-id=GetObject)
+
+#### 알림 창
+![notify](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/7e5a5338-41a0-4c5d-b491-2cb1ecee8cdb/Honeycam_2023-02-15_23-50-52.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230216%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230216T085302Z&X-Amz-Expires=86400&X-Amz-Signature=31bfc2dabc07833d02bebe680a9a0843eb6c25dbe8f815c86fbd5b805a687334&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Honeycam%25202023-02-15%252023-50-52.gif%22&x-id=GetObject)
+
+#### 사람 및 강아지 검색
+![검색](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/0bfb81eb-14fe-4dab-b3f0-a401e0e8c976/Honeycam_2023-02-15_23-58-18.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230216%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230216T085332Z&X-Amz-Expires=86400&X-Amz-Signature=9cc96d82531495ebe9f30ed112cd06f44ba4af7c8b1ce76d02fdd0bb7408477c&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Honeycam%25202023-02-15%252023-58-18.gif%22&x-id=GetObject)
+
+#### 주변시설 검색
+![지도](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/0e78a979-19f1-408c-aa7a-3039ed0492de/ezgif.com-resize.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230216%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230216T085405Z&X-Amz-Expires=86400&X-Amz-Signature=7e28192b065b1d363688ef25fab4c50ab7bd7e96ff9cac20eb1b0c07587ba008&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22ezgif.com-resize.gif%22&x-id=GetObject)
+
+### SNS 서비스
+![SNS](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/a786b9ae-b8dd-4a5c-8ea5-d27c27b085fd/Honeycam_2023-02-15_23-48-26.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230216%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230216T085501Z&X-Amz-Expires=86400&X-Amz-Signature=f7ceb74b396937bc42db67a41fabd16e7dc30e11e40860f5286c68c0be7988ab&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Honeycam%25202023-02-15%252023-48-26.gif%22&x-id=GetObject)
+
+#### 산책 친구 찾기!
+![산책](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/0b91ee0e-2a48-4133-aafe-5c402f2b4a29/Honeycam_2023-02-15_23-47-01.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230216%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230216T085501Z&X-Amz-Expires=86400&X-Amz-Signature=1ae604bae6b97f8097315722a498481ca89ea9706753072d2856ef3987da11e5&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Honeycam%25202023-02-15%252023-47-01.gif%22&x-id=GetObject)
+
+#### 자세한 약속은 DM을 통해 조율하세요!
+![DM](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/ea745a5c-14d9-4382-9aa1-6a6e98c4ea95/Honeycam_2023-02-15_23-56-43.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230216%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230216T085507Z&X-Amz-Expires=86400&X-Amz-Signature=ade27c18765b0f68d09c3fee42a76fb5117a9ebdfcc33e481cca336df1a23618&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Honeycam%25202023-02-15%252023-56-43.gif%22&x-id=GetObject)
