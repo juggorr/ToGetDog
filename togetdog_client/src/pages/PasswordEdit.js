@@ -3,19 +3,21 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 
-import { BACKEND_URL } from '../config';
+import { BACKEND_URL } from "../config";
 
 import NotMatchModal from "../components/AlertModal/NotMatchModal";
-import { MainColorShortBtn, GreyColorShortBtn } from '../styles/BtnsEmotion';
-import { PasswordContainer, SignupWrapper, InputWrapper } from '../styles/SignupEmotion';
-import NoEssentialsModal from '../components/AlertModal/NoEssentialsModal'
+import { MainColorShortBtn, GreyColorShortBtn } from "../styles/BtnsEmotion";
+import {
+  PasswordContainer,
+  SignupWrapper,
+  InputWrapper,
+} from "../styles/SignupEmotion";
+import NoEssentialsModal from "../components/AlertModal/NoEssentialsModal";
 import { authAtom, userState } from "../recoil";
 
 const passwordRegexp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^+=-])(?=.*[0-9]).{8,16}$/;
 
-
 function PasswordEdit() {
-
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -28,35 +30,31 @@ function PasswordEdit() {
   useEffect(() => {
     // 로그인 하지 않은 유저 접근 불가
     if (!auth || !user) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
     // 로그인 했어도 url로 접근 불가
     if (!location.state) {
-      alert('허용되지 않은 접근입니다.');
+      alert("허용되지 않은 접근입니다.");
       navigate(-1);
       return;
     }
     //
-  })
-
-  const [inputs, setInputs] = useState({
-    oldPassword: '',
-    password: '',
-    passwordCheck: '',
   });
 
-  const {
-    oldPassword,
-    password,
-    passwordCheck,
-  } = inputs;
+  const [inputs, setInputs] = useState({
+    oldPassword: "",
+    password: "",
+    passwordCheck: "",
+  });
+
+  const { oldPassword, password, passwordCheck } = inputs;
 
   const [passwordError, setPasswordError] = useState(false);
-  const [passwordErrorMsg, setPasswordErrorMsg] = useState('');
+  const [passwordErrorMsg, setPasswordErrorMsg] = useState("");
   const [passwordCheckError, setPasswordCheckError] = useState(false);
-  const [passwordCheckErrorMsg, setPasswordCheckErrorMsg] = useState('');
+  const [passwordCheckErrorMsg, setPasswordCheckErrorMsg] = useState("");
 
   // 기존 비밀번호와 일치하지 않을 시 모달
   const [notMatchModal, setNotMatchModal] = useState(false);
@@ -72,17 +70,17 @@ function PasswordEdit() {
   // 기존 비밀번호 핸들러 메소드
   const handleOldPassword = (e) => {
     onChange(e);
-  }
+  };
 
   // 비밀번호 핸들러 메소드
   const handlePassword = (e) => {
     // 비밀번호 유효성 검사
     if (!passwordRegexp.test(e.target.value)) {
       setPasswordError(false);
-      setPasswordErrorMsg('비밀번호는 영문, 숫자, 특수문자 포함 8~16자');
+      setPasswordErrorMsg("비밀번호는 영문, 숫자, 특수문자 포함 8~16자");
     } else {
       setPasswordError(true);
-      setPasswordErrorMsg('사용 가능한 비밀번호입니다.');
+      setPasswordErrorMsg("사용 가능한 비밀번호입니다.");
     }
     onChange(e);
   };
@@ -90,14 +88,14 @@ function PasswordEdit() {
   // 비밀번호 재확인 핸들러 메소드
   const handlePasswordCheck = (e) => {
     // 비밀번호 일치 여부 검사
-    if (password === e.target.value && e.target.value !== '') {
-      console.log('비밀번호 일치');
+    if (password === e.target.value && e.target.value !== "") {
+      console.log("비밀번호 일치");
       setPasswordCheckError(true);
-      setPasswordCheckErrorMsg('비밀번호가 일치합니다.');
+      setPasswordCheckErrorMsg("비밀번호가 일치합니다.");
     } else {
-      console.log('비밀번호 불일치');
+      console.log("비밀번호 불일치");
       setPasswordCheckError(false);
-      setPasswordCheckErrorMsg('비밀번호가 일치하지 않습니다.');
+      setPasswordCheckErrorMsg("비밀번호가 일치하지 않습니다.");
     }
 
     onChange(e);
@@ -109,42 +107,38 @@ function PasswordEdit() {
   // 2. 기존 비밀번호가 일치할 경우 => 정상적으로 비밀번호 변경
   const sendPut = async () => {
     await axios
-      .put(`${BACKEND_URL}/user/password`,
-      {
-        password: oldPassword,
-        newPassword: password,
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: auth,
+      .put(
+        `${BACKEND_URL}/user/password`,
+        {
+          password: oldPassword,
+          newPassword: password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: auth,
+          },
         }
-      })
+      )
       .then((res) => {
-        console.log(res)
-        navigate(`/feed/${user.userId}`)
+        console.log(res);
+        navigate(`/feed/${user.userId}`);
       })
       .catch((err) => {
         if (err.response.status === 400) {
-          console.log('기존 비밀번호와 일치하지 않습니다.')
+          console.log("기존 비밀번호와 일치하지 않습니다.");
           setNotMatchModal(true);
         } else {
-          console.log(err)
+          console.log(err);
         }
       });
-  }
-
+  };
 
   const handleNotEdit = () => {
-    navigate(`/feed/${user.userId}`)
-  }
-
+    navigate(-1);
+  };
 
   const checkOthers = () => {
-    // console.log(oldPassword);
-    // console.log(password);
-    // console.log(passwordCheck);
-
     if (!oldPassword || !password || !passwordCheck) {
       setNoEssentialsModal(true);
       return;
@@ -155,77 +149,87 @@ function PasswordEdit() {
 
   return (
     <>
-    <PasswordContainer>
-      <NotMatchModal 
-        notMatchModal={notMatchModal}
-        setNotMatchModal={setNotMatchModal}
-      />
-      <NoEssentialsModal 
-        noEssentialsModal={noEssentialsModal}
-        setNoEssentialsModal={setNoEssentialsModal}
-      />
-      <SignupWrapper>
+      <PasswordContainer>
+        <NotMatchModal
+          notMatchModal={notMatchModal}
+          setNotMatchModal={setNotMatchModal}
+        />
+        <NoEssentialsModal
+          noEssentialsModal={noEssentialsModal}
+          setNoEssentialsModal={setNoEssentialsModal}
+        />
+        <SignupWrapper>
           {/* 기존 비밀번호 wrapper */}
           <InputWrapper>
-            <div className='input-title'>
-              기존 비밀번호<span className='red-dot'>*</span>
+            <div className="input-title">
+              기존 비밀번호<span className="red-dot">*</span>
             </div>
-            <div className='horizontal-flex'>
-              <div className='input-box general-input-box'>
+            <div className="horizontal-flex">
+              <div className="input-box general-input-box">
                 <input
-                  name='oldPassword'
-                  className='email-input'
-                  type='password'
-                  placeholder='기존 비밀번호를 입력해 주세요.'
+                  name="oldPassword"
+                  className="email-input"
+                  type="password"
+                  placeholder="기존 비밀번호를 입력해 주세요."
                   onChange={(e) => handleOldPassword(e)}
                 />
               </div>
             </div>
-            <div className="error">본인확인을 위해 기존 비밀번호를 입력해 주세요.</div>
+            <div className="error">
+              본인확인을 위해 기존 비밀번호를 입력해 주세요.
+            </div>
           </InputWrapper>
           {/* 비밀번호 wrapper */}
           <InputWrapper>
-            <div className='input-title'>
-              변경할 비밀번호<span className='red-dot'>*</span>
+            <div className="input-title">
+              변경할 비밀번호<span className="red-dot">*</span>
             </div>
-            <div className='horizontal-flex'>
-              <div className='input-box general-input-box'>
+            <div className="horizontal-flex">
+              <div className="input-box general-input-box">
                 <input
-                  name='password'
-                  className='email-input'
-                  type='password'
-                  placeholder='변경할 비밀번호를 입력해 주세요.'
+                  name="password"
+                  className="email-input"
+                  type="password"
+                  placeholder="변경할 비밀번호를 입력해 주세요."
                   onChange={(e) => handlePassword(e)}
                 />
               </div>
             </div>
-            <div className={passwordError ? 'success' : 'error'}>{passwordErrorMsg}</div>
+            <div className={passwordError ? "success" : "error"}>
+              {passwordErrorMsg}
+            </div>
           </InputWrapper>
           {/* 비밀번호 확인 wrapper */}
           <InputWrapper>
-            <div className='input-title'>
-              변경할 비밀번호 확인<span className='red-dot'>*</span>
+            <div className="input-title">
+              변경할 비밀번호 확인<span className="red-dot">*</span>
             </div>
-            <div className='horizontal-flex'>
-              <div className='input-box general-input-box'>
+            <div className="horizontal-flex">
+              <div className="input-box general-input-box">
                 <input
-                  name='passwordCheck'
-                  className='email-input'
-                  type='password'
-                  placeholder='변경할 비밀번호를 다시 한번 입력해 주세요.'
+                  name="passwordCheck"
+                  className="email-input"
+                  type="password"
+                  placeholder="변경할 비밀번호를 다시 한번 입력해 주세요."
                   onChange={(e) => handlePasswordCheck(e)}
                 />
               </div>
             </div>
-            <div className={passwordCheckError ? 'success' : 'error'}>{passwordCheckErrorMsg}</div>
+            <div className={passwordCheckError ? "success" : "error"}>
+              {passwordCheckErrorMsg}
+            </div>
           </InputWrapper>
-          <div className='signup-desc'>* 표시는 필수 입력 값입니다.</div>
-          <div className='two-btns-wrapper'>
-              <GreyColorShortBtn onClick={handleNotEdit}>돌아가기</GreyColorShortBtn>
-              <MainColorShortBtn onClick={checkOthers}>변경하기</MainColorShortBtn>
+          <div className="signup-desc">* 표시는 필수 입력 값입니다.</div>
+          <div className="two-btns-wrapper">
+            <GreyColorShortBtn onClick={handleNotEdit}>
+              돌아가기
+            </GreyColorShortBtn>
+            <MainColorShortBtn onClick={checkOthers}>
+              변경하기
+            </MainColorShortBtn>
           </div>
-      </SignupWrapper>
-    </PasswordContainer>
+        </SignupWrapper>
+      </PasswordContainer>
     </>
   );
 }

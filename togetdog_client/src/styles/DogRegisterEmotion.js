@@ -1,8 +1,8 @@
-import styled from '@emotion/styled';
-import ReactSelect from 'react-select';
+import styled from "@emotion/styled";
+import ReactSelect from "react-select";
 
-import plusIcon from '../assets/plusicon3.png';
-import dog_profile from '../assets/dog_profile.png';
+import plusIcon from "../assets/plusicon3.png";
+import dog_profile from "../assets/dog_profile.png";
 
 export const RegisterContainer = styled.div`
   width: 100%;
@@ -92,7 +92,8 @@ export const ProfileImage = styled.div`
   padding: 1.25rem;
   margin: auto;
 
-  background-image: ${(props) => (props.image ? `url(${props.image})` : `url(${dog_profile})`)};
+  background-image: ${(props) =>
+    props.image ? `url(${props.image})` : `url(${dog_profile})`};
   background-size: cover;
   background-position: center;
 
@@ -202,11 +203,13 @@ export const InputWrapper = styled.div`
 
   .year {
     font-size: 0.9rem;
+    line-height: 2.4rem;
     padding-right: 1.5rem;
   }
 
   .month {
     font-size: 0.9rem;
+    line-height: 2.4rem;
   }
 
   .kilogram {

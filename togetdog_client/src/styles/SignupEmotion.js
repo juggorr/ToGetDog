@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const SignupContainer = styled.div`
   // height: calc(100vh - 60px - 3rem);
@@ -69,7 +69,7 @@ export const SignupWrapper = styled.div`
   .edit-bottom-text {
     color: #aaa;
     text-decoration: underline;
-    font-size: 13px;
+    font-size: 0.8rem;
     float: right;
     margin-top: 0.25rem;
   }
@@ -149,6 +149,7 @@ export const InputWrapper = styled.div`
 
   .year {
     font-size: 0.9rem;
+    line-height: 2.4rem;
   }
 
   .success {
@@ -163,7 +164,7 @@ export const InputWrapper = styled.div`
 
   .boardHeader {
     text-align: center;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: "Noto Sans KR", sans-serif;
     font-size: 1.2rem;
     font-weight: 600;
     margin: 2rem 0rem;
@@ -184,7 +185,7 @@ export const EmailWrapper = styled.div`
   align-items: center;
 
   .email-desc {
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: "Noto Sans KR", sans-serif;
   }
 `;
 

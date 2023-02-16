@@ -1,11 +1,11 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const FeedContainer = styled.div`
   width: 100%;
   height: calc(100vh - 115px);
   display: flex;
   flex-direction: column;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
 
   .no-photo {
     height: 100%;
@@ -107,7 +107,7 @@ export const FeedProfileTop = styled.div`
   }
 
   .profile-etc-wrapper {
-    min-width: 30%;
+    min-width: 26%;
     display: flex;
     flex-direction: column;
     align-items: end;
@@ -177,6 +177,10 @@ export const FeedProfileTop = styled.div`
     background-color: #717171;
     margin-right: 0.3rem;
     line-height: 1.7rem;
+  }
+
+  .regist-msg {
+    font-size: 0.85rem;
   }
 `;
 
