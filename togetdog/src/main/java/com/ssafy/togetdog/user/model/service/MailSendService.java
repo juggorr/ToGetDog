@@ -24,8 +24,8 @@ public class MailSendService {
 	 * 이를 방지하기 위해 동일한 메일에 대해서는 해당 계정으로 최근 x분 혹은 x시간 내 보낸 적이 없어야 재전송할 수 있도록 설정을 해주는 것이 안전합니다.
 	 */
 	
-	//private final String path = "https://togetdog.site/emailAuth?email=";
-	private final String path = "https://i8a807.p.ssafy.io/emailAuth?email=";
+	private final String path = "https://togetdog.site/emailAuth?email=";
+	//private final String path = "https://i8a807.p.ssafy.io/emailAuth?email=";
 
     private final JavaMailSender mailSender;
     private final UserService userService;
