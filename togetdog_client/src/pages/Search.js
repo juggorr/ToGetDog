@@ -24,11 +24,7 @@ const SingleFriend = ({ item }) => {
       <div className='singleDog' onClick={() => navigate(`/feed/${item.userId}`)}>
         <DogImgWrapper>
           <div className='dogProfileCircle'>
-            <img
-              src={'https://i8a807.p.ssafy.io/image/dog/' + item.dogProfile}
-              alt='dog_img'
-              className='dogProfileImg'
-            />
+            <img src={'https://togetdog.site/image/dog/' + item.dogProfile} alt='dog_img' className='dogProfileImg' />
           </div>
         </DogImgWrapper>
         <div className='dogInfo'>

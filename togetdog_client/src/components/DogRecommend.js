@@ -7,7 +7,7 @@ const DogRecommend = ({ dog }) => {
   return (
     <>
       <DogRecommendWrapper onClick={() => navigate(`/feed/${dog.userId}`, { state: { dogId: dog.dogId } })}>
-        <DogProfile src={'https://i8a807.p.ssafy.io/image/dog/' + dog.dogProfile} />
+        <DogProfile src={'https://togetdog.site/image/dog/' + dog.dogProfile} />
         <DogName>{dog.dogName}</DogName>
       </DogRecommendWrapper>
     </>

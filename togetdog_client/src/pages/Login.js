@@ -147,13 +147,13 @@ const Login = () => {
           </InputWrapper>
           <BlackLongBtn onClick={checkInput}>로그인</BlackLongBtn>
           <div className='social-login-wrapper'>
-            <a href='https://i8a807.p.ssafy.io/oauth2/authorization/naver'>
+            <a href='https://togetdog.site/oauth2/authorization/naver'>
               <SocialLoginLogo src={naverLogo}></SocialLoginLogo>
             </a>
-            <a href='https://i8a807.p.ssafy.io/oauth2/authorization/google'>
+            <a href='https://togetdog.site/oauth2/authorization/google'>
               <SocialLoginLogo src={googleLogo}></SocialLoginLogo>
             </a>
-            <a href='https://i8a807.p.ssafy.io/oauth2/authorization/kakao'>
+            <a href='https://togetdog.site/oauth2/authorization/kakao'>
               <SocialLoginLogo src={kakaoLogo}></SocialLoginLogo>
             </a>
           </div>
