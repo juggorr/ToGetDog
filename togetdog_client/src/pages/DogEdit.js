@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { authAtom, userState } from '../recoil';
 import Select from 'react-select';
 import axios from 'axios';
 
-import { DUMMY_URL, BACKEND_URL } from '../config';
+import { BACKEND_URL } from '../config';
 
 import NoEssentialsModal from '../components/AlertModal/NoEssentialsModal'
 import { MainColorLongBtn } from '../styles/BtnsEmotion';
@@ -13,7 +13,10 @@ import DoubleOptionBtn from '../components/DoubleOptionBtn';
 import { RegisterContainer, RegisterWrapper, ProfileImage, AddImage, InputWrapper } from '../styles/DogRegisterEmotion';
 import BackHeader from '../components/BackHeader';
 
+
 const nameRegexp = /^[가-힣]{1,5}$/;
+const imageRegexp = /(.*?)\.(jpg|jpeg|png)$/;
+const maxSize = 50 * 1024 * 1024;
 // 강아지 성별 선택 옵션들
 const genderBtnList = [
   {
@@ -60,18 +63,23 @@ const char2BtnList = [
 ];
 
 
-
 function DogEdit() {
 
   const auth = useRecoilValue(authAtom);
-  const setAuth = useSetRecoilState(authAtom);
-  const [user, setUser] = useRecoilState(userState);
+  const user = useRecoilValue(userState);
   
   const navigate = useNavigate();
+  const location = useLocation();
+  const dogId = location.state;
 
   // 들어오면 강아지 정보 받아오기 & 현재 년, 월 받아오기
   const [dog, setDog] = useState({});
   useEffect(() => {
+    if(!auth || !localStorage.getItem("recoil-persist") || !dog) {
+      navigate("/");
+      return;
+    }
+
     axios
       .get(`${BACKEND_URL}/dog/${dogId}`)
       .then((res) => {
@@ -82,8 +90,6 @@ function DogEdit() {
         console.log(err)
       })
   }, [])
-  const location = useLocation();
-  const dogId = location.state;
 
   // 견종 리스트 public/breeds.txt에서 불러오기
   const [breedList, setBreedList] = useState([]);
@@ -103,7 +109,7 @@ function DogEdit() {
 
   // placeholder들 받아오기
   const [imageHold, setImageHold] = useState('');
-  const [imageHoldURL, setImageHoldURL] = useState('');
+  // const [imageHoldURL, setImageHoldURL] = useState('');
   const [nameHold, setNameHold] = useState('');
   const [breedHold, setBreedHold] = useState('');
   const [ageHold, setAgeHold] = useState('');
@@ -138,21 +144,26 @@ function DogEdit() {
 
   // age들어오면 강아지 태어난 년, 월 계산하기
   useEffect(() => {
+    console.log(dog.dogAge);
     const result = parseInt(ageHold / 12);
     const remainder = ageHold % 12;
-    let yearTemp = new Date().getFullYear() - result;
-    let monthTemp = new Date().getMonth() + 1;
+    console.log(remainder);
+    let yearTemp = Number(new Date().getFullYear() - result);
+    let monthTemp = Number(new Date().getMonth() + 1);
+    console.log(monthTemp);
     // 월수 계산 위한 변수
     let x = monthTemp - remainder;
 
     if (x === monthTemp) {
+      console.log(1);
       setYearHold(yearTemp);
       setMonthHold(monthTemp);
       setYear(String(yearTemp));
       setMonth(String(monthTemp));
       return;
     }
-    if (x < 0) {
+    if (x === 0 || x < 0) {
+      console.log(2);
       setYearHold(yearTemp - 1);
       setMonthHold(12 + x);
       setYear(String(yearTemp - 1));
@@ -160,6 +171,7 @@ function DogEdit() {
       return;
     }
     if (0 < x < monthTemp) {
+      console.log(3);
       setYearHold(yearTemp);
       setMonthHold(x);
       setYear(String(yearTemp));
@@ -171,12 +183,17 @@ function DogEdit() {
 
   const [noEssentialsModal, setNoEssentialsModal] = useState(false);
 
+  const [imageError, setImageError] = useState(false);
+  const [imageErrorMsg, setImageErrorMsg] = useState('');
   const [nameError, setNameError] = useState(false);
   const [nameErrorMsg, setNameErrorMsg] = useState('');
   const [yearError, setYearError] = useState(false);
   const [yearErrorMsg, setYearErrorMsg] = useState('');
   const [monthError, setMonthError] = useState(false);
   const [monthErrorMsg, setMonthErrorMsg] = useState('');
+  // 미래시점 입력시 발생하는 err
+  const [ageError, setAgeError] = useState(false);
+  const [ageErrorMsg, setAgeErrorMsg] = useState('');
   const [weightError, setWeightError] = useState(false);
   const [weightErrorMsg, setWeightErrorMsg] = useState('');
 
@@ -184,17 +201,43 @@ function DogEdit() {
   const [imgURL, setImgURL] = useState('');
   const [image, setImage] = useState(null);
   const handleImage = (e) => {
-    // 파일 새로 올리면 placeholder null로 바꿔서 올린 이미지 미리보기
-    setImageHold(null);
     const file = e.target.files[0];
-    setImage(file);
-    setImgURL(URL.createObjectURL(file));
+    // 사진 확장자 유효성 검사
+    if (!imageRegexp.test(file.name)) {
+      setImageError(true);
+      setImageErrorMsg('사진 피알을 올려주세요.')
+      return;
+    }
+    // 사진 용량 유효성 검사
+    if (file.size > maxSize) {
+      setImageError(true);
+      setImageErrorMsg('50MB를 초과한 파일입니다.')
+    } else {
+      setImageError(false);
+      setImageErrorMsg('');
+      // 파일 새로 올리면 placeholder null로 바꿔서 올린 이미지 미리보기
+      setImageHold(null);
+      setImage(file);
+      setImgURL(URL.createObjectURL(file));
+    }
   };
+
   // 이름, 5글자 이상 입력 불가
   const [name, setName] = useState('');
-  const handleName = ({ target: { value } }) => {
-    setName(value.slice(0, 5));
+  const handleName = (e) => {
+    // 입력한 순간 저장된 이름을 없애야 오류 처리 가능
+    setNameHold('');
+    const name = e.target.value.slice(0, 5);
+    if (!nameRegexp.test(name)) { // 정규식 통과못하면 !false = >true
+      setNameError(true);
+      setNameErrorMsg('이름은 한글1~5자');
+    } else {
+      setNameError(false);
+      setNameErrorMsg('');
+    }
+    setName(name);
   };
+
   // 성별 선택
   const [sex, setSex] = useState('');
   const handleSex = (e) => {
@@ -205,21 +248,71 @@ function DogEdit() {
   const handleBreed = (e) => {
     setBreed(e.value);
   };
-  // 태어난 해, 4글자 이상 입력 불가
+
+  // 태어난 해
   const [year, setYear] = useState('');
-  const handleYear = ({ target: { value } }) => {
-    setYear(value.slice(0, 4));
+  const handleYear = (e) => {
+    setYearHold('');
+    // 4글자만 입력되도록 슬라이싱
+    const year = e.target.value.slice(0, 4);
+    // 기네스기록 + 3년 출생년도 등록 기준
+    if (year < 1998 || year > new Date().getFullYear()) {
+      setYearError(true);
+      setYearErrorMsg('적절한 출생연도를 입력해주세요.');
+    } else {
+      setYearError(false);
+      setYearErrorMsg('');
+    }
+    setYear(year);
   };
+
   // 태어난 달, 2글자 이상 입력 불가
   const [month, setMonth] = useState('');
-  const handleMonth = ({ target: { value } }) => {
-    setMonth(value.slice(0, 2));
+  const handleMonth = (e) => {
+    setMonthHold('');
+    const month = e.target.value.slice(0, 2);
+    if (month < 1 || month > 12) {
+      setMonthError(true);
+      setMonthErrorMsg('적절한 출생월을 입력해주세요.');
+    } else {
+      setMonthError(false);
+      setMonthErrorMsg('');
+    }
+    setMonth(month);
   };
+
+  // 미래 시점 입력못하게 검사하는 함수
+  useEffect(() => {
+    // console.log('감시하자')
+    const handleAge = () => {
+      if (month && year) {
+        if (year === String(new Date().getFullYear()) && month > new Date().getMonth() + 1) {
+          setAgeError(true);
+          setAgeErrorMsg('미래 시점은 입력할 수 없습니다.');
+        } else {
+          setAgeError(false);
+          setAgeErrorMsg('');
+        }
+      }
+    }  
+    handleAge();
+  }, [year, month])
+
   // 몸무게, 4글자 이상 입력 불가
   const [weight, setWeight] = useState('');
-  const handleWeight = ({ target: { value } }) => {
-    setWeight(value.slice(0, 4));
+  const handleWeight = (e) => {
+    setWeightHold('');
+    const weight = e.target.value.slice(0, 4);
+    if (weight < 0 || weight > 90) {
+      setWeightError(true);
+      setWeightErrorMsg('적절한 몸무게를 입력해주세요.');
+    } else {
+      setWeightError(false);
+      setWeightErrorMsg('');
+    }
+    setWeight(weight);
   };
+
   // 중성화 여부
   const [isNeuterd, setIsNeuterd] = useState('');
   const handleIsNeuterd = (e) => {
@@ -238,6 +331,7 @@ function DogEdit() {
   // 특이사항, 20글자 이상 입력 불가
   const [perk, setPerk] = useState('');
   const handlePerk = ({ target: { value } }) => {
+    setPerkHold('');
     setPerk(value.slice(0, 20));
   };
 
@@ -250,44 +344,13 @@ function DogEdit() {
       // setInputError(true);
       // setInputErrorMsg('필수 값이 입력되지 않았습니다');
       return false;
-    }
-    // 이름 유효성 검사
-    // 참 거짓 헷갈림..
-    if (!nameRegexp.test(name)) {
-      setNameError(true);
-      setNameErrorMsg('이름은 한글로 1~5글자 입니다');
+    };
+    // 필수 값들이 입력되었고, 값에 에러가 없으면 통과!
+    if (!imageError && !nameError && !yearError && !monthError && !weightError && !ageError) {
+      return true;
+    } else {
       return false;
     }
-    // 년도 유효성 검사
-    const checkYear = new Date().getFullYear();
-    if (year < 2000 || year > checkYear) {
-      setYearError(true);
-      setYearErrorMsg('적절한 년도를 입력해 주세요');
-      console.log('적절한 년도를 입력해 주세요');
-      return false;
-    }
-    // 달 유효성 검사
-    const checkMonth = new Date().getMonth() + 1;
-    // 1월부터 12월까지 입력받기
-    if (month < 1 || month > 13) {
-      setMonthError(true);
-      setMonthErrorMsg('적절한 월을 입력해 주세요');
-      return false;
-    }
-    // 미래의 시점 입력 제한
-    if (year === checkYear && month > checkMonth) {
-      setMonthError(true);
-      setMonthErrorMsg('현재 시점 이후를 입력할 수 없어요')
-      return false;
-    }
-    // 몸무게 유효성 검사
-    if (weight < 0 || weight > 80) {
-      setWeightError(true);
-      setWeightErrorMsg('적절한 몸무게를 입력해 주세요');
-      return false;
-    }
-    // 모두 통과하면 true 반환
-    return true;
   };
 
   const sendPUT = async () => {
@@ -370,21 +433,24 @@ function DogEdit() {
         setNoEssentialsModal={setNoEssentialsModal}
       />
       <RegisterWrapper>
-        <ProfileImage image={imageHold? `https://i8a807.p.ssafy.io/image/dog/` + imageHold : imgURL}>
-          {/* 사진 등록 */}
-          <AddImage>
-            <label htmlFor='imgUp'>
-              <div className='label-div' />
-            </label>
-          </AddImage>
-          <input
-            type='file'
-            id='imgUp'
-            className='input-file'
-            accept='image/jpg, image/png, image/jpeg'
-            onChange={handleImage}
-          />
-        </ProfileImage>
+        <InputWrapper>
+          <ProfileImage image={imageHold? `https://i8a807.p.ssafy.io/image/dog/` + imageHold : imgURL}>
+            {/* 사진 등록 */}
+            <AddImage>
+              <label htmlFor='imgUp'>
+                <div className='label-div' />
+              </label>
+            </AddImage>
+            <input
+              type='file'
+              id='imgUp'
+              className='input-file'
+              accept='image/jpg, image/png, image/jpeg'
+              onChange={handleImage}
+            />
+          </ProfileImage>
+          <div className='profile-error'>{imageErrorMsg}</div>
+        </InputWrapper>
         {/* 이름 입력 */}
         <InputWrapper>
           <div className='input-title'>
@@ -399,11 +465,11 @@ function DogEdit() {
                 type='text'
                 placeholder={nameHold}
                 value={name}
-                onChange={handleName}
+                onChange={(e) => handleName(e)}
               />
             </div>
           </div>
-          <div className={nameError ? 'success' : 'error'}>{nameErrorMsg}</div>
+          <div className='error'>{nameErrorMsg}</div>
         </InputWrapper>
         {/* 성별 입력 */}
         <InputWrapper>
@@ -442,7 +508,7 @@ function DogEdit() {
                   step='1'
                   placeholder={yearHold}
                   value={year}
-                  onChange={handleYear}
+                  onChange={(e) => handleYear(e)}
                 />
               </div>
               <div className='year'>년</div>
@@ -456,14 +522,15 @@ function DogEdit() {
                   step='1'
                   placeholder={monthHold}
                   value={month}
-                  onChange={handleMonth}
+                  onChange={(e) => handleMonth(e)}
                 />
               </div>
               <div className='month'>월</div>
             </div>
           </div>
-          <div className={yearError ? 'success' : 'error'}>{yearErrorMsg}</div>
-          <div className={monthError ? 'success' : 'error'}>{monthErrorMsg}</div>
+          <div className='error'>{yearErrorMsg}</div>
+          <div className='error'>{monthErrorMsg}</div>
+          <div className='error'>{ageErrorMsg}</div>
           <p className='small-font'>정확한 나이를 모르신다면 추정 나이를 입력해 주세요</p>
         </InputWrapper>
         {/* 몸무게 입력 */}
@@ -482,12 +549,12 @@ function DogEdit() {
                 step='0.1'
                 placeholder={weightHold}
                 value={weight}
-                onChange={handleWeight}
+                onChange={(e) => handleWeight(e)}
               />
             </div>
             <div className='kilogram'>kg</div>
           </div>
-          <div className={weightError ? 'success' : 'error'}>{weightErrorMsg}</div>
+          <div className='error'>{weightErrorMsg}</div>
         </InputWrapper>
         {/* 중성화 여부 */}
         <InputWrapper>
@@ -542,12 +609,8 @@ function DogEdit() {
         </InputWrapper>
         <div className='signup-desc'>*표시는 필수 입력 값입니다.</div>
         <div className='btn-wrapper'>
-          <MainColorLongBtn onClick={handleEdit}>등록하기</MainColorLongBtn>
+          <MainColorLongBtn onClick={handleEdit}>수정하기</MainColorLongBtn>
         </div>
-        {/* 추후에 우리로고로 바꾸기 */}
-        {/* <div className="logo-div">
-          <img src={process.env.PUBLIC_URL + 'favicon.ico'} alt="paw"></img>
-        </div> */}
       </RegisterWrapper>
     </RegisterContainer>
   )

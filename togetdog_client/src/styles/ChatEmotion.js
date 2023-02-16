@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const ChatContainer = styled.div`
   display: flex;
@@ -67,14 +67,50 @@ export const ChatMsgContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: calc(100vh - 60px);
+  position: relative;
+
+  .modal-wrapper {
+    z-index: 999;
+    position: fixed;
+    top: 0;
+    @media (min-width: 650px) {
+      width: 360px;
+    }
+
+    @media (max-width: 650px) {
+      /* 650px 이하일 때 */
+      width: 100vw;
+    }
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: end;
+    align-items: start;
+  }
+
+  .modal-body {
+    border-radius: 0.5rem;
+    padding: 0.1rem 0.3rem;
+    background-color: #fff;
+    border: 1px solid #e2e2e2;
+    margin-top: 2.5rem;
+    margin-right: 2.7rem;
+  }
+
+  .single-menu {
+    padding: 0.4rem 0.3rem;
+    font-size: 0.8rem;
+    border-bottom: 1px solid #e2e2e2;
+  }
 
   .chat-menu-icon {
     position: absolute;
-    top: 0.6rem;
+    top: -3.2rem;
     right: 1rem;
     width: 2.5rem;
     color: black;
     font-size: 2rem;
+    z-index: 10;
   }
 `;
 
@@ -185,7 +221,7 @@ export const YourChatBoxWrapper = styled.div`
 
 export const MyChatBox = styled.div`
   float: right;
-  max-width: 65vw;
+  max-width: 60vw;
   background-color: #eee;
   color: #000;
   padding: 0.6rem 1rem;
@@ -195,7 +231,7 @@ export const MyChatBox = styled.div`
 
 export const YourChatBox = styled.div`
   float: left;
-  max-width: 65vw;
+  max-width: 60vw;
   background-color: #699bf7;
   color: #fff;
   padding: 0.6rem 1rem;

@@ -4,18 +4,14 @@ import { useNavigate } from 'react-router-dom';
 
 import Snoopy from '../assets/snoopy.jpg';
 
-const NotFound = () => {
+const NotFoundUser = () => {
   const navigate = useNavigate();
 
   return (
     <ErrorWrapper>
       <ErrorImg src={Snoopy} />
-      <div className='error'>404 error...</div>
-      <div className='errorDesc'>
-        찾을 수 없는 페이지입니다.
-        <br />
-        올바른 경로로 접속해주세요.
-      </div>
+      <div className='error'>Deleted User...</div>
+      <div className='errorDesc'>탈퇴한 사용자의 페이지입니다.</div>
       <HomeTextBtn
         onClick={() => {
           navigate('/');
@@ -27,4 +23,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default NotFoundUser;

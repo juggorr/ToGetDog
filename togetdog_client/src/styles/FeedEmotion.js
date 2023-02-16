@@ -34,7 +34,6 @@ export const FeedPhotoWrapper = styled.div`
 
 export const FeedPhoto = styled.img`
   width: 33.333%;
-  margin-bottom: 0.1rem;
   object-fit: cover;
 
   @media (min-width: 650px) {
@@ -50,10 +49,24 @@ export const FeedPhoto = styled.img`
 export const FeedProfileTop = styled.div`
   display: flex;
   background-color: #fff;
+  position: relative;
+
+  @keyframes leftright {
+    0%,
+    20% {
+      transform: translateX(0%);
+      left: 0%;
+    }
+    80%,
+    100% {
+      transform: translateX(-100%);
+      left: 100%;
+    }
+  }
 
   .dog-info-box {
-    width: 45%;
-    padding-left: 1rem;
+    width: 100%;
+    padding-left: 0.7rem;
   }
 
   .no-dog-info-box {
@@ -61,11 +74,28 @@ export const FeedProfileTop = styled.div`
     padding-left: 1rem;
   }
 
-  .dog-info {
+  .dog-name {
+    font-size: 0.9rem;
+    display: flex;
+    padding-bottom: 0.1rem;
+  }
+
+  .dog-breed,
+  .dog-age {
     font-size: 0.85rem;
     color: #777;
-    display: flex;
-    align-items: center;
+  }
+
+  .dog-breed {
+    width: 6.5rem;
+    white-space: nowrap;
+    overflow-x: scroll;
+    -ms-overflow-style: none; /* 인터넷 익스플로러 */
+    scrollbar-width: none; /* 파이어폭스 */
+  }
+
+  .dog-breed::-webkit-scrollbar {
+    display: none; /* 크롬, 사파리, 오페라, 엣지 */
   }
 
   .dog-gender {
@@ -73,7 +103,7 @@ export const FeedProfileTop = styled.div`
   }
 
   .profile-etc-wrapper {
-    width: 35%;
+    min-width: 30%;
     display: flex;
     flex-direction: column;
     align-items: end;
@@ -89,18 +119,24 @@ export const FeedProfileTop = styled.div`
     font-size: 0.85rem;
     padding-top: 1rem;
     padding-right: 1rem;
+    text-align: end;
+  }
+
+  .follow-box {
+    display: flex;
+    margin-bottom: 0.3rem;
   }
 
   .follow-text {
-    margin-right: 0.5rem;
     color: #777;
+    padding-right: 0.5rem;
   }
 
   .sub-dogs {
     display: flex;
     position: absolute;
-    top: 8.5rem;
-    padding-left: 4.5rem;
+    top: 4.3rem;
+    left: 4.3rem;
   }
 
   .no-dogs-txt {
@@ -113,23 +149,36 @@ export const FeedProfileTop = styled.div`
     align-items: end;
   }
 
-  .make-appointment-btn {
+  .feed-btn-box {
+    display: flex;
+  }
+
+  .make-appointment-btn,
+  .dm-btn {
     width: 1.7rem;
     height: 1.7rem;
     font-size: 0.8rem;
-    background-color: #7fb77e;
     text-align: center;
     line-height: 1.5rem;
     border-radius: 50%;
     color: #fff;
     margin-top: 2.6rem;
   }
+
+  .make-appointment-btn {
+    background-color: #7fb77e;
+  }
+
+  .dm-btn {
+    background-color: #717171;
+    margin-right: 0.3rem;
+  }
 `;
 
 export const FeedProfileBottom = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 1.5rem;
+  padding-top: 0.5rem;
 
   .special-text {
     font-size: 0.8rem;
@@ -137,6 +186,30 @@ export const FeedProfileBottom = styled.div`
 
   .characters-box {
     padding: 0.5rem 0;
+  }
+
+  .dog-user-mine {
+    color: #777;
+    font-size: 0.8rem;
+    padding-left: 0.3rem;
+    padding-right: 0.5rem;
+    padding-top: 0.1rem;
+    cursor: pointer;
+    text-align: end;
+  }
+
+  .dog-user-not-mine {
+    color: #777;
+    font-size: 0.8rem;
+    padding-left: 0.3rem;
+    padding-top: 0.1rem;
+    cursor: pointer;
+    text-align: end;
+  }
+
+  .dog-user-nickname {
+    margin-left: 0.3rem;
+    border-bottom: 1px solid #777;
   }
 `;
 
@@ -146,10 +219,13 @@ export const ProfileWrapper = styled.div`
 `;
 
 export const MainDogImg = styled.img`
-  width: 100px;
-  height: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  min-height: 100px;
+  max-height: 100px;
   border-radius: 50%;
   object-fit: cover;
+  background-color: #fff;
 `;
 
 export const SubDogImg = styled.img`
@@ -158,4 +234,5 @@ export const SubDogImg = styled.img`
   border-radius: 50%;
   margin-right: 0.3rem;
   object-fit: cover;
+  background-color: #fff;
 `;

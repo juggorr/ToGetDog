@@ -4,29 +4,29 @@ import Emotion4 from '../../assets/emotion4.png'
 import { ConfirmModalWrapper, ConfirmModalBody, ConfirmModalImage } from "../../styles/ModalEmotion";
 import { MainColorShortBtn } from "../../styles/BtnsEmotion";
 
-function NoDogAlertModal({ noDogBtnClick, setNoDogBtnClick, setMenuBtnClick }) {
+function NoChangeModal({ noChangeModalClick, setNoChangeModalClick, setMenuBtnClick }) {
 
   const outSection = useRef();
 
   const onClick = () => {
-    setNoDogBtnClick(false);
+    setNoChangeModalClick(false);
     setMenuBtnClick(true);
   }
 
   return (
     <>
-      {noDogBtnClick === true? (
+      {noChangeModalClick === true? (
       <ConfirmModalWrapper
         ref={outSection}
         onClick={(e) => {
           if (outSection.current === e.target) {
-            setNoDogBtnClick(false);
+            setNoChangeModalClick(false);
           }
         }}
       >
         <ConfirmModalBody>
           <ConfirmModalImage src={Emotion4} />
-          <span className="modal-msg">등록된 강아지가 없어요.</span>
+          <span className="modal-msg">소셜 회원은 비밀번호를 변경할 수 없어요</span>
           <div className="two-btns-wrapper">
             <MainColorShortBtn 
               onClick={onClick}
@@ -41,4 +41,4 @@ function NoDogAlertModal({ noDogBtnClick, setNoDogBtnClick, setMenuBtnClick }) {
   )
 }
 
-export default NoDogAlertModal;
+export default NoChangeModal;

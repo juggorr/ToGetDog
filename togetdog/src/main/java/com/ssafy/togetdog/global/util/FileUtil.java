@@ -33,21 +33,24 @@ public class FileUtil {
 	public String fileUpload(MultipartFile image, String path) throws IllegalStateException, IOException {
 		// InetAddress : 부팅시 한번만 static으로 사용하지 않으면 성능이슈가 있다고 합니다.
 		// String hostname = InetAddress.getLocalHost().getHostName();
-		
-		String originalFileName = image.getOriginalFilename();
-		String today = new SimpleDateFormat("yyMMdd").format(new Date());
-		String saveFolder = path + File.separator + today;
-		
-		File folder = new File(saveFolder);
-		if (!folder.exists())
-			folder.mkdirs();
+		if (image != null) {
+			String originalFileName = image.getOriginalFilename();
+			String today = new SimpleDateFormat("yyMMdd").format(new Date());
+			String saveFolder = path + File.separator + today;
+			
+			File folder = new File(saveFolder);
+			if (!folder.exists())
+				folder.mkdirs();
 
-		if (!originalFileName.isEmpty()) {
-			String saveFileName = UUID.randomUUID().toString()
-					+ originalFileName.substring(originalFileName.lastIndexOf('.'));
-			logger.debug("registDog save path : {}", saveFolder + "/" + saveFileName);
-			image.transferTo(new File(folder, saveFileName));
-			return today + File.separator + saveFileName;
+			if (originalFileName != null && !originalFileName.isEmpty()) {
+				String saveFileName = UUID.randomUUID().toString()
+						+ originalFileName.substring(originalFileName.lastIndexOf('.'));
+				logger.debug("registDog save path : {}", saveFolder + "/" + saveFileName);
+				image.transferTo(new File(folder, saveFileName));
+				return today + File.separator + saveFileName;
+			} else {
+				throw new InvalidInputException("비어있는 파일입니다.");
+			}
 		} else {
 			throw new InvalidInputException("비어있는 파일입니다.");
 		}
@@ -59,8 +62,8 @@ public class FileUtil {
 	 * @param path : application.properties에 등록된 path를 @Value로 받아와서 넣어주시면 됩니다.
 	 * @return
 	 */
-	public void fileDelete(String dbSaveImage, String path) {
+	public boolean fileDelete(String dbSaveImage, String path) {
 		File file = new File(path + File.separator + dbSaveImage);
-		file.delete();
+		return file.delete();
 	}
 }

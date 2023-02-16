@@ -4,6 +4,7 @@ import com.ssafy.togetdog.board.model.entity.Board;
 import com.ssafy.togetdog.board.model.entity.Comment;
 import com.ssafy.togetdog.user.model.entity.User;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -11,10 +12,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@Builder
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class CommentDTO {
 	private long commentId;
@@ -43,12 +46,13 @@ public class CommentDTO {
     	return comment;
     }
 
-    @Builder
-	public CommentDTO(Comment comment) {
-    	this.commentId = comment.getCommentId();
-		this.boardId = comment.getCommentId();
-		this.userId = comment.getUser().getUserId();
-		this.nickName = comment.getUser().getNickName();
-		this.commentContent = comment.getCommentContent();
-	}	
+    public static CommentDTO of(Comment comment) {
+    	return CommentDTO.builder()
+    			.commentId(comment.getCommentId())
+    			.boardId(comment.getBoard().getBoardId())
+    			.userId(comment.getUser().getUserId())
+    			.nickName(comment.getUser().getNickName())
+    			.commentContent(comment.getCommentContent())
+    			.build();
+    }
 }

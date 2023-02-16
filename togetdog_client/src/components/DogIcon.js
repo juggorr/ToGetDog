@@ -8,12 +8,13 @@ const DogIcon = (props) => {
   const navigate = useNavigate();
   const onClick = () => {
     // console.log(props)
-    navigate('/', {
-      state: {
-        dogId: props.idx,
-        userId: props.userId,
-      }
-    });
+    // navigate('/', {
+    //   state: {
+    //     dogId: props.idx,
+    //     userId: props.userId,
+    //   }
+    // });
+    console.log(props.img)
   };
 
   return (
@@ -21,7 +22,7 @@ const DogIcon = (props) => {
       onClick={onClick}
     >
       <div
-        image={props.img}
+        image={`https://i8a807.p.ssafy.io/image/dog/` + props.img}
         className="circle image"
       >
       </div>

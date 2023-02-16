@@ -1,11 +1,12 @@
-import styled from "@emotion/styled";
-import ReactSelect from "react-select";
+import styled from '@emotion/styled';
+import ReactSelect from 'react-select';
 
-import plusIcon from "../assets/plusicon3.png";
-import dog_profile from "../assets/dog_profile.png";
+import plusIcon from '../assets/plusicon3.png';
+import dog_profile from '../assets/dog_profile.png';
 
 export const RegisterContainer = styled.div`
-  heignt: 100vh;
+  width: 100%;
+  heignt: calc(100vh - 60px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,7 +22,8 @@ export const RegisterWrapper = styled.div`
   align-items: center;
 
   .small-font {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
+    font-weight: 700;
   }
 
   .button-div {
@@ -55,7 +57,7 @@ export const RegisterWrapper = styled.div`
   .signup-desc {
     width: 270px;
     text-align: left;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     color: red;
   }
 
@@ -72,6 +74,12 @@ export const RegisterWrapper = styled.div`
     color: red;
     font-size: 0.8rem;
   }
+
+  .profile-error {
+    color: red;
+    font-size: 0.8rem;
+    text-align: center;
+  }
 `;
 
 export const ProfileImage = styled.div`
@@ -84,8 +92,7 @@ export const ProfileImage = styled.div`
   padding: 1.25rem;
   margin: auto;
 
-  background-image: ${(props) =>
-    props.image ? `url(${props.image})` : `url(${dog_profile})`};
+  background-image: ${(props) => (props.image ? `url(${props.image})` : `url(${dog_profile})`)};
   background-size: cover;
   background-position: center;
 
@@ -95,6 +102,16 @@ export const ProfileImage = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .success {
+    color: #0052ff;
+    font-size: 0.8rem;
+  }
+
+  .error {
+    color: red;
+    font-size: 0.8rem;
   }
 `;
 
@@ -126,7 +143,7 @@ export const InputWrapper = styled.div`
   margin-bottom: 1rem;
 
   .input-title {
-    font-size: 1rem;
+    font-size: 0.9rem;
     margin-bottom: 0.5rem;
   }
 
@@ -160,7 +177,7 @@ export const InputWrapper = styled.div`
   .string-input,
   .number-input {
     width: 100%;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: #000;
     border: none;
     background: none;
@@ -184,16 +201,16 @@ export const InputWrapper = styled.div`
   }
 
   .year {
-    font-size: 1rem;
+    font-size: 0.9rem;
     padding-right: 1.5rem;
   }
 
   .month {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .kilogram {
-    font-size: 1rem;
+    font-size: 0.9rem;
     vertical-align: bottom;
   }
 
@@ -202,11 +219,6 @@ export const InputWrapper = styled.div`
     font-size: 0.8rem;
   }
 `;
-
-// export const ButtonDiv = styled.div`
-//   display: flex;
-//   justify-content: space-around;
-// `;
 
 // react-select로 dropdown 띠우기
 export const BreedDrops = styled(ReactSelect)`
@@ -221,8 +233,3 @@ export const BreedDrops = styled(ReactSelect)`
     font-size: smaller;
   }
 `;
-// export const ImgDiv = styled.div`
-//   padding: 20px;
-//   display: flex;
-//   justify-content: center;
-// `

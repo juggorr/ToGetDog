@@ -25,7 +25,7 @@ const BoardBox = ({ boardData, dogData, likeStatus, setLikeStatus }) => {
 
   const deleteBoard = async () => {
     await axios
-      .delete(`https://i8a807.p.ssafy.io/api/board`, {
+      .delete(`${BACKEND_URL}/board`, {
         params: {
           boardId: boardData.boardId,
         },
@@ -34,6 +34,7 @@ const BoardBox = ({ boardData, dogData, likeStatus, setLikeStatus }) => {
         },
       })
       .then((res) => {
+        console.log(res);
         console.log(res.data);
         console.log('게시물 삭제가 완료되었습니다.');
         navigate(`/feed/${user.userId}`);
@@ -98,7 +99,7 @@ const BoardBox = ({ boardData, dogData, likeStatus, setLikeStatus }) => {
           }}
         >
           <MenuModalBody>
-            <div className='single-menu' onClick={() => navigate(`/editBoard/${boardData.boardId}`)}>
+            <div className='single-menu' onClick={() => window.location.replace(`/editBoard/${boardData.boardId}`)}>
               게시물 수정
             </div>
             <div className='single-menu red-font' onClick={() => deleteBoard()}>

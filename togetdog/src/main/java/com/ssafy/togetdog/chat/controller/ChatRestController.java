@@ -1,10 +1,14 @@
 package com.ssafy.togetdog.chat.controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,6 +62,13 @@ public class ChatRestController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		List<ChatInfoDTO> list = cis.callChatList(js.getUserId(token));
+		if(list == null) {
+			resultMap.put("result", SUCCESS);
+			resultMap.put("dm", new ArrayList<Object>());
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+		}
+		
+		
 		Collections.sort(list, new Comparator<ChatInfoDTO>() {
 			@Override
 			public int compare(ChatInfoDTO o1, ChatInfoDTO o2) {
@@ -101,16 +112,20 @@ public class ChatRestController {
 		ChatInUserInfo opponent = cis.otherUserInfo(userId , other);
 		if(opponent == null) {
 			opponent = cis.createChatRoom(user, other);
+		}else {
+			Set<Long> set = new HashSet<>();
+			set.add(userId);
+			cis.updateChatInfo(opponent.getRoomId(), set);
 		}
 		long roomId = opponent.getRoomId();
-		List<ChattingDTO> list = cms.findMessage(roomId);
+		List<ChattingDTO> list = cms.findMessage(roomId , opponent.getStart());
+		Collections.reverse(list);
 		if(csl.getList(roomId) != null) {
-			for(ChatDTO dto : csl.getList(roomId)) {
-				list.add(ChattingDTO.of(dto));				
-			}
+			list.addAll(csl.getList(roomId).stream().map(m -> ChattingDTO.of(m)).collect(Collectors.toList()));
+//			for(ChatDTO dto : csl.getList(roomId)) {
+//				list.add(ChattingDTO.of(dto));				
+//			}
 		}
-		if(list.size() > 1)
-			list = list.subList((int)opponent.getStart()+1, list.size());
 		
 		resultMap.put("result", SUCCESS);
 		resultMap.put("chats", list);
