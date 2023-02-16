@@ -30,11 +30,14 @@ public class ChatInUserInfo {
 	
 	private long start;
 	
+	private long acti;
+	
 	public static ChatInUserInfo of(ChatInfo info) {
 		return ChatInUserInfo.builder()
 				.userId(info.getOther().getUserId())
 				.roomId(info.getRoomId())
 				.userBirth(info.getOther().getUserBirth())
+				.acti(info.getActivation())
 				.gender(info.getOther().getGender())
 				.address(info.getOther().getAddress())
 				.nickName(info.getOther().getNickName())
