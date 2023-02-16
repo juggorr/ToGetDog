@@ -91,15 +91,45 @@ const FriendsList = ({ friends }) => {
     if (friends && friends.length) {
       for (let i = 0; i < friends.length; i++) {
         const tempFriend = <SingleFriend key={i} item={friends[i]}></SingleFriend>;
-        if (!checkedItems[0] && !checkedItems[1] && !checkedItems[2] && !checkedItems[3]) {
-          tempFilter.push(tempFriend);
-        } else if (checkedItems[0] && friends[i].dogCharacter1 === 'obedient') {
-          tempFilter.push(tempFriend);
-        } else if (checkedItems[1] && friends[i].dogCharacter1 === 'disobedient') {
-          tempFilter.push(tempFriend);
-        } else if (checkedItems[2] && friends[i].dogCharacter2 === 'active') {
-          tempFilter.push(tempFriend);
-        } else if (checkedItems[3] && friends[i].dogCharacter2 === 'inactive') {
+        let pushFlag = true;
+        if (checkedItems[0] || checkedItems[1] || checkedItems[2] || checkedItems[3]) {
+          if (checkedItems[0] && friends[i].dogCharacter1 === 'obedient') {
+            if (checkedItems[2] && !checkedItems[3] && friends[i].dogCharacter2 === "inactive") {
+              pushFlag = false;
+            }
+            else if (!checkedItems[2] && checkedItems[3] && friends[i].dogCharacter2 === "active") {
+              pushFlag = false;
+            }
+          }
+          else if (checkedItems[1] && friends[i].dogCharacter1 === 'disobedient'){
+            if (checkedItems[2] && !checkedItems[3] && friends[i].dogCharacter2 === "inactive") {
+              pushFlag = false;
+            }
+            else if (!checkedItems[2] && checkedItems[3] && friends[i].dogCharacter2 === "active") {
+              pushFlag = false;
+            }
+          }
+          else if (checkedItems[2] && friends[i].dogCharacter2 === 'active'){
+            if (checkedItems[0] && !checkedItems[1] && friends[i].dogCharacter1 === "disobedient") {
+              pushFlag = false;
+            }
+            else if (!checkedItems[0] && checkedItems[1] && friends[i].dogCharacter1 === "obedient") {
+              pushFlag = false;
+            }
+          }
+          else if (checkedItems[3] && friends[i].dogCharacter2 === 'inactive'){
+            if (checkedItems[0] && !checkedItems[1] && friends[i].dogCharacter1 === "disobedient") {
+              pushFlag = false;
+            }
+            else if (!checkedItems[0] && checkedItems[1] && friends[i].dogCharacter1 === "obedient") {
+              pushFlag = false;
+            }
+          }
+          else {
+            pushFlag = false;
+          }
+        }
+        if (pushFlag) {
           tempFilter.push(tempFriend);
         }
       }
