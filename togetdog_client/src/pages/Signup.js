@@ -9,6 +9,7 @@ import { SignupContainer, SignupWrapper, InputWrapper } from '../styles/SignupEm
 import DaumKakaoAddress from '../components/DaumKakaoAddress';
 import { useNavigate } from 'react-router-dom';
 import EmailSent from '../components/EmailSent';
+import Loading from '../assets/loading.gif';
 
 const genderBtnList = [
   {
@@ -72,6 +73,7 @@ const Signup = () => {
   const [addressError, setAddressError] = useState(false);
   const [addressErrorMsg, setAddressErrorMsg] = useState('');
   const [emailStatus, setEmailStatus] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   const onChange = (e) => {
     const { name, value } = e.target; // e.target 에서 name 과 value 를 추출
@@ -237,6 +239,7 @@ const Signup = () => {
         },
       )
       .then((resp) => {
+        setLoading(false);
         setEmailStatus(true);
         console.log('회원가입 성공! 이메일 인증으로!');
         console.log(resp);
@@ -262,6 +265,7 @@ const Signup = () => {
     }
 
     if (emailCheck && passwordError && passwordCheckError && nicknameError && birthError && addressError) {
+      setLoading(true);
       console.log('회원가입을 시도합니다.');
       handleSignup();
     } else {
@@ -269,6 +273,14 @@ const Signup = () => {
       return;
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className='loading'>
+        <img src={Loading} alt='loading...' />
+      </div>
+    );
+  }
 
   return (
     <>
