@@ -98,11 +98,15 @@ const Login = () => {
       })
       .catch((err) => {
         if (err.response.status === 409) {
-          alert('이메일 인증을 완료하신 후 로그인이 가능합니다.');
-          return;
+          if (err.response.data.msg === '이메일과 비밀번호가 일치하지 않습니다.') {
+            alert('이메일과 비밀번호가 일치하지 않습니다.');
+            return;
+          } else if (err.response.data.msg === '가입대기중') {
+            alert('이메일 인증을 완료하신 후 로그인이 가능합니다.');
+            return;
+          }
         }
         console.log('로그인 실패');
-        console.log(err);
       });
   };
 
