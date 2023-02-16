@@ -47,7 +47,8 @@ const SingleNotification = (data) => {
 
 const Notifications = () => {
   const navigate = useNavigate();
-  // const [user, setUser] = useRecoilState(userState);
+  const [user, setUser] = useRecoilState(userState);
+  const setAuth = useSetRecoilState(authAtom);
   const [notifications, setNotifications] = useState([]);
   const [canceled, setCanceled] = useState(false);
   const [meetingCnt, setMeetingCnt] = useState();
@@ -55,10 +56,22 @@ const Notifications = () => {
   const [hasNextPage, setHasNextPage] = useState(true);
   const auth = useRecoilValue(authAtom);
   const [ref, inView] = useInView();
-  // const setAuth = useSetRecoilState(authAtom);
   const pageNo = useRef(0);
 
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+    setAuth(null);
+    console.log("로그아웃이 정상적으로 처리되었습니다.");
+    navigate("/login");
+  };
+
   const getNotifications = useCallback(async () => {
+    if (!auth || !localStorage.getItem("recoil-persist")) {
+      navigate("/login");
+      return;
+    }
+
     await axios
       .get(`${BACKEND_URL}/notify?pageNo=${pageNo.current}`, {
         headers: {
@@ -67,7 +80,6 @@ const Notifications = () => {
         },
       })
       .then((response) => {
-        // console.log(response.data.notice.noticeList);
         if (response.data.notice.noticeList.length) {
           pageNo.current += 1;
         }
@@ -82,6 +94,12 @@ const Notifications = () => {
       })
       .catch((error) => {
         console.log(error);
+        if (error.response.status === 404) {
+          navigate("/*");
+        } else if (error.response.status === 401) {
+          alert("자동 로그아웃되었습니다.");
+          handleLogout();
+        }
       });
   });
 
@@ -141,8 +159,7 @@ const Notifications = () => {
           <SingleNotification
             item={item}
             idx={idx}
-            key={idx}
-          ></SingleNotification>
+            key={idx}></SingleNotification>
         ))}
         {isLoading ? (
           <div className="tinyLoading">

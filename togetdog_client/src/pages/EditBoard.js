@@ -67,7 +67,7 @@ const EditBoard = () => {
       .catch((err) => {
         console.log(err);
         if (err.response.status === 401) {
-          alert("토큰이 만료되어 자동 로그아웃되었습니다.");
+          alert("자동 로그아웃되었습니다.");
           handleLogout();
         }
       });
@@ -145,8 +145,7 @@ const EditBoard = () => {
         <MainColorShortBtn
           onClick={() => {
             window.location.replace(`/board/${boardId}`);
-          }}
-        >
+          }}>
           취소
         </MainColorShortBtn>
         <MainColorShortBtn onClick={onClickEdit}>수정</MainColorShortBtn>

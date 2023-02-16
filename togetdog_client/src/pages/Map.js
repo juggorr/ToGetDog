@@ -104,8 +104,6 @@ const SinglePlace = ({ facility }) => {
 };
 
 const Map = () => {
-  // const [map, setMap] = useState(null);
-  // const container = document.getElementById("map");
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
   const auth = useRecoilValue(authAtom);
@@ -119,7 +117,20 @@ const Map = () => {
 
   const { kakao } = window;
 
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+    setAuth(null);
+    console.log("로그아웃이 정상적으로 처리되었습니다.");
+    navigate("/login");
+  };
+
   useEffect(() => {
+    if (!auth || !localStorage.getItem("recoil-persist")) {
+      navigate("/login");
+      return;
+    }
+
     const geocoder = new kakao.maps.services.Geocoder();
     geocoder.addressSearch(user.address, function (result, status) {
       if (status === kakao.maps.services.Status.OK) {
@@ -130,14 +141,6 @@ const Map = () => {
       }
     });
   }, []);
-
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
-    setAuth(null);
-    console.log("로그아웃이 정상적으로 처리되었습니다.");
-    navigate("/login");
-  };
 
   const GetFacilities = (lat, lng) => {
     const fetchFacilities = async () => {
@@ -163,7 +166,7 @@ const Map = () => {
         if (error.response.status === 404) {
           navigate("/*");
         } else if (error.response.status === 401) {
-          alert("토큰이 만료되어 자동 로그아웃되었습니다.");
+          alert("자동 로그아웃되었습니다.");
           handleLogout();
         }
       }
@@ -188,6 +191,11 @@ const Map = () => {
 
   //처음 지도 그리기
   useEffect(() => {
+    if (!auth || !localStorage.getItem("recoil-persist")) {
+      navigate("/login");
+      return;
+    }
+
     const container = document.getElementById("map");
     const options = { center: new kakao.maps.LatLng(curLat, curLng) };
     const kakaoMap = new kakao.maps.Map(container, options);
@@ -432,20 +440,17 @@ const Map = () => {
         <div>
           <span
             className="placeButtons"
-            onClick={() => setSelectPlace("반려의료")}
-          >
+            onClick={() => setSelectPlace("반려의료")}>
             <PlaceIconWrapper src={dogHospital} alt="hospital_img" />
           </span>
           <span
             className="placeButtons"
-            onClick={() => setSelectPlace("반려동물 서비스")}
-          >
+            onClick={() => setSelectPlace("반려동물 서비스")}>
             <PlaceIconWrapper src={dogService} alt="service_img" />
           </span>
           <span
             className="placeButtons"
-            onClick={() => setSelectPlace("반려동물식당카페")}
-          >
+            onClick={() => setSelectPlace("반려동물식당카페")}>
             <PlaceIconWrapper src={dogRestaurant} alt="restaurant_img" />
           </span>
           <span className="placeButtons" onClick={() => setSelectPlace("all")}>
