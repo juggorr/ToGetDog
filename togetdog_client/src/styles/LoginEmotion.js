@@ -32,7 +32,7 @@ export const LoginWrapper = styled.div`
   .login-bottom-wrapper .login-bottom-text {
     color: #aaa;
     text-decoration: underline;
-    font-size: 13px;
+    font-size: 0.9rem;
   }
 `;
 
