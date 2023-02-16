@@ -1,9 +1,8 @@
-import DogIcon from "./DogIcon";
-import { useNavigate } from "react-router-dom";
+import DogIcon from './DogIcon';
+import { useNavigate } from 'react-router-dom';
 
-import { DogImgWrapper } from "../styles/CreateAppointmentEmotion";
-import { UserName } from "../styles/FollowerListEmotion";
-
+import { DogImgWrapper } from '../styles/CreateAppointmentEmotion';
+import { UserName } from '../styles/FollowerListEmotion';
 
 function DogFollow({ dog }) {
   const navigate = useNavigate();
@@ -11,27 +10,17 @@ function DogFollow({ dog }) {
   // 사진, 이름 클릭시 해당 인물 피드로 이동
   const onClick = () => {
     // console.log(dog.dogId);
-    navigate(`/feed/${dog.userId}`, {state: {dogId: dog.dogId}});
+    navigate(`/feed/${dog.userId}`, { state: { dogId: dog.dogId } });
   };
 
-  
-  return(
+  return (
     <>
       <DogImgWrapper>
-        <div 
-          className="dogFollowCircle"
-          onClick={onClick}
-        >
-          <img 
-            src={"https://i8a807.p.ssafy.io/image/dog/" + dog.dogProfile}
-            alt="dog_img"
-            className="dogProfileImg"
-          />
+        <div className='dogFollowCircle' onClick={onClick}>
+          <img src={'https://togetdog.site/image/dog/' + dog.dogProfile} alt='dog_img' className='dogProfileImg' />
         </div>
       </DogImgWrapper>
-      <UserName onClick={onClick}>
-          {dog.dogName}
-      </UserName>
+      <UserName onClick={onClick}>{dog.dogName}</UserName>
     </>
   );
 }

@@ -314,7 +314,7 @@ const Feed = () => {
             {!currentDog ? (
               <MainDogImg src='https://media.istockphoto.com/id/509962049/vector/cute-puppy-sits.jpg?s=612x612&w=0&k=20&c=hm9wNYwzB2sXwrySGNi83WzH5B7ubDMk1NKJw73W7tg=' />
             ) : (
-              <MainDogImg src={`https://i8a807.p.ssafy.io/image/dog/` + currentDog.dogProfile} />
+              <MainDogImg src={`https://togetdog.site/image/dog/` + currentDog.dogProfile} />
             )}
             {!feedDogData ? (
               <div className='no-dog-info-box'>
@@ -338,7 +338,9 @@ const Feed = () => {
             ) : (
               <div className='dog-info-box'>
                 {feedUserData.userId === user.userId ? (
-                  <MainColorShortBtn onClick={() => navigate('/dogregister', {state: {dogs: feedDogData}})}>강아지 등록</MainColorShortBtn>
+                  <MainColorShortBtn onClick={() => navigate('/dogregister', { state: { dogs: feedDogData } })}>
+                    강아지 등록
+                  </MainColorShortBtn>
                 ) : (
                   <div>{'등록된 강아지가 없습니다.'}</div>
                 )}
@@ -349,14 +351,14 @@ const Feed = () => {
               {subDogs
                 ? subDogs.map((subdog) => (
                     <SubDogImg
-                      src={`https://i8a807.p.ssafy.io/image/dog/` + subdog.dogProfile}
+                      src={`https://togetdog.site/image/dog/` + subdog.dogProfile}
                       key={subdog.dogId}
                       onClick={() => swapMainDog(subdog.dogId)}
                     />
                   ))
                 : null}
               {feedDogData.length === 3 || feedUserData.userId !== user.userId ? null : (
-                <PlusBtn onClick={() => navigate('/dogregister', {state: {dogs: feedDogData}})}>+</PlusBtn>
+                <PlusBtn onClick={() => navigate('/dogregister', { state: { dogs: feedDogData } })}>+</PlusBtn>
               )}
             </div>
             {feedUserData.userId === user.userId ? (
@@ -449,7 +451,7 @@ const Feed = () => {
               <FeedPhoto
                 key={feedPhoto.boardId}
                 onClick={() => navigate(`/board/${feedPhoto.boardId}`)}
-                src={`https://i8a807.p.ssafy.io/image/board/` + feedPhoto.image}
+                src={`https://togetdog.site/image/board/` + feedPhoto.image}
               />
             ))}
           </FeedPhotoWrapper>

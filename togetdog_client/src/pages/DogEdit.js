@@ -7,12 +7,11 @@ import axios from 'axios';
 
 import { BACKEND_URL } from '../config';
 
-import NoEssentialsModal from '../components/AlertModal/NoEssentialsModal'
+import NoEssentialsModal from '../components/AlertModal/NoEssentialsModal';
 import { MainColorLongBtn } from '../styles/BtnsEmotion';
 import DoubleOptionBtn from '../components/DoubleOptionBtn';
 import { RegisterContainer, RegisterWrapper, ProfileImage, AddImage, InputWrapper } from '../styles/DogRegisterEmotion';
 import BackHeader from '../components/BackHeader';
-
 
 const nameRegexp = /^[가-힣]{1,5}$/;
 const imageRegexp = /(.*?)\.(jpg|jpeg|png)$/;
@@ -62,12 +61,10 @@ const char2BtnList = [
   },
 ];
 
-
 function DogEdit() {
-
   const auth = useRecoilValue(authAtom);
   const user = useRecoilValue(userState);
-  
+
   const navigate = useNavigate();
   const location = useLocation();
   const dogId = location.state;
@@ -75,21 +72,21 @@ function DogEdit() {
   // 들어오면 강아지 정보 받아오기 & 현재 년, 월 받아오기
   const [dog, setDog] = useState({});
   useEffect(() => {
-    if(!auth || !localStorage.getItem("recoil-persist") || !dog) {
-      navigate("/");
+    if (!auth || !localStorage.getItem('recoil-persist') || !dog) {
+      navigate('/');
       return;
     }
 
     axios
       .get(`${BACKEND_URL}/dog/${dogId}`)
       .then((res) => {
-        console.log(res)
-        setDog(res.data.dog)
+        console.log(res);
+        setDog(res.data.dog);
       })
       .catch((err) => {
-        console.log(err)
-      })
-  }, [])
+        console.log(err);
+      });
+  }, []);
 
   // 견종 리스트 public/breeds.txt에서 불러오기
   const [breedList, setBreedList] = useState([]);
@@ -140,7 +137,7 @@ function DogEdit() {
     setAgeHold(dog.dogAge);
     setWeightHold(dog.dogWeight);
     setPerkHold(dog.description);
-  }, [dog])
+  }, [dog]);
 
   // age들어오면 강아지 태어난 년, 월 계산하기
   useEffect(() => {
@@ -178,8 +175,7 @@ function DogEdit() {
       setMonth(String(x));
       return;
     }
-  }, [ageHold])
-
+  }, [ageHold]);
 
   const [noEssentialsModal, setNoEssentialsModal] = useState(false);
 
@@ -205,13 +201,13 @@ function DogEdit() {
     // 사진 확장자 유효성 검사
     if (!imageRegexp.test(file.name)) {
       setImageError(true);
-      setImageErrorMsg('사진 피알을 올려주세요.')
+      setImageErrorMsg('사진 피알을 올려주세요.');
       return;
     }
     // 사진 용량 유효성 검사
     if (file.size > maxSize) {
       setImageError(true);
-      setImageErrorMsg('50MB를 초과한 파일입니다.')
+      setImageErrorMsg('50MB를 초과한 파일입니다.');
     } else {
       setImageError(false);
       setImageErrorMsg('');
@@ -228,7 +224,8 @@ function DogEdit() {
     // 입력한 순간 저장된 이름을 없애야 오류 처리 가능
     setNameHold('');
     const name = e.target.value.slice(0, 5);
-    if (!nameRegexp.test(name)) { // 정규식 통과못하면 !false = >true
+    if (!nameRegexp.test(name)) {
+      // 정규식 통과못하면 !false = >true
       setNameError(true);
       setNameErrorMsg('이름은 한글1~5자');
     } else {
@@ -255,8 +252,8 @@ function DogEdit() {
     setYearHold('');
     // 4글자만 입력되도록 슬라이싱
     const year = e.target.value.slice(0, 4);
-    // 기네스기록 + 3년 출생년도 등록 기준
-    if (year < 1998 || year > new Date().getFullYear()) {
+    // 기네스기록 출생년도 등록 기준
+    if (year < 2000 || year > new Date().getFullYear()) {
       setYearError(true);
       setYearErrorMsg('적절한 출생연도를 입력해주세요.');
     } else {
@@ -294,16 +291,16 @@ function DogEdit() {
           setAgeErrorMsg('');
         }
       }
-    }  
+    };
     handleAge();
-  }, [year, month])
+  }, [year, month]);
 
   // 몸무게, 4글자 이상 입력 불가
   const [weight, setWeight] = useState('');
   const handleWeight = (e) => {
     setWeightHold('');
     const weight = e.target.value.slice(0, 4);
-    if (weight < 0 || weight > 90) {
+    if (weight <= 0 || weight > 80) {
       setWeightError(true);
       setWeightErrorMsg('적절한 몸무게를 입력해주세요.');
     } else {
@@ -344,7 +341,7 @@ function DogEdit() {
       // setInputError(true);
       // setInputErrorMsg('필수 값이 입력되지 않았습니다');
       return false;
-    };
+    }
     // 필수 값들이 입력되었고, 값에 에러가 없으면 통과!
     if (!imageError && !nameError && !yearError && !monthError && !weightError && !ageError) {
       return true;
@@ -360,7 +357,7 @@ function DogEdit() {
       newBirth = year + '0' + month;
     } else {
       newBirth = year + month;
-    };
+    }
 
     // isNeuterd 설정
     let neuterdBoolean = null;
@@ -370,7 +367,7 @@ function DogEdit() {
         break;
       default:
         neuterdBoolean = false;
-    }; 
+    }
 
     const dog = {
       dogId: dogId,
@@ -385,12 +382,12 @@ function DogEdit() {
       description: perk,
     };
 
-    console.log(dog)
+    console.log(dog);
 
     formData.append('dog', new Blob([JSON.stringify(dog)], { type: 'application/json' }));
     if (!imageHold) {
       formData.append('dogProfile', image);
-    } 
+    }
 
     // console.log(formData.get("dog"));
 
@@ -412,29 +409,25 @@ function DogEdit() {
       .catch((err) => {
         console.log(err);
       });
-  }
-
+  };
 
   const handleEdit = () => {
     if (checkValidation()) {
       sendPUT();
-      console.log('성공했습니다')
+      console.log('성공했습니다');
     } else {
-      console.log('정상처리 실패')
+      console.log('정상처리 실패');
       return;
     }
-  }
+  };
 
   return (
     <RegisterContainer>
       <BackHeader />
-      <NoEssentialsModal
-        noEssentialsModal={noEssentialsModal}
-        setNoEssentialsModal={setNoEssentialsModal}
-      />
+      <NoEssentialsModal noEssentialsModal={noEssentialsModal} setNoEssentialsModal={setNoEssentialsModal} />
       <RegisterWrapper>
         <InputWrapper>
-          <ProfileImage image={imageHold? `https://i8a807.p.ssafy.io/image/dog/` + imageHold : imgURL}>
+          <ProfileImage image={imageHold ? `https://togetdog.site/image/dog/` + imageHold : imgURL}>
             {/* 사진 등록 */}
             <AddImage>
               <label htmlFor='imgUp'>
@@ -599,7 +592,7 @@ function DogEdit() {
                 name='unique'
                 className='string-input'
                 type='text'
-                placeholder={perkHold? perkHold : '특이사항을 입력해 주세요'}
+                placeholder={perkHold ? perkHold : '특이사항을 입력해 주세요'}
                 value={perk}
                 onChange={handlePerk}
               />
@@ -613,7 +606,7 @@ function DogEdit() {
         </div>
       </RegisterWrapper>
     </RegisterContainer>
-  )
+  );
 }
 
 export default DogEdit;

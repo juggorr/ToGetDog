@@ -110,7 +110,7 @@ const BoardBox = ({ boardData, dogData, likeStatus, setLikeStatus }) => {
       ) : null}
       <BoardUserInfoBox>
         <div className='board-info-box-left' onClick={() => navigate(`/feed/${boardData.userId}`)}>
-          <BoardUserPic src={`https://i8a807.p.ssafy.io/image/dog/` + dogData.dogProfile}></BoardUserPic>
+          <BoardUserPic src={`https://togetdog.site/image/dog/` + dogData.dogProfile}></BoardUserPic>
           <BoardUserInfo>
             <div className='dog-name'>
               {dogData.dogName}
@@ -134,7 +134,7 @@ const BoardBox = ({ boardData, dogData, likeStatus, setLikeStatus }) => {
         ) : null}
       </BoardUserInfoBox>
       <BoardPicBox>
-        <img src={`https://i8a807.p.ssafy.io/image/board/` + boardData.image} className='board-pic' alt='board_img' />
+        <img src={`https://togetdog.site/image/board/` + boardData.image} className='board-pic' alt='board_img' />
       </BoardPicBox>
       <BoardContentBox>
         <div className='like-box'>
