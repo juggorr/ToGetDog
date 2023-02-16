@@ -1,20 +1,20 @@
-import { useEffect, useState, forwardRef, useRef } from 'react';
-import { useLocation } from 'react-router';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { authAtom, userState } from '../recoil';
+import { useEffect, useState, forwardRef, useRef } from "react";
+import { useLocation } from "react-router";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { authAtom, userState } from "../recoil";
 
-import DatePicker, { registerLocale } from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { ko } from 'date-fns/esm/locale';
-import getYear from 'date-fns/getYear';
-import getMonth from 'date-fns/getMonth';
-import getDate from 'date-fns/getDate';
-import setHours from 'date-fns/setHours';
-import setMinutes from 'date-fns/setMinutes';
+import DatePicker, { registerLocale } from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { ko } from "date-fns/esm/locale";
+import getYear from "date-fns/getYear";
+import getMonth from "date-fns/getMonth";
+import getDate from "date-fns/getDate";
+import setHours from "date-fns/setHours";
+import setMinutes from "date-fns/setMinutes";
 
-import { BACKEND_URL } from '../config';
+import { BACKEND_URL } from "../config";
 import {
   CreateAppointmentWrapper,
   WalkRequest,
@@ -23,17 +23,21 @@ import {
   DatePickerWrapper,
   DateModalWrapper,
   DayWrapper,
-} from '../styles/CreateAppointmentEmotion';
-import { MainColorShortBtn } from '../styles/BtnsEmotion';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+} from "../styles/CreateAppointmentEmotion";
+import { MainColorShortBtn } from "../styles/BtnsEmotion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const CreateAppointment = () => {
   const navigate = useNavigate();
 
   const auth = useRecoilValue(authAtom);
   const [user, setUser] = useRecoilState(userState);
+  const setAuth = useSetRecoilState(authAtom);
   const location = useLocation();
-  const partnerId = location.state.partnerId;
+  let partnerId = 1;
+  if (location.state) {
+    partnerId = location.state.partnerId;
+  }
 
   // 다른 파일에서 useNavigate 쓸때 이런식으로
   // const handleClick = (e) => {
@@ -56,7 +60,20 @@ const CreateAppointment = () => {
   const myDogError = useRef(false);
   const partnerDogError = useRef(false);
 
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+    setAuth(null);
+    console.log("로그아웃이 정상적으로 처리되었습니다.");
+    navigate("/login");
+  };
+
   useEffect(() => {
+    if (!auth || !localStorage.getItem("recoil-persist")) {
+      navigate("/login");
+      return;
+    }
+
     axios
       .get(`${BACKEND_URL}/user/includesDog/${user.userId}`, {
         headers: {
@@ -68,6 +85,12 @@ const CreateAppointment = () => {
       })
       .catch(function (error) {
         // 오류발생시 실행
+        if (error.response.status === 404) {
+          navigate("/*");
+        } else if (error.response.status === 401) {
+          alert("자동 로그아웃되었습니다.");
+          handleLogout();
+        }
       });
 
     axios
@@ -99,7 +122,10 @@ const CreateAppointment = () => {
       if (item.userKey === 1) {
         setMyActiveDogs([...myActiveDogs, [activeDog, item.dog.dogId]]);
       } else if (item.userKey === 2) {
-        setPartnerActiveDogs([...partnerActiveDogs, [activeDog, item.dog.dogId]]);
+        setPartnerActiveDogs([
+          ...partnerActiveDogs,
+          [activeDog, item.dog.dogId],
+        ]);
       }
     }, []);
 
@@ -136,11 +162,12 @@ const CreateAppointment = () => {
     return (
       <DogImgWrapper key={item.dogId}>
         <div
-          className={activeDog ? 'dogProfileCircle' : 'dogProfileCircle disabled'}
-          onClick={() => setActiveDog(!activeDog)}
-        >
+          className={
+            activeDog ? "dogProfileCircle" : "dogProfileCircle disabled"
+          }
+          onClick={() => setActiveDog(!activeDog)}>
           <img
-            className='dogProfileImg'
+            className="dogProfileImg"
             src={`https://togetdog.site/image/dog/` + item.dog.dogProfile}
             alt={item.dog.dogName}
           />
@@ -152,19 +179,21 @@ const CreateAppointment = () => {
   const DateModal = ({ type }) => {
     const handleCalendarOpen = () => {
       document.addEventListener(
-        'touchstart',
+        "touchstart",
         (event) => {
           event.stopPropagation();
         },
-        true,
+        true
       );
     };
 
     const CustomInput = forwardRef(({ value, onClick }, ref) => (
-      <TimeWrapper className='example-custom-input' ref={ref} onClick={onClick}>
-        <div className='dateDiv'>{value}</div>
-        <div className='calendarDiv'>
-          <FontAwesomeIcon icon={type === 'Date' ? 'fa-calendar' : 'fa-clock'} />
+      <TimeWrapper className="example-custom-input" ref={ref} onClick={onClick}>
+        <div className="dateDiv">{value}</div>
+        <div className="calendarDiv">
+          <FontAwesomeIcon
+            icon={type === "Date" ? "fa-calendar" : "fa-clock"}
+          />
         </div>
       </TimeWrapper>
     ));
@@ -184,14 +213,14 @@ const CreateAppointment = () => {
       return <DayWrapper>{getDate(date)}</DayWrapper>;
     };
 
-    return type === 'Date' ? (
+    return type === "Date" ? (
       <DatePicker
         withPortal
         selected={startDate}
         shouldCloseOnSelect={false}
         onChange={(date) => setStartDate(date)}
         locale={ko}
-        dateFormat='yyyy/MM/dd'
+        dateFormat="yyyy/MM/dd"
         minDate={new Date()}
         customInput={<CustomInput />}
         renderDayContents={renderDayContents}
@@ -204,18 +233,23 @@ const CreateAppointment = () => {
           increaseMonth,
         }) => (
           <DatePickerWrapper>
-            <div className='btn_month btn_month-prev' onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
-              <FontAwesomeIcon icon='fa-chevron-left' />
+            <div
+              className="btn_month btn_month-prev"
+              onClick={decreaseMonth}
+              disabled={prevMonthButtonDisabled}>
+              <FontAwesomeIcon icon="fa-chevron-left" />
             </div>
-            <div className='calendarHeader'>
+            <div className="calendarHeader">
               {getYear(date)}년 {getMonth(date) + 1}월
             </div>
-            <div className='btn_month btn_month-next' onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
-              <FontAwesomeIcon icon='fa-chevron-right' />
+            <div
+              className="btn_month btn_month-next"
+              onClick={increaseMonth}
+              disabled={nextMonthButtonDisabled}>
+              <FontAwesomeIcon icon="fa-chevron-right" />
             </div>
           </DatePickerWrapper>
-        )}
-      ></DatePicker>
+        )}></DatePicker>
     ) : (
       <DatePicker
         withPortal
@@ -225,9 +259,9 @@ const CreateAppointment = () => {
         showTimeSelectOnly
         customInput={<CustomInput />}
         timeIntervals={30}
-        timeCaption='시간'
+        timeCaption="시간"
         filterTime={filterPassedTime}
-        dateFormat='h:mm aa'
+        dateFormat="h:mm aa"
       />
     );
   };
@@ -238,8 +272,11 @@ const CreateAppointment = () => {
 
   const isValid = () => {
     if (!userData.dogs[0]) {
-      alert('강아지를 한 마리 이상 등록해주세요.');
-    } else if (myDogError.current === true || partnerDogError.current === true) {
+      alert("강아지를 한 마리 이상 등록해주세요.");
+    } else if (
+      myDogError.current === true ||
+      partnerDogError.current === true
+    ) {
       setRequestError(true);
     } else if (!placeInput.current) {
       setRequestError(true);
@@ -274,14 +311,14 @@ const CreateAppointment = () => {
           receivedDogs: partnerDogList,
           receiverRate: false,
           place: placeInput.current,
-          status: 'wait',
+          status: "wait",
         },
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: auth,
           },
-        },
+        }
       )
       .then((resp) => {
         navigate(-1);
@@ -293,56 +330,73 @@ const CreateAppointment = () => {
 
   return (
     <CreateAppointmentWrapper>
-      <div className='appointmentHeader'>산책 요청하기</div>
+      <div className="appointmentHeader">산책 요청하기</div>
       <WalkRequest>
-        <p className='queryStr'>
-          <FontAwesomeIcon icon='fa-clock' />
-          {'   '}언제 산책할까요?
+        <p className="queryStr">
+          <FontAwesomeIcon icon="fa-clock" />
+          {"   "}언제 산책할까요?
         </p>
         <DateModalWrapper>
-          <DateModal type='Date'></DateModal>
-          <DateModal type='Time'></DateModal>
+          <DateModal type="Date"></DateModal>
+          <DateModal type="Time"></DateModal>
         </DateModalWrapper>
-        <p className='queryStr'>
-          <FontAwesomeIcon icon='fa-user-group' />
-          {'   '}나의 강아지를 선택해주세요.
+        <p className="queryStr">
+          <FontAwesomeIcon icon="fa-user-group" />
+          {"   "}나의 강아지를 선택해주세요.
         </p>
         {userData.dogs && userData.dogs[0] ? null : (
           <>
-            <MainColorShortBtn onClick={() => navigate('/dogregister')}>강아지 등록</MainColorShortBtn>
-            <p className='warningStr'>먼저 강아지를 등록해주세요.</p>
+            <MainColorShortBtn onClick={() => navigate("/dogregister")}>
+              강아지 등록
+            </MainColorShortBtn>
+            <p className="warningStr">먼저 강아지를 등록해주세요.</p>
           </>
         )}
-        <div className='dogImageWrapper'>
+        <div className="dogImageWrapper">
           {userData.dogs &&
-            userData.dogs.map((item, idx) => <DogImages dog={item} userKey={1} idx={idx} key={item.dogId}></DogImages>)}
+            userData.dogs.map((item, idx) => (
+              <DogImages
+                dog={item}
+                userKey={1}
+                idx={idx}
+                key={item.dogId}></DogImages>
+            ))}
         </div>
-        <p className='queryStr'>
-          <FontAwesomeIcon icon='fa-user-group' />
-          {'   '}상대방의 강아지를 선택해주세요.
+        <p className="queryStr">
+          <FontAwesomeIcon icon="fa-user-group" />
+          {"   "}상대방의 강아지를 선택해주세요.
         </p>
-        <div className='dogImageWrapper'>
+        <div className="dogImageWrapper">
           {partnerData.dogs &&
             partnerData.dogs.map((item, idx) => (
-              <DogImages dog={item} userKey={2} idx={idx} key={item.dogId}></DogImages>
+              <DogImages
+                dog={item}
+                userKey={2}
+                idx={idx}
+                key={item.dogId}></DogImages>
             ))}
         </div>
 
-        <p className='queryStr'>
-          <FontAwesomeIcon icon='fa-location-dot' />
-          {'   '}어디서 산책할까요?
+        <p className="queryStr">
+          <FontAwesomeIcon icon="fa-location-dot" />
+          {"   "}어디서 산책할까요?
         </p>
-        <div className='inputWrapper'>
-          <input onChange={onChangeInput} className='textInput' placeholder='장소를 입력해주세요.' />
+        <div className="inputWrapper">
+          <input
+            onChange={onChangeInput}
+            className="textInput"
+            placeholder="장소를 입력해주세요."
+          />
         </div>
-        {requestError ? <p className='warningStr'>입력값이 없는 항목이 있습니다.</p> : null}
+        {requestError ? (
+          <p className="warningStr">입력값이 없는 항목이 있습니다.</p>
+        ) : null}
       </WalkRequest>
-      <div className='btnWrapper'>
+      <div className="btnWrapper">
         <MainColorShortBtn
           onClick={() => {
             navigate(-1);
-          }}
-        >
+          }}>
           취소하기
         </MainColorShortBtn>
         <MainColorShortBtn onClick={isValid}>요청하기</MainColorShortBtn>
