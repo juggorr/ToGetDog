@@ -60,6 +60,15 @@ public class ChatInfoServiceImpl implements ChatInfoService{
 	}
 
 	@Transactional
+	public void updateChatActi(long roomId, long userId) {
+		ChatInfo ci = chatInfoRepo.findByRoomIdAndUserId(roomId , userId).orElse(null);
+		if(ci == null)
+			return;
+		ci.updateAct(1, null);
+		chatInfoRepo.save(ci);
+	}
+	
+	@Transactional
 	public boolean credentUser(long roomId , long userId) {
 		ChatInfo ci = chatInfoRepo.findByRoomIdAndUserId(roomId , userId).orElse(null);
 		if(ci == null)

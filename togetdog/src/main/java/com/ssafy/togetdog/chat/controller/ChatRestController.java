@@ -112,19 +112,15 @@ public class ChatRestController {
 		ChatInUserInfo opponent = cis.otherUserInfo(userId , other);
 		if(opponent == null) {
 			opponent = cis.createChatRoom(user, other);
-		}else {
-			Set<Long> set = new HashSet<>();
-			set.add(userId);
-			cis.updateChatInfo(opponent.getRoomId(), set);
+		}
+		if(opponent.getActi() == 2L){
+			cis.updateChatActi(opponent.getRoomId(), userId);
 		}
 		long roomId = opponent.getRoomId();
 		List<ChattingDTO> list = cms.findMessage(roomId , opponent.getStart());
 		Collections.reverse(list);
 		if(csl.getList(roomId) != null) {
 			list.addAll(csl.getList(roomId).stream().map(m -> ChattingDTO.of(m)).collect(Collectors.toList()));
-//			for(ChatDTO dto : csl.getList(roomId)) {
-//				list.add(ChattingDTO.of(dto));				
-//			}
 		}
 		
 		resultMap.put("result", SUCCESS);
