@@ -118,7 +118,7 @@ public class DogServiceImpl implements DogService {
 			List<SentAppointment> sentInfos = sentAppointmentRepository.findAllByAppointment(appointment);
 			for (SentAppointment sentInfo : sentInfos) {
 				if (sentInfo.getDog().getDogId() == dog.getDogId()) {
-					notifyService.insertCancelNotify(appointment);
+					notifyService.insertCancelNotify(appointment, user.getUserId());
 					appointment.setStatus("cancelled");
 					appointmentRepository.save(appointment);
 				}
