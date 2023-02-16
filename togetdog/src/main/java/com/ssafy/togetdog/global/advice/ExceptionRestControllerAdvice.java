@@ -38,11 +38,15 @@ import io.jsonwebtoken.io.IOException;
  */
 
 @RestControllerAdvice(basePackages = {
-		"com.ssafy.togetdog.user.controller", 
+		"com.ssafy.togetdog.appointment.controller",
+		"com.ssafy.togetdog.board.controller",
+		"com.ssafy.togetdog.chat.controller",
 		"com.ssafy.togetdog.dog.controller", 
+		"com.ssafy.togetdog.facility.controller",
+		"com.ssafy.togetdog.follow.controller",
 		"com.ssafy.togetdog.notify.controller",
-		"com.ssafy.togetdog.board.controller", 
-		"com.ssafy.togetdog.follow.controller"})
+		"com.ssafy.togetdog.search.controller", 
+		"com.ssafy.togetdog.user.controller"})
 public class ExceptionRestControllerAdvice extends ResponseEntityExceptionHandler {
 	
 	private static final String FAIL = "fail";
