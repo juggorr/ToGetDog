@@ -25,8 +25,6 @@ function UserInfoModal({ userInfoModal, setUserInfoModal, feedUserData }) {
     setGender(feedUserData.userGender === 'male' ? '남성' : '여성');
   }, []);
 
-  console.log(feedUserData);
-
   const onClick = () => {
     setUserInfoModal(false);
   };
