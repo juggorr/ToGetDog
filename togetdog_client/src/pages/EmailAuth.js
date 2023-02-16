@@ -14,7 +14,7 @@ const EmailAuth = () => {
 
   let url = window.location.search;
   url = url.replace(/&amp;/gi, '&');
-  let email = new URLSearchParams(url).get('email');
+  const email = new URLSearchParams(url).get('email');
   const authKey = new URLSearchParams(url).get('authKey');
 
   const handleVerification = async () => {
