@@ -15,11 +15,13 @@ import org.springframework.stereotype.Service;
 import com.ssafy.togetdog.appointment.model.entity.Appointment;
 import com.ssafy.togetdog.appointment.model.repository.AppointmentRepository;
 import com.ssafy.togetdog.dog.model.repository.DogRepository;
+import com.ssafy.togetdog.global.exception.InvalidInputException;
 import com.ssafy.togetdog.notify.model.dto.NoticeDTO;
 import com.ssafy.togetdog.notify.model.dto.NotifyRespDTO;
 import com.ssafy.togetdog.notify.model.entity.Notify;
 import com.ssafy.togetdog.notify.model.repository.NotifyRepository;
 import com.ssafy.togetdog.user.model.entity.User;
+import com.ssafy.togetdog.user.model.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,6 +33,7 @@ public class NotifyServiceImpl implements NotifyService {
 	private final NotifyRepository notifyRepository;
 	private final AppointmentRepository appointmentRepository;
 	private final DogRepository dogRepository;
+	private final UserRepository userRepository;
 	
 	/* 팔로우insert */
 	@Override
@@ -63,10 +66,19 @@ public class NotifyServiceImpl implements NotifyService {
 	
 	/* 산책 취소 insert */
 	@Override
-	public void insertCancelNotify(Appointment appointment) {
+	public void insertCancelNotify(Appointment appointment, long userId) {
+		User sender = userRepository.findById(userId).orElse(null);
+		if (sender == null) {
+			throw new InvalidInputException("찾을 수 없는 사용자 정보입니다.");
+		}
+		
+		User receiver = appointment.getReceivedUser();
+		if (receiver.getUserId() == sender.getUserId()) {
+			receiver = appointment.getSentUser();
+		}
 		Notify newNoti = Notify.builder()
-				.receiver(appointment.getReceivedUser())
-				.sender(appointment.getSentUser())
+				.receiver(receiver)
+				.sender(sender)
 				.notifyType("c")
 				.notifyDate(LocalDateTime.now())
 				.check(false)

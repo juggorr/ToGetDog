@@ -13,7 +13,7 @@ public interface NotifyService {
 	// insert like
 	void insertLikeNotify(User receiver, User sender, long dogId, long boardId);
 	// insert appointment cancel notice
-	void insertCancelNotify(Appointment appointment);
+	void insertCancelNotify(Appointment appointment, long userId);
 	// check notice
 	void updateNotify(User user);
 	// select notice
