@@ -251,6 +251,7 @@ public class AppointmentRestController {
 		
 //		appointmentService.test();
 		
+		jwtService.validateToken(token);
 		long userId = jwtService.getUserId(token);
 //		long userId = 41L;
 		List<DogRecommendListDTO> dogList = appointmentService.recommendFriendsForDog(userId, dogId);
@@ -271,6 +272,7 @@ public class AppointmentRestController {
 	public ResponseEntity<?> findFreinds(@RequestHeader(value = "Authorization") @ApiParam(required = true) String token) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
+		jwtService.validateToken(token);
 		long userId = jwtService.getUserId(token);
 //		long userId = 4L;
 		List<DogRecommendListDTO> dogList = appointmentService.recommendFriendsForDog(userId);
