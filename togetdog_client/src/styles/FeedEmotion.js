@@ -1,11 +1,11 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const FeedContainer = styled.div`
   width: 100%;
   height: calc(100vh - 115px);
   display: flex;
   flex-direction: column;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
 
   .no-photo {
     height: 100%;
@@ -74,10 +74,14 @@ export const FeedProfileTop = styled.div`
     padding-left: 1rem;
   }
 
-  .dog-name {
-    font-size: 0.9rem;
+  .dog-name-box {
     display: flex;
     padding-bottom: 0.1rem;
+  }
+
+  .dog-name {
+    font-size: 0.9rem;
+    line-height: 0.9rem;
   }
 
   .dog-breed,
@@ -172,6 +176,7 @@ export const FeedProfileTop = styled.div`
   .dm-btn {
     background-color: #717171;
     margin-right: 0.3rem;
+    line-height: 1.7rem;
   }
 `;
 
@@ -192,8 +197,9 @@ export const FeedProfileBottom = styled.div`
     color: #777;
     font-size: 0.8rem;
     padding-left: 0.3rem;
-    padding-right: 0.5rem;
+    padding-right: 1rem;
     padding-top: 0.1rem;
+    padding-bottom: 0.3rem;
     cursor: pointer;
     text-align: end;
   }
