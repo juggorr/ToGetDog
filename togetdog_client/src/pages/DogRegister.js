@@ -186,7 +186,7 @@ function DogRegister() {
     // 4글자만 입력되도록 슬라이싱
     const year = e.target.value.slice(0, 4);
     // 기네스기록 + 3년 출생년도 등록 기준
-    if (year < 1998 || year > new Date().getFullYear()) {
+    if (year < 2000 || year > new Date().getFullYear()) {
       setYearError(true);
       setYearErrorMsg('적절한 출생연도를 입력해주세요.');
     } else {
@@ -231,7 +231,7 @@ function DogRegister() {
   const [weight, setWeight] = useState('');
   const handleWeight = (e) => {
     const weight = e.target.value.slice(0, 4);
-    if (weight < 0 || weight > 90) {
+    if (weight <= 0 || weight > 80) {
       setWeightError(true);
       setWeightErrorMsg('적절한 몸무게를 입력해주세요.');
     } else {
