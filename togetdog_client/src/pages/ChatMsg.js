@@ -104,12 +104,12 @@ const ChatMsg = () => {
     }
   };
   const send = () => {
-    const msg = {
-      userId: user.userId,
-      content: msgInput,
-      sessionId: sessionId,
-      roomId: roomId,
-    };
+    // const msg = {
+    //   userId: user.userId,
+    //   content: msgInput,
+    //   sessionId: sessionId,
+    //   roomId: roomId,
+    // };
 
     if (stompClient.connected) {
       // 보낼 메세지 json 객체 (roomid 넣으삼)
