@@ -32,6 +32,7 @@ const nicknameEngRegexp = /^[a-zA-Z]{2,16}$/; // 영문 2~16자
 
 function UserEdit() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [signoutBtnClick, setSignoutBtnClick] = useState(false);
 
@@ -42,8 +43,15 @@ function UserEdit() {
   const [userInfos, setUserInfos] = useState({});
 
   useEffect(() => {
+    // 로그인 안된 유저 접근 불가
     if (!auth || !localStorage.getItem('recoil-persist')) {
       navigate('/login');
+      return;
+    }
+    // 로그인한 유저 url접근 막기
+    if (!location.state) {
+      alert('허용되지 않은 접근입니다.');
+      navigate(-1);
       return;
     }
 

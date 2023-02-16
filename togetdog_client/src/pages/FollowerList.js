@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import axios from 'axios';
 
 
-import { authAtom } from "../recoil";
+import { authAtom, userState } from "../recoil";
 import { BACKEND_URL } from "../config";
 import FollowersList from "../components/FollowersList";
 import { 
@@ -16,17 +16,34 @@ import Loading from "../assets/loading.gif"
 function FollowerList() {
 
   const auth = useRecoilValue(authAtom);
+  const user = useRecoilValue(userState);
+
 
   const [isLoading, setIsLoading] = useState(true);
-  // navigate로 넘어온 강아지Id 받기
+  const navigate = useNavigate();
   const location = useLocation();
-  const dogId = location.state.dogId;
-
+  
   // followers arr채우기
   const [followers, setFollowers] = useState([]);
-
+  
   // GET 요청 보내서 팔로워 리스트 받기
   useEffect(() => {
+    // 로그인 하지 않은 유저라면 접근하지 못하도록
+    if (!auth || !user) {
+      navigate('/login');
+      return;
+    }
+
+    // 로그인한 유저가 url로 바로 접근한다면
+    if (!location.state) {
+      alert('허용되지 않은 접근입니다.');
+      navigate(-1);
+      return;
+    }
+      
+    // 정상적인 경로로 접근했다면 
+    // navigate로 넘어온 강아지Id 받기
+    const dogId = location.state.dogId;
     const fetchFollowers = async () => {
       axios
         .get(`${BACKEND_URL}/follow/follower?dogId=${dogId}`, {

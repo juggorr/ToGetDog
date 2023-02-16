@@ -39,9 +39,7 @@ function SocialSignup() {
   const [social, setSocial] = useState('');
 
   useEffect(() => {
-
     console.log(params);
-  
 
     let [email, nickname, social] = params.slice(35, params.length - 1).split(', ');
     nickname = nickname.slice(9, nickname.length);    
@@ -231,7 +229,7 @@ function SocialSignup() {
         // setEmailStatus(true);
         console.log('회원가입 성공!')
         console.log(res);
-        navigate('/socialsuccess');
+        navigate('/socialsuccess', {state: {isGranted: true}});
       })
       .catch((err) => {
         console.log(err);

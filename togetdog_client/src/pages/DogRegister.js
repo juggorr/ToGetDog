@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { authAtom, userState } from '../recoil';
 import Select from 'react-select';
@@ -67,6 +67,35 @@ function DogRegister() {
   const auth = useRecoilValue(authAtom);
   const user = useRecoilValue(userState);
   const navigate = useNavigate();
+
+  const location = useLocation();
+
+
+  // 로그인 한 유저만 접근 & 강아지가 3마리 이상인 유저는 접근 불가
+  useEffect(() => {
+    // 로그인하지 않은 유저라면 로그인 화면으로 돌리기
+    if (!auth || !user) {
+      navigate('/login');
+      return;
+    }
+    
+    // url로 바로 접근 시
+    if (!location.state) {
+      alert('허용되지 않은 접근입니다.');
+      navigate(-1);
+      return;
+    }
+    
+    // 강아지가 3마리 이상이라면 feed로 돌리고 alert띄우기
+    if (!location.state.dogs.length >= 3) {
+      alert('강아지는 3마리까지 등록 가능합니다');
+      navigate(`/feed/${user.userId}`);
+      return;
+    }
+
+  }, [])
+
+
 
   // 견종 리스트 public/breeds.txt에서 불러오기
   const [breedList, setBreedList] = useState([]);

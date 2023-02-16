@@ -53,25 +53,28 @@ function SocialTemp() {
   // 소셜 닉네임 확인하는 함수
   useEffect(() => {
     const checkNickname = async (val) => {
+      console.log(val);
+      console.log(val.length);
       if (!nicknameKorRegexp.test(val) && !nicknameEngRegexp.test(val)) {
         console.log('소셜 닉네임이 형식에 맞지 않음');
         setSocialNicknameErr(false);
         // setNicknameErrorMsg('닉네임은 한글 1~8자 혹은 영문 2~16자');
         return;
       }
-      try {
-        const res = await axios.get(`${BACKEND_URL}/user/nickname`, { params: { val } })
-        if (res.status === 200) {
-          console.log('사용할 수 있는 닉네임')
-          console.log(res);
-          setSocialNicknameErr(true);
-        }
-      }
-      catch(err){
-        console.log('증복되는 닉네임')
-        console.log(err);
-        setSocialNicknameErr(false);
-      };
+      await axios
+        .get(`${BACKEND_URL}/user/nickname`, { params: { val } })
+        .then((resp) => {
+          if (resp.status === 200) {
+            console.log(resp);
+            console.log('사용 가능한 닉네임');
+            setNicknameError(true);
+          }
+        })
+        .catch((err) => {
+          // 409 에러일 경우로 코드 리팩토링 필요
+          console.log('사용 불가능한 닉네임');
+          setNicknameError(false);
+        });
     }
 
     checkNickname(socialNickname);
@@ -115,9 +118,9 @@ function SocialTemp() {
   // 닉네임 핸들러 메소드
   const handleNickname = async (e) => {
     const nickname = e.target.value;
-    console.log(nickname);
+    // console.log(nickname);
     if (!nicknameKorRegexp.test(nickname) && !nicknameEngRegexp.test(nickname)) {
-      console.log('닉네임 형식에 맞지 않음');
+      // console.log('닉네임 형식에 맞지 않음');
       setNicknameError(false);
       setNicknameErrorMsg('닉네임은 한글 1~8자 혹은 영문 2~16자');
       return;
@@ -134,7 +137,9 @@ function SocialTemp() {
       })
       .catch((err) => {
         // 409 에러일 경우로 코드 리팩토링 필요
-        console.log('사용 불가능한 닉네임');
+        // console.log('사용 불가능한 닉네임');
+        
+        console.log(err);
         setNicknameError(false);
         setNicknameErrorMsg('중복된 닉네임입니다.');
       });

@@ -41,7 +41,7 @@ import Notifications from './pages/Notifications';
 import Recommend from './pages/Recommend';
 import ChatMsg from './pages/ChatMsg';
 import NotFoundUser from './pages/NotFoundUser';
-// import SocialTemp from "./pages/SocialTemp";
+import SocialTemp from "./pages/SocialTemp";
 // import OauthTemp from "./pages/OauthTemp";
 
 function App() {
@@ -89,8 +89,8 @@ function App() {
           <Route path='/socialsuccess' element={<SocialSignupSuccess />} />
           <Route path='/createAppointment' element={<CreateAppointment />} />
           <Route path='/search' element={<Search />} />
-          {/* <Route path="/socialtemp" element={<SocialTemp />} />
-          <Route path="/oauthtemp" element={<OauthTemp />} /> */}
+          <Route path="/socialtemp" element={<SocialTemp />} />
+          {/* <Route path="/oauthtemp" element={<OauthTemp />} /> */}
         </Routes>
       </div>
     </BrowserRouter>

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 
 import { BACKEND_URL } from '../config';
@@ -17,12 +17,29 @@ const passwordRegexp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^+=-])(?=.*[0-9]).{8,16}$/;
 function PasswordEdit() {
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [noEssentialsModal, setNoEssentialsModal] = useState(false);
 
   const auth = useRecoilValue(authAtom);
+  const user = useRecoilValue(userState);
   const setAuth = useSetRecoilState(authAtom);
-  const [user, setUser] = useRecoilState(userState);
+
+  useEffect(() => {
+    // 로그인 하지 않은 유저 접근 불가
+    if (!auth || !user) {
+      navigate('/login');
+      return;
+    }
+
+    // 로그인 했어도 url로 접근 불가
+    if (!location.state) {
+      alert('허용되지 않은 접근입니다.');
+      navigate(-1);
+      return;
+    }
+    //
+  })
 
   const [inputs, setInputs] = useState({
     oldPassword: '',
