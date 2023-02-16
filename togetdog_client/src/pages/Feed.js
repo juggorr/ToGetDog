@@ -1,17 +1,17 @@
-import axios from "axios";
-import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import ConfirmModal from "../components/ConfirmModal";
-import UserInfoModal from "../components/AlertModal/UserInfoModal";
-import NoChangeModal from "../components/AlertModal/NoChangeModal";
-import NoDogAlertModal from "../components/AlertModal/NoDogAlertModal";
-import MenuModal from "../components/MenuModal";
-import OrangeCharacterBtn from "../components/OrangeCharacterBtn";
-import YellowCharacterBtn from "../components/YellowCharacterBtn";
-import { BACKEND_URL } from "../config";
-import { authAtom, userState } from "../recoil";
-import { MainColorShortBtn, PlusBtn } from "../styles/BtnsEmotion";
+import axios from 'axios';
+import { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import ConfirmModal from '../components/ConfirmModal';
+import UserInfoModal from '../components/AlertModal/UserInfoModal';
+import NoChangeModal from '../components/AlertModal/NoChangeModal';
+import NoDogAlertModal from '../components/AlertModal/NoDogAlertModal';
+import MenuModal from '../components/MenuModal';
+import OrangeCharacterBtn from '../components/OrangeCharacterBtn';
+import YellowCharacterBtn from '../components/YellowCharacterBtn';
+import { BACKEND_URL } from '../config';
+import { authAtom, userState } from '../recoil';
+import { MainColorShortBtn, PlusBtn } from '../styles/BtnsEmotion';
 import {
   FeedContainer,
   FeedPhoto,
@@ -21,13 +21,13 @@ import {
   FeedProfileWrapper,
   MainDogImg,
   SubDogImg,
-} from "../styles/FeedEmotion";
-import Boy from "../assets/boy.png";
-import Girl from "../assets/girl.png";
-import MenuIcon from "../assets/menu_icon.png";
-import Loading from "../assets/loading.gif";
-import FollowBtn from "../components/FollowBtn";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+} from '../styles/FeedEmotion';
+import Boy from '../assets/boy.png';
+import Girl from '../assets/girl.png';
+import MenuIcon from '../assets/menu_icon.png';
+import Loading from '../assets/loading.gif';
+import FollowBtn from '../components/FollowBtn';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Feed = () => {
   const auth = useRecoilValue(authAtom);
@@ -39,28 +39,28 @@ const Feed = () => {
   const menuLists = [
     {
       menu_id: 1,
-      text: "프로필 수정",
-      link: "/useredit",
+      text: '프로필 수정',
+      link: '/useredit',
     },
     {
       menu_id: 2,
-      text: "강아지 프로필 수정",
-      link: "/dogedit",
+      text: '강아지 프로필 수정',
+      link: '/dogedit',
     },
     {
       menu_id: 3,
-      text: "강아지 프로필 삭제",
-      link: "/dogdelete",
+      text: '강아지 프로필 삭제',
+      link: '/dogdelete',
     },
     {
       menu_id: 4,
-      text: "계정 비밀번호 변경",
-      link: "/passwordedit",
+      text: '계정 비밀번호 변경',
+      link: '/passwordedit',
     },
     {
       menu_id: 5,
-      text: "로그아웃",
-      link: "/logout",
+      text: '로그아웃',
+      link: '/logout',
     },
   ];
 
@@ -87,7 +87,7 @@ const Feed = () => {
   const [followStatus, setFollowStatus] = useState(false);
 
   const location = useLocation();
-  const feedUserId = location.pathname.split("/").reverse()[0];
+  const feedUserId = location.pathname.split('/').reverse()[0];
 
   // pageNo
   const pageNo = useRef(1);
@@ -120,7 +120,7 @@ const Feed = () => {
       .catch((err) => {
         console.log(err);
         if (err.response.status === 401) {
-          alert("토큰이 만료되어 자동 로그아웃되었습니다.");
+          alert('토큰이 만료되어 자동 로그아웃되었습니다.');
           handleLogout();
         }
       });
@@ -128,15 +128,15 @@ const Feed = () => {
 
   const handleLogout = () => {
     setUser(null);
-    localStorage.removeItem("user");
+    localStorage.removeItem('user');
     setAuth(null);
-    console.log("로그아웃이 정상적으로 처리되었습니다.");
-    navigate("/login");
+    console.log('로그아웃이 정상적으로 처리되었습니다.');
+    navigate('/login');
   };
 
   useEffect(() => {
-    if (!auth || !localStorage.getItem("recoil-persist")) {
-      navigate("/login");
+    if (!auth || !localStorage.getItem('recoil-persist')) {
+      navigate('/login');
       return;
     }
 
@@ -149,7 +149,7 @@ const Feed = () => {
             pageNo: pageNo.current,
           },
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: auth,
           },
         })
@@ -198,7 +198,7 @@ const Feed = () => {
             .catch((err) => {
               console.log(err);
               if (err.response.state === 401) {
-                alert("토큰이 만료되어 자동 로그아웃되었습니다.");
+                alert('토큰이 만료되어 자동 로그아웃되었습니다.');
                 handleLogout();
               }
             });
@@ -207,12 +207,12 @@ const Feed = () => {
         .catch((err) => {
           console.log(err);
           if (err.response.status === 404) {
-            navigate("/*");
+            navigate('/*');
           } else if (err.response.status === 401) {
-            alert("토큰이 만료되어 자동 로그아웃되었습니다.");
+            alert('토큰이 만료되어 자동 로그아웃되었습니다.');
             handleLogout();
           }
-          console.log("피드 데이터 불러오기 실패");
+          console.log('피드 데이터 불러오기 실패');
         });
       return;
     }
@@ -252,19 +252,19 @@ const Feed = () => {
       .catch((err) => {
         console.log(err);
         if (err.response.status === 404) {
-          navigate("/*");
+          navigate('/*');
         } else if (err.response.status === 401) {
-          alert("토큰이 만료되어 자동 로그아웃되었습니다.");
+          alert('토큰이 만료되어 자동 로그아웃되었습니다.');
           handleLogout();
         }
-        console.log("피드 데이터 불러오기 실패");
+        console.log('피드 데이터 불러오기 실패');
       });
   }, []);
 
   if (isLoading) {
     return (
-      <div className="loading">
-        <img src={Loading} alt="loading..." />
+      <div className='loading'>
+        <img src={Loading} alt='loading...' />
       </div>
     );
   }
@@ -312,83 +312,67 @@ const Feed = () => {
           {/* 프로필 상단 */}
           <FeedProfileTop>
             {!currentDog ? (
-              <MainDogImg src="https://media.istockphoto.com/id/509962049/vector/cute-puppy-sits.jpg?s=612x612&w=0&k=20&c=hm9wNYwzB2sXwrySGNi83WzH5B7ubDMk1NKJw73W7tg=" />
+              <MainDogImg src='https://media.istockphoto.com/id/509962049/vector/cute-puppy-sits.jpg?s=612x612&w=0&k=20&c=hm9wNYwzB2sXwrySGNi83WzH5B7ubDMk1NKJw73W7tg=' />
             ) : (
-              <MainDogImg
-                src={
-                  `https://i8a807.p.ssafy.io/image/dog/` + currentDog.dogProfile
-                }
-              />
+              <MainDogImg src={`https://i8a807.p.ssafy.io/image/dog/` + currentDog.dogProfile} />
             )}
             {!feedDogData ? (
-              <div className="no-dog-info-box">
-                <div className="no-dogs-txt">{"등록된 강아지가 없습니다."}</div>
+              <div className='no-dog-info-box'>
+                <div className='no-dogs-txt'>{'등록된 강아지가 없습니다.'}</div>
               </div>
             ) : currentDog ? (
-              <div className="dog-info-box">
-                <div className="dog-name">
+              <div className='dog-info-box'>
+                <div className='dog-name'>
                   {currentDog.dogName}
-                  {currentDog.dogGender === "male" ? (
-                    <img src={Boy} className="dog-gender" alt="Boy" />
+                  {currentDog.dogGender === 'male' ? (
+                    <img src={Boy} className='dog-gender' alt='Boy' />
                   ) : (
-                    <img src={Girl} className="dog-gender" alt="Girl" />
+                    <img src={Girl} className='dog-gender' alt='Girl' />
                   )}
                 </div>
-                <div className="dog-breed">{currentDog.dogType}</div>
-                <div className="dog-age">{`${
-                  currentDog.dogAge >= 12
-                    ? `${Math.floor(currentDog.dogAge / 12)}살`
-                    : `${currentDog.dogAge}개월`
+                <div className='dog-breed'>{currentDog.dogType}</div>
+                <div className='dog-age'>{`${
+                  currentDog.dogAge >= 12 ? `${Math.floor(currentDog.dogAge / 12)}살` : `${currentDog.dogAge}개월`
                 }`}</div>
               </div>
             ) : (
-              <div className="dog-info-box">
+              <div className='dog-info-box'>
                 {feedUserData.userId === user.userId ? (
-                  <MainColorShortBtn onClick={() => navigate("/dogregister")}>
-                    강아지 등록
-                  </MainColorShortBtn>
+                  <MainColorShortBtn onClick={() => navigate('/dogregister')}>강아지 등록</MainColorShortBtn>
                 ) : (
-                  <div>{"등록된 강아지가 없습니다."}</div>
+                  <div>{'등록된 강아지가 없습니다.'}</div>
                 )}
               </div>
             )}
 
-            <div className="sub-dogs">
+            <div className='sub-dogs'>
               {subDogs
                 ? subDogs.map((subdog) => (
                     <SubDogImg
-                      src={
-                        `https://i8a807.p.ssafy.io/image/dog/` +
-                        subdog.dogProfile
-                      }
+                      src={`https://i8a807.p.ssafy.io/image/dog/` + subdog.dogProfile}
                       key={subdog.dogId}
                       onClick={() => swapMainDog(subdog.dogId)}
                     />
                   ))
                 : null}
-              {feedDogData.length === 3 ||
-              feedUserData.userId !== user.userId ? null : (
-                <PlusBtn onClick={() => navigate("/dogregister")}>+</PlusBtn>
+              {feedDogData.length === 3 || feedUserData.userId !== user.userId ? null : (
+                <PlusBtn onClick={() => navigate('/dogregister')}>+</PlusBtn>
               )}
             </div>
             {feedUserData.userId === user.userId ? (
-              <div className="profile-etc-wrapper">
-                <img
-                  src={MenuIcon}
-                  className="menu-icon"
-                  onClick={() => setMenuBtnClick(true)}
-                  alt="menu"
-                />
-                <div className="follow-info flex-column">
+              <div className='profile-etc-wrapper'>
+                <img src={MenuIcon} className='menu-icon' onClick={() => setMenuBtnClick(true)} alt='menu' />
+                <div className='follow-info flex-column'>
                   {currentDog ? (
                     <div
-                      className="follow-box"
+                      className='follow-box'
                       onClick={() =>
                         navigate(`/followerlist/${currentDog.dogId}`, {
                           state: { dogId: currentDog.dogId },
                         })
-                      }>
-                      <div className="follow-text">팔로워</div>
+                      }
+                    >
+                      <div className='follow-text'>팔로워</div>
                       <div>{currentDog.dogFollowerCnt}</div>
                     </div>
                   ) : null}
@@ -398,35 +382,31 @@ const Feed = () => {
                         state: { userId: user.userId },
                       })
                     }
-                    className="follow-box">
-                    <div className="follow-text">팔로잉</div>
+                    className='follow-box'
+                  >
+                    <div className='follow-text'>팔로잉</div>
                     <div>{feedUserData.followCnt}</div>
                   </div>
                 </div>
               </div>
             ) : currentDog ? (
-              <div className="other-user-btns">
-                <FollowBtn
-                  dogId={currentDog.dogId}
-                  followStatus={followStatus}
-                  setFollowStatus={setFollowStatus}
-                />
-                <div className="feed-btn-box">
-                  <div
-                    className="dm-btn"
-                    onClick={() => navigate(`/chat/${feedUserData.userId}`)}>
-                    <FontAwesomeIcon icon="fa-solid fa-message" />
+              <div className='other-user-btns'>
+                <FollowBtn dogId={currentDog.dogId} followStatus={followStatus} setFollowStatus={setFollowStatus} />
+                <div className='feed-btn-box'>
+                  <div className='dm-btn' onClick={() => navigate(`/chat/${feedUserData.userId}`)}>
+                    <FontAwesomeIcon icon='fa-solid fa-message' />
                   </div>
                   <div
-                    className="make-appointment-btn"
+                    className='make-appointment-btn'
                     onClick={() =>
-                      navigate("/createAppointment", {
+                      navigate('/createAppointment', {
                         state: {
                           partnerId: feedUserData.userId,
                         },
                       })
-                    }>
-                    <FontAwesomeIcon icon="fa-calendar" />
+                    }
+                  >
+                    <FontAwesomeIcon icon='fa-calendar' />
                   </div>
                 </div>
               </div>
@@ -436,57 +416,33 @@ const Feed = () => {
           {currentDog ? (
             <FeedProfileBottom>
               <div
-                className={`${
-                  feedUserData.userId === user.userId
-                    ? "dog-user-mine"
-                    : "dog-user-not-mine"
-                }`}
-                onClick={() => setUserInfoModal(!userInfoModal)}>
-                <FontAwesomeIcon icon="fa-solid fa-user" />
-                <span className="dog-user-nickname">
-                  {feedUserData.nickname}
-                </span>
+                className={`${feedUserData.userId === user.userId ? 'dog-user-mine' : 'dog-user-not-mine'}`}
+                onClick={() => setUserInfoModal(!userInfoModal)}
+              >
+                <FontAwesomeIcon icon='fa-solid fa-user' />
+                <span className='dog-user-nickname'>{feedUserData.nickname}</span>
               </div>
-              <div className="special-text">{currentDog.description}</div>
-              <div className="characters-box">
-                <OrangeCharacterBtn
-                  text={`#${currentDog.dogNeutered ? "중성화" : "중성화 X"}`}
-                />
-                <YellowCharacterBtn
-                  text={`#${
-                    currentDog.dogCharacter1 === "obedient"
-                      ? "온순함"
-                      : "사나움"
-                  }`}
-                />
-                <YellowCharacterBtn
-                  text={`#${
-                    currentDog.dogCharacter2 === "active"
-                      ? "활동적"
-                      : "비활동적"
-                  }`}
-                />
+              <div className='special-text'>{currentDog.description}</div>
+              <div className='characters-box'>
+                <OrangeCharacterBtn text={`#${currentDog.dogNeutered ? '중성화' : '중성화 X'}`} />
+                <YellowCharacterBtn text={`#${currentDog.dogCharacter1 === 'obedient' ? '온순함' : '사나움'}`} />
+                <YellowCharacterBtn text={`#${currentDog.dogCharacter2 === 'active' ? '활동적' : '비활동적'}`} />
               </div>
             </FeedProfileBottom>
           ) : (
             <FeedProfileBottom>
               <div
-                className={`${
-                  feedUserData.userId === user.userId
-                    ? "dog-user-mine"
-                    : "dog-user-not-mine"
-                }`}
-                onClick={() => setUserInfoModal(!userInfoModal)}>
-                <FontAwesomeIcon icon="fa-solid fa-user" />
-                <span className="dog-user-nickname">
-                  {feedUserData.nickname}
-                </span>
+                className={`${feedUserData.userId === user.userId ? 'dog-user-mine' : 'dog-user-not-mine'}`}
+                onClick={() => setUserInfoModal(!userInfoModal)}
+              >
+                <FontAwesomeIcon icon='fa-solid fa-user' />
+                <span className='dog-user-nickname'>{feedUserData.nickname}</span>
               </div>
             </FeedProfileBottom>
           )}
         </FeedProfileWrapper>
         {!feedPhotoData ? (
-          <div className="no-photo">등록된 사진이 없습니다.</div>
+          <div className='no-photo'>등록된 사진이 없습니다.</div>
         ) : (
           <FeedPhotoWrapper>
             {feedPhotoData.map((feedPhoto) => (
