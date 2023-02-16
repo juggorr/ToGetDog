@@ -270,7 +270,6 @@ const Search = () => {
           setUserResult(response.data.user);
         })
         .catch((error) => {
-          console.log(error);
           if (error.response.status === 404) {
             navigate("/*");
           } else if (error.response.status === 401) {

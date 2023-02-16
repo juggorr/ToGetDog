@@ -90,7 +90,6 @@ const Signup = () => {
 
   const handleEmailCheck = async (e) => {
     if (!emailRegexp.test(email)) {
-      console.log("이메일 형식에 맞지 않음");
       setInputs({
         ...inputs,
         emailCheck: false,
@@ -102,8 +101,6 @@ const Signup = () => {
       .get(`${BACKEND_URL}/user/email`, { params: { email } })
       .then((resp) => {
         if (resp.status === 200) {
-          console.log(resp);
-          console.log("이메일 중복확인 success");
           setInputs({
             ...inputs,
             emailCheck: true,
@@ -118,7 +115,6 @@ const Signup = () => {
           emailCheck: false,
           emailErrorMsg: "이미 가입된 이메일입니다.",
         });
-        console.log("이메일 중복확인 실패");
       });
   };
 
@@ -141,11 +137,9 @@ const Signup = () => {
   const handlePasswordCheck = (e) => {
     // 비밀번호 일치 여부 검사
     if (password === e.target.value && e.target.value !== "") {
-      console.log("비밀번호 일치");
       setPasswordCheckError(true);
       setPasswordCheckErrorMsg("비밀번호가 일치합니다.");
     } else {
-      console.log("비밀번호 불일치");
       setPasswordCheckError(false);
       setPasswordCheckErrorMsg("비밀번호가 일치하지 않습니다.");
     }
@@ -156,12 +150,10 @@ const Signup = () => {
   // 닉네임 핸들러 메소드
   const handleNickname = async (e) => {
     const nickname = e.target.value;
-    console.log(nickname);
     if (
       !nicknameKorRegexp.test(nickname) &&
       !nicknameEngRegexp.test(nickname)
     ) {
-      console.log("닉네임 형식에 맞지 않음");
       setNicknameError(false);
       setNicknameErrorMsg("닉네임은 한글 1~8자 혹은 영문 2~16자");
       return;
@@ -170,15 +162,12 @@ const Signup = () => {
       .get(`${BACKEND_URL}/user/nickname`, { params: { nickname } })
       .then((resp) => {
         if (resp.status === 200) {
-          console.log(resp);
-          console.log("사용 가능한 닉네임");
           setNicknameError(true);
           setNicknameErrorMsg("사용 가능한 닉네임입니다.");
         }
       })
       .catch((err) => {
         // 409 에러일 경우로 코드 리팩토링 필요
-        console.log("사용 불가능한 닉네임");
         setNicknameError(false);
         setNicknameErrorMsg("중복된 닉네임입니다.");
       });
@@ -249,13 +238,11 @@ const Signup = () => {
       .then((resp) => {
         setLoading(false);
         setEmailStatus(true);
-        console.log("회원가입 성공! 이메일 인증으로!");
-        console.log(resp);
+        alert("회원가입 성공! 로그인 창으로 이동합니다.");
         navigate("/signup");
       })
       .catch((err) => {
-        console.log(err);
-        console.log("회원가입 실패");
+        alert("회원가입을 처리하던 중 문제가 발생하였습니다.");
       });
   };
 
@@ -281,10 +268,8 @@ const Signup = () => {
       addressError
     ) {
       setLoading(true);
-      console.log("회원가입을 시도합니다.");
       handleSignup();
     } else {
-      console.log("아직 입력되지 않은 값 있음.");
       return;
     }
   };

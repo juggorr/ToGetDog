@@ -118,7 +118,6 @@ const Feed = () => {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
         if (err.response.status === 401) {
           alert("자동 로그아웃되었습니다.");
           handleLogout();
@@ -196,7 +195,6 @@ const Feed = () => {
               setFeedPhotoData(res.data.boardList);
             })
             .catch((err) => {
-              console.log(err);
               if (err.response.state === 401) {
                 alert("자동 로그아웃되었습니다.");
                 handleLogout();
@@ -205,14 +203,12 @@ const Feed = () => {
           setLoading(false);
         })
         .catch((err) => {
-          console.log(err);
           if (err.response.status === 404) {
             navigate("/*");
           } else if (err.response.status === 401) {
             alert("자동 로그아웃되었습니다.");
             handleLogout();
           }
-          console.log("피드 데이터 불러오기 실패");
         });
       return;
     }
@@ -250,14 +246,12 @@ const Feed = () => {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
         if (err.response.status === 404) {
           navigate("/*");
         } else if (err.response.status === 401) {
           alert("자동 로그아웃되었습니다.");
           handleLogout();
         }
-        console.log("피드 데이터 불러오기 실패");
       });
   }, []);
 

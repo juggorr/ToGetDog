@@ -89,11 +89,9 @@ function PasswordEdit() {
   const handlePasswordCheck = (e) => {
     // 비밀번호 일치 여부 검사
     if (password === e.target.value && e.target.value !== "") {
-      console.log("비밀번호 일치");
       setPasswordCheckError(true);
       setPasswordCheckErrorMsg("비밀번호가 일치합니다.");
     } else {
-      console.log("비밀번호 불일치");
       setPasswordCheckError(false);
       setPasswordCheckErrorMsg("비밀번호가 일치하지 않습니다.");
     }
@@ -121,15 +119,12 @@ function PasswordEdit() {
         }
       )
       .then((res) => {
-        console.log(res);
         navigate(`/feed/${user.userId}`);
       })
       .catch((err) => {
         if (err.response.status === 400) {
-          console.log("기존 비밀번호와 일치하지 않습니다.");
           setNotMatchModal(true);
         } else {
-          console.log(err);
         }
       });
   };

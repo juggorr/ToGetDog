@@ -155,14 +155,12 @@ const Map = () => {
           }
         );
         const arr = response.data.storeList;
-        // console.log(response.data);
 
         arr.sort((a, b) => {
           return a.distance - b.distance;
         });
         setFacilities(arr);
       } catch (error) {
-        console.log(error);
         if (error.response.status === 404) {
           navigate("/*");
         } else if (error.response.status === 401) {
