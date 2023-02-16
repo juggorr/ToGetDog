@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const MenuModalWrapper = styled.div`
   z-index: 999;
@@ -70,7 +70,7 @@ export const ConfirmModalBody = styled.div`
 
   .modal-msg {
     padding-top: 2rem;
-    font-size: 0.75rem;
+    font-size: 0.9rem;
   }
 
   .two-btns-wrapper {

@@ -22,7 +22,7 @@ export const BoardContentWrapper = styled.div`
 
   .queryStr {
     font-family: "Noto Sans KR", sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: #717171;
     white-space: pre-wrap;
   }
@@ -30,7 +30,7 @@ export const BoardContentWrapper = styled.div`
   .warningStr {
     maring: 0;
     font-family: "Noto Sans KR", sans-serif;
-    font-size: 0.5rem;
+    font-size: 0.8rem;
     color: #f24e1e;
     white-space: pre-wrap;
   }

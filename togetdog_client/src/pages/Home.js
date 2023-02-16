@@ -36,7 +36,13 @@ const SingleBoard = ({ board }) => {
       <div className="contentLine"></div>
       <div className="profileWrapper">
         <DogImgWrapper>
-          <div className="dogProfileCircle">
+          <div
+            className="dogProfileCircle"
+            onClick={() =>
+              navigate(`/feed/${board.userId}`, {
+                state: { dogId: board.dogId },
+              })
+            }>
             <img
               className="dogProfileImg"
               src={"https://togetdog.site/image/dog/" + board.dog.dogProfile}

@@ -39,7 +39,7 @@ const Feed = () => {
   const menuLists = [
     {
       menu_id: 1,
-      text: "프로필 수정",
+      text: "회원 정보 수정",
       link: "/useredit",
     },
     {
@@ -54,7 +54,7 @@ const Feed = () => {
     },
     {
       menu_id: 4,
-      text: "계정 비밀번호 변경",
+      text: "비밀번호 변경",
       link: "/passwordedit",
     },
     {
@@ -342,14 +342,11 @@ const Feed = () => {
             ) : (
               <div className="dog-info-box">
                 {feedUserData.userId === user.userId ? (
-                  <MainColorShortBtn
-                    onClick={() =>
-                      navigate("/dogregister", { state: { dogs: feedDogData } })
-                    }>
-                    강아지 등록
-                  </MainColorShortBtn>
+                  <div className="regist-msg">{"강아지를 등록해주세요"}</div>
                 ) : (
-                  <div>{"등록된 강아지가 없습니다."}</div>
+                  <div className="regist-msg">
+                    {"등록된 강아지가 없습니다."}
+                  </div>
                 )}
               </div>
             )}
