@@ -272,7 +272,6 @@ const Recommend = () => {
       })
       .catch((error) => {
         // 오류발생시 실행
-        console.log(error);
         if (error.response.status === 404) {
           navigate("/*");
         } else if (error.response.status === 401) {
@@ -327,7 +326,8 @@ const Recommend = () => {
             강아지를 등록하신 후<br />
             산책 친구를 추천받으실 수 있습니다.
           </p>
-          <MainColorShortBtn onClick={() => navigate("/dogregister")}>
+          <MainColorShortBtn
+            onClick={() => navigate("/dogregister", { state: { dogs: [] } })}>
             강아지 등록
           </MainColorShortBtn>
         </div>

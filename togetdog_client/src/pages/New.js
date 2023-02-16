@@ -56,7 +56,6 @@ const New = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
         // 오류발생시 실행
         if (error.response.status === 404) {
           navigate("/*");
@@ -109,7 +108,6 @@ const New = () => {
     if (selectedDog === -1) {
       alert("먼저 강아지를 등록해주세요.");
     } else if (selectedDog && imgRef.current.files[0]) {
-      // console.log(selectedDog);
       const formData = new FormData();
       const boardContent = { dogId: selectedDog, content: contentText.current };
       formData.append("file", imgRef.current.files[0]);
@@ -127,9 +125,7 @@ const New = () => {
         .then((response) => {
           navigate(`/feed/${user.userId}`);
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     }
   };
 
@@ -149,7 +145,8 @@ const New = () => {
         </div>
         {selectedDog === -1 ? (
           <>
-            <MainColorShortBtn onClick={() => navigate("/dogregister")}>
+            <MainColorShortBtn
+              onClick={() => navigate("/dogregister", { state: { dogs: [] } })}>
               강아지 등록
             </MainColorShortBtn>
             <p className="warningStr">먼저 강아지를 등록하세요.</p>

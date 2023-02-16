@@ -58,8 +58,7 @@ const ChatMsg = () => {
         navigate(`/chat`);
       })
       .catch((err) => {
-        console.log(err);
-        console.log("채팅방을 나가는 도중에 에러가 발생하였습니다.");
+        alert("채팅방을 나가는 도중에 에러가 발생하였습니다.");
       });
   };
 
@@ -133,7 +132,6 @@ const ChatMsg = () => {
       {},
       (frame) => {
         // 소켓 연결 성공
-        console.log("소켓 연결 성공", frame);
         setLoading(false);
         gotoBottom();
 
@@ -167,7 +165,6 @@ const ChatMsg = () => {
       (error) => {
         // 소켓 연결 실패
         navigate("/500");
-        console.log(error);
         stompClient.connected = false;
       }
     );
@@ -199,7 +196,6 @@ const ChatMsg = () => {
         connect(resp.data.other.roomId);
       })
       .catch((err) => {
-        console.log(err);
         if (err.response.status === 401) {
           alert("자동 로그아웃되었습니다.");
           handleLogout();

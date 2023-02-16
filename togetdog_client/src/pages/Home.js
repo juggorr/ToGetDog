@@ -179,7 +179,6 @@ const Home = () => {
         setHasNextPage(response.data.boardList.length === 9);
       })
       .catch((error) => {
-        console.log(error);
         if (error.response.status === 404) {
           navigate("/*");
         } else if (error.response.status === 401) {
@@ -197,12 +196,9 @@ const Home = () => {
         },
       })
       .then((response) => {
-        // console.log(response.data);
-        // console.log(response.data.dogs);
         setRecommendList(response.data.dogs);
       })
       .catch((error) => {
-        console.log(error);
         if (error.response.status === 404) {
           navigate("/*");
         } else if (error.response.status === 401) {

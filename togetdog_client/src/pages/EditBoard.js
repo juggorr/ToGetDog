@@ -52,8 +52,6 @@ const EditBoard = () => {
         },
       })
       .then((resp) => {
-        console.log(resp);
-        console.log(resp.data);
         setBoardData(resp.data.board);
         // 본인의 게시물이 아닌 경우
         if (user.userId !== resp.data.board.userId) {
@@ -65,7 +63,6 @@ const EditBoard = () => {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
         if (err.response.status === 401) {
           alert("자동 로그아웃되었습니다.");
           handleLogout();
@@ -85,16 +82,10 @@ const EditBoard = () => {
         },
       })
       .then((resp) => {
-        // console.log(resp);
-        console.log(resp.data);
-        // console.log("게시물 수정이 완료되었습니다.");
         alert("게시물 수정이 완료되었습니다.");
-        // navigate(`/board/${boardId}`);
         window.location.replace(`/board/${boardId}`);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   const onChangeContent = (e) => {

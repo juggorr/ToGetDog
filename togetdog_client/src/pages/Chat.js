@@ -32,12 +32,10 @@ const Chat = () => {
         },
       })
       .then((resp) => {
-        console.log(resp.data);
         setChatList(resp.data.dm);
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
         if (err.response.status === 401) {
           alert("자동 로그아웃되었습니다.");
           handleLogout();

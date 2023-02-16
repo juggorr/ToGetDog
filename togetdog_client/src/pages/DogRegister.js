@@ -213,7 +213,6 @@ function DogRegister() {
 
   // 미래 시점 입력못하게 검사하는 함수
   useEffect(() => {
-    // console.log('감시하자')
     const handleAge = () => {
       if (month && year) {
         if (
@@ -282,7 +281,6 @@ function DogRegister() {
       !isActive
     ) {
       setNoEssentialsModal(true);
-      console.log("통과 실패");
       return false;
     }
     // 필수 값들이 입력되었고, 값에 에러가 없으면 통과!
@@ -301,7 +299,6 @@ function DogRegister() {
   };
 
   const sendPOST = async () => {
-    // console.log(age);
     const formData = new FormData();
     // 생일 '201112' 형식으로 바꾸기
     let newBirth = month;
@@ -337,12 +334,6 @@ function DogRegister() {
     );
     formData.append("dogProfile", image);
 
-    // console.log(formData.get("dog"));
-
-    // 폼데이터 확인
-    // for (let key of formData.keys()) {
-    //   console.log(key, ':', formData.get(key));
-    // }
     await axios
       .post(`${BACKEND_URL}/dog`, formData, {
         headers: {
@@ -351,12 +342,9 @@ function DogRegister() {
         },
       })
       .then((res) => {
-        console.log(res.data);
         navigate(`/feed/${user.userId}`);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   // 버튼누르면
@@ -364,10 +352,8 @@ function DogRegister() {
     // 유효성 검사 통과 시
     if (checkValidation()) {
       // POST요청 보내기
-      // console.log('정상 처리 되었음');
       sendPOST();
     } else {
-      console.log("정상 처리되지 않았음");
       return;
     }
   };

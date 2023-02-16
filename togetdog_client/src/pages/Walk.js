@@ -196,13 +196,10 @@ const SingleMeeting = ({ meeting, auth }) => {
         },
       })
         .then(function (response) {
-          // console.log(response);
           setInfoModalOpen(false);
           window.location.reload();
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => {});
     };
 
     const renderBtns = () => {
@@ -352,9 +349,7 @@ const SingleMeeting = ({ meeting, auth }) => {
           setRatingModalOpen(false);
           window.location.reload();
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     };
 
     return (
@@ -528,7 +523,6 @@ const Walk = () => {
         setOriginalMeetings(appointments);
       })
       .catch(function (error) {
-        console.log(error);
         if (error.response.status === 404) {
           navigate("/*");
         } else if (error.response.status === 401) {
@@ -590,7 +584,7 @@ const Walk = () => {
                 <p className="noMeetingText">산책 친구를 찾아보세요!</p>
               </div>
               <LightColorLongBtn onClick={() => navigate("/recommend")}>
-                새 친구 찾기
+                산책 친구 찾기
               </LightColorLongBtn>
             </div>
           ) : null}

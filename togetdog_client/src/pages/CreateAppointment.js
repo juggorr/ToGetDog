@@ -321,10 +321,14 @@ const CreateAppointment = () => {
         }
       )
       .then((resp) => {
+        alert("산책 요청이 전송되었습니다.");
         navigate(-1);
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          alert("자동 로그아웃되었습니다.");
+          handleLogout();
+        }
       });
   };
 
@@ -346,7 +350,8 @@ const CreateAppointment = () => {
         </p>
         {userData.dogs && userData.dogs[0] ? null : (
           <>
-            <MainColorShortBtn onClick={() => navigate("/dogregister")}>
+            <MainColorShortBtn
+              onClick={() => navigate("/dogregister", { state: { dogs: [] } })}>
               강아지 등록
             </MainColorShortBtn>
             <p className="warningStr">먼저 강아지를 등록해주세요.</p>
